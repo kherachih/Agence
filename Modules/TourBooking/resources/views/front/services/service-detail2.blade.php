@@ -507,7 +507,7 @@
                                     <div class="tg-tour-about-tickets mb-10">
                                         <div class="tg-tour-about-tickets-adult">
                                             <span>Adult</span>
-                                            <p class="mb-0">(18+ years) <span>${{ $service->discount_adult_price ?? $service->adult_price }}</span>
+                                            <p class="mb-0">(18+ years) <span>{{ currency($service->discount_adult_price ?? $service->adult_price) }}</span>
                                             </p>
                                         </div>
                                         <div class="tg-tour-about-tickets-quantity">
@@ -523,7 +523,7 @@
                                     <div class="tg-tour-about-tickets mb-10">
                                         <div class="tg-tour-about-tickets-adult">
                                             <span>Children </span>
-                                            <p class="mb-0">(13-17 years) <span>${{ $service->discount_child_price ?? $service->child_price }}</span></p>
+                                            <p class="mb-0">(13-17 years) <span>{{ currency($service->discount_child_price ?? $service->child_price) }}</span></p>
                                         </div>
                                         <div class="tg-tour-about-tickets-quantity">
                                             <select name="children" class="item-first custom-select"
@@ -554,7 +554,7 @@
                                                                 {{ $extra->name }}
                                                             </label>
                                                         </div>
-                                                        <span class="quantity">${{ $extra->price }}</span>
+                                                        <span class="quantity">{{ currency($extra->price) }}</span>
                                                     </li>
                                                 @endforeach
                                             </ul>
@@ -566,7 +566,7 @@
                                 <div
                                     class="tg-tour-about-coast d-flex align-items-center flex-wrap justify-content-between mb-20">
                                     <span class="tg-tour-about-sidebar-title d-inline-block">Total Cost:</span>
-                                    <h5 class="total-price" x-text="`$${totalCost}`"></h5>
+                                    <h5 class="total-price" x-text="totalCostFormatted"></h5>
                                 </div>
 
                                 <button type="submit" class="tg-btn tg-btn-switch-animation w-100">Book now</button>
@@ -668,7 +668,7 @@
 
                         if (info.special_price) {
                             html +=
-                                `<p class="mb-1"><strong>Special price:</strong> $${info.special_price}</p>`;
+                                `<p class="mb-1"><strong>Special price:</strong> ${formatCurrency(info.special_price)}</p>`;
                         }
 
                         if (info.notes) {
@@ -789,6 +789,23 @@
             }
         }
 
+        // Get currency format and rate from PHP
+        const currencyFormat = '{{ currency(0) }}';
+        const currencySymbol = currencyFormat.replace('0', '').trim();
+        const currencyRate = {{ Session::get('currency_rate', 1) }};
+
+        // Function to format price with currency
+        function formatCurrency(amount) {
+            // Apply currency rate conversion
+            const convertedAmount = (parseFloat(amount) * currencyRate).toFixed(2);
+            // Split by first '0' and reconstruct with converted amount
+            const parts = currencyFormat.split('0', 2);
+            if (parts.length === 2) {
+                return parts[0] + convertedAmount + parts[1];
+            }
+            return currencyFormat;
+        }
+
         function bookingForm() {
             return {
                 tickets: {
@@ -816,8 +833,13 @@
                             total += this.extrasPrice[key];
                         }
                     }
+                    // Apply currency rate conversion
+                    total = total * currencyRate;
                     return total.toFixed(2);
                 },
+                get totalCostFormatted() {
+                    return formatCurrency(this.totalCost);
+                }
             }
         }
     </script>

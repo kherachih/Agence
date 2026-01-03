@@ -78,7 +78,7 @@
                                                 <div class="tg-tour-about-sidebar-title">Tour Price</div>
                                             </div>
                                             <div class="tg-tour-about-tickets-quantity">
-                                                ${{ $service->discount_price ?? $service->full_price }}
+                                                {{ currency($service->discount_price ?? $service->full_price) }}
                                             </div>
                                         </div>
                                     </div>
@@ -94,8 +94,8 @@
                                                 <p class="mb-0">(18+ years)</p>
                                             </div>
                                             <div class="tg-tour-about-tickets-quantity">
-                                                {{ $data['personCount'] }} x {{ $service->discount_adult_price ?? $service->adult_price }} =
-                                                ${{ number_format($data['personCount'] * ($service->discount_adult_price ?? $service->adult_price), 2) }}
+                                                {{ $data['personCount'] }} x {{ currency($service->discount_adult_price ?? $service->adult_price) }} =
+                                                {{ currency($data['personCount'] * ($service->discount_adult_price ?? $service->adult_price)) }}
                                             </div>
                                         </div>
  
@@ -105,8 +105,8 @@
                                                 <p class="mb-0">(13-17 years)</p>
                                             </div>
                                             <div class="tg-tour-about-tickets-quantity">
-                                                {{ $data['childCount'] }} x {{ $service->discount_child_price ?? $service->child_price }} =
-                                                ${{ number_format($data['childCount'] * ($service->discount_child_price ?? $service->child_price), 2) }}
+                                                {{ $data['childCount'] }} x {{ currency($service->discount_child_price ?? $service->child_price) }} =
+                                                {{ currency($data['childCount'] * ($service->discount_child_price ?? $service->child_price)) }}
                                             </div>
                                         </div>
                                     </div>
@@ -124,7 +124,7 @@
                                                                     {{ $extra->name }}
                                                                 </label>
                                                             </div>
-                                                            <span class="quantity">${{ $extra->price }}</span>
+                                                            <span class="quantity">{{ currency($extra->price) }}</span>
                                                         </li>
                                                     @endforeach
                                                 </ul>
@@ -137,7 +137,7 @@
                                 <div
                                     class="tg-tour-about-coast d-flex align-items-center flex-wrap justify-content-between">
                                     <span class="tg-tour-about-sidebar-title d-inline-block">Total Cost:</span>
-                                    <h5 class="total-price">${{ number_format($data['total'], 2) }}</h5>
+                                    <h5 class="total-price">{{ currency($data['total']) }}</h5>
                                 </div>
                             </div>
                         </div>

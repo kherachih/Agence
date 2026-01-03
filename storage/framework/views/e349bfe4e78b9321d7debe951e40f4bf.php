@@ -670,7 +670,7 @@
                                     <div class="tg-tour-about-tickets mb-10">
                                         <div class="tg-tour-about-tickets-adult">
                                             <span>Adult</span>
-                                            <p class="mb-0">(18+ years) <span>$<?php echo e($service->discount_adult_price ?? $service->adult_price); ?></span>
+                                            <p class="mb-0">(18+ years) <span><?php echo e(currency($service->discount_adult_price ?? $service->adult_price)); ?></span>
                                             </p>
                                         </div>
                                         <div class="tg-tour-about-tickets-quantity">
@@ -686,7 +686,7 @@
                                     <div class="tg-tour-about-tickets mb-10">
                                         <div class="tg-tour-about-tickets-adult">
                                             <span>Children </span>
-                                            <p class="mb-0">(13-17 years) <span>$<?php echo e($service->discount_child_price ?? $service->child_price); ?></span></p>
+                                            <p class="mb-0">(13-17 years) <span><?php echo e(currency($service->discount_child_price ?? $service->child_price)); ?></span></p>
                                         </div>
                                         <div class="tg-tour-about-tickets-quantity">
                                             <select name="children" class="item-first custom-select"
@@ -718,7 +718,7 @@
 
                                                             </label>
                                                         </div>
-                                                        <span class="quantity">$<?php echo e($extra->price); ?></span>
+                                                        <span class="quantity"><?php echo e(currency($extra->price)); ?></span>
                                                     </li>
                                                 <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                             </ul>
@@ -730,7 +730,7 @@
                                 <div
                                     class="tg-tour-about-coast d-flex align-items-center flex-wrap justify-content-between mb-20">
                                     <span class="tg-tour-about-sidebar-title d-inline-block">Total Cost:</span>
-                                    <h5 class="total-price" x-text="`$${totalCost}`"></h5>
+                                    <h5 class="total-price" x-text="totalCostFormatted"></h5>
                                 </div>
 
                                 <button type="submit" class="tg-btn tg-btn-switch-animation w-100">Book now</button>
@@ -883,6 +883,21 @@
 
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <script>
+        // Get currency format from PHP
+        const currencyFormat = '<?php echo e(currency(0)); ?>';
+        const currencySymbol = currencyFormat.replace('0', '').trim();
+        const currencyRate = <?php echo e(Session::get('currency_rate', 1)); ?>;
+        
+        // Function to format price with currency
+        function formatCurrency(amount) {
+            // Split by first '0' and reconstruct with the actual amount
+            const parts = currencyFormat.split('0', 2);
+            if (parts.length === 2) {
+                return parts[0] + amount + parts[1];
+            }
+            return currencyFormat;
+        }
+        
         function reviewForm() {
             return {
                 categories: [{
@@ -1003,7 +1018,12 @@
                             total += this.extrasPrice[key];
                         }
                     }
+                    // Apply currency rate conversion
+                    total = total * currencyRate;
                     return total.toFixed(2);
+                },
+                get totalCostFormatted() {
+                    return formatCurrency(this.totalCost);
                 }
             };
         }
@@ -1266,4 +1286,5 @@
         }
     </style>
 <?php $__env->stopPush(); ?>
+
 <?php echo $__env->make('layout_inner_page', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH D:\xampp\htdocs\archive\archive\Modules/TourBooking\resources/views/front/services/service-detail.blade.php ENDPATH**/ ?>

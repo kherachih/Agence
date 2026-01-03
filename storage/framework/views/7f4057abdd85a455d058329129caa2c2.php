@@ -76,7 +76,7 @@
                                                 <div class="tg-tour-about-sidebar-title">Tour Price</div>
                                             </div>
                                             <div class="tg-tour-about-tickets-quantity">
-                                                $<?php echo e($service->discount_price ?? $service->full_price); ?>
+                                                <?php echo e(currency($service->discount_price ?? $service->full_price)); ?>
 
                                             </div>
                                         </div>
@@ -89,12 +89,12 @@
  
                                         <div class="tg-tour-about-tickets mb-10">
                                             <div class="tg-tour-about-tickets-adult">
-                                                <span>Person</span>
+                                                <span>Adult</span>
                                                 <p class="mb-0">(18+ years)</p>
                                             </div>
                                             <div class="tg-tour-about-tickets-quantity">
-                                                <?php echo e($data['personCount']); ?> x <?php echo e($service->price_per_person); ?> =
-                                                $<?php echo e(number_format($data['personCount'] * $service->price_per_person, 2)); ?>
+                                                <?php echo e($data['personCount']); ?> x <?php echo e(currency($service->discount_adult_price ?? $service->adult_price)); ?> =
+                                                <?php echo e(currency($data['personCount'] * ($service->discount_adult_price ?? $service->adult_price))); ?>
 
                                             </div>
                                         </div>
@@ -105,8 +105,8 @@
                                                 <p class="mb-0">(13-17 years)</p>
                                             </div>
                                             <div class="tg-tour-about-tickets-quantity">
-                                                <?php echo e($data['childCount']); ?> x <?php echo e($service->child_price); ?> =
-                                                $<?php echo e(number_format($data['childCount'] * $service->child_price, 2)); ?>
+                                                <?php echo e($data['childCount']); ?> x <?php echo e(currency($service->discount_child_price ?? $service->child_price)); ?> =
+                                                <?php echo e(currency($data['childCount'] * ($service->discount_child_price ?? $service->child_price))); ?>
 
                                             </div>
                                         </div>
@@ -126,7 +126,7 @@
 
                                                                 </label>
                                                             </div>
-                                                            <span class="quantity">$<?php echo e($extra->price); ?></span>
+                                                            <span class="quantity"><?php echo e(currency($extra->price)); ?></span>
                                                         </li>
                                                     <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                                 </ul>
@@ -139,7 +139,7 @@
                                 <div
                                     class="tg-tour-about-coast d-flex align-items-center flex-wrap justify-content-between">
                                     <span class="tg-tour-about-sidebar-title d-inline-block">Total Cost:</span>
-                                    <h5 class="total-price">$<?php echo e(number_format($data['total'], 2)); ?></h5>
+                                    <h5 class="total-price"><?php echo e(currency($data['total'])); ?></h5>
                                 </div>
                             </div>
                         </div>
