@@ -21,16 +21,9 @@ class CurrencyLangauge
     {
         if(!Session::get('front_lang')){
             $default_lang = Language::where('is_default','Yes')->first();
-            if($default_lang){
-                Session::put('front_lang', $default_lang->lang_code);
-                Session::put('lang_dir', $default_lang->lang_direction);
-                Session::put('front_lang_name', $default_lang->lang_name);
-            }else{
-                $default_lang = Language::where('id', 1)->first();
-                Session::put('front_lang', $default_lang->lang_code);
-                Session::put('lang_dir', $default_lang->lang_direction);
-                Session::put('front_lang_name', $default_lang->lang_name);
-            }
+            Session::put('front_lang', $default_lang->lang_code);
+            Session::put('lang_dir', $default_lang->lang_direction);
+            Session::put('front_lang_name', $default_lang->lang_name);
 
             app()->setLocale($default_lang->lang_code);
         }else{
@@ -47,20 +40,11 @@ class CurrencyLangauge
         // for currency
         if(!Session::get('currency_code')){
             $default_currency = Currency::where('is_default','yes')->first();
-            if($default_currency){
-                Session::put('currency_name', $default_currency->currency_name);
-                Session::put('currency_code', $default_currency->currency_code);
-                Session::put('currency_icon', $default_currency->currency_icon);
-                Session::put('currency_rate', $default_currency->currency_rate);
-                Session::put('currency_position', $default_currency->currency_position);
-            }else{
-                $default_currency = Currency::where('id', 1)->first();
-                Session::put('currency_name', $default_currency->currency_name);
-                Session::put('currency_code', $default_currency->currency_code);
-                Session::put('currency_icon', $default_currency->currency_icon);
-                Session::put('currency_rate', $default_currency->currency_rate);
-                Session::put('currency_position', $default_currency->currency_position);
-            }
+            Session::put('currency_name', $default_currency->currency_name);
+            Session::put('currency_code', $default_currency->currency_code);
+            Session::put('currency_icon', $default_currency->currency_icon);
+            Session::put('currency_rate', $default_currency->currency_rate);
+            Session::put('currency_position', $default_currency->currency_position);
 
         }else{
             $session_currency = Currency::where('currency_code', Session::get('currency_code'))->first();

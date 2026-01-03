@@ -11,9 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('services', function (Blueprint $table) {
-            $table->boolean('is_new')->default(false)->after('show_on_homepage');
-        });
+        if (!Schema::hasColumn('services', 'is_new')) {
+            Schema::table('services', function (Blueprint $table) {
+                $table->boolean('is_new')->default(false)->after('show_on_homepage');
+            });
+        }
     }
 
     /**

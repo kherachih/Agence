@@ -370,6 +370,11 @@ final class FrontServiceController extends Controller
                     $query->where('status', true);
                 },
                 'availabilities',
+                'availability_periods' => function ($query) {
+                    $query->where('is_active', true)
+                        ->where('end_date', '>=', now()->toDateString())
+                        ->orderBy('start_date');
+                },
                 'itineraries' => function ($query) {
                     $query->orderBy('day_number');
                 }

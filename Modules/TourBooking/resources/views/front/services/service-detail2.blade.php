@@ -471,27 +471,33 @@
                                     </div>
                                 </div>
 
-                                <div class="tg-tour-about-time d-flex align-items-center mb-10">
-                                    <span class="time">Time:</span>
-                                    <div class="form-check mr-15">
-                                        <input type="hidden" name="check_in_time_hidden"
-                                            value="{{ $service->check_in_time }}">
-                                        <input class="form-check-input" name="check_in_time" type="radio"
-                                            id="time1">
-                                        <label class="form-check-label" for="time1">
-                                            {{ $service->check_in_time }}
-                                        </label>
+                                @if ($service->availability_periods && $service->availability_periods->count() > 0)
+                                    <div class="tg-tour-about-time mb-10">
+                                        <span class="time mb-10 d-block">Available Dates:</span>
+                                        <div class="availability-periods-list">
+                                            @foreach ($service->availability_periods as $period)
+                                                <div class="availability-period-item mb-2 p-2 border rounded">
+                                                    <input type="radio" name="availability_period_id"
+                                                           value="{{ $period->id }}"
+                                                           id="period_{{ $period->id }}"
+                                                           class="form-check-input"
+                                                           {{ $loop->first ? 'checked' : '' }}>
+                                                    <label for="period_{{ $period->id }}" class="form-check-label ml-2 cursor-pointer">
+                                                        <strong>{{ $period->start_date->format('d F') }}</strong>
+                                                        @if ($period->start_date->format('Y-m-d') != $period->end_date->format('Y-m-d'))
+                                                            - {{ $period->end_date->format('d F Y') }}
+                                                        @else
+                                                            {{ $period->end_date->format('Y') }}
+                                                        @endif
+                                                        <span class="text-muted small ml-2">
+                                                            (Max: {{ $period->max_people }} people)
+                                                        </span>
+                                                    </label>
+                                                </div>
+                                            @endforeach
+                                        </div>
                                     </div>
-                                    <div class="form-check">
-                                        <input type="hidden" name="check_out_time_hidden"
-                                            value="{{ $service->check_out_time }}">
-                                        <input class="form-check-input" name="check_out_time" type="radio"
-                                            id="time2">
-                                        <label class="form-check-label" for="time2">
-                                            {{ $service->check_out_time }}
-                                        </label>
-                                    </div>
-                                </div>
+                                @endif
 
                                 <div class="tg-tour-about-border-doted mb-15"></div>
 
@@ -864,6 +870,37 @@
         .flatpickr-calendar.open .flatpickr-innerContainer .flatpickr-days .flatpickr-day.selected {
             color: var(--tg-common-white) !important;
             background-color: var(--tg-theme-primary) !important;
+        }
+
+        .availability-periods-list {
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .availability-period-item {
+            background-color: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .availability-period-item:hover {
+            background-color: #e9ecef;
+            border-color: var(--tg-theme-primary);
+        }
+
+        .availability-period-item input[type="radio"]:checked + label {
+            color: var(--tg-theme-primary);
+            font-weight: 600;
+        }
+
+        .availability-period-item input[type="radio"] {
+            cursor: pointer;
+        }
+
+        .availability-period-item label {
+            cursor: pointer;
+            margin-bottom: 0;
         }
     </style>
 @endpush

@@ -622,29 +622,45 @@
                                     <div id="availability-info" class="mt-2" style="display: none;"></div>
                                 </div>
 
-                                <div class="tg-tour-about-time d-flex align-items-center mb-10">
-                                    <span class="time">Time:</span>
-                                    <div class="form-check mr-15">
-                                        <input type="hidden" name="check_in_time_hidden"
-                                            value="<?php echo e($service->check_in_time); ?>">
-                                        <input class="form-check-input" name="check_in_time" type="radio"
-                                            id="time1">
-                                        <label class="form-check-label" for="time1">
-                                            <?php echo e($service->check_in_time); ?>
-
-                                        </label>
+                                <?php if($service->availability_periods && $service->availability_periods->count() > 0): ?>
+                                    <div class="tg-tour-about-time mb-10">
+                                        <span class="time mb-10 d-block">Available Dates:</span>
+                                        <div class="availability-date-picker">
+                                            <div class="availability-dropdown-container">
+                                                <button type="button" class="availability-dropdown-btn" id="availability-dropdown-toggle">
+                                                    <span id="selected-period-text">Select a period</span>
+                                                    <i class="fa-solid fa-chevron-down dropdown-arrow"></i>
+                                                </button>
+                                                <div class="availability-dropdown-menu" id="availability-dropdown-menu">
+                                                    <div class="availability-dropdown-search">
+                                                        <input type="text" id="period-search" placeholder="Search dates...">
+                                                    </div>
+                                                    <div class="availability-dropdown-list" id="availability-dropdown-list">
+                                                        <?php $__currentLoopData = $service->availability_periods; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $period): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                                            <?php
+                                                                $startDate = \Carbon\Carbon::parse($period->start_date);
+                                                                $endDate = \Carbon\Carbon::parse($period->end_date);
+                                                                $days = $startDate->diffInDays($endDate) + 1;
+                                                            ?>
+                                                            <div class="availability-period-option" data-period-id="<?php echo e($period->id); ?>" data-start-date="<?php echo e($period->start_date); ?>" data-end-date="<?php echo e($period->end_date); ?>" data-days="<?php echo e($days); ?>">
+                                                                <div class="period-dates">
+                                                                    <span class="period-start"><?php echo e(\Carbon\Carbon::parse($period->start_date)->format('d M')); ?></span>
+                                                                    <span class="period-separator">→</span>
+                                                                    <span class="period-end"><?php echo e(\Carbon\Carbon::parse($period->end_date)->format('d M Y')); ?></span>
+                                                                </div>
+                                                                <div class="period-details">
+                                                                    <span class="period-days"><i class="fa-solid fa-calendar-days"></i> <?php echo e($days); ?> <?php echo e($days == 1 ? 'day' : 'days'); ?></span>
+                                                                </div>
+                                                            </div>
+                                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <input type="hidden" name="availability_period_id" id="selected-availability-period-id">
+                                            <div id="period-info" class="period-info mt-2"></div>
+                                        </div>
                                     </div>
-                                    <div class="form-check">
-                                        <input type="hidden" name="check_out_time_hidden"
-                                            value="<?php echo e($service->check_out_time); ?>">
-                                        <input class="form-check-input" name="check_out_time" type="radio"
-                                            id="time2">
-                                        <label class="form-check-label" for="time2">
-                                            <?php echo e($service->check_out_time); ?>
-
-                                        </label>
-                                    </div>
-                                </div>
+                                <?php endif; ?>
 
                                 <div class="tg-tour-about-border-doted mb-15"></div>
 
@@ -746,93 +762,120 @@
                     time_24hr: true
                 });
 
-                // Extract available dates from PHP data
-                const availabilities = <?php echo json_encode($service?->availabilities ?? [], 15, 512) ?>;
-                const availableDates = availabilities.map(item => item.date);
-                const availabilityMap = {};
+                // Extract availability periods from PHP data
+                const availabilityPeriods = <?php echo json_encode($service->availability_periods ?? [], 15, 512) ?>;
+                const availabilityPeriodsMap = {};
 
-                // Create a map of date -> availability details for quick lookup
-                availabilities.forEach(item => {
-                    availabilityMap[item.date] = {
-                        spots: item.available_spots,
-                        special_price: item.special_price,
-                        notes: item.notes,
-                        start_time: item.start_time,
-                        end_time: item.end_time,
-                        is_available: item.is_available
+                // Create a map of period id -> period details for quick lookup
+                availabilityPeriods.forEach(period => {
+                    availabilityPeriodsMap[period.id] = {
+                        start_date: period.start_date,
+                        end_date: period.end_date,
+                        max_people: period.max_people,
+                        is_active: period.is_active
                     };
                 });
 
-                // Initialize date picker with available dates only
-                const datePicker = flatpickr("input[name='check_in_date']", {
-                    dateFormat: "Y-m-d",
-                    disableMobile: "true",
-                    minDate: "today",
-                    enable: availableDates,
-                    onChange: function(selectedDates, dateStr) {
-                        updateAvailabilityInfo(dateStr);
+                // Availability dropdown functionality
+                const dropdownToggle = document.getElementById('availability-dropdown-toggle');
+                const dropdownMenu = document.getElementById('availability-dropdown-menu');
+                const dropdownList = document.getElementById('availability-dropdown-list');
+                const searchInput = document.getElementById('period-search');
+                const periodInput = document.getElementById('selected-availability-period-id');
+                const selectedPeriodText = document.getElementById('selected-period-text');
+                const periodInfo = document.getElementById('period-info');
+                const bookBtn = document.querySelector('button[type="submit"]');
+
+                // Toggle dropdown
+                dropdownToggle.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    dropdownMenu.classList.toggle('show');
+                    dropdownToggle.classList.toggle('active');
+                });
+
+                // Close dropdown when clicking outside
+                document.addEventListener('click', function(e) {
+                    if (!dropdownMenu.contains(e.target) && !dropdownToggle.contains(e.target)) {
+                        dropdownMenu.classList.remove('show');
+                        dropdownToggle.classList.remove('active');
                     }
                 });
 
-                // Function to update availability information when a date is selected
-                function updateAvailabilityInfo(dateStr) {
-                    const availInfo = $('#availability-info');
-                    const bookBtn = $('button[type="submit"]');
-                    const availabilityInput = $('#selected-availability-id');
-
-                    if (dateStr && availabilityMap[dateStr]) {
-                        const info = availabilityMap[dateStr];
-                        const availId = availabilities.find(a => a.date === dateStr)?.id;
-
-                        // Store the selected availability ID
-                        availabilityInput.val(availId || '');
-
-                        // Create information display
-                        let html = '<div class="alert alert-info mt-2 mb-0">';
-
-                        if (info.spots !== null) {
-                            html += `<p class="mb-1"><strong>Available spots:</strong> ${info.spots}</p>`;
-
-                            // Disable booking if no spots available
-                            if (info.spots <= 0) {
-                                html += '<p class="text-danger mb-0">No spots available for this date!</p>';
-                                bookBtn.prop('disabled', true);
-                            } else {
-                                bookBtn.prop('disabled', false);
-                            }
+                // Search functionality
+                searchInput.addEventListener('input', function(e) {
+                    const searchTerm = e.target.value.toLowerCase();
+                    const periodOptions = dropdownList.querySelectorAll('.availability-period-option');
+                    
+                    periodOptions.forEach(option => {
+                        const text = option.textContent.toLowerCase();
+                        if (text.includes(searchTerm)) {
+                            option.style.display = 'block';
                         } else {
-                            html += '<p class="mb-1">Spots available for booking</p>';
-                            bookBtn.prop('disabled', false);
+                            option.style.display = 'none';
                         }
+                    });
+                });
 
-                        if (info.start_time && info.end_time) {
-                            html +=
-                                `<p class="mb-1"><strong>Time:</strong> ${info.start_time.substring(0,5)} - ${info.end_time.substring(0,5)}</p>`;
-                        }
+                // Period selection
+                dropdownList.addEventListener('click', function(e) {
+                    const periodOption = e.target.closest('.availability-period-option');
+                    if (periodOption) {
+                        const periodId = periodOption.dataset.periodId;
+                        const startDate = periodOption.dataset.startDate;
+                        const endDate = periodOption.dataset.endDate;
+                        const days = periodOption.dataset.days;
 
-                        if (info.special_price) {
-                            html +=
-                            `<p class="mb-1"><strong>Special price:</strong> $${info.special_price}</p>`;
-                        }
+                        // Update selected period text
+                        const startDateFormatted = new Date(startDate).toLocaleDateString('en-US', {
+                            day: 'numeric',
+                            month: 'short'
+                        });
+                        const endDateFormatted = new Date(endDate).toLocaleDateString('en-US', {
+                            day: 'numeric',
+                            month: 'short',
+                            year: 'numeric'
+                        });
+                        selectedPeriodText.textContent = `${startDateFormatted} → ${endDateFormatted}`;
 
-                        if (info.notes) {
-                            html += `<p class="mb-0"><strong>Notes:</strong> ${info.notes}</p>`;
-                        }
+                        // Store the selected period ID
+                        periodInput.value = periodId;
 
+                        // Update period info display
+                        const fullStartDateFormatted = new Date(startDate).toLocaleDateString('en-US', {
+                            year: 'numeric',
+                            month: 'long',
+                            day: 'numeric'
+                        });
+                        const fullEndDateFormatted = new Date(endDate).toLocaleDateString('en-US', {
+                            year: 'numeric',
+                            month: 'long',
+                            day: 'numeric'
+                        });
+
+                        let html = '<div class="alert alert-success mt-2 mb-0">';
+                        html += `<p class="mb-1"><strong>Selected Period:</strong> ${fullStartDateFormatted} - ${fullEndDateFormatted}</p>`;
+                        html += `<p class="mb-0"><strong>Duration:</strong> ${days} ${days == 1 ? 'day' : 'days'}</p>`;
                         html += '</div>';
-                        availInfo.html(html).show();
-                    } else {
-                        availInfo.hide().html('');
-                        availabilityInput.val('');
-                        bookBtn.prop('disabled', false);
-                    }
-                }
+                        periodInfo.innerHTML = html;
+                        periodInfo.style.display = 'block';
 
-                // Initial call in case a date is pre-selected
-                const initialDate = $('input[name="check_in_date"]').val();
-                if (initialDate) {
-                    updateAvailabilityInfo(initialDate);
-                }
+                        // Enable book button
+                        bookBtn.disabled = false;
+
+                        // Close dropdown
+                        dropdownMenu.classList.remove('show');
+                        dropdownToggle.classList.remove('active');
+
+                        // Highlight selected option
+                        dropdownList.querySelectorAll('.availability-period-option').forEach(opt => {
+                            opt.classList.remove('selected');
+                        });
+                        periodOption.classList.add('selected');
+                    }
+                });
+
+                // Hide the old date input
+                $('input[name="check_in_date"]').closest('.tg-booking-form-parent-inner').hide();
 
             });
         })(jQuery);
@@ -1006,6 +1049,220 @@
         .flatpickr-calendar.open .flatpickr-innerContainer .flatpickr-days .flatpickr-day.selected {
             color: var(--tg-common-white) !important;
             background-color: var(--tg-theme-primary) !important;
+        }
+
+        .availability-periods-list {
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .availability-period-item {
+            background-color: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .availability-period-item:hover {
+            background-color: #e9ecef;
+            border-color: var(--tg-theme-primary);
+        }
+
+        .availability-period-item input[type="radio"]:checked + label {
+            color: var(--tg-theme-primary);
+            font-weight: 600;
+        }
+
+        .availability-period-item input[type="radio"] {
+            cursor: pointer;
+        }
+
+        .availability-period-item label {
+            cursor: pointer;
+            margin-bottom: 0;
+        }
+
+        /* Availability Dropdown Styles */
+        .availability-dropdown-container {
+            position: relative;
+        }
+
+        .availability-dropdown-btn {
+            width: 100%;
+            padding: 12px 15px;
+            background: #fff;
+            border: 1px solid #d6d6d6;
+            border-radius: 24px;
+            font-size: 16px;
+            color: var(--tg-grey-1);
+            text-align: left;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+
+        .availability-dropdown-btn:hover,
+        .availability-dropdown-btn.active {
+            border-color: var(--tg-theme-primary);
+            box-shadow: 0 0 0 3px rgba(86, 12, 227, 0.1);
+        }
+
+        .availability-dropdown-btn .dropdown-arrow {
+            transition: transform 0.3s ease;
+        }
+
+        .availability-dropdown-btn.active .dropdown-arrow {
+            transform: rotate(180deg);
+        }
+
+        .availability-dropdown-menu {
+            position: absolute;
+            top: calc(100% + 5px);
+            left: 0;
+            right: 0;
+            background: #fff;
+            border: 1px solid #d6d6d6;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            z-index: 1000;
+            display: none;
+            max-height: 400px;
+            overflow: hidden;
+        }
+
+        .availability-dropdown-menu.show {
+            display: block;
+            animation: slideDown 0.3s ease;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .availability-dropdown-search {
+            padding: 12px 15px;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        .availability-dropdown-search input {
+            width: 100%;
+            padding: 10px 15px;
+            border: 1px solid #d6d6d6;
+            border-radius: 20px;
+            font-size: 14px;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .availability-dropdown-search input:focus {
+            border-color: var(--tg-theme-primary);
+            box-shadow: 0 0 0 3px rgba(86, 12, 227, 0.1);
+        }
+
+        .availability-dropdown-list {
+            max-height: 320px;
+            overflow-y: auto;
+            padding: 8px 0;
+        }
+
+        .availability-dropdown-list::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .availability-dropdown-list::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 3px;
+        }
+
+        .availability-dropdown-list::-webkit-scrollbar-thumb {
+            background: #c1c1c1;
+            border-radius: 3px;
+        }
+
+        .availability-dropdown-list::-webkit-scrollbar-thumb:hover {
+            background: #a1a1a1;
+        }
+
+        .availability-period-option {
+            padding: 12px 15px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border-bottom: 1px solid #f1f1f1;
+        }
+
+        .availability-period-option:last-child {
+            border-bottom: none;
+        }
+
+        .availability-period-option:hover {
+            background-color: #f8f9fa;
+        }
+
+        .availability-period-option.selected {
+            background-color: rgba(86, 12, 227, 0.1);
+            border-left: 3px solid var(--tg-theme-primary);
+        }
+
+        .period-dates {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 6px;
+        }
+
+        .period-start,
+        .period-end {
+            font-weight: 600;
+            color: var(--tg-grey-1);
+            font-size: 15px;
+        }
+
+        .period-separator {
+            color: #999;
+            font-size: 14px;
+        }
+
+        .period-details {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 13px;
+            color: #666;
+        }
+
+        .period-details i {
+            color: var(--tg-theme-primary);
+        }
+
+        .period-info {
+            margin-top: 10px;
+        }
+
+        .period-info .alert {
+            padding: 12px 15px;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+
+        .period-info .alert-success {
+            background-color: rgba(40, 167, 69, 0.1);
+            border-color: rgba(40, 167, 69, 0.2);
+            color: #28a745;
+        }
+
+        .period-info .alert-warning {
+            background-color: rgba(255, 193, 7, 0.1);
+            border-color: rgba(255, 193, 7, 0.2);
+            color: #ffc107;
         }
     </style>
 <?php $__env->stopPush(); ?>
