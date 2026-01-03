@@ -1,11 +1,9 @@
-@extends('layout_inner_page')
+<?php $__env->startSection('title'); ?>
+    <title><?php echo e(__('translate.Booking Checkout')); ?></title>
+<?php $__env->stopSection(); ?>
 
-@section('title')
-    <title>{{ __('translate.Booking Checkout') }}</title>
-@endsection
-
-@section('front-content')
-    @include('breadcrumb', ['breadcrumb_title' => __('translate.Booking Checkout')])
+<?php $__env->startSection('front-content'); ?>
+    <?php echo $__env->make('breadcrumb', ['breadcrumb_title' => __('translate.Booking Checkout')], \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
 
     <!-- checkout area -->
     <section class="checkout-area pb-100 pt-125">
@@ -13,33 +11,33 @@
             <div class="row">
                 <div class="col-lg-8">
                     <div class="tg-checkout-form-wrapper mr-50">
-                        <h2 class="tg-checkout-form-title mb-30">{{ __('translate.Billing Details') }}</h2>
+                        <h2 class="tg-checkout-form-title mb-30"><?php echo e(__('translate.Billing Details')); ?></h2>
                         <div class="row gx-24">
                             <div class="tg-checkout-form-input mb-25">
-                                <label>{{ __('translate.Customer name') }}</label>
+                                <label><?php echo e(__('translate.Customer name')); ?></label>
                                 <input id="customer_name" class="input" type="text"
-                                    value="{{ auth()->user()->name ?? '' }}" name="customer_name"
+                                    value="<?php echo e(auth()->user()->name ?? ''); ?>" name="customer_name"
                                     placeholder="Customer name">
                             </div>
  
                             <div class="tg-checkout-form-input mb-25">
-                                <label>{{ __('translate.Customer email') }}</label>
+                                <label><?php echo e(__('translate.Customer email')); ?></label>
                                 <input id="customer_email" class="input" type="email"
-                                    value="{{ auth()->user()->email ?? '' }}" name="customer_email"
+                                    value="<?php echo e(auth()->user()->email ?? ''); ?>" name="customer_email"
                                     placeholder="Customer email">
                             </div>
  
                             <div class="tg-checkout-form-input mb-25">
-                                <label>{{ __('translate.Customer phone') }}</label>
+                                <label><?php echo e(__('translate.Customer phone')); ?></label>
                                 <input id="customer_phone" class="input" type="text"
-                                    value="{{ auth()->user()->phone ?? '' }}" name="customer_phone"
+                                    value="<?php echo e(auth()->user()->phone ?? ''); ?>" name="customer_phone"
                                     placeholder="Customer phone">
                             </div>
                             <div class="tg-checkout-form-input mb-25">
-                                <label>{{ __('translate.Customer address') }}</label>
-                                <input id="customer_address" class="input" value="{{ auth()->user()->address ?? '' }}"
+                                <label><?php echo e(__('translate.Customer address')); ?></label>
+                                <input id="customer_address" class="input" value="<?php echo e(auth()->user()->address ?? ''); ?>"
                                     class="house-number" name="customer_address" type="text"
-                                    placeholder="{{ __('translate.House number and Street name') }}">
+                                    placeholder="<?php echo e(__('translate.House number and Street name')); ?>">
                             </div>
                         </div>
                     </div>
@@ -51,7 +49,7 @@
                             <div class="tg-tour-about-border-doted mb-15"></div>
                             <div>
                                 <div>
-                                    @if(isset($data['availabilityPeriod']) && $data['availabilityPeriod'])
+                                    <?php if(isset($data['availabilityPeriod']) && $data['availabilityPeriod']): ?>
                                         <div class="tg-tour-about-tickets-wrap mb-15">
                                             <div class="tg-tour-about-tickets mb-10">
                                                 <div class="tg-tour-about-tickets-adult">
@@ -59,26 +57,27 @@
                                                 </div>
                                                 <div class="tg-tour-about-tickets-quantity">
                                                     <div class="period-dates-display">
-                                                        <span class="period-start-date">{{ \Carbon\Carbon::parse($data['availabilityPeriod']->start_date)->format('d M') }}</span>
+                                                        <span class="period-start-date"><?php echo e(\Carbon\Carbon::parse($data['availabilityPeriod']->start_date)->format('d M')); ?></span>
                                                         <span class="period-separator">→</span>
-                                                        <span class="period-end-date">{{ \Carbon\Carbon::parse($data['availabilityPeriod']->end_date)->format('d M Y') }}</span>
+                                                        <span class="period-end-date"><?php echo e(\Carbon\Carbon::parse($data['availabilityPeriod']->end_date)->format('d M Y')); ?></span>
                                                     </div>
                                                     <div class="period-duration-display">
                                                         <i class="fa-solid fa-calendar-days"></i>
-                                                        {{ \Carbon\Carbon::parse($data['availabilityPeriod']->start_date)->diffInDays(\Carbon\Carbon::parse($data['availabilityPeriod']->end_date)) + 1 }} days
+                                                        <?php echo e(\Carbon\Carbon::parse($data['availabilityPeriod']->start_date)->diffInDays(\Carbon\Carbon::parse($data['availabilityPeriod']->end_date)) + 1); ?> days
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="tg-tour-about-border-doted mb-15"></div>
-                                    @endif
+                                    <?php endif; ?>
                                     <div class="tg-tour-about-tickets-wrap mb-15">
                                         <div class="tg-tour-about-tickets mb-10">
                                             <div class="tg-tour-about-tickets-adult">
                                                 <div class="tg-tour-about-sidebar-title">Tour Price</div>
                                             </div>
                                             <div class="tg-tour-about-tickets-quantity">
-                                                ${{ $service->discount_price ?? $service->full_price }}
+                                                $<?php echo e($service->discount_price ?? $service->full_price); ?>
+
                                             </div>
                                         </div>
                                     </div>
@@ -94,8 +93,9 @@
                                                 <p class="mb-0">(18+ years)</p>
                                             </div>
                                             <div class="tg-tour-about-tickets-quantity">
-                                                {{ $data['personCount'] }} x {{ $service->price_per_person }} =
-                                                ${{ number_format($data['personCount'] * $service->price_per_person, 2) }}
+                                                <?php echo e($data['personCount']); ?> x <?php echo e($service->price_per_person); ?> =
+                                                $<?php echo e(number_format($data['personCount'] * $service->price_per_person, 2)); ?>
+
                                             </div>
                                         </div>
  
@@ -105,52 +105,54 @@
                                                 <p class="mb-0">(13-17 years)</p>
                                             </div>
                                             <div class="tg-tour-about-tickets-quantity">
-                                                {{ $data['childCount'] }} x {{ $service->child_price }} =
-                                                ${{ number_format($data['childCount'] * $service->child_price, 2) }}
+                                                <?php echo e($data['childCount']); ?> x <?php echo e($service->child_price); ?> =
+                                                $<?php echo e(number_format($data['childCount'] * $service->child_price, 2)); ?>
+
                                             </div>
                                         </div>
                                     </div>
  
-                                    @if (count($data['extras']) > 0)
+                                    <?php if(count($data['extras']) > 0): ?>
                                         <div class="tg-tour-about-extra mb-10">
                                             <span class="tg-tour-about-sidebar-title mb-10 d-inline-block">Add
                                                 Extra:</span>
                                             <div class="tg-filter-list">
                                                 <ul>
-                                                    @foreach ($data['extras'] as $key => $extra)
+                                                    <?php $__currentLoopData = $data['extras']; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $extra): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                                         <li>
                                                             <div class="checkbox d-flex">
                                                                 <label class="tg-label">
-                                                                    {{ $extra->name }}
+                                                                    <?php echo e($extra->name); ?>
+
                                                                 </label>
                                                             </div>
-                                                            <span class="quantity">${{ $extra->price }}</span>
+                                                            <span class="quantity">$<?php echo e($extra->price); ?></span>
                                                         </li>
-                                                    @endforeach
+                                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                                 </ul>
                                             </div>
                                         </div>
-                                    @endif
+                                    <?php endif; ?>
  
                                 </div>
                                 <div class="tg-tour-about-border-doted mb-15"></div>
                                 <div
                                     class="tg-tour-about-coast d-flex align-items-center flex-wrap justify-content-between">
                                     <span class="tg-tour-about-sidebar-title d-inline-block">Total Cost:</span>
-                                    <h5 class="total-price">${{ number_format($data['total'], 2) }}</h5>
+                                    <h5 class="total-price">$<?php echo e(number_format($data['total'], 2)); ?></h5>
                                 </div>
                             </div>
                         </div>
-                        @include('tourbooking::front.bookings.payment')
+                        <?php echo $__env->make('tourbooking::front.bookings.payment', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
                     </div>
                 </div>
             </div>
         </div>
     </section>
     <!-- checkout area end-->
-@endsection
+<?php $__env->stopSection(); ?>
 
-@push('js_section')
+<?php $__env->startPush('js_section'); ?>
     <script>
         $(document).ready(function() {
             // Function to parse currency string to number
@@ -218,9 +220,9 @@
  
         });
     </script>
-@endpush
+<?php $__env->stopPush(); ?>
 
-@push('style_section')
+<?php $__env->startPush('style_section'); ?>
     <style>
         .period-dates-display {
             display: flex;
@@ -255,4 +257,6 @@
             color: var(--tg-theme-primary);
         }
     </style>
-@endpush
+<?php $__env->stopPush(); ?>
+
+<?php echo $__env->make('layout_inner_page', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH D:\xampp\htdocs\archive\archive\Modules/TourBooking\resources/views/front/bookings/checkout-view.blade.php ENDPATH**/ ?>

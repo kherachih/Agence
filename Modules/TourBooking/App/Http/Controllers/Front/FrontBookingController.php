@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 use Modules\TourBooking\App\Models\Availability;
+use Modules\TourBooking\App\Models\AvailabilityPeriod;
 use Modules\TourBooking\App\Models\Booking;
 use Modules\TourBooking\App\Models\Coupon;
 use Modules\TourBooking\App\Models\ExtraCharge;
@@ -47,20 +48,10 @@ final class FrontBookingController extends Controller
             ->where('status', true)
             ->firstOrFail();
 
-        // Check if an availability_id was provided and verify spots
-        if ($request->has('availability_id')) {
-            $availability = Availability::find($request->availability_id);
-            
-            if ($availability) {
-                // Calculate total guests
-                $totalGuests = $request->person + $request->children;
-                
-                // Check if there are enough spots available
-                if ($availability->available_spots !== null && $totalGuests > $availability->available_spots) {
-                    $notify_message = trans('translate.Not enough available spots for the selected date');
-                    return redirect()->back()->with(['message' => $notify_message, 'alert-type' => 'error']);
-                }
-            }
+        // Check if an availability_period_id was provided
+        $availabilityPeriod = null;
+        if ($request->has('availability_period_id')) {
+            $availabilityPeriod = AvailabilityPeriod::find($request->availability_period_id);
         }
 
         $extraCharges = ExtraCharge::select('id', 'name', 'price', 'price_type')->whereIn('id', $request->extras ?? [])
@@ -89,14 +80,15 @@ final class FrontBookingController extends Controller
             'personPrice' => $personPrice,
             'childPrice' => $childPrice,
             'total' => $total,
+            'availabilityPeriod' => $availabilityPeriod,
         ];
 
         session()->forget('payment_cart');
 
         session()->put('payment_cart', [
             'service_id' => $request->service_id,
-            'check_in_date' => $request->check_in_date,
-            'check_out_date' => $request->check_out_date,
+            'check_in_date' => $availabilityPeriod ? $availabilityPeriod->start_date : $request->check_in_date,
+            'check_out_date' => $availabilityPeriod ? $availabilityPeriod->end_date : $request->check_out_date,
             'check_in_time' => $request->check_in_time == 'on' ? $request->check_in_time_hidden : null,
             'check_out_time' => $request->check_out_time == 'on' ? $request->check_out_time_hidden : null,
             'person_count' => $request->person,
@@ -105,6 +97,7 @@ final class FrontBookingController extends Controller
             'extra_charges' => $totalExtraCharge ?? 0,
             'extra_services' => $request->extras ?? [],
             'availability_id' => $request->availability_id ?? null,
+            'availability_period_id' => $request->availability_period_id ?? null,
         ]);
 
         return view('tourbooking::front.bookings.checkout-view', [
