@@ -90,12 +90,12 @@
  
                                         <div class="tg-tour-about-tickets mb-10">
                                             <div class="tg-tour-about-tickets-adult">
-                                                <span>Person</span>
+                                                <span>Adult</span>
                                                 <p class="mb-0">(18+ years)</p>
                                             </div>
                                             <div class="tg-tour-about-tickets-quantity">
-                                                {{ $data['personCount'] }} x {{ $service->price_per_person }} =
-                                                ${{ number_format($data['personCount'] * $service->price_per_person, 2) }}
+                                                {{ $data['personCount'] }} x {{ $service->discount_adult_price ?? $service->adult_price }} =
+                                                ${{ number_format($data['personCount'] * ($service->discount_adult_price ?? $service->adult_price), 2) }}
                                             </div>
                                         </div>
  
@@ -105,8 +105,8 @@
                                                 <p class="mb-0">(13-17 years)</p>
                                             </div>
                                             <div class="tg-tour-about-tickets-quantity">
-                                                {{ $data['childCount'] }} x {{ $service->child_price }} =
-                                                ${{ number_format($data['childCount'] * $service->child_price, 2) }}
+                                                {{ $data['childCount'] }} x {{ $service->discount_child_price ?? $service->child_price }} =
+                                                ${{ number_format($data['childCount'] * ($service->discount_child_price ?? $service->child_price), 2) }}
                                             </div>
                                         </div>
                                     </div>

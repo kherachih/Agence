@@ -34,9 +34,12 @@ final class Service extends Model
         'destination_id',
         'price_per_person',
         'price_from',
+        'adult_price',
+        'discount_adult_price',
+        'child_price',
+        'discount_child_price',
         'full_price',
         'discount_price',
-        'child_price',
         'infant_price',
         'security_deposit',
         'deposit_required',
@@ -92,9 +95,12 @@ final class Service extends Model
         'meta' => 'json',
         'social_links' => 'json',
         'price_per_person' => 'decimal:2',
+        'adult_price' => 'decimal:2',
+        'discount_adult_price' => 'decimal:2',
+        'child_price' => 'decimal:2',
+        'discount_child_price' => 'decimal:2',
         'full_price' => 'decimal:2',
         'discount_price' => 'decimal:2',
-        'child_price' => 'decimal:2',
         'infant_price' => 'decimal:2',
         'security_deposit' => 'decimal:2',
         'deposit_required' => 'boolean',
@@ -241,6 +247,16 @@ final class Service extends Model
     {
         return Attribute::make(
             get: function () {
+                // Use new pricing structure: discount_adult_price with fallbacks
+                if (!empty($this->discount_adult_price)) {
+                    return $this->discount_adult_price;
+                }
+
+                if (!empty($this->adult_price)) {
+                    return $this->adult_price;
+                }
+
+                // Fallback to old pricing structure for backward compatibility
                 if (!empty($this->discount_price)) {
                     return $this->discount_price;
                 }
@@ -261,11 +277,16 @@ final class Service extends Model
     {
         return Attribute::make(
             get: function () {
-                if (empty($this->full_price) || empty($this->discount_price)) {
-                    return 0;
+                // Use new pricing structure: adult_price and discount_adult_price
+                if (empty($this->adult_price) || empty($this->discount_adult_price)) {
+                    // Fallback to old pricing structure for backward compatibility
+                    if (empty($this->full_price) || empty($this->discount_price)) {
+                        return 0;
+                    }
+                    return round((($this->full_price - $this->discount_price) / $this->full_price) * 100);
                 }
 
-                return round((($this->full_price - $this->discount_price) / $this->full_price) * 100);
+                return round((($this->adult_price - $this->discount_adult_price) / $this->adult_price) * 100);
             }
         );
     }
@@ -352,11 +373,17 @@ final class Service extends Model
 
     public function getPriceDisplayAttribute()
     {
+        // Use new pricing structure: adult_price and discount_adult_price
+        if ($this->discount_adult_price) {
+            return '<del>' . currency($this->adult_price) . '</del> ' . currency($this->discount_adult_price);
+        }
+
+        // Fallback to old pricing structure for backward compatibility
         if ($this->discount_price) {
             return '<del>' . currency($this->full_price) . '</del> ' . currency($this->discount_price);
         }
 
-        return currency($this->full_price);
+        return currency($this->adult_price ?? $this->full_price);
     }
 
     public function wishlists()

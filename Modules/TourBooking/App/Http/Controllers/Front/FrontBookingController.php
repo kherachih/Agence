@@ -63,14 +63,10 @@ final class FrontBookingController extends Controller
             $totalExtraCharge += $extraCharge->price;
         }
 
-        $personPrice = $request->person * $service->price_per_person;
-        $childPrice = $request->children * $service->child_price;
+        $personPrice = $request->person * ($service->discount_adult_price ?? $service->adult_price ?? $service->price_per_person);
+        $childPrice = $request->children * ($service->discount_child_price ?? $service->child_price);
 
-        if ($service->discount_price) {
-            $total = $personPrice + $childPrice + $totalExtraCharge + $service->discount_price;
-        } else {
-            $total = $personPrice + $childPrice + $totalExtraCharge + $service->full_price;
-        }
+        $total = $personPrice + $childPrice + $totalExtraCharge;
 
         $data = [
             'personCount' => $request->person,
@@ -543,12 +539,18 @@ final class FrontBookingController extends Controller
         // Base price calculation
         $basePrice = 0;
 
-        if ($service->price_per_person) {
-            $basePrice = ($adults * $service->discounted_price)
-                + ($children * ($service->child_price ?? 0))
-                + ($infants * ($service->infant_price ?? 0));
+        // Use new pricing structure: adult_price and child_price with their discount variants
+        $adultPrice = $service->discount_adult_price ?? $service->adult_price ?? $service->price_per_person ?? 0;
+        $childPrice = $service->discount_child_price ?? $service->child_price ?? 0;
+        $infantPrice = $service->infant_price ?? 0;
+
+        if ($adultPrice > 0 || $childPrice > 0) {
+            $basePrice = ($adults * $adultPrice)
+                + ($children * $childPrice)
+                + ($infants * $infantPrice);
         } else {
-            $basePrice = $service->discounted_price;
+            // Fallback to old pricing structure for backward compatibility
+            $basePrice = $service->discounted_price ?? 0;
         }
 
         // Extra charges

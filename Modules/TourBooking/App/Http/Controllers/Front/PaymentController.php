@@ -566,12 +566,15 @@ class PaymentController extends Controller
         $order->check_out_time  = $payment_cart['check_out_time'];
         $order->adults  = $payment_cart['person_count'] ?? 1;
         $order->children  = $payment_cart['child_count'] ?? 0;
-        $order->service_price  = $service->discount_price ?? $service->full_price;
-        $order->adult_price  = $service->price_per_person;
-        $order->child_price  = $service->child_price;
+        $order->service_price  = $service->discount_adult_price ?? $service->adult_price ?? $service->discount_price ?? $service->full_price;
+        $order->adult_price  = $service->discount_adult_price ?? $service->adult_price ?? $service->price_per_person;
+        $order->child_price  = $service->discount_child_price ?? $service->child_price;
         $order->extra_charges  = $payment_cart['extra_charges'] ?? 0;
         $order->extra_services = $payment_cart['extra_services'] ?? [];
-        $order->discount_amount  = $service->discount_price ?? 0;
+        // Calculate discount amount based on the difference between regular and discount prices
+        $adultDiscount = ($service->adult_price ?? 0) - ($service->discount_adult_price ?? 0);
+        $childDiscount = ($service->child_price ?? 0) - ($service->discount_child_price ?? 0);
+        $order->discount_amount  = max(0, $adultDiscount + $childDiscount) ?? $service->discount_price ?? 0;
         $order->subtotal  = $calculate_price['sub_total_amount'] ?? 0;
         $order->total  = $calculate_price['total_amount'] ?? 0;
         $order->paid_amount  = $calculate_price['total_amount'] ?? 0;

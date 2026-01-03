@@ -261,8 +261,8 @@
                             <div class="tg-tour-details-video-feature-price mb-15">
                                 <p> <?php echo e(__('translate.From')); ?>
 
-                                    <span><?php echo e(currency($service?->price_per_person)); ?></span> /
-                                    <?php echo e(__('translate.Person')); ?>
+                                    <span><?php echo e(currency($service?->discount_adult_price ?? $service?->adult_price)); ?></span> /
+                                    <?php echo e(__('translate.Adult')); ?>
 
                                 </p>
                             </div>
@@ -669,8 +669,8 @@
 
                                     <div class="tg-tour-about-tickets mb-10">
                                         <div class="tg-tour-about-tickets-adult">
-                                            <span>Person</span>
-                                            <p class="mb-0">(18+ years) <span>$<?php echo e($service->price_per_person); ?></span>
+                                            <span>Adult</span>
+                                            <p class="mb-0">(18+ years) <span>$<?php echo e($service->discount_adult_price ?? $service->adult_price); ?></span>
                                             </p>
                                         </div>
                                         <div class="tg-tour-about-tickets-quantity">
@@ -682,11 +682,11 @@
                                             </select>
                                         </div>
                                     </div>
-
+ 
                                     <div class="tg-tour-about-tickets mb-10">
                                         <div class="tg-tour-about-tickets-adult">
                                             <span>Children </span>
-                                            <p class="mb-0">(13-17 years) <span>$<?php echo e($service->child_price); ?></span></p>
+                                            <p class="mb-0">(13-17 years) <span>$<?php echo e($service->discount_child_price ?? $service->child_price); ?></span></p>
                                         </div>
                                         <div class="tg-tour-about-tickets-quantity">
                                             <select name="children" class="item-first custom-select"
@@ -982,8 +982,8 @@
                     person: 1,
                     children: 0
                 },
-                pricePerPerson: <?php echo e($service->price_per_person ?? 0); ?>,
-                pricePerChild: <?php echo e($service->child_price ?? 0); ?>,
+                pricePerAdult: <?php echo e($service->discount_adult_price ?? $service->adult_price ?? 0); ?>,
+                pricePerChild: <?php echo e($service->discount_child_price ?? $service->child_price ?? 0); ?>,
                 extras: {
                     <?php $__currentLoopData = $service->extraCharges; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $extra): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                         charge_<?php echo e($key); ?>: false,
@@ -995,8 +995,8 @@
                     <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                 },
                 get totalCost() {
-                    let total = <?php echo e($service?->discount_price ?? $service?->full_price ?? 0); ?>;
-                    total += this.tickets.person * this.pricePerPerson;
+                    let total = 0;
+                    total += this.tickets.person * this.pricePerAdult;
                     total += this.tickets.children * this.pricePerChild;
                     for (let key in this.extras) {
                         if (this.extras[key]) {

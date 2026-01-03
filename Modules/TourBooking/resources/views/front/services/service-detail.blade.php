@@ -256,8 +256,8 @@
                         <div class="col-lg-4">
                             <div class="tg-tour-details-video-feature-price mb-15">
                                 <p> {{ __('translate.From') }}
-                                    <span>{{ currency($service?->price_per_person) }}</span> /
-                                    {{ __('translate.Person') }}
+                                    <span>{{ currency($service?->discount_adult_price ?? $service?->adult_price) }}</span> /
+                                    {{ __('translate.Adult') }}
                                 </p>
                             </div>
                         </div>
@@ -638,8 +638,8 @@
 
                                     <div class="tg-tour-about-tickets mb-10">
                                         <div class="tg-tour-about-tickets-adult">
-                                            <span>Person</span>
-                                            <p class="mb-0">(18+ years) <span>${{ $service->price_per_person }}</span>
+                                            <span>Adult</span>
+                                            <p class="mb-0">(18+ years) <span>${{ $service->discount_adult_price ?? $service->adult_price }}</span>
                                             </p>
                                         </div>
                                         <div class="tg-tour-about-tickets-quantity">
@@ -651,11 +651,11 @@
                                             </select>
                                         </div>
                                     </div>
-
+ 
                                     <div class="tg-tour-about-tickets mb-10">
                                         <div class="tg-tour-about-tickets-adult">
                                             <span>Children </span>
-                                            <p class="mb-0">(13-17 years) <span>${{ $service->child_price }}</span></p>
+                                            <p class="mb-0">(13-17 years) <span>${{ $service->discount_child_price ?? $service->child_price }}</span></p>
                                         </div>
                                         <div class="tg-tour-about-tickets-quantity">
                                             <select name="children" class="item-first custom-select"
@@ -950,8 +950,8 @@
                     person: 1,
                     children: 0
                 },
-                pricePerPerson: {{ $service->price_per_person ?? 0 }},
-                pricePerChild: {{ $service->child_price ?? 0 }},
+                pricePerAdult: {{ $service->discount_adult_price ?? $service->adult_price ?? 0 }},
+                pricePerChild: {{ $service->discount_child_price ?? $service->child_price ?? 0 }},
                 extras: {
                     @foreach ($service->extraCharges as $key => $extra)
                         charge_{{ $key }}: false,
@@ -963,8 +963,8 @@
                     @endforeach
                 },
                 get totalCost() {
-                    let total = {{ $service?->discount_price ?? $service?->full_price ?? 0 }};
-                    total += this.tickets.person * this.pricePerPerson;
+                    let total = 0;
+                    total += this.tickets.person * this.pricePerAdult;
                     total += this.tickets.children * this.pricePerChild;
                     for (let key in this.extras) {
                         if (this.extras[key]) {

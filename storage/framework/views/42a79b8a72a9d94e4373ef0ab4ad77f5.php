@@ -424,7 +424,7 @@ unset($__errorArgs, $__bag); ?>
                                                     <div class="crancy__item-form--group mg-top-form-20">
                                                         <label
                                                             class="crancy__item-label"><?php echo e(__('translate.Short Description')); ?></label>
-                                                        <textarea class="crancy__item-input summernote" name="short_description" rows="3"><?php echo e(old('short_description', $translation->short_description ?? $service->short_description)); ?></textarea>
+                                                        <textarea class="crancy__item-input summernote" name="short_description" rows="8"><?php echo e(old('short_description', $translation->short_description ?? $service->short_description)); ?></textarea>
                                                         <?php $__errorArgs = ['short_description'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
@@ -442,7 +442,7 @@ unset($__errorArgs, $__bag); ?>
                                                     <div class="crancy__item-form--group mg-top-form-20">
                                                         <label
                                                             class="crancy__item-label"><?php echo e(__('translate.Description')); ?></label>
-                                                        <textarea class="crancy__item-input summernote" name="description" rows="6"><?php echo e(old('description', $translation->description ?? $service->description)); ?></textarea>
+                                                        <textarea class="crancy__item-input summernote" name="description" rows="15"><?php echo e(old('description', $translation->description ?? $service->description)); ?></textarea>
                                                         <?php $__errorArgs = ['description'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
@@ -482,19 +482,19 @@ unset($__errorArgs, $__bag); ?>
                                             </h4>
 
                                             <div class="row mg-top-30">
-                                                <div class="col-lg-4 col-md-6 col-12">
+                                                <div class="col-lg-6 col-md-6 col-12">
                                                     <div class="crancy__item-form--group mg-top-form-20">
                                                         <label
-                                                            class="crancy__item-label"><?php echo e(__('translate.Price Per Person')); ?></label>
+                                                            class="crancy__item-label"><?php echo e(__('translate.Adult Price')); ?></label>
                                                         <div class="crancy__item-form--currency">
                                                             <input class="crancy__item-input" type="number"
-                                                                step="0.01" name="price_per_person"
-                                                                value="<?php echo e(old('price_per_person', $service->price_per_person)); ?>">
+                                                                step="0.01" name="adult_price"
+                                                                value="<?php echo e(old('adult_price', $service->adult_price)); ?>">
                                                             <div class="crancy__currency-icon">
                                                                 <span><?php echo e(config('settings.currency_icon', '$')); ?></span>
                                                             </div>
                                                         </div>
-                                                        <?php $__errorArgs = ['price_per_person'];
+                                                        <?php $__errorArgs = ['adult_price'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
@@ -507,19 +507,69 @@ unset($__errorArgs, $__bag); ?>
                                                     </div>
                                                 </div>
 
-                                                <div class="col-lg-4 col-md-6 col-12">
+                                                <div class="col-lg-6 col-md-6 col-12">
                                                     <div class="crancy__item-form--group mg-top-form-20">
                                                         <label
-                                                            class="crancy__item-label"><?php echo e(__('translate.Discount Price')); ?></label>
+                                                            class="crancy__item-label"><?php echo e(__('translate.Discount Adult Price')); ?></label>
                                                         <div class="crancy__item-form--currency">
                                                             <input class="crancy__item-input" type="number"
-                                                                step="0.01" name="discount_price"
-                                                                value="<?php echo e(old('discount_price', $service->discount_price)); ?>">
+                                                                step="0.01" name="discount_adult_price"
+                                                                value="<?php echo e(old('discount_adult_price', $service->discount_adult_price)); ?>">
                                                             <div class="crancy__currency-icon">
                                                                 <span><?php echo e(config('settings.currency_icon', '$')); ?></span>
                                                             </div>
                                                         </div>
-                                                        <?php $__errorArgs = ['discount_price'];
+                                                        <?php $__errorArgs = ['discount_adult_price'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                                            <span class="text-danger"><?php echo e($message); ?></span>
+                                                        <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-lg-6 col-md-6 col-12">
+                                                    <div class="crancy__item-form--group mg-top-form-20">
+                                                        <label
+                                                            class="crancy__item-label"><?php echo e(__('translate.Child Price')); ?></label>
+                                                        <div class="crancy__item-form--currency">
+                                                            <input class="crancy__item-input" type="number"
+                                                                step="0.01" name="child_price"
+                                                                value="<?php echo e(old('child_price', $service->child_price)); ?>">
+                                                            <div class="crancy__currency-icon">
+                                                                <span><?php echo e(config('settings.currency_icon', '$')); ?></span>
+                                                            </div>
+                                                        </div>
+                                                        <?php $__errorArgs = ['child_price'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                                            <span class="text-danger"><?php echo e($message); ?></span>
+                                                        <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-lg-6 col-md-6 col-12">
+                                                    <div class="crancy__item-form--group mg-top-form-20">
+                                                        <label
+                                                            class="crancy__item-label"><?php echo e(__('translate.Discount Child Price')); ?></label>
+                                                        <div class="crancy__item-form--currency">
+                                                            <input class="crancy__item-input" type="number"
+                                                                step="0.01" name="discount_child_price"
+                                                                value="<?php echo e(old('discount_child_price', $service->discount_child_price)); ?>">
+                                                            <div class="crancy__currency-icon">
+                                                                <span><?php echo e(config('settings.currency_icon', '$')); ?></span>
+                                                            </div>
+                                                        </div>
+                                                        <?php $__errorArgs = ['discount_child_price'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }

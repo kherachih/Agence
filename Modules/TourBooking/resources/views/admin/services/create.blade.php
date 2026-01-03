@@ -248,7 +248,7 @@
                                                     <div class="crancy__item-form--group mg-top-form-20">
                                                         <label
                                                             class="crancy__item-label">{{ __('translate.Short Description') }}</label>
-                                                        <textarea class="crancy__item-input summernote" name="short_description" rows="3">{{ old('short_description') }}</textarea>
+                                                        <textarea class="crancy__item-input summernote" name="short_description" rows="8">{{ old('short_description') }}</textarea>
                                                         @error('short_description')
                                                             <span class="text-danger">{{ $message }}</span>
                                                         @enderror
@@ -259,7 +259,7 @@
                                                     <div class="crancy__item-form--group mg-top-form-20">
                                                         <label
                                                             class="crancy__item-label">{{ __('translate.Description') }}</label>
-                                                        <textarea class="crancy__item-input summernote" name="description" rows="6">{{ old('description') }}</textarea>
+                                                        <textarea class="crancy__item-input summernote" name="description" rows="15">{{ old('description') }}</textarea>
                                                         @error('description')
                                                             <span class="text-danger">{{ $message }}</span>
                                                         @enderror
@@ -291,61 +291,43 @@
                                             </h4>
 
                                             <div class="row mg-top-30">
-                                                <div class="col-lg-4 col-md-6 col-12">
+                                                <div class="col-lg-6 col-md-6 col-12">
                                                     <div class="crancy__item-form--group mg-top-form-20">
                                                         <label
-                                                            class="crancy__item-label">{{ __('translate.Price Per Person') }}</label>
+                                                            class="crancy__item-label">{{ __('translate.Adult Price') }}</label>
                                                         <div class="crancy__item-form--currency">
                                                             <input class="crancy__item-input" type="number"
-                                                                step="0.01" name="price_per_person"
-                                                                value="{{ old('price_per_person') }}">
+                                                                step="0.01" name="adult_price"
+                                                                value="{{ old('adult_price') }}">
                                                             <div class="crancy__currency-icon">
                                                                 <span>{{ config('settings.currency_icon', '$') }}</span>
                                                             </div>
                                                         </div>
-                                                        @error('price_per_person')
+                                                        @error('adult_price')
                                                             <span class="text-danger">{{ $message }}</span>
                                                         @enderror
                                                     </div>
                                                 </div>
 
-                                                <div class="col-lg-4 col-md-6 col-12">
+                                                <div class="col-lg-6 col-md-6 col-12">
                                                     <div class="crancy__item-form--group mg-top-form-20">
                                                         <label
-                                                            class="crancy__item-label">{{ __('translate.Full Price') }}</label>
+                                                            class="crancy__item-label">{{ __('translate.Discount Adult Price') }}</label>
                                                         <div class="crancy__item-form--currency">
                                                             <input class="crancy__item-input" type="number"
-                                                                step="0.01" name="full_price"
-                                                                value="{{ old('full_price') }}">
+                                                                step="0.01" name="discount_adult_price"
+                                                                value="{{ old('discount_adult_price') }}">
                                                             <div class="crancy__currency-icon">
                                                                 <span>{{ config('settings.currency_icon', '$') }}</span>
                                                             </div>
                                                         </div>
-                                                        @error('full_price')
+                                                        @error('discount_adult_price')
                                                             <span class="text-danger">{{ $message }}</span>
                                                         @enderror
                                                     </div>
                                                 </div>
 
-                                                <div class="col-lg-4 col-md-6 col-12">
-                                                    <div class="crancy__item-form--group mg-top-form-20">
-                                                        <label
-                                                            class="crancy__item-label">{{ __('translate.Discount Price') }}</label>
-                                                        <div class="crancy__item-form--currency">
-                                                            <input class="crancy__item-input" type="number"
-                                                                step="0.01" name="discount_price"
-                                                                value="{{ old('discount_price') }}">
-                                                            <div class="crancy__currency-icon">
-                                                                <span>{{ config('settings.currency_icon', '$') }}</span>
-                                                            </div>
-                                                        </div>
-                                                        @error('discount_price')
-                                                            <span class="text-danger">{{ $message }}</span>
-                                                        @enderror
-                                                    </div>
-                                                </div>
-
-                                                <div class="col-lg-4 col-md-6 col-12">
+                                                <div class="col-lg-6 col-md-6 col-12">
                                                     <div class="crancy__item-form--group mg-top-form-20">
                                                         <label
                                                             class="crancy__item-label">{{ __('translate.Child Price') }}</label>
@@ -358,6 +340,24 @@
                                                             </div>
                                                         </div>
                                                         @error('child_price')
+                                                            <span class="text-danger">{{ $message }}</span>
+                                                        @enderror
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-lg-6 col-md-6 col-12">
+                                                    <div class="crancy__item-form--group mg-top-form-20">
+                                                        <label
+                                                            class="crancy__item-label">{{ __('translate.Discount Child Price') }}</label>
+                                                        <div class="crancy__item-form--currency">
+                                                            <input class="crancy__item-input" type="number"
+                                                                step="0.01" name="discount_child_price"
+                                                                value="{{ old('discount_child_price') }}">
+                                                            <div class="crancy__currency-icon">
+                                                                <span>{{ config('settings.currency_icon', '$') }}</span>
+                                                            </div>
+                                                        </div>
+                                                        @error('discount_child_price')
                                                             <span class="text-danger">{{ $message }}</span>
                                                         @enderror
                                                     </div>
