@@ -85,10 +85,10 @@
                                             </ul>
                                         </div>
                                     </div>
-                                    <div class="tg-booking-form-parent-inner mr-15 mb-10">
-                                        <span class="tg-booking-form-title">{{ __('translate.Check in:') }}</span>
-                                        <div class="tg-booking-add-input-date p-relative">
-                                            <span>
+                                    <div class="tg-booking-form-parent-inner tg-hero-quantity p-relative mr-15 mb-10">
+                                        <span class="tg-booking-form-title">{{ __('translate.Month:') }}</span>
+                                        <div class="tg-booking-add-input-field tg-booking-quantity-toggle month-selector-wrapper">
+                                            <span class="location">
                                                 <svg width="14" height="14" viewBox="0 0 14 14" fill="none"
                                                     xmlns="http://www.w3.org/2000/svg">
                                                     <path
@@ -97,40 +97,75 @@
                                                         stroke-linecap="round" stroke-linejoin="round" />
                                                 </svg>
                                             </span>
-                                            <input x-model="check_in" class="input timepicker" name="datetime-local"
-                                                type="text" placeholder="12.00">
+
+                                            <span x-show="selected_month" x-text="selected_month"
+                                                class="tg-booking-title-value">
+                                                {{ __('translate.Select Month') }}
+                                            </span>
+                                            <span x-show="!selected_month" class="tg-booking-title-value">
+                                                {{ __('translate.Select Month') }}
+                                            </span>
+
                                             <span class="angle-down">
                                                 <svg width="14" height="8" viewBox="0 0 14 8" fill="none"
                                                     xmlns="http://www.w3.org/2000/svg">
-                                                    <path d="M1.6665 1L6.99984 6.33333L12.3332 1" stroke="currentColor"
+                                                    <path d="M1.6665 1L6.99984 6.33333L12.3332 1" stroke="#353844"
                                                         stroke-width="2" stroke-linecap="round"
                                                         stroke-linejoin="round" />
                                                 </svg>
                                             </span>
                                         </div>
-                                    </div>
-                                    <div class="tg-booking-form-parent-inner mr-15 mb-10">
-                                        <span class="tg-booking-form-title">{{ __('translate.Check in:') }}</span>
-                                        <div class="tg-booking-add-input-date p-relative">
-                                            <span>
-                                                <svg width="14" height="14" viewBox="0 0 14 14" fill="none"
-                                                    xmlns="http://www.w3.org/2000/svg">
-                                                    <path
-                                                        d="M9.76501 0.777771V3.26668M4.23413 0.777771V3.26668M0.777344 5.75548H13.2218M2.16006 2.02211H11.8391C12.6027 2.02211 13.2218 2.57927 13.2218 3.26656V11.9778C13.2218 12.6651 12.6027 13.2222 11.8391 13.2222H2.16006C1.39641 13.2222 0.777344 12.6651 0.777344 11.9778V3.26656C0.777344 2.57927 1.39641 2.02211 2.16006 2.02211Z"
-                                                        stroke="currentColor" stroke-width="0.977778"
-                                                        stroke-linecap="round" stroke-linejoin="round" />
-                                                </svg>
-                                            </span>
-                                            <input x-model="check_out" class="input timepicker" name="datetime-local"
-                                                type="text" placeholder="12.10">
-                                            <span class="angle-down">
-                                                <svg width="14" height="8" viewBox="0 0 14 8" fill="none"
-                                                    xmlns="http://www.w3.org/2000/svg">
-                                                    <path d="M1.6665 1L6.99984 6.33333L12.3332 1" stroke="currentColor"
-                                                        stroke-width="2" stroke-linecap="round"
-                                                        stroke-linejoin="round" />
-                                                </svg>
-                                            </span>
+                                        <div class="tg-booking-form-location-list tg-quantity tg-booking-quantity-active month-dropdown">
+                                            <ul class="month-list">
+                                                <li @click="selectMonth('January', '01')">
+                                                    <i class="fas fa-calendar-alt"></i>
+                                                    <span>January</span>
+                                                </li>
+                                                <li @click="selectMonth('February', '02')">
+                                                    <i class="fas fa-calendar-alt"></i>
+                                                    <span>February</span>
+                                                </li>
+                                                <li @click="selectMonth('March', '03')">
+                                                    <i class="fas fa-calendar-alt"></i>
+                                                    <span>March</span>
+                                                </li>
+                                                <li @click="selectMonth('April', '04')">
+                                                    <i class="fas fa-calendar-alt"></i>
+                                                    <span>April</span>
+                                                </li>
+                                                <li @click="selectMonth('May', '05')">
+                                                    <i class="fas fa-calendar-alt"></i>
+                                                    <span>May</span>
+                                                </li>
+                                                <li @click="selectMonth('June', '06')">
+                                                    <i class="fas fa-calendar-alt"></i>
+                                                    <span>June</span>
+                                                </li>
+                                                <li @click="selectMonth('July', '07')">
+                                                    <i class="fas fa-calendar-alt"></i>
+                                                    <span>July</span>
+                                                </li>
+                                                <li @click="selectMonth('August', '08')">
+                                                    <i class="fas fa-calendar-alt"></i>
+                                                    <span>August</span>
+                                                </li>
+                                                <li @click="selectMonth('September', '09')">
+                                                    <i class="fas fa-calendar-alt"></i>
+                                                    <span>September</span>
+                                                </li>
+                                                <li @click="selectMonth('October', '10')">
+                                                    <i class="fas fa-calendar-alt"></i>
+                                                    <span>October</span>
+                                                </li>
+                                                <li @click="selectMonth('November', '11')">
+                                                    <i class="fas fa-calendar-alt"></i>
+                                                    <span>November</span>
+                                                </li>
+                                                <li @click="selectMonth('December', '12')">
+                                                    <i class="fas fa-calendar-alt"></i>
+                                                    <span>December</span>
+                                                </li>
+                                            </ul>
                                         </div>
                                     </div>
                                     <div class="tg-booking-form-parent-inner tg-hero-quantity p-relative mr-15 mb-10">
@@ -299,6 +334,72 @@
     </div>
     <!-- tg-hero-area-end -->
 
+    @push('styles')
+        <style>
+            /* Month Selector Styles */
+            .month-selector-wrapper {
+                cursor: pointer;
+            }
+
+            .month-dropdown {
+                max-height: 300px;
+                overflow-y: auto;
+            }
+
+            .month-dropdown .month-list {
+                list-style: none;
+                padding: 0;
+                margin: 0;
+            }
+
+            .month-dropdown .month-list li {
+                padding: 12px 15px;
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                cursor: pointer;
+                transition: all 0.3s ease;
+                border-radius: 8px;
+                margin-bottom: 5px;
+            }
+
+            .month-dropdown .month-list li:hover {
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                color: #ffffff;
+                transform: translateX(5px);
+            }
+
+            .month-dropdown .month-list li i {
+                font-size: 14px;
+                width: 20px;
+                text-align: center;
+            }
+
+            .month-dropdown .month-list li span {
+                font-weight: 500;
+            }
+
+            /* Custom scrollbar for month dropdown */
+            .month-dropdown::-webkit-scrollbar {
+                width: 6px;
+            }
+
+            .month-dropdown::-webkit-scrollbar-track {
+                background: #f1f1f1;
+                border-radius: 3px;
+            }
+
+            .month-dropdown::-webkit-scrollbar-thumb {
+                background: #667eea;
+                border-radius: 3px;
+            }
+
+            .month-dropdown::-webkit-scrollbar-thumb:hover {
+                background: #764ba2;
+            }
+        </style>
+    @endpush
+
     @push('js_section')
         <script>
             (function($) {
@@ -323,8 +424,8 @@
                 return {
                     destination: '',
                     destination_id: '',
-                    check_in: '',
-                    check_out: '',
+                    selected_month: '',
+                    selected_month_value: '',
                     rooms: '',
                     adults: '',
                     children: '',
@@ -332,6 +433,11 @@
                     selectDestination(destinationId, destinationName) {
                         this.destination_id = destinationId;
                         this.destination = destinationName;
+                    },
+
+                    selectMonth(monthName, monthValue) {
+                        this.selected_month = monthName;
+                        this.selected_month_value = monthValue;
                     },
 
                     incrementRooms() {
@@ -363,8 +469,7 @@
                         const params = new URLSearchParams({
                             destination: this.destination,
                             destination_id: this.destination_id,
-                            check_in: this.check_in,
-                            check_out: this.check_out,
+                            month: this.selected_month_value,
                             rooms: this.rooms,
                             adults: this.adults,
                             children: this.children

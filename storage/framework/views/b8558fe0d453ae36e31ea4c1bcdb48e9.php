@@ -179,6 +179,7 @@
                 </a>
             </li>
 
+            <?php if(false): ?>
             <h4 class="admin-menu__title pt-2"><?php echo e(__('translate.Product & Review')); ?></h4>
             <li
                 class="<?php echo e(Route::is('admin.orders') || Route::is('admin.order') || Route::is('admin.active-orders') || Route::is('admin.reject-orders') || Route::is('admin.delivered-orders') || Route::is('admin.complete-orders') || Route::is('admin.pending-payment-orders') ? 'active' : ''); ?>">
@@ -340,6 +341,7 @@
                     </span>
                 </a>
             </li>
+            <?php endif; ?>
 
             <h4 class="admin-menu__title pt-2"><?php echo e(__('translate.Team & Users')); ?></h4>
 
