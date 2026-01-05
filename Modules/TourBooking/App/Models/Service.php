@@ -223,6 +223,22 @@ final class Service extends Model
     }
 
     /**
+     * Get room types for this service.
+     */
+    public function roomTypes(): HasMany
+    {
+        return $this->hasMany(RoomType::class);
+    }
+
+    /**
+     * Get active room types for this service.
+     */
+    public function activeRoomTypes(): HasMany
+    {
+        return $this->roomTypes()->where('is_active', true);
+    }
+
+    /**
      * Get translation for current locale.
      */
     public function translation(): HasOne

@@ -27,6 +27,7 @@ use Illuminate\Http\JsonResponse;
 use Modules\TourBooking\App\Models\Amenity;
 use Modules\TourBooking\App\Models\Destination;
 use Modules\TourBooking\App\Models\Review;
+use Modules\TourBooking\App\Models\RoomType;
 
 final class ServiceController extends Controller
 {
@@ -110,6 +111,22 @@ final class ServiceController extends Controller
         // Save service
         $service = $this->serviceRepository->create($data);
 
+        // Save room types
+        if ($request->has('room_types') && is_array($request->room_types)) {
+            foreach ($request->room_types as $roomTypeData) {
+                if (!empty($roomTypeData['type'])) {
+                    RoomType::create([
+                        'service_id' => $service->id,
+                        'type' => $roomTypeData['type'],
+                        'price_supplement' => $roomTypeData['price_supplement'] ?? 0,
+                        'capacity' => $roomTypeData['capacity'] ?? 1,
+                        'description' => $roomTypeData['description'] ?? null,
+                        'is_active' => isset($roomTypeData['is_active']) ? true : false,
+                    ]);
+                }
+            }
+        }
+
         // Save translation for current language
         $this->serviceRepository->saveTranslation(
             $service,
@@ -162,6 +179,7 @@ final class ServiceController extends Controller
         $service->load([
             'media',
             'serviceType',
+            'roomTypes',
             'extraCharges',
             'availabilities',
             'itineraries' => function ($query) {
@@ -268,6 +286,29 @@ final class ServiceController extends Controller
 
             // Update service
             $this->serviceRepository->update($service, $data);
+    
+            // Handle room types
+            if ($request->has('room_types') && is_array($request->room_types)) {
+                // Get existing room types
+                $existingRoomTypes = $service->roomTypes()->pluck('id', 'type')->toArray();
+                
+                // Delete all existing room types for this service
+                $service->roomTypes()->delete();
+    
+                // Create new room types
+                foreach ($request->room_types as $roomTypeData) {
+                    if (!empty($roomTypeData['type'])) {
+                        RoomType::create([
+                            'service_id' => $service->id,
+                            'type' => $roomTypeData['type'],
+                            'price_supplement' => $roomTypeData['price_supplement'] ?? 0,
+                            'capacity' => $roomTypeData['capacity'] ?? 1,
+                            'description' => $roomTypeData['description'] ?? null,
+                            'is_active' => isset($roomTypeData['is_active']) ? true : false,
+                        ]);
+                    }
+                }
+            }
         }
 
         // Update or create translation

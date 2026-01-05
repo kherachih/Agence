@@ -24,6 +24,7 @@ final class Booking extends Model
         'booking_code',
         'service_id',
         'user_id',
+        'room_type_id',
         'check_in_date',
         'check_out_date',
         'check_in_time',
@@ -101,6 +102,14 @@ final class Booking extends Model
     public function service(): BelongsTo
     {
         return $this->belongsTo(Service::class);
+    }
+
+    /**
+     * Get the room type for this booking.
+     */
+    public function roomType(): BelongsTo
+    {
+        return $this->belongsTo(RoomType::class);
     }
 
     /**

@@ -17,6 +17,7 @@ use Modules\TourBooking\App\Models\Booking;
 use Modules\TourBooking\App\Models\Coupon;
 use Modules\TourBooking\App\Models\ExtraCharge;
 use Modules\TourBooking\App\Models\Review;
+use Modules\TourBooking\App\Models\RoomType;
 use Modules\TourBooking\App\Models\Service;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Session;
@@ -63,10 +64,19 @@ final class FrontBookingController extends Controller
             $totalExtraCharge += $extraCharge->price;
         }
 
+        // Get room type supplement if selected
+        $roomTypeSupplement = 0;
+        if ($request->has('room_type_id') && $request->room_type_id) {
+            $roomType = RoomType::find($request->room_type_id);
+            if ($roomType && $roomType->service_id == $service->id) {
+                $roomTypeSupplement = $roomType->price_supplement;
+            }
+        }
+
         $personPrice = $request->person * ($service->discount_adult_price ?? $service->adult_price ?? $service->price_per_person);
         $childPrice = $request->children * ($service->discount_child_price ?? $service->child_price);
 
-        $total = $personPrice + $childPrice + $totalExtraCharge;
+        $total = $personPrice + $childPrice + $totalExtraCharge + $roomTypeSupplement;
 
         $data = [
             'personCount' => $request->person,
@@ -75,6 +85,7 @@ final class FrontBookingController extends Controller
             'service' => $service,
             'personPrice' => $personPrice,
             'childPrice' => $childPrice,
+            'roomTypeSupplement' => $roomTypeSupplement,
             'total' => $total,
             'availabilityPeriod' => $availabilityPeriod,
         ];
@@ -94,6 +105,7 @@ final class FrontBookingController extends Controller
             'extra_services' => $request->extras ?? [],
             'availability_id' => $request->availability_id ?? null,
             'availability_period_id' => $request->availability_period_id ?? null,
+            'room_type_id' => $request->room_type_id ?? null,
         ]);
 
         return view('tourbooking::front.bookings.checkout-view', [
@@ -122,6 +134,7 @@ final class FrontBookingController extends Controller
             'adults' => 'required|integer|min:1',
             'children' => 'nullable|integer|min:0',
             'infants' => 'nullable|integer|min:0',
+            'room_type_id' => 'nullable|exists:room_types,id',
             'extra_services' => 'nullable|array',
             'coupon_code' => 'nullable|string',
             'customer_name' => 'required|string|max:255',
@@ -135,6 +148,15 @@ final class FrontBookingController extends Controller
         // Verify availability
         $this->verifyServiceAvailability($service, $validated['check_in_date'], $validated['check_out_date'] ?? null);
 
+        // Get room type supplement if selected
+        $roomTypeSupplement = 0;
+        if (!empty($validated['room_type_id'])) {
+            $roomType = RoomType::find($validated['room_type_id']);
+            if ($roomType && $roomType->service_id == $service->id) {
+                $roomTypeSupplement = $roomType->price_supplement;
+            }
+        }
+
         // Calculate prices
         $priceDetails = $this->calculateBookingPrice(
             $service,
@@ -142,7 +164,8 @@ final class FrontBookingController extends Controller
             (int) ($validated['children'] ?? 0),
             (int) ($validated['infants'] ?? 0),
             $validated['extra_services'] ?? [],
-            $validated['coupon_code'] ?? null
+            $validated['coupon_code'] ?? null,
+            $roomTypeSupplement
         );
 
         // Create booking data
@@ -154,6 +177,7 @@ final class FrontBookingController extends Controller
             'adults' => $validated['adults'],
             'children' => $validated['children'] ?? 0,
             'infants' => $validated['infants'] ?? 0,
+            'room_type_id' => $validated['room_type_id'] ?? null,
             'service_price' => $service->discounted_price,
             'child_price' => $service->child_price,
             'infant_price' => $service->infant_price,
@@ -534,7 +558,8 @@ final class FrontBookingController extends Controller
         int $children = 0,
         int $infants = 0,
         array $extraServices = [],
-        ?string $couponCode = null
+        ?string $couponCode = null,
+        float $roomTypeSupplement = 0
     ): array {
         // Base price calculation
         $basePrice = 0;
@@ -568,7 +593,7 @@ final class FrontBookingController extends Controller
             }
         }
 
-        $subtotal = $basePrice + $extraChargesAmount;
+        $subtotal = $basePrice + $extraChargesAmount + $roomTypeSupplement;
 
         // Apply coupon if provided
         $discountAmount = 0;

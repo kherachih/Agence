@@ -701,6 +701,7 @@
 
                                 <div class="tg-tour-about-border-doted mb-15"></div>
 
+
                                 <?php if($service->extraCharges->count() > 0): ?>
                                     <div class="tg-tour-about-extra mb-10">
                                         <span class="tg-tour-about-sidebar-title mb-10 d-inline-block">Add Extra:</span>

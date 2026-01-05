@@ -3,7 +3,7 @@
         <div class="tg-header__area tg-header-tu-menu tg-header-lg-space z-index-999 tg-transparent" id="header-sticky">
             <div class="container-fluid">
                 <div class="row align-items-center">
-                    <div class="col-xxl-8 col-xl-7 col-lg-7 col-6">
+                    <div class="col-xxl-7 col-xl-6 col-lg-6 col-6">
                         <div class="tgmenu__wrap d-flex align-items-center">
                             <div class="logo mr-25">
                                 <a class="logo-1" href="{{ route('home') }}"><img src="{{ asset($general_setting->logo) }}"
@@ -23,7 +23,7 @@
                             </nav>
                         </div>
                     </div>
-                    <div class="col-xxl-4 col-xl-5 col-lg-5 col-6">
+                    <div class="col-xxl-5 col-xl-6 col-lg-6 col-6">
                         <div class="tg-menu-right-action d-flex align-items-center justify-content-end">
                             <div class="tg-header-contact-info d-flex align-items-center">
                                 <span class="tg-header-contact-icon mr-8 d-none d-xl-block">
@@ -40,23 +40,108 @@
                                 </div>
                             </div>
                             <div class="tg-header-currency ml-15 d-none d-xl-block">
-                                <select class="currency_code" name="currency_code" style="padding: 6px 10px; border-radius: 4px; border: 1px solid #e0e0e0; background: #fff; font-size: 13px; cursor: pointer; min-width: 90px;">
-                                    @foreach($currency_list as $currency)
-                                        <option value="{{ $currency->currency_code }}" {{ session('currency_code') == $currency->currency_code ? 'selected' : '' }}>
-                                            {{ $currency->currency_name }} ({{ $currency->currency_icon }})
-                                        </option>
-                                    @endforeach
-                                </select>
+                                <div class="custom-select-wrapper">
+                                    <select class="currency_code modern-select" name="currency_code">
+                                        @foreach($currency_list as $currency)
+                                            <option value="{{ $currency->currency_code }}" {{ session('currency_code') == $currency->currency_code ? 'selected' : '' }}>
+                                                {{ $currency->currency_name }} ({{ $currency->currency_icon }})
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
                             </div>
                             <div class="tg-header-language ml-15 d-none d-xl-block">
-                                <select class="language_code" name="language_code" style="padding: 6px 10px; border-radius: 4px; border: 1px solid #e0e0e0; background: #fff; font-size: 13px; cursor: pointer; min-width: 90px;">
-                                    @foreach($language_list as $lang)
-                                        <option value="{{ $lang->lang_code }}" {{ session('front_lang') == $lang->lang_code ? 'selected' : '' }}>
-                                            {{ $lang->lang_name }}
-                                        </option>
-                                    @endforeach
-                                </select>
+                                <div class="custom-select-wrapper">
+                                    <select class="language_code modern-select" name="language_code">
+                                        @foreach($language_list as $lang)
+                                            <option value="{{ $lang->lang_code }}" {{ session('front_lang') == $lang->lang_code ? 'selected' : '' }}>
+                                                {{ $lang->lang_name }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
                             </div>
+                            <style>
+                                .custom-select-wrapper {
+                                    position: relative;
+                                    display: inline-block;
+                                }
+                                
+                                .modern-select {
+                                    appearance: none;
+                                    -webkit-appearance: none;
+                                    -moz-appearance: none;
+                                    padding: 8px 32px 8px 12px;
+                                    border: 2px solid #e8ecf4;
+                                    border-radius: 10px;
+                                    background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+                                    font-size: 13px;
+                                    font-weight: 500;
+                                    color: #2d3436;
+                                    cursor: pointer;
+                                    min-width: 100px;
+                                    max-width: 120px;
+                                    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+                                    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+                                    font-family: inherit;
+                                }
+                                
+                                .modern-select:hover {
+                                    border-color: #4a90e2;
+                                    box-shadow: 0 4px 12px rgba(74, 144, 226, 0.15);
+                                    transform: translateY(-1px);
+                                }
+                                
+                                .modern-select:focus {
+                                    outline: none;
+                                    border-color: #4a90e2;
+                                    box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.1), 0 4px 12px rgba(74, 144, 226, 0.15);
+                                }
+                                
+                                .custom-select-wrapper::after {
+                                    content: '';
+                                    position: absolute;
+                                    top: 50%;
+                                    right: 14px;
+                                    transform: translateY(-50%);
+                                    width: 0;
+                                    height: 0;
+                                    border-left: 5px solid transparent;
+                                    border-right: 5px solid transparent;
+                                    border-top: 6px solid #4a90e2;
+                                    pointer-events: none;
+                                    transition: transform 0.3s ease;
+                                }
+                                
+                                .custom-select-wrapper:hover::after {
+                                    transform: translateY(-50%) rotate(180deg);
+                                }
+                                
+                                .modern-select option {
+                                    padding: 12px 16px;
+                                    background: #ffffff;
+                                    color: #2d3436;
+                                    font-weight: 500;
+                                }
+                                
+                                .modern-select option:hover {
+                                    background: #f0f7ff;
+                                }
+                                
+                                .modern-select option:checked {
+                                    background: linear-gradient(135deg, #4a90e2 0%, #357abd 100%);
+                                    color: #ffffff;
+                                }
+                                
+                                @media (max-width: 1399px) {
+                                    .modern-select {
+                                        padding: 7px 28px 7px 10px;
+                                        font-size: 12px;
+                                        min-width: 90px;
+                                        max-width: 105px;
+                                    }
+                                }
+                            </style>
                             <div class="tg-header-btn ml-15 d-none d-sm-block">
                                 @guest('web')
                                 <a class="tg-btn-header" href="{{ route('user.login') }}">

@@ -72,6 +72,29 @@
                                         </div>
                                         <div class="tg-tour-about-border-doted mb-15"></div>
                                     @endif
+                                    
+                                    @if($service->activeRoomTypes && $service->activeRoomTypes->count() > 0)
+                                        <div class="tg-tour-about-tickets-wrap mb-15">
+                                            <div class="tg-tour-about-tickets mb-10">
+                                                <div class="tg-tour-about-tickets-adult">
+                                                    <div class="tg-tour-about-sidebar-title">Room Type</div>
+                                                </div>
+                                                <div class="tg-tour-about-tickets-quantity">
+                                                    <select name="room_type_id" id="room_type_select" class="custom-select">
+                                                        @foreach($service->activeRoomTypes as $roomType)
+                                                            <option value="{{ $roomType->id }}"
+                                                                data-supplement="{{ $roomType->price_supplement }}"
+                                                                {{ old('room_type_id') == $roomType->id ? 'selected' : '' }}>
+                                                                {{ $roomType->display_name_with_price }}
+                                                            </option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="tg-tour-about-border-doted mb-15"></div>
+                                    @endif
+                                    
                                     <div class="tg-tour-about-tickets-wrap mb-15">
                                         <div class="tg-tour-about-tickets mb-10">
                                             <div class="tg-tour-about-tickets-adult">
@@ -134,10 +157,25 @@
  
                                 </div>
                                 <div class="tg-tour-about-border-doted mb-15"></div>
+                                
+                                @if($service->activeRoomTypes && $service->activeRoomTypes->count() > 0)
+                                    <div class="tg-tour-about-tickets-wrap mb-15">
+                                        <div class="tg-tour-about-tickets mb-10">
+                                            <div class="tg-tour-about-tickets-adult">
+                                                <div class="tg-tour-about-sidebar-title">Room Supplement:</div>
+                                            </div>
+                                            <div class="tg-tour-about-tickets-quantity">
+                                                <span id="room_supplement_display">{{ currency(0) }}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="tg-tour-about-border-doted mb-15"></div>
+                                @endif
+                                
                                 <div
                                     class="tg-tour-about-coast d-flex align-items-center flex-wrap justify-content-between">
                                     <span class="tg-tour-about-sidebar-title d-inline-block">Total Cost:</span>
-                                    <h5 class="total-price">{{ currency($data['total']) }}</h5>
+                                    <h5 class="total-price" data-base-price="{{ $data['total'] - ($data['roomSupplement'] ?? 0) }}">{{ currency($data['total']) }}</h5>
                                 </div>
                             </div>
                         </div>
@@ -215,7 +253,37 @@
             $('#customer_address').on('change', function() {
                 $('.form_customer_address').val($(this).val());
             });
- 
+
+            // Room type selection handling
+            const roomTypeSelect = document.getElementById('room_type_select');
+            const roomSupplementDisplay = document.getElementById('room_supplement_display');
+            const totalPriceElement = document.querySelector('.total-price');
+            
+            // Get the base price (without room supplement) from data attribute
+            let basePrice = parseFloat(totalPriceElement.dataset.basePrice) || 0;
+            
+            if (roomTypeSelect) {
+                roomTypeSelect.addEventListener('change', function() {
+                    const selectedOption = this.options[this.selectedIndex];
+                    const supplement = parseFloat(selectedOption.dataset.supplement) || 0;
+                    
+                    // Update room supplement display
+                    if (roomSupplementDisplay) {
+                        roomSupplementDisplay.textContent = formatCurrency(supplement);
+                    }
+                    
+                    // Recalculate total price from base price + new supplement
+                    const newTotal = basePrice + supplement;
+                    totalPriceElement.textContent = formatCurrency(newTotal);
+                    
+                    // Update hidden total input
+                    const totalInput = document.querySelector('input[name="total"]');
+                    if (totalInput) {
+                        totalInput.value = newTotal;
+                    }
+                });
+            }
+  
         });
     </script>
 @endpush

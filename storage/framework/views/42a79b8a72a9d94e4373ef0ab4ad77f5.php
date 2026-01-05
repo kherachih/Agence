@@ -20,7 +20,7 @@
         .crancy__item-form--currency .crancy__item-input {
             width: 100%;
             padding-right: 40px;
-            /* Add space for the currency icon */
+            /* Add space for currency icon */
             border: 1px solid #ddd;
             border-radius: 4px;
             padding: 10px 40px 10px 12px;
@@ -1021,6 +1021,93 @@ unset($__errorArgs, $__bag); ?>
                                     </div>
 
                                     <div class="col-12 mg-top-30">
+                                        <div class="crancy-product-card">
+                                            <h4 class="crancy-product-card__title"><?php echo e(__('translate.Room Types')); ?>
+
+                                            </h4>
+
+                                            <div class="alert alert-info mb-20">
+                                                <i class="fa fa-info-circle"></i>
+                                                <?php echo e(__('translate.Configure room types with price supplements for this service.')); ?>
+
+                                            </div>
+
+                                            <div class="col-12" id="room-types-container">
+                                                <?php $__currentLoopData = $service->roomTypes; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $roomType): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                                    <div class="room-type-item" data-index="<?php echo e($index); ?>">
+                                                        <div class="row">
+                                                            <div class="col-lg-3 col-md-6 col-12">
+                                                                <div class="crancy__item-form--group mg-top-form-20">
+                                                                    <label class="crancy__item-label"><?php echo e(__('translate.Room Type')); ?></label>
+                                                                    <select class="crancy__item-input room-type-select" name="room_types[<?php echo e($index); ?>][type]" required>
+                                                                        <option value=""><?php echo e(__('translate.Select Type')); ?></option>
+                                                                        <option value="single" <?php echo e($roomType->type == 'single' ? 'selected' : ''); ?>><?php echo e(__('translate.Single Room')); ?></option>
+                                                                        <option value="double" <?php echo e($roomType->type == 'double' ? 'selected' : ''); ?>><?php echo e(__('translate.Double Room')); ?></option>
+                                                                        <option value="triple" <?php echo e($roomType->type == 'triple' ? 'selected' : ''); ?>><?php echo e(__('translate.Triple Room')); ?></option>
+                                                                        <option value="double_shared" <?php echo e($roomType->type == 'double_shared' ? 'selected' : ''); ?>><?php echo e(__('translate.Double Room (Shared)')); ?></option>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="col-lg-3 col-md-6 col-12">
+                                                                <div class="crancy__item-form--group mg-top-form-20">
+                                                                    <label class="crancy__item-label"><?php echo e(__('translate.Price Supplement')); ?></label>
+                                                                    <div class="crancy__item-form--currency">
+                                                                        <input class="crancy__item-input room-type-supplement" type="number" step="0.01" name="room_types[<?php echo e($index); ?>][price_supplement]" value="<?php echo e($roomType->price_supplement); ?>">
+                                                                        <div class="crancy__currency-icon">
+                                                                            <span><?php echo e(config('settings.currency_icon', '$')); ?></span>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="col-lg-3 col-md-6 col-12">
+                                                                <div class="crancy__item-form--group mg-top-form-20">
+                                                                    <label class="crancy__item-label"><?php echo e(__('translate.Capacity')); ?></label>
+                                                                    <input class="crancy__item-input room-type-capacity" type="number" name="room_types[<?php echo e($index); ?>][capacity]" value="<?php echo e($roomType->capacity); ?>" min="1">
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="col-lg-3 col-md-6 col-12">
+                                                                <div class="crancy__item-form--group mg-top-form-20">
+                                                                    <label class="crancy__item-label"><?php echo e(__('translate.Status')); ?></label>
+                                                                    <div class="crancy-ptabs__notify-switch crancy-ptabs__notify-switch--two">
+                                                                        <label class="crancy__item-switch">
+                                                                            <input type="checkbox" name="room_types[<?php echo e($index); ?>][is_active]" value="1" <?php echo e($roomType->is_active ? 'checked' : ''); ?>>
+                                                                            <span class="crancy__item-switch--slide crancy__item-switch--round"></span>
+                                                                        </label>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="col-12">
+                                                                <div class="crancy__item-form--group mg-top-form-20">
+                                                                    <label class="crancy__item-label"><?php echo e(__('translate.Description')); ?></label>
+                                                                    <textarea class="crancy__item-input room-type-description" name="room_types[<?php echo e($index); ?>][description]" rows="3" placeholder="Optional description for this room type"><?php echo e($roomType->description); ?></textarea>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="col-12">
+                                                                <button type="button" class="crancy-btn btn-danger remove-room-type" style="background-color: #dc3545;">
+                                                                    <i class="fa fa-trash"></i> <?php echo e(__('translate.Remove')); ?>
+
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                            </div>
+
+                                            <div class="col-12 mg-top-20">
+                                                <button type="button" class="crancy-btn" id="add-room-type">
+                                                    <i class="fa fa-plus"></i> <?php echo e(__('translate.Add Room Type')); ?>
+
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-12 mg-top-30">
                                         <div class="alert alert-info">
                                             <i class="fa fa-info-circle"></i>
                                             <?php echo e(__('translate.Manage service images and videos in the')); ?>
@@ -1074,6 +1161,91 @@ unset($__errorArgs, $__bag); ?>
                             title: 'Email'
                         },
                     ]
+                });
+
+                // Room type management
+                const roomTypesContainer = document.getElementById('room-types-container');
+                let roomTypeIndex = roomTypesContainer.querySelectorAll('.room-type-item').length;
+
+                document.getElementById('add-room-type').addEventListener('click', function() {
+                    const newRoomType = document.createElement('div');
+                    newRoomType.className = 'room-type-item';
+                    newRoomType.dataset.index = roomTypeIndex;
+                    newRoomType.innerHTML = `
+                        <div class="row">
+                            <div class="col-lg-3 col-md-6 col-12">
+                                <div class="crancy__item-form--group mg-top-form-20">
+                                    <label class="crancy__item-label"><?php echo e(__('translate.Room Type')); ?></label>
+                                    <select class="crancy__item-input room-type-select" name="room_types[${roomTypeIndex}][type]" required>
+                                        <option value=""><?php echo e(__('translate.Select Type')); ?></option>
+                                        <option value="single"><?php echo e(__('translate.Single Room')); ?></option>
+                                        <option value="double"><?php echo e(__('translate.Double Room')); ?></option>
+                                        <option value="triple"><?php echo e(__('translate.Triple Room')); ?></option>
+                                        <option value="double_shared"><?php echo e(__('translate.Double Room (Shared)')); ?></option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-3 col-md-6 col-12">
+                                <div class="crancy__item-form--group mg-top-form-20">
+                                    <label class="crancy__item-label"><?php echo e(__('translate.Price Supplement')); ?></label>
+                                    <div class="crancy__item-form--currency">
+                                        <input class="crancy__item-input room-type-supplement" type="number" step="0.01" name="room_types[${roomTypeIndex}][price_supplement]" value="0">
+                                        <div class="crancy__currency-icon">
+                                            <span><?php echo e(config('settings.currency_icon', '$')); ?></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-3 col-md-6 col-12">
+                                <div class="crancy__item-form--group mg-top-form-20">
+                                    <label class="crancy__item-label"><?php echo e(__('translate.Capacity')); ?></label>
+                                    <input class="crancy__item-input room-type-capacity" type="number" name="room_types[${roomTypeIndex}][capacity]" value="1" min="1">
+                                </div>
+                            </div>
+
+                            <div class="col-lg-3 col-md-6 col-12">
+                                <div class="crancy__item-form--group mg-top-form-20">
+                                    <label class="crancy__item-label"><?php echo e(__('translate.Status')); ?></label>
+                                    <div class="crancy-ptabs__notify-switch crancy-ptabs__notify-switch--two">
+                                        <label class="crancy__item-switch">
+                                            <input type="checkbox" name="room_types[${roomTypeIndex}][is_active]" value="1" checked>
+                                            <span class="crancy__item-switch--slide crancy__item-switch--round"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-12">
+                                <div class="crancy__item-form--group mg-top-form-20">
+                                    <label class="crancy__item-label"><?php echo e(__('translate.Description')); ?></label>
+                                    <textarea class="crancy__item-input room-type-description" name="room_types[${roomTypeIndex}][description]" rows="3" placeholder="Optional description for this room type"></textarea>
+                                </div>
+                            </div>
+
+                            <div class="col-12">
+                                <button type="button" class="crancy-btn btn-danger remove-room-type" style="background-color: #dc3545;">
+                                    <i class="fa fa-trash"></i> <?php echo e(__('translate.Remove')); ?>
+
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                    roomTypesContainer.appendChild(newRoomType);
+                    roomTypeIndex++;
+                });
+
+                // Event delegation for remove buttons
+                roomTypesContainer.addEventListener('click', function(e) {
+                    if (e.target.closest('.remove-room-type')) {
+                        const roomTypeItem = e.target.closest('.room-type-item');
+                        if (roomTypesContainer.querySelectorAll('.room-type-item').length > 1) {
+                            roomTypeItem.remove();
+                        } else {
+                            alert('At least one room type is required.');
+                        }
+                    }
                 });
             });
         })(jQuery);
