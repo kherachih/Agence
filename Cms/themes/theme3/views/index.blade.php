@@ -23,8 +23,8 @@
     {{-- why choose section --}}
     @include('theme::components.why-choose')
 
-    {{-- testimonial section --}}
-    @include('theme::components.testimonial')
+    {{-- team section --}}
+    @include('theme::components.team')
 
     {{-- blog section --}}
     @include('theme::components.blog')
