@@ -11,7 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('room_types', function (Blueprint $table) {
+        // Check if table already exists before creating
+        if (!Schema::hasTable('room_types')) {
+            Schema::create('room_types', function (Blueprint $table) {
             $table->id();
             $table->foreignId('service_id')->constrained('services')->onDelete('cascade');
             $table->enum('type', ['single', 'double', 'triple', 'double_shared']);
@@ -23,7 +25,8 @@ return new class extends Migration
             
             $table->index(['service_id', 'type']);
             $table->index('is_active');
-        });
+            });
+        }
     }
 
     /**

@@ -9,11 +9,13 @@ use Modules\TourBooking\App\Http\Controllers\Admin\DestinationController;
 use Modules\TourBooking\App\Http\Controllers\Admin\CouponController;
 use Modules\TourBooking\App\Http\Controllers\Admin\ReviewController;
 use Modules\TourBooking\App\Http\Controllers\Admin\ReportController;
+use Modules\TourBooking\App\Http\Controllers\Admin\PassengerController as AdminPassengerController;
 use Modules\TourBooking\App\Http\Controllers\Agency\ServiceController as AgencyServiceController;
 use Modules\TourBooking\App\Http\Controllers\Front\FrontServiceController;
 use Modules\TourBooking\App\Http\Controllers\Front\FrontBookingController;
 use Modules\TourBooking\App\Http\Controllers\Front\PaymentController;
 use Modules\TourBooking\App\Http\Controllers\User\BookingController as UserBookingController;
+use Modules\TourBooking\App\Http\Controllers\User\PassengerController as UserPassengerController;
 use Modules\TourBooking\App\Http\Controllers\Agency\BookingController as AgencyBookingController;
 use Modules\TourBooking\App\Http\Controllers\Agency\DestinationController as AgencyDestinationController;
 
@@ -88,6 +90,13 @@ Route::group(['as' => 'admin.tourbooking.', 'prefix' => 'admin/tourbooking', 'mi
     Route::post('bookings/confirm', [BookingController::class, 'bookingConfirm'])->name('bookings.confirm');
     Route::post('bookings/cancel', [BookingController::class, 'bookingCancel'])->name('bookings.cancel');
     Route::post('bookings/add-note', [BookingController::class, 'bookingAddNote'])->name('bookings.add-note');
+
+    // Passengers
+    Route::get('bookings/{booking}/passengers', [AdminPassengerController::class, 'show'])->name('passengers.show');
+    Route::get('bookings/{booking}/passengers/download-confirmation', [AdminPassengerController::class, 'downloadConfirmation'])->name('passengers.download-confirmation');
+    Route::get('passengers/{passenger}/download-passport', [AdminPassengerController::class, 'downloadPassport'])->name('passengers.download-passport');
+    Route::get('passengers/{passenger}/download-insurance', [AdminPassengerController::class, 'downloadInsurance'])->name('passengers.download-insurance');
+    Route::put('passengers/{passenger}', [AdminPassengerController::class, 'update'])->name('passengers.update');
 
     // Destinations
     Route::resource('destinations', DestinationController::class);
@@ -251,5 +260,12 @@ Route::group(['as' => 'user.', 'prefix' => 'user'], function () {
         Route::get('/bookings', [UserBookingController::class, 'index'])->name('bookings.index');
         Route::get('/bookings/details/{id}', [UserBookingController::class, 'details'])->name('bookings.details');
         Route::post('/bookings/cancel/{id}', [UserBookingController::class, 'cancelBooking'])->name('bookings.cancel');
+
+        // Passengers
+        Route::get('/bookings/{booking}/passengers/create', [UserPassengerController::class, 'create'])->name('passengers.create');
+        Route::post('/bookings/{booking}/passengers', [UserPassengerController::class, 'store'])->name('passengers.store');
+        Route::get('/bookings/{booking}/passengers', [UserPassengerController::class, 'show'])->name('passengers.show');
+        Route::get('/bookings/{booking}/passengers/edit', [UserPassengerController::class, 'edit'])->name('passengers.edit');
+        Route::put('/bookings/{booking}/passengers', [UserPassengerController::class, 'update'])->name('passengers.update');
     });
 });

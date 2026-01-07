@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 final class Booking extends Model
 {
@@ -61,6 +62,8 @@ final class Booking extends Model
         'completed_at',
         'is_reviewed',
         'meta_data',
+        'passenger_info_status',
+        'passenger_info_completed_at',
     ];
 
     /**
@@ -94,6 +97,7 @@ final class Booking extends Model
         'cancelled_at' => 'datetime',
         'completed_at' => 'datetime',
         'is_reviewed' => 'boolean',
+        'passenger_info_completed_at' => 'datetime',
     ];
 
     /**
@@ -126,6 +130,22 @@ final class Booking extends Model
     public function review(): HasOne
     {
         return $this->hasOne(Review::class);
+    }
+
+    /**
+     * Get the passengers for this booking.
+     */
+    public function passengers(): HasMany
+    {
+        return $this->hasMany(Passenger::class);
+    }
+
+    /**
+     * Get the primary passenger for this booking.
+     */
+    public function primaryPassenger(): HasOne
+    {
+        return $this->hasOne(Passenger::class)->where('is_primary', true);
     }
 
     /**

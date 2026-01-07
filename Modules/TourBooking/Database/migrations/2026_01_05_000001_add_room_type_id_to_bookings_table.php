@@ -11,10 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('bookings', function (Blueprint $table) {
-            $table->foreignId('room_type_id')->nullable()->after('user_id')->constrained('room_types')->onDelete('set null');
-            $table->index('room_type_id');
-        });
+        // Check if column already exists before adding
+        if (!Schema::hasColumn('bookings', 'room_type_id')) {
+            Schema::table('bookings', function (Blueprint $table) {
+                $table->foreignId('room_type_id')->nullable()->after('user_id')->constrained('room_types')->onDelete('set null');
+                $table->index('room_type_id');
+            });
+        }
     }
 
     /**
@@ -22,10 +25,13 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('bookings', function (Blueprint $table) {
-            $table->dropForeign(['room_type_id']);
-            $table->dropIndex(['room_type_id']);
-            $table->dropColumn('room_type_id');
-        });
+        // Only drop if column exists
+        if (Schema::hasColumn('bookings', 'room_type_id')) {
+            Schema::table('bookings', function (Blueprint $table) {
+                $table->dropForeign(['room_type_id']);
+                $table->dropIndex(['room_type_id']);
+                $table->dropColumn('room_type_id');
+            });
+        }
     }
 };

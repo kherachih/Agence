@@ -13,25 +13,26 @@
 
 @if ($teams->count() > 0)
     <!-- td-team-area-start -->
-    <div class="tg-team-area tg-team-su-wrap p-relative pt-50 pb-50">
-        <img class="tg-team-su-shape d-none d-xxl-block" src="{{ asset('frontend/assets/img/shape/hill-2.png') }}" alt="">
-        <img class="tg-team-su-shape-2 d-none d-lg-block" src="{{ asset('frontend/assets/img/shape/parasut-2.png') }}" alt="">
+    <div class="tg-team-area p-relative" style="background-color: #f8f5f0; border-radius: 20px; padding: 40px 20px; margin: 40px 0;">
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-xl-12">
                     <div class="tg-team-4-wrap">
-                        <div class="row justify-content-center mb-30">
-                            <div class="col-lg-8">
-                                <div class="tg-team-header-wrap text-center">
-                                    <h4 class="tg-team-section-title mb-10">{{ getTranslatedValue($theme3_team, 'section_title', 'Notre Équipe') }}</h4>
-                                    <p class="tg-team-section-subtitle">{{ getTranslatedValue($theme3_team, 'section_subtitle', 'Rencontrez nos conseillers expérimentés') }}</p>
-                                </div>
+                        <div class="row justify-content-center mb-40">
+                            <div class="col-lg-8 text-center">
+                                <h2 class="tg-team-section-title mb-10" style="font-size: 36px; font-weight: 700; color: #2d3436; margin-bottom: 10px;">
+                                    Our Team
+                                </h2>
+                                <div class="tg-team-section-underline" style="width: 60px; height: 3px; background-color: #e74c3c; margin: 0 auto 20px;"></div>
+                                <p class="tg-team-section-subtitle" style="font-size: 16px; color: #636e72; max-width: 600px; margin: 0 auto;">
+                                    We strive to do everything so that you can comfortably and productively work in our space and create amazing products and services
+                                </p>
                             </div>
                         </div>
                         
                         <!-- Team Slider -->
                         <div class="team-slider-container position-relative">
-                            <div class="swiper-container team-slider-active" id="{{ $uniqueId }}">
+                            <div class="swiper team-slider-active" id="{{ $uniqueId }}">
                                 <div class="swiper-wrapper">
                                     @foreach ($teams as $key => $team)
                                         <div class="swiper-slide">
@@ -41,16 +42,25 @@
                                                     <img src="{{ asset($team->image) }}"
                                                          alt="{{ $team->front_translate?->name }}"
                                                          class="img-fluid team-avatar"
-                                                         style="width: 100%; height: 280px; object-fit: cover; border-radius: 12px;">
+                                                         style="width: 100%; height: 250px; object-fit: contain; object-position: center; border-radius: 12px;">
                                                 </div>
                                                 <div class="tg-team-4-content">
-                                                    <h5 class="tg-team-4-name mb-5">{{ $team->front_translate?->name }}</h5>
-                                                    <span class="tg-team-4-designation d-block mb-10">{{ $team->front_translate?->designation }}</span>
-                                                    <div class="tg-team-4-contact-hint">
-                                                        <span class="text-muted small">
-                                                            <i class="fa-solid fa-hand-pointer me-1"></i>
-                                                            {{ __('translate.Cliquez pour voir les détails') }}
-                                                        </span>
+                                                    <h5 class="tg-team-4-name mb-5" style="font-size: 18px; font-weight: 600; color: #2d3436; margin-bottom: 5px;">
+                                                        {{ $team->front_translate?->name }}
+                                                    </h5>
+                                                    <span class="tg-team-4-designation d-block mb-10" style="font-size: 14px; color: #7C37FF; font-weight: 500;">
+                                                        {{ $team->front_translate?->designation }}
+                                                    </span>
+                                                    <div class="tg-team-4-social-icons d-flex justify-content-center gap-3 mt-20">
+                                                        <a href="{{ $team->facebook }}" target="_blank" class="tg-team-social-link">
+                                                            <i class="fab fa-facebook-f"></i>
+                                                        </a>
+                                                        <a href="{{ $team->instagram }}" target="_blank" class="tg-team-social-link">
+                                                            <i class="fab fa-instagram"></i>
+                                                        </a>
+                                                        <a href="{{ $team->youtube }}" target="_blank" class="tg-team-social-link">
+                                                            <i class="fab fa-youtube"></i>
+                                                        </a>
                                                     </div>
                                                 </div>
                                             </div>
@@ -62,24 +72,13 @@
                             <!-- Navigation buttons -->
                             <div class="team-slider-navigation">
                                 <button class="team-slider-prev">
-                                    <i class="fa-solid fa-arrow-left-long"></i>
+                                    <i class="fas fa-chevron-left"></i>
                                 </button>
                                 <button class="team-slider-next">
-                                    <i class="fa-solid fa-arrow-right-long"></i>
+                                    <i class="fas fa-chevron-right"></i>
                                 </button>
                             </div>
                         </div>
-
-                        @if (getTranslatedValue($theme3_team, 'show_view_all') == '1')
-                            <div class="row justify-content-center mt-30">
-                                <div class="col-auto">
-                                    <a href="{{ route('teams') }}" class="tg-btn tg-btn-primary">
-                                        <span>{{ __('translate.Voir toute l\'équipe') }}</span>
-                                        <i class="fa-solid fa-arrow-right-long ms-2"></i>
-                                    </a>
-                                </div>
-                            </div>
-                        @endif
                     </div>
                 </div>
             </div>
@@ -87,132 +86,34 @@
     </div>
     <!-- td-team-area-end -->
 
-    <!-- Team Member Details Modal -->
-    <div class="modal fade" id="teamMemberModal" tabindex="-1" aria-labelledby="teamMemberModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-lg">
-            <div class="modal-content tg-team-modal-content">
-                <div class="modal-header border-0">
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
-                        <i class="fa-solid fa-xmark"></i>
-                    </button>
-                </div>
-                <div class="modal-body p-0">
-                    <div class="row g-0">
-                        <div class="col-lg-5">
-                            <div class="tg-team-modal-thumb">
-                                <img id="modalTeamImage" src="" alt="" class="w-100 h-100 object-fit-cover" style="min-height: 400px;">
-                            </div>
-                        </div>
-                        <div class="col-lg-7">
-                            <div class="tg-team-modal-info p-40">
-                                <h4 id="modalTeamName" class="tg-team-modal-name mb-10"></h4>
-                                <span id="modalTeamDesignation" class="tg-team-modal-designation d-block mb-30"></span>
-                                
-                                <div class="tg-team-modal-contact-info mb-30">
-                                    <h6 class="tg-team-modal-contact-title mb-20">{{ __('translate.Coordonnées') }}</h6>
-                                    
-                                    <div class="tg-team-contact-item mb-15">
-                                        <div class="d-flex align-items-center">
-                                            <div class="tg-team-contact-icon me-3">
-                                                <i class="fa-solid fa-phone"></i>
-                                            </div>
-                                            <div class="tg-team-contact-details">
-                                                <span class="d-block small text-muted">{{ __('translate.Téléphone') }}</span>
-                                                <a id="modalTeamPhone" href="tel:" class="fw-semibold"></a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="tg-team-contact-item mb-15">
-                                        <div class="d-flex align-items-center">
-                                            <div class="tg-team-contact-icon me-3">
-                                                <i class="fa-solid fa-envelope"></i>
-                                            </div>
-                                            <div class="tg-team-contact-details">
-                                                <span class="d-block small text-muted">{{ __('translate.Email') }}</span>
-                                                <a id="modalTeamEmail" href="mailto:" class="fw-semibold"></a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="tg-team-contact-item mb-15">
-                                        <div class="d-flex align-items-center">
-                                            <div class="tg-team-contact-icon me-3">
-                                                <i class="fa-solid fa-location-dot"></i>
-                                            </div>
-                                            <div class="tg-team-contact-details">
-                                                <span class="d-block small text-muted">{{ __('translate.Adresse') }}</span>
-                                                <span id="modalTeamAddress" class="fw-semibold"></span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="tg-team-contact-item mb-15">
-                                        <div class="d-flex align-items-center">
-                                            <div class="tg-team-contact-icon me-3">
-                                                <i class="fa-solid fa-globe"></i>
-                                            </div>
-                                            <div class="tg-team-contact-details">
-                                                <span class="d-block small text-muted">{{ __('translate.Site web') }}</span>
-                                                <a id="modalTeamWebsite" href="#" target="_blank" class="fw-semibold"></a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                
-                                <div class="tg-team-modal-social">
-                                    <h6 class="tg-team-modal-contact-title mb-15">{{ __('translate.Réseaux sociaux') }}</h6>
-                                    <div class="d-flex gap-2">
-                                        <a id="modalTeamFacebook" href="#" target="_blank" class="tg-team-social-link">
-                                            <i class="fa-brands fa-facebook-f"></i>
-                                        </a>
-                                        <a id="modalTeamTwitter" href="#" target="_blank" class="tg-team-social-link">
-                                            <i class="fa-brands fa-twitter"></i>
-                                        </a>
-                                        <a id="modalTeamLinkedin" href="#" target="_blank" class="tg-team-social-link">
-                                            <i class="fa-brands fa-linkedin-in"></i>
-                                        </a>
-                                        <a id="modalTeamInstagram" href="#" target="_blank" class="tg-team-social-link">
-                                            <i class="fa-brands fa-instagram"></i>
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
     @push('style_section')
         <style>
             .tg-team-4-card {
                 background: #ffffff;
                 border-radius: 16px;
-                padding: 20px;
+                padding: 25px 15px;
                 box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
                 transition: all 0.3s ease;
                 height: 100%;
                 cursor: pointer;
                 overflow: hidden;
+                max-width: 320px;
+                margin: 0 auto;
             }
 
             .tg-team-4-card:hover {
-                transform: translateY(-10px);
-                box-shadow: 0 8px 30px rgba(124, 55, 255, 0.2);
+                transform: translateY(-5px);
+                box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
             }
 
             .team-avatar {
                 transition: all 0.3s ease;
                 width: 100%;
-                height: 280px;
-                object-fit: cover;
+                height: 250px;
+                object-fit: contain;
+                object-position: center;
                 border-radius: 12px;
-            }
-
-            .tg-team-4-card:hover .team-avatar {
-                transform: scale(1.05);
+                background-color: #f8f9fa;
             }
 
             .tg-team-4-name {
@@ -229,14 +130,14 @@
             }
 
             .tg-team-section-title {
-                font-size: 32px;
+                font-size: 36px;
                 font-weight: 700;
                 color: #2d3436;
                 margin-bottom: 10px;
             }
 
             .tg-team-section-subtitle {
-                font-size: 15px;
+                font-size: 16px;
                 color: #636e72;
             }
 
@@ -260,6 +161,25 @@
             .team-slider-container {
                 position: relative;
                 padding: 0 50px;
+                overflow: hidden;
+            }
+
+            .swiper {
+                width: 100%;
+                padding: 10px 0;
+            }
+
+            .swiper-slide {
+                height: auto;
+                display: flex;
+                align-items: stretch;
+                width: auto !important;
+            }
+
+            .tg-team-4-card {
+                width: 320px;
+                max-width: 320px;
+                height: auto;
             }
 
             .team-slider-navigation {
@@ -280,21 +200,22 @@
                 width: 50px;
                 height: 50px;
                 border-radius: 50%;
-                background: linear-gradient(135deg, #7C37FF 0%, #9b59b6 100%);
-                border: none;
-                color: #ffffff;
+                background: #ffffff;
+                border: 1px solid #e0e0e0;
+                color: #2d3436;
                 font-size: 18px;
                 display: flex;
                 align-items: center;
                 justify-content: center;
                 transition: all 0.3s ease;
-                box-shadow: 0 4px 15px rgba(124, 55, 255, 0.3);
+                box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
             }
 
             .team-slider-prev:hover,
             .team-slider-next:hover {
+                background: #f8f9fa;
                 transform: scale(1.1);
-                box-shadow: 0 6px 20px rgba(124, 55, 255, 0.5);
+                box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
             }
 
             .team-slider-prev {
@@ -305,98 +226,39 @@
                 margin-right: -25px;
             }
 
-            /* Modal Styles */
-            .tg-team-modal-content {
-                border-radius: 20px;
-                border: none;
-                box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
-            }
-
-            .modal-header .btn-close {
-                position: absolute;
-                top: 15px;
-                right: 15px;
-                background: rgba(124, 55, 255, 0.1);
-                border-radius: 50%;
-                width: 40px;
-                height: 40px;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                z-index: 10;
-                transition: all 0.3s ease;
-            }
-
-            .modal-header .btn-close:hover {
-                background: #7C37FF;
-                color: #ffffff;
-            }
-
-            .tg-team-modal-thumb img {
-                border-radius: 20px 0 0 20px;
-            }
-
-            .tg-team-modal-name {
-                font-size: 28px;
-                font-weight: 700;
-                color: #2d3436;
-            }
-
-            .tg-team-modal-designation {
-                font-size: 16px;
-                color: #7C37FF;
-                font-weight: 600;
-            }
-
-            .tg-team-contact-icon {
-                width: 45px;
-                height: 45px;
-                background: linear-gradient(135deg, #7C37FF 0%, #9b59b6 100%);
-                border-radius: 50%;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                color: #ffffff;
-                font-size: 18px;
-            }
-
-            .tg-team-contact-item a,
-            .tg-team-contact-item span {
-                color: #2d3436;
-                text-decoration: none;
-                transition: color 0.3s ease;
-            }
-
-            .tg-team-contact-item a:hover {
-                color: #7C37FF;
+            .tg-team-4-social-icons {
+                margin-top: 20px;
             }
 
             .tg-team-social-link {
-                width: 40px;
-                height: 40px;
+                width: 36px;
+                height: 36px;
                 background: #f8f9fa;
                 border-radius: 50%;
                 display: flex;
                 align-items: center;
                 justify-content: center;
-                color: #2d3436;
+                color: #e74c3c;
                 transition: all 0.3s ease;
+                border: 1px solid #e0e0e0;
             }
 
             .tg-team-social-link:hover {
-                background: #7C37FF;
+                background: #e74c3c;
                 color: #ffffff;
                 transform: translateY(-3px);
+            }
+
+            .tg-team-section-underline {
+                width: 60px;
+                height: 3px;
+                background-color: #e74c3c;
+                margin: 0 auto 20px;
             }
 
             @media (max-width: 991px) {
                 .team-slider-container {
                     padding: 0 40px;
-                }
-
-                .tg-team-modal-thumb img {
-                    border-radius: 20px 20px 0 0;
-                    min-height: 300px;
                 }
             }
 
@@ -415,12 +277,12 @@
         </style>
     @endpush
 
-    @push('script_section')
+    @push('js_section')
         <script>
             // Team member data
             const teamMembers = {
                 @foreach ($teams as $team)
-                {{ $team->id }}: {
+                "{{ $team->id }}": {
                     name: "{{ $team->front_translate?->name }}",
                     designation: "{{ $team->front_translate?->designation }}",
                     image: "{{ asset($team->image) }}",
@@ -431,65 +293,58 @@
                     facebook: "{{ $team->facebook }}",
                     twitter: "{{ $team->twitter }}",
                     linkedin: "{{ $team->linkedin }}",
-                    instagram: "{{ $team->instagram }}"
+                    instagram: "{{ $team->instagram }}",
+                    youtube: "{{ $team->youtube }}"
                 },
                 @endforeach
             };
 
             // Initialize team slider
             document.addEventListener('DOMContentLoaded', function() {
-                const teamSlider = new Swiper('#{{ $uniqueId }}', {
-                    slidesPerView: 3,
-                    spaceBetween: 30,
-                    loop: true,
-                    autoplay: {
-                        delay: 5000,
-                        disableOnInteraction: false,
-                    },
-                    navigation: {
-                        nextEl: '.team-slider-next',
-                        prevEl: '.team-slider-prev',
-                    },
-                    breakpoints: {
-                        0: {
-                            slidesPerView: 1,
-                            spaceBetween: 20,
-                        },
-                        576: {
-                            slidesPerView: 2,
-                            spaceBetween: 20,
-                        },
-                        992: {
-                            slidesPerView: 3,
-                            spaceBetween: 30,
-                        },
-                    },
-                });
-
-                // Add click event listeners to team cards
-                const teamCards = document.querySelectorAll('.team-card-clickable');
-                teamCards.forEach(card => {
-                    card.addEventListener('click', function() {
-                        const teamId = this.getAttribute('data-team-id');
-                        showTeamMemberDetails(teamId);
-                    });
-                });
-
-                // Manual navigation button handlers
+                const swiperContainer = document.getElementById('{{ $uniqueId }}');
                 const nextBtn = document.querySelector('.team-slider-next');
                 const prevBtn = document.querySelector('.team-slider-prev');
                 
-                if (nextBtn) {
-                    nextBtn.addEventListener('click', function(e) {
-                        e.preventDefault();
-                        teamSlider.slideNext();
+                if (swiperContainer && nextBtn && prevBtn) {
+                    const teamSlider = new Swiper('#{{ $uniqueId }}', {
+                        slidesPerView: 3,
+                        spaceBetween: 20,
+                        loop: true,
+                        autoplay: {
+                            delay: 5000,
+                            disableOnInteraction: false,
+                        },
+                        navigation: {
+                            nextEl: nextBtn,
+                            prevEl: prevBtn,
+                        },
+                        observer: true,
+                        observeParents: true,
+                        slidesOffsetBefore: 0,
+                        slidesOffsetAfter: 0,
+                        breakpoints: {
+                            0: {
+                                slidesPerView: 1,
+                                spaceBetween: 15,
+                            },
+                            576: {
+                                slidesPerView: 2,
+                                spaceBetween: 15,
+                            },
+                            992: {
+                                slidesPerView: 3,
+                                spaceBetween: 20,
+                            },
+                        },
                     });
-                }
-                
-                if (prevBtn) {
-                    prevBtn.addEventListener('click', function(e) {
-                        e.preventDefault();
-                        teamSlider.slidePrev();
+
+                    // Add click event listeners to team cards
+                    const teamCards = document.querySelectorAll('.team-card-clickable');
+                    teamCards.forEach(card => {
+                        card.addEventListener('click', function() {
+                            const teamId = this.getAttribute('data-team-id');
+                            showTeamMemberDetails(teamId);
+                        });
                     });
                 }
             });
@@ -498,47 +353,60 @@
                 const member = teamMembers[teamId];
                 if (!member) return;
 
+                // This function requires a modal in the HTML to show details.
+                // Assuming a modal with id 'teamMemberModal' and elements with corresponding ids exists.
+                const modal = document.getElementById('teamMemberModal');
+                if (!modal) return;
+
                 // Update modal content
                 document.getElementById('modalTeamImage').src = member.image;
                 document.getElementById('modalTeamName').textContent = member.name;
                 document.getElementById('modalTeamDesignation').textContent = member.designation;
                 
                 const phoneLink = document.getElementById('modalTeamPhone');
-                phoneLink.textContent = member.phone || 'Non disponible';
-                phoneLink.href = member.phone ? `tel:${member.phone}` : '#';
-                
+                if(phoneLink){
+                    phoneLink.textContent = member.phone || 'Non disponible';
+                    phoneLink.href = member.phone ? `tel:${member.phone}` : '#';
+                }
+
                 const emailLink = document.getElementById('modalTeamEmail');
-                emailLink.textContent = member.email || 'Non disponible';
-                emailLink.href = member.email ? `mailto:${member.email}` : '#';
+                if(emailLink){
+                    emailLink.textContent = member.email || 'Non disponible';
+                    emailLink.href = member.email ? `mailto:${member.email}` : '#';
+                }
                 
-                document.getElementById('modalTeamAddress').textContent = member.address || 'Non disponible';
+                const addressText = document.getElementById('modalTeamAddress');
+                if(addressText) {
+                    addressText.textContent = member.address || 'Non disponible';
+                }
                 
                 const websiteLink = document.getElementById('modalTeamWebsite');
-                websiteLink.textContent = member.website || 'Non disponible';
-                websiteLink.href = member.website || '#';
+                if(websiteLink){
+                    websiteLink.textContent = member.website || 'Non disponible';
+                    websiteLink.href = member.website || '#';
+                }
                 
                 // Update social links
-                const facebookLink = document.getElementById('modalTeamFacebook');
-                facebookLink.href = member.facebook || '#';
-                facebookLink.style.display = member.facebook ? 'flex' : 'none';
-                
-                const twitterLink = document.getElementById('modalTeamTwitter');
-                twitterLink.href = member.twitter || '#';
-                twitterLink.style.display = member.twitter ? 'flex' : 'none';
-                
-                const linkedinLink = document.getElementById('modalTeamLinkedin');
-                linkedinLink.href = member.linkedin || '#';
-                linkedinLink.style.display = member.linkedin ? 'flex' : 'none';
-                
-                const instagramLink = document.getElementById('modalTeamInstagram');
-                instagramLink.href = member.instagram || '#';
-                instagramLink.style.display = member.instagram ? 'flex' : 'none';
+                const socialLinks = {
+                    Facebook: member.facebook,
+                    Twitter: member.twitter,
+                    Linkedin: member.linkedin,
+                    Instagram: member.instagram,
+                    Youtube: member.youtube
+                };
+
+                for (const [social, url] of Object.entries(socialLinks)) {
+                    const link = document.getElementById(`modalTeam${social}`);
+                    if(link){
+                        link.href = url || '#';
+                        link.style.display = url ? 'flex' : 'none';
+                    }
+                }
                 
                 // Show modal
-                const modal = new bootstrap.Modal(document.getElementById('teamMemberModal'));
-                modal.show();
+                const modalInstance = new bootstrap.Modal(modal);
+                modalInstance.show();
             }
         </script>
     @endpush
-
 @endif

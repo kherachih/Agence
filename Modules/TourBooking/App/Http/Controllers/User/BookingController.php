@@ -23,7 +23,7 @@ final class BookingController extends Controller
             ->where('user_id', auth()->user()->id)
             ->latest()
             ->get();
-        return view('tourbooking::user.booking.index', compact('bookings'));
+        return view('modules.tourbooking.user.booking.index', compact('bookings'));
     }
 
     public function details(Request $request): View
@@ -32,7 +32,7 @@ final class BookingController extends Controller
             ->where('user_id', auth()->user()->id)
             ->findOrFail($request->id);
 
-        return view('tourbooking::user.booking.details', compact('booking'));
+        return view('modules.tourbooking.user.booking.details', compact('booking'));
     }
 
     /**
