@@ -1,18 +1,16 @@
-@extends('layout_inner_page')
-
-@section('title')
+<?php $__env->startSection('title'); ?>
     <title>Services</title>
     <meta name="title" content="Services">
     <meta name="description" content="Services">
-@endsection
+<?php $__env->stopSection(); ?>
 
-@section('front-content')
+<?php $__env->startSection('front-content'); ?>
     <!-- main-area -->
     <main>
 
         <!-- tg-breadcrumb-area-start -->
         <div class="tg-breadcrumb-spacing-3 include-bg p-relative fix"
-            data-background="{{ asset($general_setting->secondary_breadcrumb_image ?? $general_setting->breadcrumb_image) }}">
+            data-background="<?php echo e(asset($general_setting->secondary_breadcrumb_image ?? $general_setting->breadcrumb_image)); ?>">
             <div class="tg-hero-top-shadow"></div>
         </div>
         <div class="tg-breadcrumb-list-2-wrap">
@@ -21,13 +19,14 @@
                     <div class="col-12">
                         <div class="tg-breadcrumb-list-2">
                             <ul>
-                                <li><a href="{{ url('home') }}">{{ __('translate.Home') }}</a></li>
+                                <li><a href="<?php echo e(url('home')); ?>"><?php echo e(__('translate.Home')); ?></a></li>
                                 <li><i class="fa-sharp fa-solid fa-angle-right"></i></li>
-                                <li><a href="{{ route('front.tourbooking.services') }}">{{ __('translate.Services') }}</a>
+                                <li><a href="<?php echo e(route('front.tourbooking.services')); ?>"><?php echo e(__('translate.Services')); ?></a>
                                 </li>
                                 <li><i class="fa-sharp fa-solid fa-angle-right"></i></li>
                                 <li><span>
-                                        {{ $service?->translation?->title }}
+                                        <?php echo e($service?->translation?->title); ?>
+
                                     </span></li>
                             </ul>
                         </div>
@@ -45,25 +44,29 @@
                     <div class="col-xl-9 col-lg-8">
                         <div class="tg-tour-details-video-title-wrap">
                             <h2 class="tg-tour-details-video-title mb-15">
-                                {{ $service?->translation?->title }}
+                                <?php echo e($service?->translation?->title); ?>
+
                             </h2>
                             <div class="tg-tour-details-video-location d-flex flex-wrap">
 
-                                @if ($service?->location)
+                                <?php if($service?->location): ?>
                                     <span class="mr-25"><i class="fa-regular fa-location-dot"></i>
-                                        {{ $service?->location }}
+                                        <?php echo e($service?->location); ?>
+
                                     </span>
-                                @endif
+                                <?php endif; ?>
 
                                 <div class="tg-tour-details-video-ratings">
-                                    @foreach (range(1, 5) as $star)
+                                    <?php $__currentLoopData = range(1, 5); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $star): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                         <i
-                                            class="fa-sharp fa-solid fa-star @if ($avgRating >= $star) active @endif"></i>
-                                    @endforeach
+                                            class="fa-sharp fa-solid fa-star <?php if($avgRating >= $star): ?> active <?php endif; ?>"></i>
+                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                     <span class="review">
                                         (
-                                        {{ __($reviews->count()) }}
-                                        {{ __($reviews->count() > 1 ? __('translate.Reviews') : __('translate.Review')) }}
+                                        <?php echo e(__($reviews->count())); ?>
+
+                                        <?php echo e(__($reviews->count() > 1 ? __('translate.Reviews') : __('translate.Review'))); ?>
+
                                         )
                                     </span>
                                 </div>
@@ -83,11 +86,11 @@
                                 </svg>
                                 Share
                             </a>
-                            <a @class([
+                            <a class="<?php echo \Illuminate\Support\Arr::toCssClasses([
                                 'tg-listing-item-wishlist ml-25',
                                 'active' => $service?->my_wishlist_exists == 1,
-                            ]) data-url="{{ route('user.wishlist.store') }}"
-                                onclick="addToWishlist({{ $service->id }}, this, 'service')" href="javascript:void(0);">
+                            ]); ?>" data-url="<?php echo e(route('user.wishlist.store')); ?>"
+                                onclick="addToWishlist(<?php echo e($service->id); ?>, this, 'service')" href="javascript:void(0);">
                                 <svg width="16" height="14" viewBox="0 0 16 14" fill="none"
                                     xmlns="http://www.w3.org/2000/svg">
                                     <path
@@ -95,48 +98,48 @@
                                         fill="currentColor" stroke="currentColor" stroke-width="0.0888889" />
                                 </svg>
                                 <span class="wishlist_change_text">
-                                    @if ($service?->my_wishlist_exists == 1)
+                                    <?php if($service?->my_wishlist_exists == 1): ?>
                                         Remove
-                                    @else
+                                    <?php else: ?>
                                         Add
-                                    @endif to Wishlist
+                                    <?php endif; ?> to Wishlist
                                 </span>
                             </a>
                         </div>
                     </div>
                 </div>
 
-                @php
+                <?php
                     $thumbnails = $service->media->where('is_thumbnail', 1)->sortBy('display_order')->values();
                     $nonThumbnails = $service->media->where('is_thumbnail', 0)->sortBy('display_order')->values();
-                @endphp
+                ?>
 
                 <div class="row gx-15 mb-25">
-                    {{-- Left side: Big image (first thumbnail) --}}
+                    
                     <div class="col-lg-7">
                         <div class="tg-tour-details-video-thumb mb-15">
-                            @if (isset($thumbnails[0]))
-                                <img class="w-100" src="{{ asset('storage/' . $thumbnails[0]->file_path) }}"
-                                    alt="{{ $thumbnails[0]->caption }}">
-                            @else
-                                <img class="w-100" src="{{ asset('frontend/assets/img/shape/placeholder.png') }}"
+                            <?php if(isset($thumbnails[0])): ?>
+                                <img class="w-100" src="<?php echo e(asset('storage/' . $thumbnails[0]->file_path)); ?>"
+                                    alt="<?php echo e($thumbnails[0]->caption); ?>">
+                            <?php else: ?>
+                                <img class="w-100" src="<?php echo e(asset('frontend/assets/img/shape/placeholder.png')); ?>"
                                     alt="default">
-                            @endif
+                            <?php endif; ?>
                         </div>
                     </div>
 
-                    {{-- Right side: Small images --}}
+                    
                     <div class="col-lg-5">
                         <div class="row gx-15">
-                            {{-- Top-right: play button image --}}
+                            
                             <div class="col-12">
                                 <div class="tg-tour-details-video-thumb p-relative mb-15">
-                                    @if (isset($nonThumbnails[0]))
-                                        <img class="w-100" src="{{ asset('storage/' . $nonThumbnails[0]->file_path) }}"
-                                            alt="{{ $nonThumbnails[0]->caption }}">
+                                    <?php if(isset($nonThumbnails[0])): ?>
+                                        <img class="w-100" src="<?php echo e(asset('storage/' . $nonThumbnails[0]->file_path)); ?>"
+                                            alt="<?php echo e($nonThumbnails[0]->caption); ?>">
                                         <div class="tg-tour-details-video-inner text-center">
                                             <a class="tg-video-play popup-video tg-pulse-border"
-                                                href="{{ $service->video_url }}">
+                                                href="<?php echo e($service->video_url); ?>">
                                                 <span class="p-relative z-index-11">
                                                     <svg width="19" height="21" viewBox="0 0 19 21" fill="none"
                                                         xmlns="http://www.w3.org/2000/svg">
@@ -147,22 +150,22 @@
                                                 </span>
                                             </a>
                                         </div>
-                                    @endif
+                                    <?php endif; ?>
                                 </div>
                             </div>
 
-                            {{-- Bottom-right: two smaller images --}}
-                            @for ($i = 1; $i <= 2; $i++)
-                                @if (isset($nonThumbnails[$i]))
+                            
+                            <?php for($i = 1; $i <= 2; $i++): ?>
+                                <?php if(isset($nonThumbnails[$i])): ?>
                                     <div class="col-lg-6 col-md-6">
                                         <div class="tg-tour-details-video-thumb mb-15">
                                             <img class="w-100"
-                                                src="{{ asset('storage/' . $nonThumbnails[$i]->file_path) }}"
-                                                alt="{{ $nonThumbnails[$i]->caption }}">
+                                                src="<?php echo e(asset('storage/' . $nonThumbnails[$i]->file_path)); ?>"
+                                                alt="<?php echo e($nonThumbnails[$i]->caption); ?>">
                                         </div>
                                     </div>
-                                @endif
-                            @endfor
+                                <?php endif; ?>
+                            <?php endfor; ?>
                         </div>
                     </div>
                 </div>
@@ -173,7 +176,7 @@
                             <div class="tg-tour-details-video-feature-list">
                                 <ul>
 
-                                    @if ($service?->duration)
+                                    <?php if($service?->duration): ?>
                                         <li>
                                             <span class="icon">
                                                 <svg width="18" height="18" viewBox="0 0 18 18" fill="none"
@@ -185,13 +188,13 @@
                                                 </svg>
                                             </span>
                                             <div>
-                                                <span class="title">{{ __('translate.Duration') }}</span>
-                                                <span class="duration">{{ $service?->duration }}</span>
+                                                <span class="title"><?php echo e(__('translate.Duration')); ?></span>
+                                                <span class="duration"><?php echo e($service?->duration); ?></span>
                                             </div>
                                         </li>
-                                    @endif
+                                    <?php endif; ?>
 
-                                    @if ($service?->serviceType?->name)
+                                    <?php if($service?->serviceType?->name): ?>
                                         <li>
                                             <span class="icon">
                                                 <svg width="16" height="17" viewBox="0 0 16 17" fill="none"
@@ -203,13 +206,13 @@
                                                 </svg>
                                             </span>
                                             <div>
-                                                <span class="title">{{ __('translate.Type') }}</span>
-                                                <span class="duration">{{ $service?->serviceType?->name }}</span>
+                                                <span class="title"><?php echo e(__('translate.Type')); ?></span>
+                                                <span class="duration"><?php echo e($service?->serviceType?->name); ?></span>
                                             </div>
                                         </li>
-                                    @endif
+                                    <?php endif; ?>
 
-                                    @if ($service?->group_size)
+                                    <?php if($service?->group_size): ?>
                                         <li>
                                             <span class="icon">
                                                 <svg width="18" height="18" viewBox="0 0 18 18" fill="none"
@@ -220,13 +223,13 @@
                                                 </svg>
                                             </span>
                                             <div>
-                                                <span class="title">{{ __('translate.Group Size') }}</span>
-                                                <span class="duration">{{ $service?->group_size }}</span>
+                                                <span class="title"><?php echo e(__('translate.Group Size')); ?></span>
+                                                <span class="duration"><?php echo e($service?->group_size); ?></span>
                                             </div>
                                         </li>
-                                    @endif
+                                    <?php endif; ?>
 
-                                    @if ($service?->languages && is_array($service?->languages) && count($service?->languages) > 0)
+                                    <?php if($service?->languages && is_array($service?->languages) && count($service?->languages) > 0): ?>
                                         <li>
                                             <span class="icon">
                                                 <svg width="17" height="17" viewBox="0 0 17 17" fill="none"
@@ -238,25 +241,27 @@
                                                 </svg>
                                             </span>
                                             <div>
-                                                <span class="title">{{ __('translate.Languages') }}</span>
+                                                <span class="title"><?php echo e(__('translate.Languages')); ?></span>
                                                 <span class="duration">
-                                                    @foreach ($service?->languages as $language)
-                                                        {{ $language }}
-                                                        @if (!$loop->last)
+                                                    <?php $__currentLoopData = $service?->languages; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $language): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                                        <?php echo e($language); ?>
+
+                                                        <?php if(!$loop->last): ?>
                                                             ,
-                                                        @endif
-                                                    @endforeach
+                                                        <?php endif; ?>
+                                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                                 </span>
                                             </div>
                                         </li>
-                                    @endif
+                                    <?php endif; ?>
                                 </ul>
                             </div>
                         </div>
                         <div class="col-lg-4">
                             <div class="tg-tour-details-video-feature-price mb-15">
-                                <p>{{ __('translate.From') }} <span>{!! $service->adult_price_display !!}</span> / {{ __('translate.Adult') }}
-                                    <span class="small-discount-badge">{!! $service->adult_discount_badge !!}</span>
+                                <p><?php echo e(__('translate.From')); ?> <span><?php echo $service->adult_price_display; ?></span> / <?php echo e(__('translate.Adult')); ?>
+
+                                    <span class="small-discount-badge"><?php echo $service->adult_discount_badge; ?></span>
                                 </p>
                             </div>
                         </div>
@@ -275,261 +280,285 @@
                             <div class="tg-tour-about-content">
                                 <div class="tg-tour-about-inner mb-25">
                                     <h4 class="tg-tour-about-title mb-15">
-                                        {{ __('translate.About This Tour') }}
+                                        <?php echo e(__('translate.About This Tour')); ?>
+
                                     </h4>
                                     <div class="text-capitalize lh-28">
-                                        {!! $service?->translation?->short_description !!}
+                                        <?php echo $service?->translation?->short_description; ?>
+
                                     </div>
                                 </div>
 
-                                @if ($service?->translation?->description)
+                                <?php if($service?->translation?->description): ?>
                                     <div class="tg-tour-about-inner mb-40">
-                                        {!! $service?->translation?->description !!}
+                                        <?php echo $service?->translation?->description; ?>
+
                                     </div>
                                     <div class="tg-tour-about-border mb-40"></div>
-                                @endif
+                                <?php endif; ?>
 
-                                @if ($service?->included || $service?->excluded)
+                                <?php if($service?->included || $service?->excluded): ?>
                                     <div class="tg-tour-about-inner mb-40">
                                         <h4 class="tg-tour-about-title mb-20">Included/Exclude</h4>
                                         <div class="row">
-                                            @if ($service?->included)
+                                            <?php if($service?->included): ?>
                                                 <div class="col-lg-5">
                                                     <div class="tg-tour-about-list  tg-tour-about-list-2">
                                                         <ul>
-                                                            @foreach (json_decode($service?->included) as $key => $item)
+                                                            <?php $__currentLoopData = json_decode($service?->included); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                                                 <li>
                                                                     <span class="icon mr-10"><i
                                                                             class="fa-sharp fa-solid fa-check fa-fw"></i></span>
-                                                                    <span class="text">{{ $item }}</span>
+                                                                    <span class="text"><?php echo e($item); ?></span>
                                                                 </li>
-                                                            @endforeach
+                                                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                                         </ul>
                                                     </div>
                                                 </div>
-                                            @endif
+                                            <?php endif; ?>
 
-                                            @if ($service?->excluded)
+                                            <?php if($service?->excluded): ?>
                                                 <div class="col-lg-7">
                                                     <div class="tg-tour-about-list tg-tour-about-list-2 disable">
                                                         <ul>
-                                                            @foreach (json_decode($service?->excluded) as $key => $item)
+                                                            <?php $__currentLoopData = json_decode($service?->excluded); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                                                 <li>
                                                                     <span class="icon mr-10"><i
                                                                             class="fa-sharp fa-solid fa-xmark"></i></span>
                                                                     <span class="text">
-                                                                        {{ $item }}
+                                                                        <?php echo e($item); ?>
+
                                                                     </span>
                                                                 </li>
-                                                            @endforeach
+                                                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                                         </ul>
                                                     </div>
                                                 </div>
-                                            @endif
+                                            <?php endif; ?>
                                         </div>
                                     </div>
                                     <div class="tg-tour-about-border mb-40"></div>
-                                @endif
+                                <?php endif; ?>
 
                                 <div class="tg-tour-faq-wrap mb-70">
                                     <div class="d-flex align-items-center mb-15">
-                                        @if ($service?->itineraries->count() > 0)
-                                            <a href="{{ route('front.tourbooking.services.download-tour-plan', $service->slug) }}" class="tg-btn tg-btn-switch-animation mr-30">
-                                                <i class="fa-solid fa-file-pdf mr-10"></i> {{ __('translate.Download PDF') }}
+                                        <?php if($service?->itineraries->count() > 0): ?>
+                                            <a href="<?php echo e(route('front.tourbooking.services.download-tour-plan', $service->slug)); ?>" class="tg-btn tg-btn-switch-animation mr-30">
+                                                <i class="fa-solid fa-file-pdf mr-10"></i> <?php echo e(__('translate.Download PDF')); ?>
+
                                             </a>
-                                        @endif
+                                        <?php endif; ?>
                                         <h4 class="tg-tour-about-title mb-0">
-                                            {{ __('translate.Tour Plan') }}
+                                            <?php echo e(__('translate.Tour Plan')); ?>
+
                                         </h4>
                                     </div>
 
-                                    @if ($service?->tour_plan_sub_title)
+                                    <?php if($service?->tour_plan_sub_title): ?>
                                         <p class="text-capitalize lh-28 mb-20">
-                                            {{ $service?->tour_plan_sub_title }}
+                                            <?php echo e($service?->tour_plan_sub_title); ?>
+
                                         </p>
-                                    @endif
+                                    <?php endif; ?>
                                     <div class="tg-tour-about-faq-inner">
                                         <div class="tg-tour-about-faq" id="accordionExample">
-                                            @foreach ($service?->itineraries as $itinerary)
+                                            <?php $__currentLoopData = $service?->itineraries; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $itinerary): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                                 <div class="accordion-item">
                                                     <h2 class="accordion-header">
-                                                        <button @class(['accordion-button', 'collapsed' => !$loop->first]) class="accordion-button"
+                                                        <button class="<?php echo \Illuminate\Support\Arr::toCssClasses(['accordion-button', 'collapsed' => !$loop->first]); ?>" class="accordion-button"
                                                             type="button" data-bs-toggle="collapse"
-                                                            data-bs-target="#collapse_{{ $itinerary->id }}"
+                                                            data-bs-target="#collapse_<?php echo e($itinerary->id); ?>"
                                                             aria-expanded="true"
-                                                            aria-controls="collapse_{{ $itinerary->id }}">
-                                                            <span>Day-{{ $itinerary?->day_number }}</span>
-                                                            {{ $itinerary?->title }}
+                                                            aria-controls="collapse_<?php echo e($itinerary->id); ?>">
+                                                            <span>Day-<?php echo e($itinerary?->day_number); ?></span>
+                                                            <?php echo e($itinerary?->title); ?>
+
                                                         </button>
                                                     </h2>
-                                                    <div id="collapse_{{ $itinerary->id }}" @class(['accordion-collapse collapse', 'show' => $loop->first])
+                                                    <div id="collapse_<?php echo e($itinerary->id); ?>" class="<?php echo \Illuminate\Support\Arr::toCssClasses(['accordion-collapse collapse', 'show' => $loop->first]); ?>"
                                                         data-bs-parent="#accordionExample">
                                                         <div class="accordion-body">
                                                             <div class="row pb-5">
-                                                                @if ($itinerary?->image)
+                                                                <?php if($itinerary?->image): ?>
                                                                     <div class="col-md-4 mb-5">
-                                                                        <img src="{{ asset('storage/' . $itinerary->image) }}"
-                                                                            alt="{{ $itinerary->title }}"
+                                                                        <img src="<?php echo e(asset('storage/' . $itinerary->image)); ?>"
+                                                                            alt="<?php echo e($itinerary->title); ?>"
                                                                             class="itinerary-image">
                                                                     </div>
-                                                                @endif
-                                                                <div @class([ 'col-12 mb-5' => !$itinerary?->image , 'col-md-8 mb-5' => $itinerary?->image])>
+                                                                <?php endif; ?>
+                                                                <div class="<?php echo \Illuminate\Support\Arr::toCssClasses([ 'col-12 mb-5' => !$itinerary?->image , 'col-md-8 mb-5' => $itinerary?->image]); ?>">
 
-                                                                    @if ($itinerary?->description)
+                                                                    <?php if($itinerary?->description): ?>
                                                                         <div>
-                                                                            {!! $itinerary?->description !!}
-                                                                        </div>
-                                                                    @endif
+                                                                            <?php echo $itinerary?->description; ?>
 
-                                                                    @if ($itinerary?->location)
+                                                                        </div>
+                                                                    <?php endif; ?>
+
+                                                                    <?php if($itinerary?->location): ?>
                                                                         <div class="mt-3">
                                                                             <strong><i class="fa fa-map-marker"></i>
                                                                                 Location:</strong>
-                                                                            {{ $itinerary?->location }}
-                                                                        </div>
-                                                                    @endif
+                                                                            <?php echo e($itinerary?->location); ?>
 
-                                                                    @if ($itinerary?->duration)
+                                                                        </div>
+                                                                    <?php endif; ?>
+
+                                                                    <?php if($itinerary?->duration): ?>
                                                                         <div class="mt-3">
                                                                             <strong><i
                                                                                     class="fa-solid fa-business-time"></i>
                                                                                 Duration:</strong>
-                                                                            {{ $itinerary?->duration }}
-                                                                        </div>
-                                                                    @endif
+                                                                            <?php echo e($itinerary?->duration); ?>
 
-                                                                    @if ($itinerary?->meal_included)
+                                                                        </div>
+                                                                    <?php endif; ?>
+
+                                                                    <?php if($itinerary?->meal_included): ?>
                                                                         <div class="mt-2">
                                                                             <strong><i class="fa fa-utensils"></i>
                                                                                 Meal Included:</strong>
                                                                             <span class="badge bg-success">
-                                                                                {{ $itinerary?->meal_included }}
+                                                                                <?php echo e($itinerary?->meal_included); ?>
+
                                                                             </span>
                                                                         </div>
-                                                                    @endif
+                                                                    <?php endif; ?>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
-                                            @endforeach
+                                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="tg-tour-about-border mb-45"></div>
                                 <div class="tg-tour-about-map mb-40">
                                     <h4 class="tg-tour-about-title mb-15">
-                                        {{ __('translate.Location') }}
-                                    </h4>
-                                    @if ($service?->google_map_sub_title)
-                                        <p class="text-capitalize lh-28">
-                                            {{ $service?->google_map_sub_title }}
-                                        </p>
-                                    @endif
+                                        <?php echo e(__('translate.Location')); ?>
 
-                                    @if ($service?->google_map_url)
+                                    </h4>
+                                    <?php if($service?->google_map_sub_title): ?>
+                                        <p class="text-capitalize lh-28">
+                                            <?php echo e($service?->google_map_sub_title); ?>
+
+                                        </p>
+                                    <?php endif; ?>
+
+                                    <?php if($service?->google_map_url): ?>
                                         <div class="tg-tour-about-map h-100">
-                                            {!! $service?->google_map_url !!}
+                                            <?php echo $service?->google_map_url; ?>
+
                                         </div>
-                                    @endif
+                                    <?php endif; ?>
                                 </div>
 
                                 <div class="tg-tour-about-border mb-45"></div>
                                 <div class="tg-tour-about-review-wrap mb-45">
                                     <h4 class="tg-tour-about-title mb-15">
-                                        {{ __('translate.Customer Reviews') }}
+                                        <?php echo e(__('translate.Customer Reviews')); ?>
+
                                     </h4>
 
-                                    @if ($reviews->count() > 0)
+                                    <?php if($reviews->count() > 0): ?>
                                         <div class="tg-tour-about-review">
                                             <div class="head-reviews">
                                                 <div class="review-left">
                                                     <div class="review-info-inner">
                                                         <h2>
-                                                            {{ number_format($avgRating, 1) }}
+                                                            <?php echo e(number_format($avgRating, 1)); ?>
+
                                                         </h2>
                                                         <p>Based On
-                                                            {{ __($reviews->count()) }}
-                                                            {{ __($reviews->count() > 1 ? __('translate.Reviews') : __('translate.Review')) }}
+                                                            <?php echo e(__($reviews->count())); ?>
+
+                                                            <?php echo e(__($reviews->count() > 1 ? __('translate.Reviews') : __('translate.Review'))); ?>
+
                                                         </p>
                                                     </div>
                                                 </div>
                                                 <div class="review-right">
                                                     <div class="review-progress">
-                                                        @foreach ($averageRatings as $item)
+                                                        <?php $__currentLoopData = $averageRatings; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                                             <div class="item-review-progress">
                                                                 <div class="text-rv-progress">
-                                                                    <p>{{ $item['category'] }}</p>
+                                                                    <p><?php echo e($item['category']); ?></p>
                                                                 </div>
                                                                 <div class="bar-rv-progress">
                                                                     <div class="progress">
                                                                         <div class="progress-bar"
-                                                                            style="width: {{ $item['percent'] }}%">
+                                                                            style="width: <?php echo e($item['percent']); ?>%">
                                                                         </div>
                                                                     </div>
                                                                 </div>
                                                                 <div class="text-avarage">
-                                                                    <p>{{ $item['average'] }}/5</p>
+                                                                    <p><?php echo e($item['average']); ?>/5</p>
                                                                 </div>
                                                             </div>
-                                                        @endforeach
+                                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    @endif
+                                    <?php endif; ?>
 
                                 </div>
                                 <div class="tg-tour-about-border mb-35"></div>
                                 <div class="tg-tour-about-cus-review-wrap mb-25">
                                     <h4 class="tg-tour-about-title mb-40">
-                                        {{ __($reviews->count()) }}
-                                        {{ __($reviews->count() > 1 ? __('translate.Reviews') : __('translate.Review')) }}
+                                        <?php echo e(__($reviews->count())); ?>
+
+                                        <?php echo e(__($reviews->count() > 1 ? __('translate.Reviews') : __('translate.Review'))); ?>
+
                                     </h4>
                                     <ul>
-                                        @forelse ($paginatedReviews as $review)
+                                        <?php $__empty_1 = true; $__currentLoopData = $paginatedReviews; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $review): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
                                             <li>
                                                 <div class="tg-tour-about-cus-review d-flex mb-40">
                                                     <div class="tg-tour-about-cus-review-thumb">
-                                                        <img src="{{ asset($review->user->image ?? 'frontend/assets/img/shape/placeholder.png') }}"
-                                                            alt="{{ $review->user->name }}">
+                                                        <img src="<?php echo e(asset($review->user->image ?? 'frontend/assets/img/shape/placeholder.png')); ?>"
+                                                            alt="<?php echo e($review->user->name); ?>">
                                                     </div>
                                                     <div>
                                                         <div
                                                             class="tg-tour-about-cus-name mb-5 d-flex align-items-center justify-content-between flex-wrap">
                                                             <h6 class="mr-10 mb-10 d-inline-block">
-                                                                {{ $review->user->name }}
+                                                                <?php echo e($review->user->name); ?>
+
                                                                 <span>-
-                                                                    {{ \Carbon\Carbon::parse($review->created_at)->format('d M, Y . h:i A') }}
+                                                                    <?php echo e(\Carbon\Carbon::parse($review->created_at)->format('d M, Y . h:i A')); ?>
+
                                                                 </span>
                                                             </h6>
                                                             <span
                                                                 class="tg-tour-about-cus-review-star mb-10 d-inline-block">
-                                                                @foreach (range(1, 5) as $star)
+                                                                <?php $__currentLoopData = range(1, 5); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $star): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                                                     <i
-                                                                        class="fa-sharp fa-solid fa-star @if ($review->rating >= $star) active @endif"></i>
-                                                                @endforeach
+                                                                        class="fa-sharp fa-solid fa-star <?php if($review->rating >= $star): ?> active <?php endif; ?>"></i>
+                                                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
 
                                                             </span>
                                                         </div>
                                                         <p class="text-capitalize lh-28 mb-10">
-                                                            {{ $review->review }}
+                                                            <?php echo e($review->review); ?>
+
                                                         </p>
                                                     </div>
                                                 </div>
                                                 <div class="tg-tour-about-border mb-40"></div>
                                             </li>
-                                        @empty
-                                            <h5 class="text-center">{{ __('translate.No Review Found') }}</h5>
-                                        @endforelse
+                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
+                                            <h5 class="text-center"><?php echo e(__('translate.No Review Found')); ?></h5>
+                                        <?php endif; ?>
                                     </ul>
-                                    @include('components.front.custom-pagination', [
+                                    <?php echo $__env->make('components.front.custom-pagination', [
                                         'items' => $paginatedReviews,
-                                    ])
+                                    ], \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
                                 </div>
                                 <div id="reviewForm" x-data="reviewForm()"
                                     class="tg-tour-about-review-form-wrap mb-45">
-                                    <h4 class="tg-tour-about-title mb-5">{{ __('translate.Leave a Reply') }}</h4>
+                                    <h4 class="tg-tour-about-title mb-5"><?php echo e(__('translate.Leave a Reply')); ?></h4>
                                     <div class="tg-tour-about-rating-category mb-20">
                                         <ul>
                                             <template x-for="(category, index) in categories" :key="category.name">
@@ -553,12 +582,13 @@
                                     </div>
                                     <div class="tg-tour-about-review-form">
                                         <form @submit.prevent="submitForm" method="POST">
-                                            @csrf
+                                            <?php echo csrf_field(); ?>
                                             <div class="row">
                                                 <div class="col-lg-12">
                                                     <textarea x-model="message" class="textarea mb-5" placeholder="Write Message"></textarea>
                                                     <button type="submit" class="tg-btn tg-btn-switch-animation">
-                                                        {{ __('translate.Submit Review') }}
+                                                        <?php echo e(__('translate.Submit Review')); ?>
+
                                                     </button>
                                                 </div>
                                             </div>
@@ -571,15 +601,15 @@
                     </div>
                     <div class="col-xl-3 col-lg-4">
                         <div x-data="bookingForm()" class="tg-tour-about-sidebar top-sticky mb-50">
-                            <form action="{{ route('front.tourbooking.book.checkout.view') }}">
+                            <form action="<?php echo e(route('front.tourbooking.book.checkout.view')); ?>">
                                 <h4 class="tg-tour-about-title title-2 mb-15">Book This Tour</h4>
 
-                                <input type="hidden" name="service_id" value="{{ $service->id }}">
+                                <input type="hidden" name="service_id" value="<?php echo e($service->id); ?>">
 
                                 <div class="tg-booking-form-parent-inner mb-10">
                                     <div class="tg-tour-about-date p-relative">
                                         <input required class="input" name="check_in_date" type="text"
-                                            placeholder="When (Date)" value="{{ now()->format('Y-m-d') }}">
+                                            placeholder="When (Date)" value="<?php echo e(now()->format('Y-m-d')); ?>">
                                         <span class="calender">
                                             <!-- calendar icon -->
                                         </span>
@@ -590,7 +620,7 @@
                                     <div id="availability-info" class="mt-2" style="display: none;"></div>
                                 </div>
 
-                                @if ($service->availability_periods && $service->availability_periods->count() > 0)
+                                <?php if($service->availability_periods && $service->availability_periods->count() > 0): ?>
                                     <div class="tg-tour-about-time mb-10">
                                         <span class="time mb-10 d-block">Available Dates:</span>
                                         <div class="availability-date-picker">
@@ -604,23 +634,23 @@
                                                         <input type="text" id="period-search" placeholder="Search dates...">
                                                     </div>
                                                     <div class="availability-dropdown-list" id="availability-dropdown-list">
-                                                        @foreach ($service->availability_periods as $period)
-                                                            @php
+                                                        <?php $__currentLoopData = $service->availability_periods; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $period): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                                            <?php
                                                                 $startDate = \Carbon\Carbon::parse($period->start_date);
                                                                 $endDate = \Carbon\Carbon::parse($period->end_date);
                                                                 $days = $startDate->diffInDays($endDate) + 1;
-                                                            @endphp
-                                                            <div class="availability-period-option" data-period-id="{{ $period->id }}" data-start-date="{{ $period->start_date }}" data-end-date="{{ $period->end_date }}" data-days="{{ $days }}">
+                                                            ?>
+                                                            <div class="availability-period-option" data-period-id="<?php echo e($period->id); ?>" data-start-date="<?php echo e($period->start_date); ?>" data-end-date="<?php echo e($period->end_date); ?>" data-days="<?php echo e($days); ?>">
                                                                 <div class="period-dates">
-                                                                    <span class="period-start">{{ \Carbon\Carbon::parse($period->start_date)->format('d M') }}</span>
+                                                                    <span class="period-start"><?php echo e(\Carbon\Carbon::parse($period->start_date)->format('d M')); ?></span>
                                                                     <span class="period-separator">→</span>
-                                                                    <span class="period-end">{{ \Carbon\Carbon::parse($period->end_date)->format('d M Y') }}</span>
+                                                                    <span class="period-end"><?php echo e(\Carbon\Carbon::parse($period->end_date)->format('d M Y')); ?></span>
                                                                 </div>
                                                                 <div class="period-details">
-                                                                    <span class="period-days"><i class="fa-solid fa-calendar-days"></i> {{ $days }} {{ $days == 1 ? 'day' : 'days' }}</span>
+                                                                    <span class="period-days"><i class="fa-solid fa-calendar-days"></i> <?php echo e($days); ?> <?php echo e($days == 1 ? 'day' : 'days'); ?></span>
                                                                 </div>
                                                             </div>
-                                                        @endforeach
+                                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                                     </div>
                                                 </div>
                                             </div>
@@ -628,7 +658,7 @@
                                             <div id="period-info" class="period-info mt-2"></div>
                                         </div>
                                     </div>
-                                @endif
+                                <?php endif; ?>
 
                                 <div class="tg-tour-about-border-doted mb-15"></div>
 
@@ -639,8 +669,9 @@
                                         <div class="tg-tour-about-tickets-adult">
                                             <span>Adult</span>
                                             <p class="mb-0">(18+ years)
-                                                <span>{!! $service->adult_price_display !!}</span>
-                                                {!! $service->adult_discount_badge !!}
+                                                <span><?php echo $service->adult_price_display; ?></span>
+                                                <?php echo $service->adult_discount_badge; ?>
+
                                             </p>
                                         </div>
                                         <div class="tg-tour-about-tickets-quantity">
@@ -657,8 +688,9 @@
                                         <div class="tg-tour-about-tickets-adult">
                                             <span>Children </span>
                                             <p class="mb-0">(13-17 years)
-                                                <span>{!! $service->child_price_display !!}</span>
-                                                {!! $service->child_discount_badge !!}
+                                                <span><?php echo $service->child_price_display; ?></span>
+                                                <?php echo $service->child_discount_badge; ?>
+
                                             </p>
                                         </div>
                                         <div class="tg-tour-about-tickets-quantity">
@@ -675,30 +707,31 @@
                                 <div class="tg-tour-about-border-doted mb-15"></div>
 
 
-                                @if ($service->extraCharges->count() > 0)
+                                <?php if($service->extraCharges->count() > 0): ?>
                                     <div class="tg-tour-about-extra mb-10">
                                         <span class="tg-tour-about-sidebar-title mb-10 d-inline-block">Add Extra:</span>
                                         <div class="tg-filter-list">
                                             <ul>
-                                                @foreach ($service->extraCharges as $key => $extra)
+                                                <?php $__currentLoopData = $service->extraCharges; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $extra): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                                     <li>
                                                         <div class="checkbox d-flex">
-                                                            <input name="extras[]" value="{{ $extra->id }}"
+                                                            <input name="extras[]" value="<?php echo e($extra->id); ?>"
                                                                 class="tg-checkbox" type="checkbox"
-                                                                x-model="extras.charge_{{ $key }}"
-                                                                id="charge_{{ $key }}">
-                                                            <label for="charge_{{ $key }}" class="tg-label">
-                                                                {{ $extra->name }}
+                                                                x-model="extras.charge_<?php echo e($key); ?>"
+                                                                id="charge_<?php echo e($key); ?>">
+                                                            <label for="charge_<?php echo e($key); ?>" class="tg-label">
+                                                                <?php echo e($extra->name); ?>
+
                                                             </label>
                                                         </div>
-                                                        <span class="quantity">{{ currency($extra->price) }}</span>
+                                                        <span class="quantity"><?php echo e(currency($extra->price)); ?></span>
                                                     </li>
-                                                @endforeach
+                                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                             </ul>
                                         </div>
                                     </div>
                                     <div class="tg-tour-about-border-doted mb-15"></div>
-                                @endif
+                                <?php endif; ?>
 
                                 <div
                                     class="tg-tour-about-coast d-flex align-items-center flex-wrap justify-content-between mb-20">
@@ -715,14 +748,14 @@
         </div>
         <!-- tg-tour-about-end -->
 
-        @include('tourbooking::front.services.popular-services')
+        <?php echo $__env->make('tourbooking::front.services.popular-services', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
 
     </main>
     <!-- main-area-end -->
-@endsection
+<?php $__env->stopSection(); ?>
 
 
-@push('js_section')
+<?php $__env->startPush('js_section'); ?>
     <script>
         (function($) {
             "use strict";
@@ -736,7 +769,7 @@
                 });
 
                 // Extract availability periods from PHP data
-                const availabilityPeriods = @json($service->availability_periods ?? []);
+                const availabilityPeriods = <?php echo json_encode($service->availability_periods ?? [], 15, 512) ?>;
                 const availabilityPeriodsMap = {};
 
                 // Create a map of period id -> period details for quick lookup
@@ -857,9 +890,9 @@
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <script>
         // Get currency format from PHP
-        const currencyFormat = '{{ currency(0) }}';
+        const currencyFormat = '<?php echo e(currency(0)); ?>';
         const currencySymbol = currencyFormat.replace('0', '').trim();
-        const currencyRate = {{ Session::get('currency_rate', 1) }};
+        const currencyRate = <?php echo e(Session::get('currency_rate', 1)); ?>;
         
         // Function to format price with currency
         function formatCurrency(amount) {
@@ -906,7 +939,7 @@
                 submitForm() {
                     // Collect all form data
                     const data = {
-                        service_id: `{{ $service->id }}`,
+                        service_id: `<?php echo e($service->id); ?>`,
                         message: this.message,
                         ratings: this.categories.map(c => ({
                             category: c.name,
@@ -915,12 +948,12 @@
                     };
 
                     if (!data.message.trim()) {
-                        toastr.error('{{ __('Please write your review before submitting.') }}');
+                        toastr.error('<?php echo e(__('Please write your review before submitting.')); ?>');
                         return;
                     }
 
                     if (data.ratings.some(c => c.rating === 0)) {
-                        toastr.error('{{ __('Please select a rating before submitting.') }}');
+                        toastr.error('<?php echo e(__('Please select a rating before submitting.')); ?>');
                         return;
                     }
 
@@ -937,7 +970,7 @@
                 },
 
                 ajaxSubmitForm(data) {
-                    fetch(`{{ route('front.tourbooking.reviews.store') }}`, {
+                    fetch(`<?php echo e(route('front.tourbooking.reviews.store')); ?>`, {
                             method: 'POST',
                             headers: {
                                 'X-Requested-With': 'XMLHttpRequest',
@@ -958,7 +991,7 @@
                         })
                         .catch(error => {
                             console.error('Error:', error);
-                            toastr.error('{{ __('An error occurred. Please try again later.') }}');
+                            toastr.error('<?php echo e(__('An error occurred. Please try again later.')); ?>');
                         });
                 }
             };
@@ -970,17 +1003,17 @@
                     person: 1,
                     children: 0
                 },
-                pricePerAdult: {{ $service->discount_adult_price ?? $service->adult_price ?? 0 }},
-                pricePerChild: {{ $service->discount_child_price ?? $service->child_price ?? 0 }},
+                pricePerAdult: <?php echo e($service->discount_adult_price ?? $service->adult_price ?? 0); ?>,
+                pricePerChild: <?php echo e($service->discount_child_price ?? $service->child_price ?? 0); ?>,
                 extras: {
-                    @foreach ($service->extraCharges as $key => $extra)
-                        charge_{{ $key }}: false,
-                    @endforeach
+                    <?php $__currentLoopData = $service->extraCharges; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $extra): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                        charge_<?php echo e($key); ?>: false,
+                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                 },
                 extrasPrice: {
-                    @foreach ($service->extraCharges as $key => $extra)
-                        charge_{{ $key }}: {{ $extra->price ?? 0 }},
-                    @endforeach
+                    <?php $__currentLoopData = $service->extraCharges; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $extra): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                        charge_<?php echo e($key); ?>: <?php echo e($extra->price ?? 0); ?>,
+                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                 },
                 get totalCost() {
                     let total = 0;
@@ -1001,9 +1034,9 @@
             };
         }
     </script>
-@endpush
+<?php $__env->stopPush(); ?>
 
-@push('style_section')
+<?php $__env->startPush('style_section'); ?>
     <style>
         a.tg-listing-item-wishlist.active {
             color: var(--tg-theme-primary);
@@ -1263,4 +1296,6 @@
             color: #ffc107;
         }
     </style>
-@endpush
+<?php $__env->stopPush(); ?>
+
+<?php echo $__env->make('layout_inner_page', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH D:\xampp\htdocs\archive\archive\Modules/TourBooking\resources/views/front/services/service-detail.blade.php ENDPATH**/ ?>

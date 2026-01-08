@@ -35,8 +35,10 @@ final class Service extends Model
         'price_per_person',
         'price_from',
         'adult_price',
+        'adult_discount_percentage',
         'discount_adult_price',
         'child_price',
+        'child_discount_percentage',
         'discount_child_price',
         'full_price',
         'discount_price',
@@ -96,8 +98,10 @@ final class Service extends Model
         'social_links' => 'json',
         'price_per_person' => 'decimal:2',
         'adult_price' => 'decimal:2',
+        'adult_discount_percentage' => 'decimal:2',
         'discount_adult_price' => 'decimal:2',
         'child_price' => 'decimal:2',
+        'child_discount_percentage' => 'decimal:2',
         'discount_child_price' => 'decimal:2',
         'full_price' => 'decimal:2',
         'discount_price' => 'decimal:2',
@@ -263,7 +267,12 @@ final class Service extends Model
     {
         return Attribute::make(
             get: function () {
-                // Use new pricing structure: discount_adult_price with fallbacks
+                // Use new pricing structure: calculate from percentage
+                if (!empty($this->adult_price) && !empty($this->adult_discount_percentage)) {
+                    return $this->adult_price - ($this->adult_price * ($this->adult_discount_percentage / 100));
+                }
+
+                // Fallback to explicit discount_adult_price
                 if (!empty($this->discount_adult_price)) {
                     return $this->discount_adult_price;
                 }
@@ -287,22 +296,60 @@ final class Service extends Model
     }
 
     /**
+     * Get computed discounted adult price attribute.
+     */
+    protected function discountedAdultPrice(): Attribute
+    {
+        return Attribute::make(
+            get: function () {
+                if (!empty($this->adult_price) && !empty($this->adult_discount_percentage)) {
+                    return $this->adult_price - ($this->adult_price * ($this->adult_discount_percentage / 100));
+                }
+
+                return $this->discount_adult_price ?? $this->adult_price;
+            }
+        );
+    }
+
+    /**
+     * Get computed discounted child price attribute.
+     */
+    protected function discountedChildPrice(): Attribute
+    {
+        return Attribute::make(
+            get: function () {
+                if (!empty($this->child_price) && !empty($this->child_discount_percentage)) {
+                    return $this->child_price - ($this->child_price * ($this->child_discount_percentage / 100));
+                }
+
+                return $this->discount_child_price ?? $this->child_price;
+            }
+        );
+    }
+
+    /**
      * Get computed discount percentage attribute.
      */
     protected function discountPercentage(): Attribute
     {
         return Attribute::make(
             get: function () {
-                // Use new pricing structure: adult_price and discount_adult_price
-                if (empty($this->adult_price) || empty($this->discount_adult_price)) {
-                    // Fallback to old pricing structure for backward compatibility
-                    if (empty($this->full_price) || empty($this->discount_price)) {
-                        return 0;
-                    }
+                // Use new percentage-based pricing structure
+                if (!empty($this->adult_discount_percentage)) {
+                    return $this->adult_discount_percentage;
+                }
+
+                // Fallback to calculate from discount_adult_price
+                if (!empty($this->adult_price) && !empty($this->discount_adult_price)) {
+                    return round((($this->adult_price - $this->discount_adult_price) / $this->adult_price) * 100);
+                }
+
+                // Fallback to old pricing structure for backward compatibility
+                if (!empty($this->full_price) && !empty($this->discount_price)) {
                     return round((($this->full_price - $this->discount_price) / $this->full_price) * 100);
                 }
 
-                return round((($this->adult_price - $this->discount_adult_price) / $this->adult_price) * 100);
+                return 0;
             }
         );
     }
@@ -389,7 +436,13 @@ final class Service extends Model
 
     public function getPriceDisplayAttribute()
     {
-        // Use new pricing structure: adult_price and discount_adult_price
+        // Use new percentage-based pricing structure
+        if (!empty($this->adult_price) && !empty($this->adult_discount_percentage)) {
+            $discountedPrice = $this->adult_price - ($this->adult_price * ($this->adult_discount_percentage / 100));
+            return '<del>' . currency($this->adult_price) . '</del> ' . currency($discountedPrice);
+        }
+
+        // Fallback to explicit discount_adult_price
         if ($this->discount_adult_price) {
             return '<del>' . currency($this->adult_price) . '</del> ' . currency($this->discount_adult_price);
         }
@@ -400,6 +453,74 @@ final class Service extends Model
         }
 
         return currency($this->adult_price ?? $this->full_price);
+    }
+
+    /**
+     * Get price display for adults with discount badge
+     */
+    public function getAdultPriceDisplayAttribute()
+    {
+        if (!empty($this->adult_price) && !empty($this->adult_discount_percentage)) {
+            $discountedPrice = $this->adult_price - ($this->adult_price * ($this->adult_discount_percentage / 100));
+            return '<del>' . currency($this->adult_price) . '</del> ' . currency($discountedPrice);
+        }
+
+        if ($this->discount_adult_price) {
+            return '<del>' . currency($this->adult_price) . '</del> ' . currency($this->discount_adult_price);
+        }
+
+        return currency($this->adult_price);
+    }
+
+    /**
+     * Get price display for children with discount badge
+     */
+    public function getChildPriceDisplayAttribute()
+    {
+        if (!empty($this->child_price) && !empty($this->child_discount_percentage)) {
+            $discountedPrice = $this->child_price - ($this->child_price * ($this->child_discount_percentage / 100));
+            return '<del>' . currency($this->child_price) . '</del> ' . currency($discountedPrice);
+        }
+
+        if ($this->discount_child_price) {
+            return '<del>' . currency($this->child_price) . '</del> ' . currency($this->discount_child_price);
+        }
+
+        return currency($this->child_price);
+    }
+
+    /**
+     * Get discount badge HTML for adults
+     */
+    public function getAdultDiscountBadgeAttribute()
+    {
+        if (!empty($this->adult_discount_percentage)) {
+            return '<span class="badge bg-danger">' . number_format((float)$this->adult_discount_percentage, 0) . '% OFF</span>';
+        }
+
+        if (!empty($this->adult_price) && !empty($this->discount_adult_price)) {
+            $percentage = round((($this->adult_price - $this->discount_adult_price) / $this->adult_price) * 100);
+            return '<span class="badge bg-danger">' . $percentage . '% OFF</span>';
+        }
+
+        return '';
+    }
+
+    /**
+     * Get discount badge HTML for children
+     */
+    public function getChildDiscountBadgeAttribute()
+    {
+        if (!empty($this->child_discount_percentage)) {
+            return '<span class="badge bg-danger">' . number_format((float)$this->child_discount_percentage, 0) . '% OFF</span>';
+        }
+
+        if (!empty($this->child_price) && !empty($this->discount_child_price)) {
+            $percentage = round((($this->child_price - $this->discount_child_price) / $this->child_price) * 100);
+            return '<span class="badge bg-danger">' . $percentage . '% OFF</span>';
+        }
+
+        return '';
     }
 
     public function wishlists()

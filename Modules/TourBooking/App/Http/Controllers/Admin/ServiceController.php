@@ -82,6 +82,15 @@ final class ServiceController extends Controller
 
         $data = $request->validated();
 
+        // Calculate discount prices from percentages
+        if (!empty($data['adult_price']) && !empty($data['adult_discount_percentage'])) {
+            $data['discount_adult_price'] = $data['adult_price'] - ($data['adult_price'] * ($data['adult_discount_percentage'] / 100));
+        }
+        
+        if (!empty($data['child_price']) && !empty($data['child_discount_percentage'])) {
+            $data['discount_child_price'] = $data['child_price'] - ($data['child_price'] * ($data['child_discount_percentage'] / 100));
+        }
+
         // Handle JSON fields
         $jsonFields = ['included', 'excluded', 'facilities', 'rules', 'safety', 'social_links'];
         foreach ($jsonFields as $field) {
@@ -252,6 +261,15 @@ final class ServiceController extends Controller
 
         // Handle main service update only if we're editing in admin language
         if ($lang_code === admin_lang()) {
+            // Calculate discount prices from percentages
+            if (!empty($data['adult_price']) && !empty($data['adult_discount_percentage'])) {
+                $data['discount_adult_price'] = $data['adult_price'] - ($data['adult_price'] * ($data['adult_discount_percentage'] / 100));
+            }
+            
+            if (!empty($data['child_price']) && !empty($data['child_discount_percentage'])) {
+                $data['discount_child_price'] = $data['child_price'] - ($data['child_price'] * ($data['child_discount_percentage'] / 100));
+            }
+
             // Handle JSON fields - convert newline-separated strings to arrays
             $jsonFields = ['included', 'excluded', 'facilities', 'rules', 'safety', 'social_links'];
             foreach ($jsonFields as $field) {

@@ -1,15 +1,14 @@
-@extends('admin.master_layout')
-@section('title')
-    <title>{{ __('translate.Edit Service') }}</title>
-@endsection
+<?php $__env->startSection('title'); ?>
+    <title><?php echo e(__('translate.Edit Service')); ?></title>
+<?php $__env->stopSection(); ?>
 
-@section('body-header')
-    <h3 class="crancy-header__title m-0">{{ __('translate.Edit Service') }}</h3>
-    <p class="crancy-header__text">{{ __('translate.Tour Booking') }} >> {{ __('translate.Edit Service') }}</p>
-@endsection
+<?php $__env->startSection('body-header'); ?>
+    <h3 class="crancy-header__title m-0"><?php echo e(__('translate.Edit Service')); ?></h3>
+    <p class="crancy-header__text"><?php echo e(__('translate.Tour Booking')); ?> >> <?php echo e(__('translate.Edit Service')); ?></p>
+<?php $__env->stopSection(); ?>
 
-@push('style_section')
-    <link rel="stylesheet" href="{{ asset('global/select2/select2.min.css') }}">
+<?php $__env->startPush('style_section'); ?>
+    <link rel="stylesheet" href="<?php echo e(asset('global/select2/select2.min.css')); ?>">
     <style>
         /* Currency Input Field Styling */
         .crancy__item-form--currency {
@@ -78,9 +77,9 @@
             }
         }
     </style>
-@endpush
+<?php $__env->stopPush(); ?>
 
-@section('body-content')
+<?php $__env->startSection('body-content'); ?>
     <!-- crancy Dashboard -->
     <section class="crancy-adashboard crancy-show">
         <div class="container container__bscreen">
@@ -99,37 +98,38 @@
                                                 class="crancy-customer-filter__single crancy-customer-filter__single--csearch">
                                                 <div class="crancy-header__form crancy-header__form--customer">
                                                     <h4 class="crancy-product-card__title">
-                                                        {{ __('translate.Switch to language translation') }}</h4>
+                                                        <?php echo e(__('translate.Switch to language translation')); ?></h4>
                                                 </div>
                                             </div>
                                         </div>
 
                                         <div class="translation_box">
                                             <ul>
-                                                @foreach ($language_list as $language)
+                                                <?php $__currentLoopData = $language_list; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $language): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                                     <li><a
-                                                            href="{{ route('admin.tourbooking.services.edit', ['service' => $service->id, 'lang_code' => $language->lang_code]) }}">
-                                                            @if (request()->get('lang_code') == $language->lang_code)
+                                                            href="<?php echo e(route('admin.tourbooking.services.edit', ['service' => $service->id, 'lang_code' => $language->lang_code])); ?>">
+                                                            <?php if(request()->get('lang_code') == $language->lang_code): ?>
                                                                 <i class="fas fa-eye"></i>
-                                                            @else
+                                                            <?php else: ?>
                                                                 <i class="fas fa-edit"></i>
-                                                            @endif
+                                                            <?php endif; ?>
 
-                                                            {{ $language->lang_name }}
+                                                            <?php echo e($language->lang_name); ?>
+
                                                         </a></li>
-                                                @endforeach
+                                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                             </ul>
 
                                             <div class="alert alert-secondary" role="alert">
 
-                                                @php
+                                                <?php
                                                     $edited_language = $language_list
                                                         ->where('lang_code', request()->get('lang_code'))
                                                         ->first();
-                                                @endphp
+                                                ?>
 
-                                                <p>{{ __('translate.Your editing mode') }} :
-                                                    <b>{{ isset($edited_language) ? $edited_language->lang_name : 'Default' }}</b>
+                                                <p><?php echo e(__('translate.Your editing mode')); ?> :
+                                                    <b><?php echo e(isset($edited_language) ? $edited_language->lang_name : 'Default'); ?></b>
                                                 </p>
                                             </div>
                                         </div>
@@ -153,221 +153,318 @@
                     <div class="crancy-body">
                         <div class="crancy-dsinner">
                             <form
-                                action="{{ route('admin.tourbooking.services.update', ['service' => $service->id, 'lang_code' => $lang_code]) }}"
+                                action="<?php echo e(route('admin.tourbooking.services.update', ['service' => $service->id, 'lang_code' => $lang_code])); ?>"
                                 method="POST" enctype="multipart/form-data">
-                                @csrf
-                                @method('PUT')
-                                <input type="hidden" name="translate_id" value="{{ $translation->id ?? '' }}">
-                                <input type="hidden" name="lang_code" value="{{ $lang_code }}">
+                                <?php echo csrf_field(); ?>
+                                <?php echo method_field('PUT'); ?>
+                                <input type="hidden" name="translate_id" value="<?php echo e($translation->id ?? ''); ?>">
+                                <input type="hidden" name="lang_code" value="<?php echo e($lang_code); ?>">
 
                                 <div class="row">
                                     <div class="col-12 mg-top-30">
                                         <div class="crancy-product-card">
                                             <div class="create_new_btn_inline_box">
                                                 <h4 class="crancy-product-card__title">
-                                                    {{ __('translate.Basic Information') }}</h4>
-                                                <a href="{{ route('admin.tourbooking.services.index') }}"
+                                                    <?php echo e(__('translate.Basic Information')); ?></h4>
+                                                <a href="<?php echo e(route('admin.tourbooking.services.index')); ?>"
                                                     class="crancy-btn"><i class="fa fa-list"></i>
-                                                    {{ __('translate.Service List') }}</a>
+                                                    <?php echo e(__('translate.Service List')); ?></a>
                                             </div>
 
                                             <div class="row mg-top-30">
                                                 <div class="col-lg-6 col-md-6 col-12">
                                                     <div class="crancy__item-form--group mg-top-form-20">
-                                                        <label class="crancy__item-label">{{ __('translate.Title') }}
+                                                        <label class="crancy__item-label"><?php echo e(__('translate.Title')); ?>
+
                                                             *</label>
                                                         <input class="crancy__item-input" type="text" name="title"
                                                             id="title"
-                                                            value="{{ old('title', $translation->title ?? $service->title) }}"
+                                                            value="<?php echo e(old('title', $translation->title ?? $service->title)); ?>"
                                                             required>
-                                                        @error('title')
-                                                            <span class="text-danger">{{ $message }}</span>
-                                                        @enderror
+                                                        <?php $__errorArgs = ['title'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                                            <span class="text-danger"><?php echo e($message); ?></span>
+                                                        <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                                                     </div>
                                                 </div>
 
                                                 <div class="col-lg-6 col-md-6 col-12">
                                                     <div class="crancy__item-form--group mg-top-form-20">
                                                         <label
-                                                            class="crancy__item-label">{{ __('translate.Slug') }}</label>
+                                                            class="crancy__item-label"><?php echo e(__('translate.Slug')); ?></label>
                                                         <input class="crancy__item-input" type="text" name="slug"
-                                                            id="slug" value="{{ old('slug', $service->slug) }}">
-                                                        @error('slug')
-                                                            <span class="text-danger">{{ $message }}</span>
-                                                        @enderror
+                                                            id="slug" value="<?php echo e(old('slug', $service->slug)); ?>">
+                                                        <?php $__errorArgs = ['slug'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                                            <span class="text-danger"><?php echo e($message); ?></span>
+                                                        <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                                                     </div>
                                                 </div>
 
                                                 <div class="col-lg-4 col-md-6 col-12">
                                                     <div class="crancy__item-form--group mg-top-form-20">
                                                         <label
-                                                            class="crancy__item-label">{{ __('translate.Service Type') }}</label>
+                                                            class="crancy__item-label"><?php echo e(__('translate.Service Type')); ?></label>
                                                         <select class="crancy__item-input" name="service_type_id" required>
-                                                            <option value="">{{ __('translate.Select Type') }}
+                                                            <option value=""><?php echo e(__('translate.Select Type')); ?>
+
                                                             </option>
-                                                            @foreach ($serviceTypes as $type)
-                                                                <option value="{{ $type->id }}"
-                                                                    {{ old('service_type_id', $service->service_type_id) == $type->id ? 'selected' : '' }}>
-                                                                    {{ $type->name }}
+                                                            <?php $__currentLoopData = $serviceTypes; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $type): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                                                <option value="<?php echo e($type->id); ?>"
+                                                                    <?php echo e(old('service_type_id', $service->service_type_id) == $type->id ? 'selected' : ''); ?>>
+                                                                    <?php echo e($type->name); ?>
+
                                                                 </option>
-                                                            @endforeach
+                                                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                                         </select>
-                                                        @error('service_type_id')
-                                                            <span class="text-danger">{{ $message }}</span>
-                                                        @enderror
+                                                        <?php $__errorArgs = ['service_type_id'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                                            <span class="text-danger"><?php echo e($message); ?></span>
+                                                        <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                                                     </div>
                                                 </div>
 
                                                 <div class="col-lg-4 col-md-6 col-12">
                                                     <div class="crancy__item-form--group mg-top-form-20">
                                                         <label
-                                                            class="crancy__item-label">{{ __('translate.Select Destination') }}</label>
+                                                            class="crancy__item-label"><?php echo e(__('translate.Select Destination')); ?></label>
                                                         <select class="crancy__item-input" name="destination_id">
-                                                            <option value="">{{ __('translate.Select Destination') }}
+                                                            <option value=""><?php echo e(__('translate.Select Destination')); ?>
+
                                                             </option>
-                                                            @foreach ($destinations as $destination)
-                                                                <option value="{{ $destination->id }}"
-                                                                    {{ old('destination_id', $service->destination_id) == $destination->id ? 'selected' : '' }}>
-                                                                    {{ $destination->name }}
+                                                            <?php $__currentLoopData = $destinations; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $destination): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                                                <option value="<?php echo e($destination->id); ?>"
+                                                                    <?php echo e(old('destination_id', $service->destination_id) == $destination->id ? 'selected' : ''); ?>>
+                                                                    <?php echo e($destination->name); ?>
+
                                                                 </option>
-                                                            @endforeach
+                                                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                                         </select>
-                                                        @error('destination_id')
-                                                            <span class="text-danger">{{ $message }}</span>
-                                                        @enderror
+                                                        <?php $__errorArgs = ['destination_id'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                                            <span class="text-danger"><?php echo e($message); ?></span>
+                                                        <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                                                     </div>
                                                 </div>
 
                                                 <div class="col-lg-4 col-md-6 col-12">
                                                     <div class="crancy__item-form--group mg-top-form-20">
                                                         <label
-                                                            class="crancy__item-label">{{ __('translate.Select Hotels') }}</label>
+                                                            class="crancy__item-label"><?php echo e(__('translate.Select Hotels')); ?></label>
                                                         <select class="crancy__item-input select2" name="hotels[]" multiple>
-                                                            @foreach ($hotels as $hotel)
-                                                                <option value="{{ $hotel->id }}"
-                                                                    @selected(in_array($hotel->id, old('hotels', $service->hotels->pluck('id')->toArray())))>
-                                                                    {{ $hotel->title }}
+                                                            <?php $__currentLoopData = $hotels; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $hotel): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                                                <option value="<?php echo e($hotel->id); ?>"
+                                                                    <?php if(in_array($hotel->id, old('hotels', $service->hotels->pluck('id')->toArray()))): echo 'selected'; endif; ?>>
+                                                                    <?php echo e($hotel->title); ?>
+
                                                                 </option>
-                                                            @endforeach
+                                                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                                         </select>
-                                                        @error('hotels')
-                                                            <span class="text-danger">{{ $message }}</span>
-                                                        @enderror
+                                                        <?php $__errorArgs = ['hotels'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                                            <span class="text-danger"><?php echo e($message); ?></span>
+                                                        <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                                                     </div>
                                                 </div>
 
                                                 <div class="col-lg-4 col-md-6 col-12">
                                                     <div class="crancy__item-form--group mg-top-form-20">
                                                         <label
-                                                            class="crancy__item-label">{{ __('translate.Location') }}</label>
+                                                            class="crancy__item-label"><?php echo e(__('translate.Location')); ?></label>
                                                         <input class="crancy__item-input" type="text" name="location"
-                                                            value="{{ old('location', $service->location) }}">
-                                                        @error('location')
-                                                            <span class="text-danger">{{ $message }}</span>
-                                                        @enderror
+                                                            value="<?php echo e(old('location', $service->location)); ?>">
+                                                        <?php $__errorArgs = ['location'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                                            <span class="text-danger"><?php echo e($message); ?></span>
+                                                        <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                                                     </div>
                                                 </div>
 
                                                 <div class="col-lg-6 col-md-6 col-12">
                                                     <div class="crancy__item-form--group mg-top-form-20">
                                                         <label
-                                                            class="crancy__item-label">{{ __('translate.Duration') }}</label>
+                                                            class="crancy__item-label"><?php echo e(__('translate.Duration')); ?></label>
                                                         <input class="crancy__item-input" type="text" name="duration"
-                                                            value="{{ old('duration', $service->duration) }}"
+                                                            value="<?php echo e(old('duration', $service->duration)); ?>"
                                                             placeholder="e.g. 3 hours, 2 days">
-                                                        @error('duration')
-                                                            <span class="text-danger">{{ $message }}</span>
-                                                        @enderror
+                                                        <?php $__errorArgs = ['duration'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                                            <span class="text-danger"><?php echo e($message); ?></span>
+                                                        <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                                                     </div>
                                                 </div>
 
                                                 <div class="col-lg-6 col-md-6 col-12">
                                                     <div class="crancy__item-form--group mg-top-form-20">
                                                         <label
-                                                            class="crancy__item-label">{{ __('translate.Group Size') }}</label>
+                                                            class="crancy__item-label"><?php echo e(__('translate.Group Size')); ?></label>
                                                         <input class="crancy__item-input" type="text"
                                                             name="group_size"
-                                                            value="{{ old('group_size', $service->group_size) }}"
+                                                            value="<?php echo e(old('group_size', $service->group_size)); ?>"
                                                             placeholder="e.g. Up to 10 people">
-                                                        @error('group_size')
-                                                            <span class="text-danger">{{ $message }}</span>
-                                                        @enderror
+                                                        <?php $__errorArgs = ['group_size'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                                            <span class="text-danger"><?php echo e($message); ?></span>
+                                                        <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                                                     </div>
                                                 </div>
 
                                                 <div class="col-lg-4 col-md-6 col-12">
                                                     <div class="crancy__item-form--group mg-top-form-20">
                                                         <label
-                                                            class="crancy__item-label">{{ __('translate.Room Count') }}</label>
+                                                            class="crancy__item-label"><?php echo e(__('translate.Room Count')); ?></label>
                                                         <input class="crancy__item-input" type="number"
                                                             name="room_count"
-                                                            value="{{ old('room_count', $service->room_count) }}"
+                                                            value="<?php echo e(old('room_count', $service->room_count)); ?>"
                                                             placeholder="1">
-                                                        @error('room_count')
-                                                            <span class="text-danger">{{ $message }}</span>
-                                                        @enderror
+                                                        <?php $__errorArgs = ['room_count'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                                            <span class="text-danger"><?php echo e($message); ?></span>
+                                                        <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                                                     </div>
                                                 </div>
 
                                                 <div class="col-lg-4 col-md-6 col-12">
                                                     <div class="crancy__item-form--group mg-top-form-20">
                                                         <label
-                                                            class="crancy__item-label">{{ __('translate.Adult Count') }}</label>
+                                                            class="crancy__item-label"><?php echo e(__('translate.Adult Count')); ?></label>
                                                         <input class="crancy__item-input" type="number"
                                                             name="adult_count"
-                                                            value="{{ old('adult_count', $service->adult_count) }}"
+                                                            value="<?php echo e(old('adult_count', $service->adult_count)); ?>"
                                                             placeholder="1">
-                                                        @error('adult_count')
-                                                            <span class="text-danger">{{ $message }}</span>
-                                                        @enderror
+                                                        <?php $__errorArgs = ['adult_count'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                                            <span class="text-danger"><?php echo e($message); ?></span>
+                                                        <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                                                     </div>
                                                 </div>
 
                                                 <div class="col-lg-4 col-md-6 col-12">
                                                     <div class="crancy__item-form--group mg-top-form-20">
                                                         <label
-                                                            class="crancy__item-label">{{ __('translate.Children Count') }}</label>
+                                                            class="crancy__item-label"><?php echo e(__('translate.Children Count')); ?></label>
                                                         <input class="crancy__item-input" type="number"
                                                             name="children_count"
-                                                            value="{{ old('children_count', $service->children_count) }}"
+                                                            value="<?php echo e(old('children_count', $service->children_count)); ?>"
                                                             placeholder="0">
-                                                        @error('children_count')
-                                                            <span class="text-danger">{{ $message }}</span>
-                                                        @enderror
+                                                        <?php $__errorArgs = ['children_count'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                                            <span class="text-danger"><?php echo e($message); ?></span>
+                                                        <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                                                     </div>
                                                 </div>
 
                                                 <div class="col-12">
                                                     <div class="crancy__item-form--group mg-top-form-20">
                                                         <label
-                                                            class="crancy__item-label">{{ __('translate.Short Description') }}</label>
-                                                        <textarea class="crancy__item-input summernote" name="short_description" rows="8">{{ old('short_description', $translation->short_description ?? $service->short_description) }}</textarea>
-                                                        @error('short_description')
-                                                            <span class="text-danger">{{ $message }}</span>
-                                                        @enderror
+                                                            class="crancy__item-label"><?php echo e(__('translate.Short Description')); ?></label>
+                                                        <textarea class="crancy__item-input summernote" name="short_description" rows="8"><?php echo e(old('short_description', $translation->short_description ?? $service->short_description)); ?></textarea>
+                                                        <?php $__errorArgs = ['short_description'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                                            <span class="text-danger"><?php echo e($message); ?></span>
+                                                        <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                                                     </div>
                                                 </div>
 
                                                 <div class="col-12">
                                                     <div class="crancy__item-form--group mg-top-form-20">
                                                         <label
-                                                            class="crancy__item-label">{{ __('translate.Description') }}</label>
-                                                        <textarea class="crancy__item-input summernote" name="description" rows="15">{{ old('description', $translation->description ?? $service->description) }}</textarea>
-                                                        @error('description')
-                                                            <span class="text-danger">{{ $message }}</span>
-                                                        @enderror
+                                                            class="crancy__item-label"><?php echo e(__('translate.Description')); ?></label>
+                                                        <textarea class="crancy__item-input summernote" name="description" rows="15"><?php echo e(old('description', $translation->description ?? $service->description)); ?></textarea>
+                                                        <?php $__errorArgs = ['description'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                                            <span class="text-danger"><?php echo e($message); ?></span>
+                                                        <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                                                     </div>
                                                 </div>
 
                                                 <div class="col-12">
                                                     <div class="crancy__item-form--group mg-top-form-20">
                                                         <label
-                                                            class="crancy__item-label">{{ __('translate.Status') }}</label>
+                                                            class="crancy__item-label"><?php echo e(__('translate.Status')); ?></label>
                                                         <div
                                                             class="crancy-ptabs__notify-switch crancy-ptabs__notify-switch--two">
                                                             <label class="crancy__item-switch">
                                                                 <input name="status" type="checkbox" value="1"
-                                                                    {{ old('status', $service->status) ? 'checked' : '' }}>
+                                                                    <?php echo e(old('status', $service->status) ? 'checked' : ''); ?>>
                                                                 <span
                                                                     class="crancy__item-switch--slide crancy__item-switch--round"></span>
                                                             </label>
@@ -380,81 +477,110 @@
 
                                     <div class="col-12 mg-top-30">
                                         <div class="crancy-product-card">
-                                            <h4 class="crancy-product-card__title">{{ __('translate.Pricing Details') }}
+                                            <h4 class="crancy-product-card__title"><?php echo e(__('translate.Pricing Details')); ?>
+
                                             </h4>
 
                                             <div class="row mg-top-30">
                                                 <div class="col-lg-6 col-md-6 col-12">
                                                     <div class="crancy__item-form--group mg-top-form-20">
                                                         <label
-                                                            class="crancy__item-label">{{ __('translate.Adult Price') }}</label>
+                                                            class="crancy__item-label"><?php echo e(__('translate.Adult Price')); ?></label>
                                                         <div class="crancy__item-form--currency">
                                                             <input class="crancy__item-input" type="number"
                                                                 step="0.01" name="adult_price"
-                                                                value="{{ old('adult_price', $service->adult_price) }}">
+                                                                value="<?php echo e(old('adult_price', $service->adult_price)); ?>">
                                                             <div class="crancy__currency-icon">
-                                                                <span>{{ config('settings.currency_icon', '$') }}</span>
+                                                                <span><?php echo e(config('settings.currency_icon', '$')); ?></span>
                                                             </div>
                                                         </div>
-                                                        @error('adult_price')
-                                                            <span class="text-danger">{{ $message }}</span>
-                                                        @enderror
+                                                        <?php $__errorArgs = ['adult_price'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                                            <span class="text-danger"><?php echo e($message); ?></span>
+                                                        <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                                                     </div>
                                                 </div>
 
                                                 <div class="col-lg-6 col-md-6 col-12">
                                                     <div class="crancy__item-form--group mg-top-form-20">
                                                         <label
-                                                            class="crancy__item-label">{{ __('translate.Adult Discount Percentage') }} (%)</label>
+                                                            class="crancy__item-label"><?php echo e(__('translate.Adult Discount Percentage')); ?> (%)</label>
                                                         <div class="crancy__item-form--currency">
                                                             <input class="crancy__item-input" type="number"
                                                                 step="0.01" min="0" max="100" name="adult_discount_percentage"
-                                                                value="{{ old('adult_discount_percentage', $service->adult_discount_percentage) }}">
+                                                                value="<?php echo e(old('adult_discount_percentage', $service->adult_discount_percentage)); ?>">
                                                             <div class="crancy__currency-icon">
                                                                 <span>%</span>
                                                             </div>
                                                         </div>
                                                         <small class="text-muted">Leave empty for no discount</small>
-                                                        @error('adult_discount_percentage')
-                                                            <span class="text-danger">{{ $message }}</span>
-                                                        @enderror
+                                                        <?php $__errorArgs = ['adult_discount_percentage'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                                            <span class="text-danger"><?php echo e($message); ?></span>
+                                                        <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                                                     </div>
                                                 </div>
 
                                                 <div class="col-lg-6 col-md-6 col-12">
                                                     <div class="crancy__item-form--group mg-top-form-20">
                                                         <label
-                                                            class="crancy__item-label">{{ __('translate.Child Price') }}</label>
+                                                            class="crancy__item-label"><?php echo e(__('translate.Child Price')); ?></label>
                                                         <div class="crancy__item-form--currency">
                                                             <input class="crancy__item-input" type="number"
                                                                 step="0.01" name="child_price"
-                                                                value="{{ old('child_price', $service->child_price) }}">
+                                                                value="<?php echo e(old('child_price', $service->child_price)); ?>">
                                                             <div class="crancy__currency-icon">
-                                                                <span>{{ config('settings.currency_icon', '$') }}</span>
+                                                                <span><?php echo e(config('settings.currency_icon', '$')); ?></span>
                                                             </div>
                                                         </div>
-                                                        @error('child_price')
-                                                            <span class="text-danger">{{ $message }}</span>
-                                                        @enderror
+                                                        <?php $__errorArgs = ['child_price'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                                            <span class="text-danger"><?php echo e($message); ?></span>
+                                                        <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                                                     </div>
                                                 </div>
 
                                                 <div class="col-lg-6 col-md-6 col-12">
                                                     <div class="crancy__item-form--group mg-top-form-20">
                                                         <label
-                                                            class="crancy__item-label">{{ __('translate.Child Discount Percentage') }} (%)</label>
+                                                            class="crancy__item-label"><?php echo e(__('translate.Child Discount Percentage')); ?> (%)</label>
                                                         <div class="crancy__item-form--currency">
                                                             <input class="crancy__item-input" type="number"
                                                                 step="0.01" min="0" max="100" name="child_discount_percentage"
-                                                                value="{{ old('child_discount_percentage', $service->child_discount_percentage) }}">
+                                                                value="<?php echo e(old('child_discount_percentage', $service->child_discount_percentage)); ?>">
                                                             <div class="crancy__currency-icon">
                                                                 <span>%</span>
                                                             </div>
                                                         </div>
                                                         <small class="text-muted">Leave empty for no discount</small>
-                                                        @error('child_discount_percentage')
-                                                            <span class="text-danger">{{ $message }}</span>
-                                                        @enderror
+                                                        <?php $__errorArgs = ['child_discount_percentage'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                                            <span class="text-danger"><?php echo e($message); ?></span>
+                                                        <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                                                     </div>
                                                 </div>
                                             </div>
@@ -464,76 +590,105 @@
                                     <div class="col-12 mg-top-30">
                                         <div class="crancy-product-card">
                                             <h4 class="crancy-product-card__title">
-                                                {{ __('translate.Additional Information') }}</h4>
+                                                <?php echo e(__('translate.Additional Information')); ?></h4>
 
                                             <div class="row mg-top-30">
                                                 <div class="col-lg-6 col-md-6 col-12">
                                                     <div class="crancy__item-form--group mg-top-form-20">
                                                         <label
-                                                            class="crancy__item-label">{{ __('translate.Check-in Time') }}</label>
+                                                            class="crancy__item-label"><?php echo e(__('translate.Check-in Time')); ?></label>
                                                         <input class="crancy__item-input" type="text"
                                                             name="check_in_time"
-                                                            value="{{ old('check_in_time', $service->check_in_time) }}"
+                                                            value="<?php echo e(old('check_in_time', $service->check_in_time)); ?>"
                                                             placeholder="e.g. 14:00">
-                                                        @error('check_in_time')
-                                                            <span class="text-danger">{{ $message }}</span>
-                                                        @enderror
+                                                        <?php $__errorArgs = ['check_in_time'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                                            <span class="text-danger"><?php echo e($message); ?></span>
+                                                        <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                                                     </div>
                                                 </div>
 
                                                 <div class="col-lg-6 col-md-6 col-12">
                                                     <div class="crancy__item-form--group mg-top-form-20">
                                                         <label
-                                                            class="crancy__item-label">{{ __('translate.Check-out Time') }}</label>
+                                                            class="crancy__item-label"><?php echo e(__('translate.Check-out Time')); ?></label>
                                                         <input class="crancy__item-input" type="text"
                                                             name="check_out_time"
-                                                            value="{{ old('check_out_time', $service->check_out_time) }}"
+                                                            value="<?php echo e(old('check_out_time', $service->check_out_time)); ?>"
                                                             placeholder="e.g. 10:00">
-                                                        @error('check_out_time')
-                                                            <span class="text-danger">{{ $message }}</span>
-                                                        @enderror
+                                                        <?php $__errorArgs = ['check_out_time'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                                            <span class="text-danger"><?php echo e($message); ?></span>
+                                                        <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                                                     </div>
                                                 </div>
 
                                                 <div class="col-lg-6 col-md-6 col-12">
                                                     <div class="crancy__item-form--group mg-top-form-20">
                                                         <label
-                                                            class="crancy__item-label">{{ __('translate.Ticket') }}</label>
+                                                            class="crancy__item-label"><?php echo e(__('translate.Ticket')); ?></label>
                                                         <input class="crancy__item-input" type="text" name="ticket"
-                                                            value="{{ old('ticket', $service->ticket) }}"
+                                                            value="<?php echo e(old('ticket', $service->ticket)); ?>"
                                                             placeholder="e.g. Mobile Voucher or Printed Ticket">
-                                                        @error('ticket')
-                                                            <span class="text-danger">{{ $message }}</span>
-                                                        @enderror
+                                                        <?php $__errorArgs = ['ticket'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                                            <span class="text-danger"><?php echo e($message); ?></span>
+                                                        <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                                                     </div>
                                                 </div>
 
                                                 <div class="col-lg-6 col-md-6 col-12">
                                                     <div class="crancy__item-form--group mg-top-form-20">
                                                         <label
-                                                            class="crancy__item-label">{{ __('translate.Video URL') }}</label>
+                                                            class="crancy__item-label"><?php echo e(__('translate.Video URL')); ?></label>
                                                         <input class="crancy__item-input" type="url" name="video_url"
-                                                            value="{{ old('video_url', $service->video_url) }}"
+                                                            value="<?php echo e(old('video_url', $service->video_url)); ?>"
                                                             placeholder="YouTube or Vimeo URL">
-                                                        @error('video_url')
-                                                            <span class="text-danger">{{ $message }}</span>
-                                                        @enderror
+                                                        <?php $__errorArgs = ['video_url'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                                            <span class="text-danger"><?php echo e($message); ?></span>
+                                                        <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                                                     </div>
                                                 </div>
 
                                                 <div class="col-lg-6 col-md-6 col-12">
                                                     <div class="crancy__item-form--group mg-top-form-20">
                                                         <label
-                                                            class="crancy__item-label">{{ __('translate.Languages') }}</label>
+                                                            class="crancy__item-label"><?php echo e(__('translate.Languages')); ?></label>
                                                         <select class="crancy__item-input select2" name="languages[]"
                                                             multiple>
 
-                                                            @foreach ($enum_languages as $language)
-                                                                <option value="{{ $language->name }}"
-                                                                    @selected(is_array($service?->languages) && in_array($language->name, $service?->languages ?? []))>
-                                                                    {{ $language->value }}
+                                                            <?php $__currentLoopData = $enum_languages; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $language): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                                                <option value="<?php echo e($language->name); ?>"
+                                                                    <?php if(is_array($service?->languages) && in_array($language->name, $service?->languages ?? [])): echo 'selected'; endif; ?>>
+                                                                    <?php echo e($language->value); ?>
+
                                                                 </option>
-                                                            @endforeach
+                                                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
 
                                                         </select>
                                                     </div>
@@ -542,15 +697,16 @@
                                                 <div class="col-lg-6 col-md-6 col-12">
                                                     <div class="crancy__item-form--group mg-top-form-20">
                                                         <label
-                                                            class="crancy__item-label">{{ __('translate.Amenities') }}</label>
+                                                            class="crancy__item-label"><?php echo e(__('translate.Amenities')); ?></label>
                                                         <select class="crancy__item-input select2" name="amenities[]"
                                                             multiple>
-                                                            @foreach ($amenities as $amenity)
-                                                                <option value="{{ $amenity->translation->id }}"
-                                                                    @selected(is_array($translation->amenities ?? null) && in_array($amenity->translation->id, ($translation->amenities ?? [])))>
-                                                                    {{ $amenity->translation->name }}
+                                                            <?php $__currentLoopData = $amenities; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $amenity): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                                                <option value="<?php echo e($amenity->translation->id); ?>"
+                                                                    <?php if(is_array($translation->amenities ?? null) && in_array($amenity->translation->id, ($translation->amenities ?? []))): echo 'selected'; endif; ?>>
+                                                                    <?php echo e($amenity->translation->name); ?>
+
                                                                 </option>
-                                                            @endforeach
+                                                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -558,30 +714,37 @@
                                                 <div class="col-12">
                                                     <div class="crancy__item-form--group mg-top-form-20">
                                                         <label
-                                                            class="crancy__item-label">{{ __('translate.What is included') }}</label>
-                                                        <textarea name="included" rows="30" placeholder="One item per line">{{ old('included', $translation->included ?? $service->included) }}</textarea>
+                                                            class="crancy__item-label"><?php echo e(__('translate.What is included')); ?></label>
+                                                        <textarea name="included" rows="30" placeholder="One item per line"><?php echo e(old('included', $translation->included ?? $service->included)); ?></textarea>
                                                     </div>
                                                 </div>
 
                                                 <div class="col-12">
                                                     <div class="crancy__item-form--group mg-top-form-20">
                                                         <label
-                                                            class="crancy__item-label">{{ __('translate.What is excluded') }}</label>
-                                                        <textarea name="excluded" rows="30" placeholder="One item per line">{{ old('excluded', $translation->excluded ?? $service->excluded) }}</textarea>
+                                                            class="crancy__item-label"><?php echo e(__('translate.What is excluded')); ?></label>
+                                                        <textarea name="excluded" rows="30" placeholder="One item per line"><?php echo e(old('excluded', $translation->excluded ?? $service->excluded)); ?></textarea>
                                                     </div>
                                                 </div>
 
                                                 <div class="col-12">
                                                     <div class="crancy__item-form--group mg-top-form-20">
                                                         <label
-                                                            class="crancy__item-label">{{ __('translate.Tour Plan Sub Title') }}</label>
+                                                            class="crancy__item-label"><?php echo e(__('translate.Tour Plan Sub Title')); ?></label>
                                                         <input class="crancy__item-input" type="text"
                                                             name="tour_plan_sub_title"
-                                                            value="{{ old('tour_plan_sub_title', $service->tour_plan_sub_title) }}"
+                                                            value="<?php echo e(old('tour_plan_sub_title', $service->tour_plan_sub_title)); ?>"
                                                             placeholder="Tour Plan Sub Title">
-                                                        @error('tour_plan_sub_title')
-                                                            <span class="text-danger">{{ $message }}</span>
-                                                        @enderror
+                                                        <?php $__errorArgs = ['tour_plan_sub_title'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                                            <span class="text-danger"><?php echo e($message); ?></span>
+                                                        <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                                                     </div>
                                                 </div>
 
@@ -592,81 +755,123 @@
                                     <div class="col-12 mg-top-30">
                                         <div class="crancy-product-card">
                                             <h4 class="crancy-product-card__title">
-                                                {{ __('translate.Contact Information') }}</h4>
+                                                <?php echo e(__('translate.Contact Information')); ?></h4>
 
                                             <div class="row mg-top-30">
                                                 <div class="col-lg-6 col-md-6 col-12">
                                                     <div class="crancy__item-form--group mg-top-form-20">
                                                         <label
-                                                            class="crancy__item-label">{{ __('translate.Address') }}</label>
-                                                        <textarea class="" name="address" rows="40">{{ old('address', $service->address) }}</textarea>
-                                                        @error('address')
-                                                            <span class="text-danger">{{ $message }}</span>
-                                                        @enderror
+                                                            class="crancy__item-label"><?php echo e(__('translate.Address')); ?></label>
+                                                        <textarea class="" name="address" rows="40"><?php echo e(old('address', $service->address)); ?></textarea>
+                                                        <?php $__errorArgs = ['address'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                                            <span class="text-danger"><?php echo e($message); ?></span>
+                                                        <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                                                     </div>
                                                 </div>
 
                                                 <div class="col-lg-6 col-md-6 col-12">
                                                     <div class="crancy__item-form--group mg-top-form-20">
                                                         <label
-                                                            class="crancy__item-label">{{ __('translate.Email') }}</label>
+                                                            class="crancy__item-label"><?php echo e(__('translate.Email')); ?></label>
                                                         <input class="crancy__item-input" type="email" name="email"
-                                                            value="{{ old('email', $service->email) }}">
-                                                        @error('email')
-                                                            <span class="text-danger">{{ $message }}</span>
-                                                        @enderror
+                                                            value="<?php echo e(old('email', $service->email)); ?>">
+                                                        <?php $__errorArgs = ['email'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                                            <span class="text-danger"><?php echo e($message); ?></span>
+                                                        <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                                                     </div>
                                                 </div>
 
                                                 <div class="col-lg-6 col-md-6 col-12">
                                                     <div class="crancy__item-form--group mg-top-form-20">
                                                         <label
-                                                            class="crancy__item-label">{{ __('translate.Phone') }}</label>
+                                                            class="crancy__item-label"><?php echo e(__('translate.Phone')); ?></label>
                                                         <input class="crancy__item-input" type="text" name="phone"
-                                                            value="{{ old('phone', $service->phone) }}">
-                                                        @error('phone')
-                                                            <span class="text-danger">{{ $message }}</span>
-                                                        @enderror
+                                                            value="<?php echo e(old('phone', $service->phone)); ?>">
+                                                        <?php $__errorArgs = ['phone'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                                            <span class="text-danger"><?php echo e($message); ?></span>
+                                                        <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                                                     </div>
                                                 </div>
 
                                                 <div class="col-lg-6 col-md-6 col-12">
                                                     <div class="crancy__item-form--group mg-top-form-20">
                                                         <label
-                                                            class="crancy__item-label">{{ __('translate.Website') }}</label>
+                                                            class="crancy__item-label"><?php echo e(__('translate.Website')); ?></label>
                                                         <input class="crancy__item-input" type="url" name="website"
-                                                            value="{{ old('website', $service->website) }}">
-                                                        @error('website')
-                                                            <span class="text-danger">{{ $message }}</span>
-                                                        @enderror
+                                                            value="<?php echo e(old('website', $service->website)); ?>">
+                                                        <?php $__errorArgs = ['website'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                                            <span class="text-danger"><?php echo e($message); ?></span>
+                                                        <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                                                     </div>
                                                 </div>
 
                                                 <div class="col-12">
                                                     <div class="crancy__item-form--group mg-top-form-20">
                                                         <label
-                                                            class="crancy__item-label">{{ __('translate.Google map sub title') }}</label>
+                                                            class="crancy__item-label"><?php echo e(__('translate.Google map sub title')); ?></label>
                                                         <input class="crancy__item-input" type="text"
                                                             name="google_map_sub_title"
-                                                            value="{{ old('google_map_sub_title', $service->google_map_sub_title) }}"
+                                                            value="<?php echo e(old('google_map_sub_title', $service->google_map_sub_title)); ?>"
                                                             placeholder="Google map sub title">
-                                                        @error('google_map_sub_title')
-                                                            <span class="text-danger">{{ $message }}</span>
-                                                        @enderror
+                                                        <?php $__errorArgs = ['google_map_sub_title'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                                            <span class="text-danger"><?php echo e($message); ?></span>
+                                                        <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                                                     </div>
                                                 </div>
 
                                                 <div class="col-12">
                                                     <div class="crancy__item-form--group mg-top-form-20">
                                                         <label
-                                                            class="crancy__item-label">{{ __('translate.Google map embed url') }}</label>
+                                                            class="crancy__item-label"><?php echo e(__('translate.Google map embed url')); ?></label>
                                                         <input class="crancy__item-input" type="text"
                                                             name="google_map_url"
-                                                            value="{{ old('google_map_url', $service->google_map_url) }}"
+                                                            value="<?php echo e(old('google_map_url', $service->google_map_url)); ?>"
                                                             placeholder="Google map embed url">
-                                                        @error('google_map_url')
-                                                            <span class="text-danger">{{ $message }}</span>
-                                                        @enderror
+                                                        <?php $__errorArgs = ['google_map_url'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                                            <span class="text-danger"><?php echo e($message); ?></span>
+                                                        <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                                                     </div>
                                                 </div>
 
@@ -676,44 +881,66 @@
 
                                     <div class="col-12 mg-top-30">
                                         <div class="crancy-product-card">
-                                            <h4 class="crancy-product-card__title">{{ __('translate.SEO Information') }}
+                                            <h4 class="crancy-product-card__title"><?php echo e(__('translate.SEO Information')); ?>
+
                                             </h4>
 
                                             <div class="row mg-top-30">
                                                 <div class="col-12">
                                                     <div class="crancy__item-form--group mg-top-form-20">
                                                         <label
-                                                            class="crancy__item-label">{{ __('translate.SEO Title') }}</label>
+                                                            class="crancy__item-label"><?php echo e(__('translate.SEO Title')); ?></label>
                                                         <input class="crancy__item-input" type="text" name="seo_title"
-                                                            value="{{ old('seo_title', $translation->seo_title ?? $service->seo_title) }}">
-                                                        @error('seo_title')
-                                                            <span class="text-danger">{{ $message }}</span>
-                                                        @enderror
+                                                            value="<?php echo e(old('seo_title', $translation->seo_title ?? $service->seo_title)); ?>">
+                                                        <?php $__errorArgs = ['seo_title'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                                            <span class="text-danger"><?php echo e($message); ?></span>
+                                                        <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                                                     </div>
                                                 </div>
 
                                                 <div class="col-12">
                                                     <div class="crancy__item-form--group mg-top-form-20">
                                                         <label
-                                                            class="crancy__item-label">{{ __('translate.SEO Description') }}</label>
-                                                        <textarea class="crancy__item-input summernote" name="seo_description" rows="3">{{ old('seo_description', $translation->seo_description ?? $service->seo_description) }}</textarea>
-                                                        @error('seo_description')
-                                                            <span class="text-danger">{{ $message }}</span>
-                                                        @enderror
+                                                            class="crancy__item-label"><?php echo e(__('translate.SEO Description')); ?></label>
+                                                        <textarea class="crancy__item-input summernote" name="seo_description" rows="3"><?php echo e(old('seo_description', $translation->seo_description ?? $service->seo_description)); ?></textarea>
+                                                        <?php $__errorArgs = ['seo_description'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                                            <span class="text-danger"><?php echo e($message); ?></span>
+                                                        <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                                                     </div>
                                                 </div>
 
                                                 <div class="col-12">
                                                     <div class="crancy__item-form--group mg-top-form-20">
                                                         <label
-                                                            class="crancy__item-label">{{ __('translate.SEO Keywords') }}</label>
+                                                            class="crancy__item-label"><?php echo e(__('translate.SEO Keywords')); ?></label>
                                                         <input class="crancy__item-input" type="text"
                                                             name="seo_keywords"
-                                                            value="{{ old('seo_keywords', $translation->seo_keywords ?? $service->seo_keywords) }}"
+                                                            value="<?php echo e(old('seo_keywords', $translation->seo_keywords ?? $service->seo_keywords)); ?>"
                                                             placeholder="Comma separated keywords">
-                                                        @error('seo_keywords')
-                                                            <span class="text-danger">{{ $message }}</span>
-                                                        @enderror
+                                                        <?php $__errorArgs = ['seo_keywords'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                                            <span class="text-danger"><?php echo e($message); ?></span>
+                                                        <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                                                     </div>
                                                 </div>
                                             </div>
@@ -722,19 +949,20 @@
 
                                     <div class="col-12 mg-top-30">
                                         <div class="crancy-product-card">
-                                            <h4 class="crancy-product-card__title">{{ __('translate.Display Options') }}
+                                            <h4 class="crancy-product-card__title"><?php echo e(__('translate.Display Options')); ?>
+
                                             </h4>
 
                                             <div class="row mg-top-30">
                                                 <div class="col-lg-3 col-md-4 col-12">
                                                     <div class="crancy__item-form--group mg-top-form-20">
                                                         <label
-                                                            class="crancy__item-label">{{ __('translate.Featured') }}</label>
+                                                            class="crancy__item-label"><?php echo e(__('translate.Featured')); ?></label>
                                                         <div
                                                             class="crancy-ptabs__notify-switch crancy-ptabs__notify-switch--two">
                                                             <label class="crancy__item-switch">
                                                                 <input name="is_featured" type="checkbox" value="1"
-                                                                    {{ old('is_featured', $service->is_featured) ? 'checked' : '' }}>
+                                                                    <?php echo e(old('is_featured', $service->is_featured) ? 'checked' : ''); ?>>
                                                                 <span
                                                                     class="crancy__item-switch--slide crancy__item-switch--round"></span>
                                                             </label>
@@ -745,12 +973,12 @@
                                                 <div class="col-lg-3 col-md-4 col-12">
                                                     <div class="crancy__item-form--group mg-top-form-20">
                                                         <label
-                                                            class="crancy__item-label">{{ __('translate.Popular') }}</label>
+                                                            class="crancy__item-label"><?php echo e(__('translate.Popular')); ?></label>
                                                         <div
                                                             class="crancy-ptabs__notify-switch crancy-ptabs__notify-switch--two">
                                                             <label class="crancy__item-switch">
                                                                 <input name="is_popular" type="checkbox" value="1"
-                                                                    {{ old('is_popular', $service->is_popular) ? 'checked' : '' }}>
+                                                                    <?php echo e(old('is_popular', $service->is_popular) ? 'checked' : ''); ?>>
                                                                 <span
                                                                     class="crancy__item-switch--slide crancy__item-switch--round"></span>
                                                             </label>
@@ -761,13 +989,13 @@
                                                 <div class="col-lg-3 col-md-4 col-12">
                                                     <div class="crancy__item-form--group mg-top-form-20">
                                                         <label
-                                                            class="crancy__item-label">{{ __('translate.Show on Homepage') }}</label>
+                                                            class="crancy__item-label"><?php echo e(__('translate.Show on Homepage')); ?></label>
                                                         <div
                                                             class="crancy-ptabs__notify-switch crancy-ptabs__notify-switch--two">
                                                             <label class="crancy__item-switch">
                                                                 <input name="show_on_homepage" type="checkbox"
                                                                     value="1"
-                                                                    {{ old('show_on_homepage', $service->show_on_homepage) ? 'checked' : '' }}>
+                                                                    <?php echo e(old('show_on_homepage', $service->show_on_homepage) ? 'checked' : ''); ?>>
                                                                 <span
                                                                     class="crancy__item-switch--slide crancy__item-switch--round"></span>
                                                             </label>
@@ -778,12 +1006,12 @@
                                                 <div class="col-lg-3 col-md-4 col-12">
                                                     <div class="crancy__item-form--group mg-top-form-20">
                                                         <label
-                                                            class="crancy__item-label">{{ __('translate.Is New') }}</label>
+                                                            class="crancy__item-label"><?php echo e(__('translate.Is New')); ?></label>
                                                         <div
                                                             class="crancy-ptabs__notify-switch crancy-ptabs__notify-switch--two">
                                                             <label class="crancy__item-switch">
                                                                 <input name="is_new" type="checkbox" value="1"
-                                                                    {{ old('is_new', $service->is_new) ? 'checked' : '' }}>
+                                                                    <?php echo e(old('is_new', $service->is_new) ? 'checked' : ''); ?>>
                                                                 <span
                                                                     class="crancy__item-switch--slide crancy__item-switch--round"></span>
                                                             </label>
@@ -796,38 +1024,40 @@
 
                                     <div class="col-12 mg-top-30">
                                         <div class="crancy-product-card">
-                                            <h4 class="crancy-product-card__title">{{ __('translate.Room Types') }}
+                                            <h4 class="crancy-product-card__title"><?php echo e(__('translate.Room Types')); ?>
+
                                             </h4>
 
                                             <div class="alert alert-info mb-20">
                                                 <i class="fa fa-info-circle"></i>
-                                                {{ __('translate.Configure room types with price supplements for this service.') }}
+                                                <?php echo e(__('translate.Configure room types with price supplements for this service.')); ?>
+
                                             </div>
 
                                             <div class="col-12" id="room-types-container">
-                                                @foreach($service->roomTypes as $index => $roomType)
-                                                    <div class="room-type-item" data-index="{{ $index }}">
+                                                <?php $__currentLoopData = $service->roomTypes; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $roomType): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                                    <div class="room-type-item" data-index="<?php echo e($index); ?>">
                                                         <div class="row">
                                                             <div class="col-lg-3 col-md-6 col-12">
                                                                 <div class="crancy__item-form--group mg-top-form-20">
-                                                                    <label class="crancy__item-label">{{ __('translate.Room Type') }}</label>
-                                                                    <select class="crancy__item-input room-type-select" name="room_types[{{ $index }}][type]" required>
-                                                                        <option value="">{{ __('translate.Select Type') }}</option>
-                                                                        <option value="single" {{ $roomType->type == 'single' ? 'selected' : '' }}>{{ __('translate.Single Room') }}</option>
-                                                                        <option value="double" {{ $roomType->type == 'double' ? 'selected' : '' }}>{{ __('translate.Double Room') }}</option>
-                                                                        <option value="triple" {{ $roomType->type == 'triple' ? 'selected' : '' }}>{{ __('translate.Triple Room') }}</option>
-                                                                        <option value="double_shared" {{ $roomType->type == 'double_shared' ? 'selected' : '' }}>{{ __('translate.Double Room (Shared)') }}</option>
+                                                                    <label class="crancy__item-label"><?php echo e(__('translate.Room Type')); ?></label>
+                                                                    <select class="crancy__item-input room-type-select" name="room_types[<?php echo e($index); ?>][type]" required>
+                                                                        <option value=""><?php echo e(__('translate.Select Type')); ?></option>
+                                                                        <option value="single" <?php echo e($roomType->type == 'single' ? 'selected' : ''); ?>><?php echo e(__('translate.Single Room')); ?></option>
+                                                                        <option value="double" <?php echo e($roomType->type == 'double' ? 'selected' : ''); ?>><?php echo e(__('translate.Double Room')); ?></option>
+                                                                        <option value="triple" <?php echo e($roomType->type == 'triple' ? 'selected' : ''); ?>><?php echo e(__('translate.Triple Room')); ?></option>
+                                                                        <option value="double_shared" <?php echo e($roomType->type == 'double_shared' ? 'selected' : ''); ?>><?php echo e(__('translate.Double Room (Shared)')); ?></option>
                                                                     </select>
                                                                 </div>
                                                             </div>
 
                                                             <div class="col-lg-3 col-md-6 col-12">
                                                                 <div class="crancy__item-form--group mg-top-form-20">
-                                                                    <label class="crancy__item-label">{{ __('translate.Price Supplement') }}</label>
+                                                                    <label class="crancy__item-label"><?php echo e(__('translate.Price Supplement')); ?></label>
                                                                     <div class="crancy__item-form--currency">
-                                                                        <input class="crancy__item-input room-type-supplement" type="number" step="0.01" name="room_types[{{ $index }}][price_supplement]" value="{{ $roomType->price_supplement }}">
+                                                                        <input class="crancy__item-input room-type-supplement" type="number" step="0.01" name="room_types[<?php echo e($index); ?>][price_supplement]" value="<?php echo e($roomType->price_supplement); ?>">
                                                                         <div class="crancy__currency-icon">
-                                                                            <span>{{ config('settings.currency_icon', '$') }}</span>
+                                                                            <span><?php echo e(config('settings.currency_icon', '$')); ?></span>
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -835,17 +1065,17 @@
 
                                                             <div class="col-lg-3 col-md-6 col-12">
                                                                 <div class="crancy__item-form--group mg-top-form-20">
-                                                                    <label class="crancy__item-label">{{ __('translate.Capacity') }}</label>
-                                                                    <input class="crancy__item-input room-type-capacity" type="number" name="room_types[{{ $index }}][capacity]" value="{{ $roomType->capacity }}" min="1">
+                                                                    <label class="crancy__item-label"><?php echo e(__('translate.Capacity')); ?></label>
+                                                                    <input class="crancy__item-input room-type-capacity" type="number" name="room_types[<?php echo e($index); ?>][capacity]" value="<?php echo e($roomType->capacity); ?>" min="1">
                                                                 </div>
                                                             </div>
 
                                                             <div class="col-lg-3 col-md-6 col-12">
                                                                 <div class="crancy__item-form--group mg-top-form-20">
-                                                                    <label class="crancy__item-label">{{ __('translate.Status') }}</label>
+                                                                    <label class="crancy__item-label"><?php echo e(__('translate.Status')); ?></label>
                                                                     <div class="crancy-ptabs__notify-switch crancy-ptabs__notify-switch--two">
                                                                         <label class="crancy__item-switch">
-                                                                            <input type="checkbox" name="room_types[{{ $index }}][is_active]" value="1" {{ $roomType->is_active ? 'checked' : '' }}>
+                                                                            <input type="checkbox" name="room_types[<?php echo e($index); ?>][is_active]" value="1" <?php echo e($roomType->is_active ? 'checked' : ''); ?>>
                                                                             <span class="crancy__item-switch--slide crancy__item-switch--round"></span>
                                                                         </label>
                                                                     </div>
@@ -854,24 +1084,26 @@
 
                                                             <div class="col-12">
                                                                 <div class="crancy__item-form--group mg-top-form-20">
-                                                                    <label class="crancy__item-label">{{ __('translate.Description') }}</label>
-                                                                    <textarea class="crancy__item-input room-type-description" name="room_types[{{ $index }}][description]" rows="3" placeholder="Optional description for this room type">{{ $roomType->description }}</textarea>
+                                                                    <label class="crancy__item-label"><?php echo e(__('translate.Description')); ?></label>
+                                                                    <textarea class="crancy__item-input room-type-description" name="room_types[<?php echo e($index); ?>][description]" rows="3" placeholder="Optional description for this room type"><?php echo e($roomType->description); ?></textarea>
                                                                 </div>
                                                             </div>
 
                                                             <div class="col-12">
                                                                 <button type="button" class="crancy-btn btn-danger remove-room-type" style="background-color: #dc3545;">
-                                                                    <i class="fa fa-trash"></i> {{ __('translate.Remove') }}
+                                                                    <i class="fa fa-trash"></i> <?php echo e(__('translate.Remove')); ?>
+
                                                                 </button>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                @endforeach
+                                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                             </div>
 
                                             <div class="col-12 mg-top-20">
                                                 <button type="button" class="crancy-btn" id="add-room-type">
-                                                    <i class="fa fa-plus"></i> {{ __('translate.Add Room Type') }}
+                                                    <i class="fa fa-plus"></i> <?php echo e(__('translate.Add Room Type')); ?>
+
                                                 </button>
                                             </div>
                                         </div>
@@ -880,12 +1112,13 @@
                                     <div class="col-12 mg-top-30">
                                         <div class="alert alert-info">
                                             <i class="fa fa-info-circle"></i>
-                                            {{ __('translate.Manage service images and videos in the') }}
-                                            <a href="{{ route('admin.tourbooking.services.media', $service->id) }}"
-                                                class="alert-link">{{ __('translate.Media Gallery') }}</a>
+                                            <?php echo e(__('translate.Manage service images and videos in the')); ?>
+
+                                            <a href="<?php echo e(route('admin.tourbooking.services.media', $service->id)); ?>"
+                                                class="alert-link"><?php echo e(__('translate.Media Gallery')); ?></a>
                                         </div>
                                         <button class="crancy-btn"
-                                            type="submit">{{ __('translate.Update Service') }}</button>
+                                            type="submit"><?php echo e(__('translate.Update Service')); ?></button>
                                     </div>
                                 </div>
                             </form>
@@ -895,11 +1128,11 @@
             </div>
         </div>
     </section>
-@endsection
+<?php $__env->stopSection(); ?>
 
-@push('js_section')
-    <script src="{{ asset('global/select2/select2.min.js') }}"></script>
-    <script src="{{ asset('global/tinymce/js/tinymce/tinymce.min.js') }}"></script>
+<?php $__env->startPush('js_section'); ?>
+    <script src="<?php echo e(asset('global/select2/select2.min.js')); ?>"></script>
+    <script src="<?php echo e(asset('global/tinymce/js/tinymce/tinymce.min.js')); ?>"></script>
     <script>
         (function($) {
             "use strict"
@@ -944,24 +1177,24 @@
                         <div class="row">
                             <div class="col-lg-3 col-md-6 col-12">
                                 <div class="crancy__item-form--group mg-top-form-20">
-                                    <label class="crancy__item-label">{{ __('translate.Room Type') }}</label>
+                                    <label class="crancy__item-label"><?php echo e(__('translate.Room Type')); ?></label>
                                     <select class="crancy__item-input room-type-select" name="room_types[${roomTypeIndex}][type]" required>
-                                        <option value="">{{ __('translate.Select Type') }}</option>
-                                        <option value="single">{{ __('translate.Single Room') }}</option>
-                                        <option value="double">{{ __('translate.Double Room') }}</option>
-                                        <option value="triple">{{ __('translate.Triple Room') }}</option>
-                                        <option value="double_shared">{{ __('translate.Double Room (Shared)') }}</option>
+                                        <option value=""><?php echo e(__('translate.Select Type')); ?></option>
+                                        <option value="single"><?php echo e(__('translate.Single Room')); ?></option>
+                                        <option value="double"><?php echo e(__('translate.Double Room')); ?></option>
+                                        <option value="triple"><?php echo e(__('translate.Triple Room')); ?></option>
+                                        <option value="double_shared"><?php echo e(__('translate.Double Room (Shared)')); ?></option>
                                     </select>
                                 </div>
                             </div>
 
                             <div class="col-lg-3 col-md-6 col-12">
                                 <div class="crancy__item-form--group mg-top-form-20">
-                                    <label class="crancy__item-label">{{ __('translate.Price Supplement') }}</label>
+                                    <label class="crancy__item-label"><?php echo e(__('translate.Price Supplement')); ?></label>
                                     <div class="crancy__item-form--currency">
                                         <input class="crancy__item-input room-type-supplement" type="number" step="0.01" name="room_types[${roomTypeIndex}][price_supplement]" value="0">
                                         <div class="crancy__currency-icon">
-                                            <span>{{ config('settings.currency_icon', '$') }}</span>
+                                            <span><?php echo e(config('settings.currency_icon', '$')); ?></span>
                                         </div>
                                     </div>
                                 </div>
@@ -969,14 +1202,14 @@
 
                             <div class="col-lg-3 col-md-6 col-12">
                                 <div class="crancy__item-form--group mg-top-form-20">
-                                    <label class="crancy__item-label">{{ __('translate.Capacity') }}</label>
+                                    <label class="crancy__item-label"><?php echo e(__('translate.Capacity')); ?></label>
                                     <input class="crancy__item-input room-type-capacity" type="number" name="room_types[${roomTypeIndex}][capacity]" value="1" min="1">
                                 </div>
                             </div>
 
                             <div class="col-lg-3 col-md-6 col-12">
                                 <div class="crancy__item-form--group mg-top-form-20">
-                                    <label class="crancy__item-label">{{ __('translate.Status') }}</label>
+                                    <label class="crancy__item-label"><?php echo e(__('translate.Status')); ?></label>
                                     <div class="crancy-ptabs__notify-switch crancy-ptabs__notify-switch--two">
                                         <label class="crancy__item-switch">
                                             <input type="checkbox" name="room_types[${roomTypeIndex}][is_active]" value="1" checked>
@@ -988,14 +1221,15 @@
 
                             <div class="col-12">
                                 <div class="crancy__item-form--group mg-top-form-20">
-                                    <label class="crancy__item-label">{{ __('translate.Description') }}</label>
+                                    <label class="crancy__item-label"><?php echo e(__('translate.Description')); ?></label>
                                     <textarea class="crancy__item-input room-type-description" name="room_types[${roomTypeIndex}][description]" rows="3" placeholder="Optional description for this room type"></textarea>
                                 </div>
                             </div>
 
                             <div class="col-12">
                                 <button type="button" class="crancy-btn btn-danger remove-room-type" style="background-color: #dc3545;">
-                                    <i class="fa fa-trash"></i> {{ __('translate.Remove') }}
+                                    <i class="fa fa-trash"></i> <?php echo e(__('translate.Remove')); ?>
+
                                 </button>
                             </div>
                         </div>
@@ -1018,4 +1252,6 @@
             });
         })(jQuery);
     </script>
-@endpush
+<?php $__env->stopPush(); ?>
+
+<?php echo $__env->make('admin.master_layout', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH D:\xampp\htdocs\archive\archive\Modules/TourBooking\resources/views/admin/services/edit.blade.php ENDPATH**/ ?>

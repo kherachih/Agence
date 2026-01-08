@@ -29,7 +29,12 @@
                                     </span>
                                 @endif
 
-                                @if ($service?->discount_price)
+                                @if ($service?->adult_discount_percentage > 0)
+                                    <span class="badge bg-danger position-absolute top-0 end-0 m-3"
+                                        style="z-index: 10; font-size: 14px; padding: 8px 12px;">
+                                        -{{ number_format($service?->adult_discount_percentage, 0) }}%
+                                    </span>
+                                @elseif ($service?->discount_price)
                                     <span class="tg-listing-item-price-discount offer-btm shape-2"
                                         style="background-image: url('{{ asset('frontend/assets/img/shape/offter.png') }}')">Sale Offer</span>
                                 @endif
