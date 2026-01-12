@@ -39,8 +39,19 @@
                                         style="background-image: url('{{ asset('frontend/assets/img/shape/offter.png') }}')">Sale Offer</span>
                                 @endif
                             </a>
-                            <div class="tg-listing-2-price">
-                                {!! $service->price_display !!}
+                            <div class="tg-listing-2-price d-flex justify-content-between align-items-center">
+                                <div>
+                                    <span class="text-muted text-decoration-line-through me-2">From $250.00</span>
+                                    <span class="text-danger fw-bold">$150.00</span>
+                                </div>
+                                @if ($service?->adult_discount_percentage > 0)
+                                    <span class="badge bg-danger" style="font-size: 14px; padding: 8px 12px;">
+                                        -{{ number_format($service?->adult_discount_percentage, 0) }}% OFF
+                                    </span>
+                                @elseif ($service?->discount_price)
+                                    <span class="tg-listing-item-price-discount offer-btm shape-2"
+                                        style="background-image: url('{{ asset('frontend/assets/img/shape/offter.png') }}')">Sale Offer</span>
+                                @endif
                             </div>
                         </div>
                         <div class="tg-listing-card-content p-relative">

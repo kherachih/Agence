@@ -64,12 +64,14 @@ final class FrontBookingController extends Controller
             $totalExtraCharge += $extraCharge->price;
         }
 
-        // Get room type supplement if selected
+        // Get room type supplement if selected (PER PERSON)
         $roomTypeSupplement = 0;
+        $totalGuests = $request->person + $request->children;
         if ($request->has('room_type_id') && $request->room_type_id) {
             $roomType = RoomType::find($request->room_type_id);
             if ($roomType && $roomType->service_id == $service->id) {
-                $roomTypeSupplement = $roomType->price_supplement;
+                // Room supplement is per person, so multiply by total guests
+                $roomTypeSupplement = $roomType->price_supplement * $totalGuests;
             }
         }
 
@@ -148,12 +150,14 @@ final class FrontBookingController extends Controller
         // Verify availability
         $this->verifyServiceAvailability($service, $validated['check_in_date'], $validated['check_out_date'] ?? null);
 
-        // Get room type supplement if selected
+        // Get room type supplement if selected (PER PERSON)
         $roomTypeSupplement = 0;
+        $totalGuests = $validated['adults'] + $validated['children'];
         if (!empty($validated['room_type_id'])) {
             $roomType = RoomType::find($validated['room_type_id']);
             if ($roomType && $roomType->service_id == $service->id) {
-                $roomTypeSupplement = $roomType->price_supplement;
+                // Room supplement is per person, so multiply by total guests
+                $roomTypeSupplement = $roomType->price_supplement * $totalGuests;
             }
         }
 
@@ -167,6 +171,27 @@ final class FrontBookingController extends Controller
             $validated['coupon_code'] ?? null,
             $roomTypeSupplement
         );
+
+        // Calculate room configuration
+        $roomConfig = null;
+        if (!empty($validated['room_type_id'])) {
+            $roomType = RoomType::find($validated['room_type_id']);
+            if ($roomType) {
+                $totalGuests = $validated['adults'] + $validated['children'];
+                $roomsNeeded = ceil($totalGuests / $roomType->capacity);
+                $roomConfig = [
+                    'room_type_id' => $roomType->id,
+                    'room_type_name' => $roomType->display_name,
+                    'room_type' => $roomType->type,
+                    'capacity' => $roomType->capacity,
+                    'supplement_per_person' => $roomType->price_supplement,
+                    'total_supplement' => $roomTypeSupplement,
+                    'total_guests' => $totalGuests,
+                    'rooms_needed' => $roomsNeeded,
+                    'configuration_text' => $roomsNeeded . 'x ' . $roomType->display_name . ' (' . $roomsNeeded . ' room(s) for ' . $totalGuests . ' guest(s))',
+                ];
+            }
+        }
 
         // Create booking data
         $bookingData = [
@@ -198,6 +223,9 @@ final class FrontBookingController extends Controller
             'customer_phone' => $validated['customer_phone'],
             'customer_address' => $validated['customer_address'] ?? null,
             'customer_notes' => $validated['customer_notes'] ?? null,
+            'meta_data' => [
+                'room_config' => $roomConfig,
+            ],
         ];
 
         // Associate with user if logged in

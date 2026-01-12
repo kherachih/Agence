@@ -38,12 +38,14 @@ class PaymentController extends Controller
             $payment_setting[$data_item->key] = $data_item->value;
         }
 
-        $this->payment_setting  = (object) $payment_setting;
+        $this->payment_setting = (object) $payment_setting;
     }
 
 
     public function stripe_payment(Request $request)
     {
+
+        $this->setCustomerInfoSession($request);
 
         $auth_user = Auth::guard('web')->user();
 
@@ -51,7 +53,9 @@ class PaymentController extends Controller
 
         $stripe_currency = Currency::findOrFail($this->payment_setting->stripe_currency_id);
 
-        $payable_amount = round($calculate_price['total_amount'] ?? 0 * $stripe_currency->currency_rate, 2);
+        // Use total from customer_info session (updated by JavaScript), not from calculate_price
+        $total_amount = session()->get('customer_info')['total'] ?? $calculate_price['total_amount'] ?? 0;
+        $payable_amount = round($total_amount * $stripe_currency->currency_rate, 2);
 
         Stripe::setApiKey($this->payment_setting->stripe_secret);
 
@@ -89,7 +93,9 @@ class PaymentController extends Controller
 
         $paypal_currency = Currency::findOrFail($this->payment_setting->paypal_currency_id);
 
-        $payable_amount = round($calculate_price['total_amount'] ?? 0 * $paypal_currency->currency_rate, 2);
+        // Use total from customer_info session (updated by JavaScript), not from calculate_price
+        $total_amount = session()->get('customer_info')['total'] ?? $calculate_price['total_amount'] ?? 0;
+        $payable_amount = round($total_amount * $paypal_currency->currency_rate, 2);
 
         config(['paypal.mode' => $this->payment_setting->paypal_account_mode]);
 
@@ -201,7 +207,7 @@ class PaymentController extends Controller
 
         $payment = $api->payment->fetch($input['razorpay_payment_id']);
 
-        if (count($input)  && !empty($input['razorpay_payment_id'])) {
+        if (count($input) && !empty($input['razorpay_payment_id'])) {
             try {
                 $response = $api->payment->fetch($input['razorpay_payment_id'])->capture(array('amount' => $payment['amount']));
                 $payId = $response->id;
@@ -334,7 +340,9 @@ class PaymentController extends Controller
 
             $mollie_currency = Currency::findOrFail($this->payment_setting->mollie_currency_id);
 
-            $price = $calculate_price['total_amount'] ?? 0 * $mollie_currency->currency_rate;
+            // Use total from customer_info session (updated by JavaScript), not from calculate_price
+            $total_amount = session()->get('customer_info')['total'] ?? $calculate_price['total_amount'] ?? 0;
+            $price = $total_amount * $mollie_currency->currency_rate;
             $price = sprintf('%0.2f', $price);
 
             $mollie_api_key = $this->payment_setting->mollie_key;
@@ -409,7 +417,9 @@ class PaymentController extends Controller
 
         $instamojo_currency = Currency::findOrFail($this->payment_setting->instamojo_currency_id);
 
-        $price = $calculate_price['total_amount'] ?? 0 * $instamojo_currency->currency_rate;
+        // Use total from customer_info session (updated by JavaScript), not from calculate_price
+        $total_amount = session()->get('customer_info')['total'] ?? $calculate_price['total_amount'] ?? 0;
+        $price = $total_amount * $instamojo_currency->currency_rate;
         $price = round($price, 2);
 
         try {
@@ -529,6 +539,15 @@ class PaymentController extends Controller
 
     public function bank_payment(Request $request)
     {
+        // DEBUG: Log all request data to see what's actually being sent
+        Log::info('Bank payment request received', [
+            'total' => $request->total,
+            'room_type_id' => $request->room_type_id,
+            'customer_name' => $request->customer_name,
+            'all_request_data' => $request->all()
+        ]);
+
+        $this->setCustomerInfoSession($request);
 
         $request->validate([
             'tnx_info' => 'required|max:255'
@@ -553,31 +572,93 @@ class PaymentController extends Controller
         $calculate_price = $this->calculate_price();
 
         $payment_cart = session()->get('payment_cart');
+        $customer_info = session()->get('customer_info', []);
 
         $service = Service::findOrFail($payment_cart['service_id']);
 
         $order = new Booking();
         $order->booking_code = uniqid();
         $order->service_id = $service->id;
-        $order->user_id  = $user->id;
-        $order->check_in_date  = $payment_cart['check_in_date'];
-        $order->check_out_date  = $payment_cart['check_out_date'];
-        $order->check_in_time  = $payment_cart['check_in_time'];
-        $order->check_out_time  = $payment_cart['check_out_time'];
-        $order->adults  = $payment_cart['person_count'] ?? 1;
-        $order->children  = $payment_cart['child_count'] ?? 0;
-        $order->service_price  = $service->discount_adult_price ?? $service->adult_price ?? $service->discount_price ?? $service->full_price;
-        $order->adult_price  = $service->discount_adult_price ?? $service->adult_price ?? $service->price_per_person;
-        $order->child_price  = $service->discount_child_price ?? $service->child_price;
-        $order->extra_charges  = $payment_cart['extra_charges'] ?? 0;
+        $order->user_id = $user->id;
+        $order->check_in_date = $payment_cart['check_in_date'];
+        $order->check_out_date = $payment_cart['check_out_date'];
+        $order->check_in_time = $payment_cart['check_in_time'];
+        $order->check_out_time = $payment_cart['check_out_time'];
+        $order->adults = $payment_cart['person_count'] ?? 1;
+        $order->children = $payment_cart['child_count'] ?? 0;
+        $order->room_type_id = $customer_info['room_type_id'] ?? null;
+        $order->service_price = $service->discount_adult_price ?? $service->adult_price ?? $service->discount_price ?? $service->full_price;
+        $order->adult_price = $service->discount_adult_price ?? $service->adult_price ?? $service->price_per_person;
+        $order->child_price = $service->discount_child_price ?? $service->child_price;
+        $order->extra_charges = $payment_cart['extra_charges'] ?? 0;
         $order->extra_services = $payment_cart['extra_services'] ?? [];
+
+        // Store room configuration in meta_data
+        $metaData = [];
+        if (!empty($order->room_type_id)) {
+            $roomType = \Modules\TourBooking\App\Models\RoomType::find($order->room_type_id);
+            if ($roomType) {
+                $personCount = $payment_cart['person_count'] ?? 1;
+                $childCount = $payment_cart['child_count'] ?? 0;
+                $totalGuests = $personCount + $childCount;
+                $roomsNeeded = ceil($totalGuests / $roomType->capacity);
+                $metaData['room_config'] = [
+                    'room_type_id' => $roomType->id,
+                    'room_type_name' => $roomType->display_name,
+                    'room_type' => $roomType->type,
+                    'capacity' => $roomType->capacity,
+                    'supplement_per_person' => $roomType->price_supplement,
+                    'total_supplement' => $roomType->price_supplement * $totalGuests,
+                    'total_guests' => $totalGuests,
+                    'rooms_needed' => $roomsNeeded,
+                    'configuration_text' => $roomsNeeded . 'x ' . $roomType->display_name . ' (' . $roomsNeeded . ' room(s) for ' . $totalGuests . ' guest(s))',
+                ];
+            }
+        }
         // Calculate discount amount based on the difference between regular and discount prices
         $adultDiscount = ($service->adult_price ?? 0) - ($service->discount_adult_price ?? 0);
         $childDiscount = ($service->child_price ?? 0) - ($service->discount_child_price ?? 0);
-        $order->discount_amount  = max(0, $adultDiscount + $childDiscount) ?? $service->discount_price ?? 0;
-        $order->subtotal  = $calculate_price['sub_total_amount'] ?? 0;
-        $order->total  = $calculate_price['total_amount'] ?? 0;
-        $order->paid_amount  = $calculate_price['total_amount'] ?? 0;
+        $order->discount_amount = max(0, $adultDiscount + $childDiscount) ?? $service->discount_price ?? 0;
+        // Ensure numeric values for database
+        $order->subtotal = (float) ($calculate_price['sub_total_amount'] ?? 0);
+
+        // Use total from customer_info (updated by JavaScript) instead of calculate_price
+        // Also fallback to payment_cart total if customer_info total is null
+        $total_amount = (float) ($customer_info['total'] ?? $payment_cart['total'] ?? $calculate_price['total_amount'] ?? 0);
+
+        // CRITICAL SAFETY CHECK: If total is still 0, something is wrong - recalculate from cart
+        if ($total_amount <= 0 && !empty($payment_cart)) {
+            Log::warning('Total amount was 0, recalculating from cart', [
+                'payment_cart' => $payment_cart,
+                'customer_info' => $customer_info
+            ]);
+
+            // Recalculate: use cart total
+            $total_amount = ($payment_cart['total'] ?? 0);
+        }
+
+        // Debug: Log total amount with more detail
+        Log::info('Payment total amount calculated:', [
+            'customer_info_total' => $customer_info['total'] ?? 'null',
+            'payment_cart_total' => $payment_cart['total'] ?? 'null',
+            'calculate_price_total' => $calculate_price['total_amount'] ?? 'null',
+            'final_total' => $total_amount,
+            'room_type_id' => $order->room_type_id ?? 'null',
+            'payment_method' => $payment_method
+        ]);
+
+        $order->total = $total_amount;
+
+        // Set paid_amount and due_amount based on payment status
+        if ($payment_status == 'success') {
+            $order->paid_amount = $total_amount;
+            $order->due_amount = 0;
+        } else {
+            // For pending payments (like bank transfer)
+            $order->paid_amount = 0;
+            $order->due_amount = $total_amount;
+        }
+
         $order->payment_method = $payment_method;
         $order->booking_status = $payment_status == 'success' ? 'success' : 'pending';
         $order->payment_status = $payment_status;
@@ -585,6 +666,15 @@ class PaymentController extends Controller
         $order->customer_email = $customerInfo['customer_email'] ?? '';
         $order->customer_phone = $customerInfo['customer_phone'] ?? '';
         $order->customer_address = $customerInfo['customer_address'] ?? '';
+
+        // Update payment_cart session with new total from customer_info
+        $payment_cart['total'] = $total_amount;
+        session()->put('payment_cart', $payment_cart);
+
+        // Store room configuration in meta_data
+        if (!empty($metaData)) {
+            $order->meta_data = $metaData;
+        }
 
         $order->save();
 
@@ -605,16 +695,23 @@ class PaymentController extends Controller
 
         $payment_cart = session()->get('payment_cart', []);
 
-        $sub_total_amount = $payment_cart['total'] ?? 0;
+        // Use total from request if available (updated by JavaScript), otherwise use session value
+        $sub_total_amount = request()->input('total') ?? $payment_cart['total'] ?? 0;
+
+        // Ensure sub_total_amount is numeric
+        $sub_total_amount = (float) $sub_total_amount;
+
         $coupon_amount = 0;
 
         if (Session::get('coupon_code') && Session::get('offer_percentage')) {
-            $offer_percentage = Session::get('offer_percentage');
-            $coupon_amount = ($offer_percentage / 100) * $sub_total_amount;
+            $offer_percentage = (float) Session::get('offer_percentage');
+            // Ensure we have a valid numeric percentage
+            if (is_numeric($offer_percentage) && $offer_percentage > 0) {
+                $coupon_amount = ($offer_percentage / 100) * $sub_total_amount;
+            }
         }
 
         $total_amount = $sub_total_amount - $coupon_amount;
-
         return [
             'sub_total_amount' => $sub_total_amount,
             'coupon_amount' => $coupon_amount,
@@ -640,11 +737,44 @@ class PaymentController extends Controller
 
         $auth_user = Auth::guard('web')->user();
 
+        // Get total from request - this is the updated value from JavaScript including room supplement
+        $total = $request->total ?? null;
+
+        // Convert to float for validation
+        $totalFloat = $total !== null ? (float) $total : 0;
+
+        // CRITICAL FIX: Only use cart total as fallback if request total is invalid (null, empty, or <= 0)
+        // If request has a valid total > 0, it means JavaScript updated it with room supplement
+        if ($total === null || $total === '' || $totalFloat <= 0) {
+            $payment_cart = session()->get('payment_cart', []);
+            $cartTotal = $payment_cart['total'] ?? 0;
+
+            // Only use cart total if it's > 0
+            if ($cartTotal > 0) {
+                $total = $cartTotal;
+
+                // Log this fallback for debugging
+                Log::info('Using cart total as fallback (request total was invalid)', [
+                    'request_total' => $request->total,
+                    'cart_total' => $cartTotal,
+                    'room_type_id' => $request->room_type_id
+                ]);
+            }
+        } else {
+            // Request total is valid and > 0, use it (it includes updated room supplement from JavaScript)
+            Log::info('Using request total (includes room supplement from JavaScript)', [
+                'request_total' => $total,
+                'room_type_id' => $request->room_type_id
+            ]);
+        }
+
         session()->put('customer_info', [
             'customer_name' => $request->customer_name ?? $auth_user->name,
             'customer_email' => $request->customer_email ?? $auth_user->email,
             'customer_phone' => $request->customer_phone ?? $auth_user->phone,
-            'customer_address' => $request->customer_address ?? $auth_user->address
+            'customer_address' => $request->customer_address ?? $auth_user->address,
+            'total' => (float) $total, // Ensure it's stored as float
+            'room_type_id' => $request->room_type_id ?? null,
         ]);
     }
 }

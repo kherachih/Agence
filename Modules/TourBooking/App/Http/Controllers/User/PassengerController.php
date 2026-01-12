@@ -61,8 +61,8 @@ class PassengerController extends Controller
             'passengers.*.nationality' => 'nullable|string|max:100',
             'passengers.*.passport_number' => 'nullable|string|max:50',
             'passengers.*.passport_expiry_date' => 'nullable|date|after:today',
-            'passengers.*.passport_file' => 'required|file|mimes:pdf,jpg,jpeg,png|max:5120',
-            'passengers.*.insurance_file' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:5120',
+            'passengers.*.travel_documents' => 'required|array|min:1|max:3',
+            'passengers.*.travel_documents.*' => 'file|mimes:pdf,jpg,jpeg,png|max:5120',
             'passengers.*.phone' => 'nullable|string|max:20',
             'passengers.*.email' => 'nullable|email|max:255',
             'passengers.*.special_requirements' => 'nullable|string|max:1000',
@@ -87,18 +87,28 @@ class PassengerController extends Controller
         try {
             // Store passenger information
             foreach ($request->passengers as $index => $passengerData) {
-                // Handle passport file upload
                 $passportFile = null;
-                if ($request->hasFile("passengers.{$index}.passport_file")) {
-                    $passportFile = $request->file("passengers.{$index}.passport_file")
-                        ->store('passengers/passports', 'public');
-                }
-
-                // Handle insurance file upload
+                $flightTicketFile = null;
                 $insuranceFile = null;
-                if ($request->hasFile("passengers.{$index}.insurance_file")) {
-                    $insuranceFile = $request->file("passengers.{$index}.insurance_file")
-                        ->store('passengers/insurance', 'public');
+
+                // Handle travel documents upload
+                if ($request->hasFile("passengers.{$index}.travel_documents")) {
+                    $travelDocuments = $request->file("passengers.{$index}.travel_documents");
+
+                    // First file is always passport (required)
+                    if (isset($travelDocuments[0])) {
+                        $passportFile = $travelDocuments[0]->store('passengers/passports', 'public');
+                    }
+
+                    // Second file is flight ticket (optional)
+                    if (isset($travelDocuments[1])) {
+                        $flightTicketFile = $travelDocuments[1]->store('passengers/flight_tickets', 'public');
+                    }
+
+                    // Third file is travel insurance (optional)
+                    if (isset($travelDocuments[2])) {
+                        $insuranceFile = $travelDocuments[2]->store('passengers/insurance', 'public');
+                    }
                 }
 
                 // Create passenger record
@@ -112,6 +122,7 @@ class PassengerController extends Controller
                     'passport_number' => $passengerData['passport_number'] ?? null,
                     'passport_expiry_date' => $passengerData['passport_expiry_date'] ?? null,
                     'passport_file' => $passportFile,
+                    'flight_ticket_file' => $flightTicketFile,
                     'insurance_file' => $insuranceFile,
                     'phone' => $passengerData['phone'] ?? null,
                     'email' => $passengerData['email'] ?? null,

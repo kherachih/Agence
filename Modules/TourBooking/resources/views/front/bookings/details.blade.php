@@ -65,6 +65,22 @@
                                 @if ($booking->infants > 0)
                                     <p><strong>{{ __('translate.Infants') }}:</strong> {{ $booking->infants }}</p>
                                 @endif
+                                @if ($booking->room_type_id && $booking->roomType)
+                                    <div style="margin-top: 15px; padding: 12px; background-color: #f8f9fa; border-radius: 5px; border-left: 4px solid #007bff;">
+                                        <p style="margin: 0 0 8px 0; font-weight: 600; color: #007bff;">
+                                            <i class="fas fa-bed"></i> {{ __('translate.Room Configuration') }}
+                                        </p>
+                                        <p style="margin: 0 0 5px 0;"><strong>{{ __('translate.Room Type') }}:</strong> {{ $booking->roomType->display_name }}</p>
+                                        @if($booking->meta_data && isset($booking->meta_data['room_config']))
+                                            <p style="margin: 0; font-size: 13px; color: #666;">
+                                                <i class="fas fa-info-circle"></i> {{ $booking->meta_data['room_config']['configuration_text'] ?? '' }}
+                                            </p>
+                                            <p style="margin: 5px 0 0 0; font-size: 13px;">
+                                                <strong>{{ __('translate.Supplement') }}:</strong> {{ currency($booking->meta_data['room_config']['supplement_per_person'] ?? 0) }} / person × {{ $booking->meta_data['room_config']['total_guests'] ?? 0 }} guests = {{ currency($booking->meta_data['room_config']['total_supplement'] ?? 0) }}
+                                            </p>
+                                        @endif
+                                    </div>
+                                @endif
                             </div>
                         </div>
 

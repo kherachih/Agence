@@ -289,6 +289,38 @@
                         </tr>
                     @endif
 
+                    @if ($booking->room_type_id && $booking->roomType)
+                        <tr>
+                            <td>
+                                <strong>{{ __('translate.Room Type') }}:</strong> {{ $booking->roomType->display_name }}
+                                @if($booking->meta_data && isset($booking->meta_data['room_config']))
+                                    <br><small style="color: #666;">{{ $booking->meta_data['room_config']['configuration_text'] ?? '' }}</small>
+                                @endif
+                            </td>
+                            <td>
+                                @if($booking->meta_data && isset($booking->meta_data['room_config']))
+                                    {{ $booking->meta_data['room_config']['total_guests'] ?? 0 }}
+                                @else
+                                    {{ $booking->adults + $booking->children }}
+                                @endif
+                            </td>
+                            <td>
+                                @if($booking->meta_data && isset($booking->meta_data['room_config']))
+                                    {{ currency($booking->meta_data['room_config']['supplement_per_person'] ?? 0) }} / person
+                                @else
+                                    {{ currency($booking->roomType->price_supplement) }} / person
+                                @endif
+                            </td>
+                            <td class="text-right">
+                                @if($booking->meta_data && isset($booking->meta_data['room_config']))
+                                    {{ currency($booking->meta_data['room_config']['total_supplement'] ?? 0) }}
+                                @else
+                                    {{ currency($booking->roomType->price_supplement * ($booking->adults + $booking->children)) }}
+                                @endif
+                            </td>
+                        </tr>
+                    @endif
+
                     @if ($booking->extra_charges > 0)
                         <tr>
                             <td>{{ __('translate.Extra Charges') }}</td>

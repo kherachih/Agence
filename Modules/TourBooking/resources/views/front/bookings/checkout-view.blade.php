@@ -83,13 +83,20 @@
                                                     <select name="room_type_id" id="room_type_select" class="custom-select">
                                                         @foreach($service->activeRoomTypes as $roomType)
                                                             <option value="{{ $roomType->id }}"
+                                                                data-type="{{ $roomType->type }}"
                                                                 data-supplement="{{ $roomType->price_supplement }}"
+                                                                data-capacity="{{ $roomType->capacity }}"
                                                                 {{ old('room_type_id') == $roomType->id ? 'selected' : '' }}>
                                                                 {{ $roomType->display_name_with_price }}
                                                             </option>
                                                         @endforeach
                                                     </select>
                                                 </div>
+                                            </div>
+                                            <!-- Room configuration info -->
+                                            <div id="room_config_info" class="room-config-info" style="font-size: 13px; color: #666; margin-top: 8px; display: none;">
+                                                <i class="fas fa-info-circle"></i>
+                                                <span id="room_config_text"></span>
                                             </div>
                                         </div>
                                         <div class="tg-tour-about-border-doted mb-15"></div>
@@ -175,7 +182,7 @@
                                 <div
                                     class="tg-tour-about-coast d-flex align-items-center flex-wrap justify-content-between">
                                     <span class="tg-tour-about-sidebar-title d-inline-block">Total Cost:</span>
-                                    <h5 class="total-price" data-base-price="{{ $data['total'] - ($data['roomSupplement'] ?? 0) }}">{{ currency($data['total']) }}</h5>
+                                    <h5 class="total-price" data-base-price="{{ $data['total'] - ($data['roomSupplement'] ?? 0) }}" data-person-count="{{ $data['personCount'] }}" data-child-count="{{ $data['childCount'] }}">{{ currency($data['total']) }}</h5>
                                 </div>
                             </div>
                         </div>
@@ -258,30 +265,175 @@
             const roomTypeSelect = document.getElementById('room_type_select');
             const roomSupplementDisplay = document.getElementById('room_supplement_display');
             const totalPriceElement = document.querySelector('.total-price');
+            const roomConfigInfo = document.getElementById('room_config_info');
+            const roomConfigText = document.getElementById('room_config_text');
+            
+            // CRITICAL FIX: Always initialize form_total with valid value
+            // Use class selector since there are multiple payment forms (modals)
+            const totalInputs = document.getElementsByClassName('form_total');
+            const initialTotal = {{ $data['total'] }};
+            
+            if (totalInputs.length > 0) {
+                // Initialize ALL total fields (one in each payment modal)
+                for (let i = 0; i < totalInputs.length; i++) {
+                    if (!totalInputs[i].value || totalInputs[i].value === 'NaN') {
+                        totalInputs[i].value = initialTotal.toFixed(2);
+                    }
+                }
+                console.log('Initialized', totalInputs.length, 'form_total fields with backend total:', initialTotal);
+            }
             
             // Get the base price (without room supplement) from data attribute
-            let basePrice = parseFloat(totalPriceElement.dataset.basePrice) || 0;
+            // Add safety check to prevent NaN
+            let basePrice = 0;
+            if (totalPriceElement && totalPriceElement.dataset.basePrice) {
+                basePrice = parseFloat(totalPriceElement.dataset.basePrice);
+                if (isNaN(basePrice)) {
+                    basePrice = {{ $data['total'] - ($data['roomSupplement'] ?? 0) }};
+                }
+            } else {
+                basePrice = {{ $data['total'] - ($data['roomSupplement'] ?? 0) }};
+            }
+            
+            let personCount = totalPriceElement ? (parseInt(totalPriceElement.dataset.personCount) || 0) : {{ $data['personCount'] }};
+            let childCount = totalPriceElement ? (parseInt(totalPriceElement.dataset.childCount) || 0) : {{ $data['childCount'] }};
+            let totalGuests = personCount + childCount;
+            
+            console.log('Base price:', basePrice, 'Total guests:', totalGuests);
+            
+            // Function to generate room configuration text
+            function generateRoomConfigText(roomType, totalGuests) {
+                const capacity = parseInt(roomType.dataset.capacity) || 1;
+                const roomsNeeded = Math.ceil(totalGuests / capacity);
+                const roomTypeName = roomType.text.split('(')[0].trim();
+                
+                if (roomsNeeded === 1) {
+                    return `Configuration: 1 ${roomTypeName} for ${totalGuests} guest(s)`;
+                } else {
+                    return `Configuration: ${roomsNeeded}x ${roomTypeName} (${roomsNeeded} rooms for ${totalGuests} guests)`;
+                }
+            }
+            
+            // Function to update room selection based on guest count
+            function filterAvailableRoomTypes(totalGuests) {
+                if (!roomTypeSelect) return;
+                
+                const options = roomTypeSelect.querySelectorAll('option');
+                let hasAvailableOption = false;
+                
+                options.forEach(option => {
+                    const capacity = parseInt(option.dataset.capacity) || 1;
+                    const roomType = option.dataset.type;
+                    
+                    // Filter logic based on guest count
+                    let shouldShow = false;
+                    
+                    if (totalGuests === 1) {
+                        // 1 person: Show single and double shared
+                        shouldShow = (roomType === 'single' || roomType === 'double_shared');
+                    } else if (totalGuests === 2) {
+                        // 2 persons: Show double
+                        shouldShow = (roomType === 'double');
+                    } else if (totalGuests === 3) {
+                        // 3 persons: Show triple
+                        shouldShow = (roomType === 'triple');
+                    } else if (totalGuests === 4) {
+                        // 4 persons: Show double (2 rooms needed)
+                        shouldShow = (roomType === 'double');
+                    } else if (totalGuests > 4) {
+                        // More than 4: Show all with sufficient capacity (double or triple)
+                        shouldShow = (roomType === 'double' || roomType === 'triple');
+                    }
+                    
+                    option.style.display = shouldShow ? '' : 'none';
+                    if (shouldShow) hasAvailableOption = true;
+                });
+                
+                // Select first available option
+                if (hasAvailableOption) {
+                    const firstAvailable = Array.from(options).find(opt => opt.style.display !== 'none');
+                    if (firstAvailable) {
+                        roomTypeSelect.value = firstAvailable.value;
+                        // Trigger change event
+                        roomTypeSelect.dispatchEvent(new Event('change'));
+                    }
+                }
+            }
             
             if (roomTypeSelect) {
+                // Get all room type input fields (one in each payment modal)
+                const roomTypeInputs = document.getElementsByClassName('form_room_type_id');
+                
+                // Initial filter and calculation
+                filterAvailableRoomTypes(totalGuests);
+                
+                // Calculate initial room supplement (after filter has run)
+                let initialSupplement = 0;
+                const selectedOption = roomTypeSelect.options[roomTypeSelect.selectedIndex];
+                if (selectedOption) {
+                    initialSupplement = parseFloat(selectedOption.dataset.supplement) || 0;
+                }
+                const initialTotalSupplement = initialSupplement * totalGuests;
+                const initialTotal = basePrice + initialTotalSupplement;
+                
+                // Update ALL total input fields (one in each payment modal)
+                if (totalInputs.length > 0) {
+                    for (let i = 0; i < totalInputs.length; i++) {
+                        totalInputs[i].value = initialTotal.toFixed(2);
+                    }
+                    console.log('Initial total set to:', initialTotal.toFixed(2), 'for', totalInputs.length, 'payment forms');
+                }
+                
+                // Update ALL room type ID fields
+                if (roomTypeInputs.length > 0 && roomTypeSelect.value) {
+                    for (let i = 0; i < roomTypeInputs.length; i++) {
+                        roomTypeInputs[i].value = roomTypeSelect.value;
+                    }
+                    console.log('Room type ID set to:', roomTypeSelect.value, 'for', roomTypeInputs.length, 'payment forms');
+                }
+                
                 roomTypeSelect.addEventListener('change', function() {
                     const selectedOption = this.options[this.selectedIndex];
-                    const supplement = parseFloat(selectedOption.dataset.supplement) || 0;
+                    const supplementPerPerson = parseFloat(selectedOption.dataset.supplement) || 0;
+                    const totalSupplement = supplementPerPerson * totalGuests;
                     
                     // Update room supplement display
                     if (roomSupplementDisplay) {
-                        roomSupplementDisplay.textContent = formatCurrency(supplement);
+                        roomSupplementDisplay.textContent = formatCurrency(totalSupplement) + ` (${formatCurrency(supplementPerPerson)} × ${totalGuests} guests)`;
+                    }
+                    
+                    // Update room configuration info
+                    if (roomConfigInfo && roomConfigText) {
+                        roomConfigText.textContent = generateRoomConfigText(selectedOption, totalGuests);
+                        roomConfigInfo.style.display = 'block';
                     }
                     
                     // Recalculate total price from base price + new supplement
-                    const newTotal = basePrice + supplement;
-                    totalPriceElement.textContent = formatCurrency(newTotal);
+                    const newTotal = basePrice + totalSupplement;
+                    if (totalPriceElement) {
+                        totalPriceElement.textContent = formatCurrency(newTotal);
+                    }
                     
-                    // Update hidden total input
-                    const totalInput = document.querySelector('input[name="total"]');
-                    if (totalInput) {
-                        totalInput.value = newTotal;
+                    // Update ALL hidden total inputs (one in each payment modal)
+                    const roomTypeInputs = document.getElementsByClassName('form_room_type_id');
+                    
+                    if (totalInputs.length > 0) {
+                        for (let i = 0; i < totalInputs.length; i++) {
+                            totalInputs[i].value = newTotal.toFixed(2);
+                        }
+                        console.log('Total updated to:', newTotal.toFixed(2), '(Base:', basePrice, '+ Supplement:', totalSupplement + ') for', totalInputs.length, 'payment forms');
+                    }
+                    
+                    if (roomTypeInputs.length > 0 && roomTypeSelect.value) {
+                        for (let i = 0; i < roomTypeInputs.length; i++) {
+                            roomTypeInputs[i].value = roomTypeSelect.value;
+                        }
+                        console.log('Room type ID updated to:', roomTypeSelect.value, 'for', roomTypeInputs.length, 'payment forms');
                     }
                 });
+                
+                // Trigger initial change event
+                roomTypeSelect.dispatchEvent(new Event('change'));
             }
   
         });
@@ -321,6 +473,44 @@
 
         .period-duration-display i {
             color: var(--tg-theme-primary);
+        }
+
+        .room-config-info {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 12px;
+            background-color: #e8f4f8;
+            border-radius: 4px;
+            border-left: 3px solid #007bff;
+            margin-top: 8px;
+            font-size: 13px;
+            color: #495057;
+        }
+
+        .room-config-info i {
+            color: #007bff;
+            font-size: 14px;
+        }
+
+        .room-config-info span {
+            flex: 1;
+        }
+
+        .custom-select {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            background-color: #fff;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        .custom-select:focus {
+            outline: none;
+            border-color: #007bff;
+            box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.1);
         }
     </style>
 @endpush

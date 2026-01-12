@@ -186,6 +186,41 @@
                                                             </tr>
                                                         </table>
                                                     </div>
+                                                    
+                                                    @if ($booking->room_type_id && $booking->roomType)
+                                                        <div class="ed-inv-info">
+                                                            <p class="ed-inv-info-title">
+                                                                {{ __('translate.Room Configuration') }}
+                                                            </p>
+                                                            <table>
+                                                                <tr>
+                                                                    <td>{{ __('translate.Room Type') }}:</td>
+                                                                    <td>
+                                                                        <strong>{{ $booking->roomType->display_name }}</strong>
+                                                                    </td>
+                                                                </tr>
+                                                                @if($booking->meta_data && isset($booking->meta_data['room_config']))
+                                                                    <tr>
+                                                                        <td>{{ __('translate.Configuration') }}:</td>
+                                                                        <td>
+                                                                            <span style="color: #666; font-size: 13px;">
+                                                                                <i class="fas fa-info-circle"></i>
+                                                                                {{ $booking->meta_data['room_config']['configuration_text'] ?? '' }}
+                                                                            </span>
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>{{ __('translate.Supplement') }}:</td>
+                                                                        <td>
+                                                                            {{ currency($booking->meta_data['room_config']['supplement_per_person'] ?? 0) }} / person ×
+                                                                            {{ $booking->meta_data['room_config']['total_guests'] ?? 0 }} guests =
+                                                                            <strong>{{ currency($booking->meta_data['room_config']['total_supplement'] ?? 0) }}</strong>
+                                                                        </td>
+                                                                    </tr>
+                                                                @endif
+                                                            </table>
+                                                        </div>
+                                                    @endif
                                                 </div>
 
                                                 @if ($booking->admin_notes)

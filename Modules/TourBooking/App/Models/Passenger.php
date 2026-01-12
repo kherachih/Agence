@@ -29,6 +29,7 @@ final class Passenger extends Model
         'passport_number',
         'passport_expiry_date',
         'passport_file',
+        'flight_ticket_file',
         'insurance_file',
         'phone',
         'email',
@@ -80,6 +81,14 @@ final class Passenger extends Model
     }
 
     /**
+     * Get the flight ticket file URL.
+     */
+    public function getFlightTicketFileUrlAttribute(): string
+    {
+        return $this->flight_ticket_file ? asset('storage/' . $this->flight_ticket_file) : '';
+    }
+
+    /**
      * Get the insurance file URL.
      */
     public function getInsuranceFileUrlAttribute(): string
@@ -109,6 +118,14 @@ final class Passenger extends Model
     public function hasPassportFile(): bool
     {
         return !empty($this->passport_file);
+    }
+
+    /**
+     * Check if passenger has flight ticket file.
+     */
+    public function hasFlightTicketFile(): bool
+    {
+        return !empty($this->flight_ticket_file);
     }
 
     /**

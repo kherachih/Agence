@@ -254,9 +254,16 @@
                             </div>
                         </div>
                         <div class="col-lg-4">
-                            <div class="tg-tour-details-video-feature-price mb-15">
-                                <p>{{ __('translate.From') }} <span>{!! $service->adult_price_display !!}</span> / {{ __('translate.Adult') }}
-                                    <span class="small-discount-badge">{!! $service->adult_discount_badge !!}</span>
+                            <div class="tg-tour-details-video-feature-price mb-15 position-relative">
+                                @if ($service->adult_discount_badge)
+                                    <div class="discount-badge-above-price">
+                                        {!! $service->adult_discount_badge !!}
+                                    </div>
+                                @endif
+                                <p class="price-row">
+                                    {{ __('translate.From') }}
+                                    <span class="price-display">{!! $service->adult_price_display !!}</span>
+                                    / {{ __('translate.Adult') }}
                                 </p>
                             </div>
                         </div>
@@ -638,10 +645,15 @@
                                     <div class="tg-tour-about-tickets mb-10">
                                         <div class="tg-tour-about-tickets-adult">
                                             <span>Adult</span>
-                                            <p class="mb-0">(18+ years)
+                                            <p class="mb-0">
+                                                (18+ years)
                                                 <span>{!! $service->adult_price_display !!}</span>
-                                                {!! $service->adult_discount_badge !!}
                                             </p>
+                                            @if ($service->adult_discount_badge)
+                                                <div class="discount-badge-below-price">
+                                                    {!! $service->adult_discount_badge !!}
+                                                </div>
+                                            @endif
                                         </div>
                                         <div class="tg-tour-about-tickets-quantity">
                                             <select name="person" class="item-first custom-select"
@@ -656,10 +668,15 @@
                                     <div class="tg-tour-about-tickets mb-10">
                                         <div class="tg-tour-about-tickets-adult">
                                             <span>Children </span>
-                                            <p class="mb-0">(13-17 years)
+                                            <p class="mb-0">
+                                                (13-17 years)
                                                 <span>{!! $service->child_price_display !!}</span>
-                                                {!! $service->child_discount_badge !!}
                                             </p>
+                                            @if ($service->child_discount_badge)
+                                                <div class="discount-badge-below-price">
+                                                    {!! $service->child_discount_badge !!}
+                                                </div>
+                                            @endif
                                         </div>
                                         <div class="tg-tour-about-tickets-quantity">
                                             <select name="children" class="item-first custom-select"
@@ -787,6 +804,30 @@
                             option.style.display = 'none';
                         }
                     });
+                });
+
+                // Filter out past periods - only show periods with future start dates
+                function filterAvailabilityPeriods() {
+                    const periodOptions = dropdownList.querySelectorAll('.availability-period-option');
+                    const today = new Date();
+                    today.setHours(0, 0, 0, 0); // Set to start of today
+                    
+                    periodOptions.forEach(option => {
+                        const startDateStr = option.dataset.startDate;
+                        const startDate = new Date(startDateStr);
+                        
+                        // Hide periods that have already started (start date is before today)
+                        if (startDate < today) {
+                            option.style.display = 'none';
+                        } else {
+                            option.style.display = 'block';
+                        }
+                    });
+                }
+
+                // Filter periods when dropdown opens
+                dropdownToggle.addEventListener('click', function() {
+                    setTimeout(filterAvailabilityPeriods, 100);
                 });
 
                 // Period selection
@@ -1012,6 +1053,77 @@
         .small-discount-badge .badge {
             font-size: 0.75rem;
             padding: 0.25rem 0.5rem;
+        }
+
+        /* Discount badge above price - main feature section */
+        .discount-badge-above-price {
+            position: absolute;
+            top: -35px;
+            right: 0;
+            z-index: 10;
+        }
+
+        .discount-badge-above-price .badge {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a5a 100%);
+            color: white;
+            font-weight: 700;
+            font-size: 13px;
+            padding: 6px 14px;
+            border-radius: 20px;
+            box-shadow: 0 4px 12px rgba(238, 90, 90, 0.4);
+            display: inline-block;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            text-decoration: none;
+        }
+
+        /* Price row with reduced font size */
+        .price-row {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 5px;
+            font-size: 14px;
+        }
+
+        .price-display {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+        }
+
+        .price-display del {
+            font-size: 11px;
+            color: #999;
+            text-decoration: line-through;
+        }
+
+        .price-display span:last-child,
+        .price-display > :not(del) {
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--tg-theme-primary);
+        }
+
+        /* Discount badge below price - sidebar tickets section */
+        .discount-badge-below-price {
+            margin-top: 5px;
+            text-align: left;
+        }
+
+        .discount-badge-below-price .badge {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a5a 100%);
+            color: white;
+            font-weight: 700;
+            font-size: 10px;
+            padding: 3px 8px;
+            border-radius: 12px;
+            box-shadow: 0 2px 6px rgba(238, 90, 90, 0.3);
+            display: inline-block;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+            text-decoration: none;
         }
 
         .tg-tour-about-cus-review-thumb img {
