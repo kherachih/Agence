@@ -259,6 +259,7 @@ Route::group(['as' => 'user.', 'prefix' => 'user'], function () {
 
         Route::get('/bookings', [UserBookingController::class, 'index'])->name('bookings.index');
         Route::get('/bookings/details/{id}', [UserBookingController::class, 'details'])->name('bookings.details');
+        Route::get('/bookings/{id}/download-confirmation', [UserBookingController::class, 'downloadConfirmation'])->name('bookings.download-confirmation');
         Route::post('/bookings/cancel/{id}', [UserBookingController::class, 'cancelBooking'])->name('bookings.cancel');
 
         // Passengers

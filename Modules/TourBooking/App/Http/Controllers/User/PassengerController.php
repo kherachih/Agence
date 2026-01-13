@@ -257,6 +257,14 @@ class PassengerController extends Controller
                 ]);
             }
 
+            // Update booking status if not already completed (self-healing)
+            if ($booking->passenger_info_status !== 'completed') {
+                $booking->update([
+                    'passenger_info_status' => 'completed',
+                    'passenger_info_completed_at' => now(),
+                ]);
+            }
+
             return redirect()->route('user.bookings.details', ['id' => $booking->id])
                 ->with('success', __('translate.Passenger information updated successfully.'));
 

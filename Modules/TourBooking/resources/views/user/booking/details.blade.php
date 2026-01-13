@@ -186,7 +186,7 @@
                                                             </tr>
                                                         </table>
                                                     </div>
-                                                    
+
                                                     @if ($booking->room_type_id && $booking->roomType)
                                                         <div class="ed-inv-info">
                                                             <p class="ed-inv-info-title">
@@ -212,8 +212,10 @@
                                                                     <tr>
                                                                         <td>{{ __('translate.Supplement') }}:</td>
                                                                         <td>
-                                                                            {{ currency($booking->meta_data['room_config']['supplement_per_person'] ?? 0) }} / person ×
-                                                                            {{ $booking->meta_data['room_config']['total_guests'] ?? 0 }} guests =
+                                                                            {{ currency($booking->meta_data['room_config']['supplement_per_person'] ?? 0) }}
+                                                                            / person ×
+                                                                            {{ $booking->meta_data['room_config']['total_guests'] ?? 0 }}
+                                                                            guests =
                                                                             <strong>{{ currency($booking->meta_data['room_config']['total_supplement'] ?? 0) }}</strong>
                                                                         </td>
                                                                     </tr>
@@ -235,7 +237,8 @@
                                                 @if ($booking->cancellation_reason)
                                                     <div class="row mb-4">
                                                         <div class="col-md-12">
-                                                            <h6 class="text-muted">{{ __('translate.Cancellation reason') }}</h6>
+                                                            <h6 class="text-muted">{{ __('translate.Cancellation reason') }}
+                                                            </h6>
                                                             <p>{{ $booking->cancellation_reason }}</p>
                                                         </div>
                                                     </div>
@@ -244,8 +247,14 @@
                                                 <div class="row">
                                                     <div class="col-md-12">
                                                         <h6 class="text-muted">{{ __('translate.Actions') }}</h6>
+                                                        {{-- DEBUG INFO --}}
+                                                        <div class="alert alert-info">
+                                                            Debug: Payment Status = {{ $booking->payment_status }},
+                                                            Passenger Info Status =
+                                                            {{ $booking->passenger_info_status ?? 'null' }}
+                                                        </div>
                                                         <div class="d-flex flex-wrap gap-4">
- 
+
                                                             <div>
                                                                 <button class="btn btn-secondary">
                                                                     <a class="text-dark"
@@ -255,21 +264,44 @@
                                                                     </a>
                                                                 </button>
                                                             </div>
- 
+
                                                             <div>
                                                                 @if($booking->payment_status === 'completed' && $booking->passenger_info_status === 'pending')
-                                                                    <a href="{{ route('user.passengers.create', $booking) }}" class="btn btn-warning">
+                                                                    <a href="{{ route('user.passengers.create', $booking) }}"
+                                                                        class="btn btn-warning">
                                                                         <i class="fas fa-user-plus"></i>
                                                                         {{ __('translate.Add Passenger Information') }}
                                                                     </a>
                                                                 @elseif($booking->passenger_info_status === 'completed')
-                                                                    <a href="{{ route('user.passengers.show', $booking) }}" class="btn btn-info">
+                                                                    <a href="{{ route('user.passengers.show', $booking) }}"
+                                                                        class="btn btn-info">
                                                                         <i class="fas fa-users"></i>
                                                                         {{ __('translate.View Passengers') }}
                                                                     </a>
                                                                 @endif
                                                             </div>
- 
+
+                                                            {{-- PDF Download Button --}}
+                                                            <div>
+                                                                @if($booking->payment_status === 'completed' && $booking->passenger_info_status === 'completed')
+                                                                    <a href="{{ route('user.bookings.download-confirmation', $booking) }}"
+                                                                        class="btn btn-success w-auto" target="_blank">
+                                                                        <i class="fas fa-file-pdf"></i>
+                                                                        {{ __('translate.Download Booking Confirmation') }}
+                                                                    </a>
+                                                                @elseif($booking->payment_status === 'completed' && $booking->passenger_info_status !== 'completed')
+                                                                    <button class="btn btn-secondary w-auto" disabled
+                                                                        title="{{ __('translate.Complete passenger information to download confirmation') }}">
+                                                                        <i class="fas fa-file-pdf"></i>
+                                                                        {{ __('translate.Download Booking Confirmation') }}
+                                                                    </button>
+                                                                    <small class="text-warning d-block mt-2">
+                                                                        <i class="fas fa-info-circle"></i>
+                                                                        {{ __('translate.Complete passenger information first') }}
+                                                                    </small>
+                                                                @endif
+                                                            </div>
+
                                                             <div>
                                                                 @if ($booking->booking_status == 'pending' || $booking->booking_status == 'confirmed' || $booking->booking_status == 'success')
                                                                     <button type="button" class="btn btn-danger w-auto"
@@ -280,7 +312,7 @@
                                                                     </button>
                                                                 @endif
                                                             </div>
- 
+
                                                             <div>
                                                                 @if ($booking->booking_status == 'completed')
                                                                     <button class="btn btn-primary w-auto">
@@ -317,8 +349,7 @@
             aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
-                    <form action="{{ route('user.bookings.cancel', ['id' => $booking->id]) }}"
-                        method="POST">
+                    <form action="{{ route('user.bookings.cancel', ['id' => $booking->id]) }}" method="POST">
                         @csrf
                         <div class="modal-header">
                             <h5 class="modal-title" id="cancelBookingModalLabel">{{ __('translate.Cancel Booking') }}</h5>
@@ -329,7 +360,8 @@
                             <div class="mb-3">
                                 <label for="cancellation_reason"
                                     class="form-label">{{ __('translate.Reason for Cancellation') }}</label>
-                                <textarea class="form-control" id="cancellation_reason" name="cancellation_reason" rows="3" required></textarea>
+                                <textarea class="form-control" id="cancellation_reason" name="cancellation_reason" rows="3"
+                                    required></textarea>
                             </div>
                         </div>
                         <div class="modal-footer">

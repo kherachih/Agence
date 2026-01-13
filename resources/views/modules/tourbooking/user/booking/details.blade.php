@@ -222,16 +222,24 @@
                                                             </div>
  
                                                             <div>
-                                                                @if($booking->payment_status === 'completed' && $booking->passenger_info_status === 'pending')
-                                                                    <a href="{{ route('user.passengers.create', $booking) }}" class="btn btn-warning">
-                                                                        <i class="fas fa-user-plus"></i>
-                                                                        {{ __('translate.Add Passenger Information') }}
+                                                                @if($booking->payment_status === 'completed' && $booking->passenger_info_status === 'completed')
+                                                                    <a href="{{ route('user.bookings.download-confirmation', $booking) }}" 
+                                                                       class="btn btn-success w-auto"
+                                                                       target="_blank">
+                                                                        <i class="fas fa-file-pdf"></i>
+                                                                        {{ __('translate.Download Booking Confirmation') }}
                                                                     </a>
-                                                                @elseif($booking->passenger_info_status === 'completed')
-                                                                    <a href="{{ route('user.passengers.show', $booking) }}" class="btn btn-info">
-                                                                        <i class="fas fa-users"></i>
-                                                                        {{ __('translate.View Passengers') }}
-                                                                    </a>
+                                                                @elseif($booking->payment_status === 'completed' && $booking->passenger_info_status !== 'completed')
+                                                                    <button class="btn btn-secondary w-auto" 
+                                                                            disabled 
+                                                                            title="{{ __('translate.Complete passenger information to download confirmation') }}">
+                                                                        <i class="fas fa-file-pdf"></i>
+                                                                        {{ __('translate.Download Booking Confirmation') }}
+                                                                    </button>
+                                                                    <small class="text-warning d-block mt-2">
+                                                                        <i class="fas fa-info-circle"></i>
+                                                                        {{ __('translate.Complete passenger information first') }}
+                                                                    </small>
                                                                 @endif
                                                             </div>
  

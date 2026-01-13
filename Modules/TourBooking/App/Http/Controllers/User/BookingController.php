@@ -36,6 +36,44 @@ final class BookingController extends Controller
     }
 
     /**
+     * Download booking confirmation PDF.
+     */
+    public function downloadConfirmation(Request $request)
+    {
+        $booking = Booking::with(['service.translation', 'service.thumbnail', 'user', 'passengers', 'roomType'])
+            ->where('user_id', auth()->user()->id)
+            ->findOrFail($request->id);
+
+        // Validate that payment is completed
+        if ($booking->payment_status !== 'completed') {
+            return redirect()
+                ->back()
+                ->with('error', __('translate.Payment must be completed before downloading confirmation'));
+        }
+
+        // Validate that passenger information is completed
+        if ($booking->passenger_info_status !== 'completed') {
+            return redirect()
+                ->back()
+                ->with('error', __('translate.You must complete passenger information before downloading the confirmation'));
+        }
+
+        $passengers = $booking->passengers;
+
+        $general_setting = \Illuminate\Support\Facades\Cache::get('setting');
+
+        $pdf = Pdf::loadView('tourbooking::user.booking.user-confirmation-pdf', [
+            'booking' => $booking,
+            'passengers' => $passengers,
+            'general_setting' => $general_setting,
+        ]);
+
+        $fileName = 'booking-confirmation-' . $booking->booking_code . '.pdf';
+
+        return $pdf->download($fileName);
+    }
+
+    /**
      * Cancel a booking.
      */
     public function cancelBooking(Request $request, $id): RedirectResponse
