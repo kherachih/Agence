@@ -8,32 +8,32 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <!-- Favicon Icon -->
-    <link rel="shortcut icon" href="{{ asset($general_setting->favicon) }}" type="image/x-icon">
-    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <link rel="shortcut icon" href="<?php echo e(asset($general_setting->favicon)); ?>" type="image/x-icon">
+    <meta name="csrf-token" content="<?php echo e(csrf_token()); ?>">
 
     <!-- Site Title -->
-    @yield('title')
+    <?php echo $__env->yieldContent('title'); ?>
 
-    <link rel="stylesheet" href="{{ asset('frontend/assets/css/bootstrap.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('frontend/assets/css/animate.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('frontend/assets/css/magnific-popup.css') }}">
-    <link rel="stylesheet" href="{{ asset('frontend/assets/css/fontawesome-all.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('frontend/assets/css/swiper-bundle.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('frontend/assets/css/flatpicker.css') }}">
-    <link rel="stylesheet" href="{{ asset('frontend/assets/css/odometer.css') }}">
-    <link rel="stylesheet" href="{{ asset('frontend/assets/css/default.css') }}">
-    <link rel="stylesheet" href="{{ asset('frontend/assets/css/main.css') }}">
-    <link rel="stylesheet" href="{{ asset('frontend/assets/css/dev.css') }}">
-    <link rel="stylesheet" href="{{ asset('frontend/assets/css/cookie_consent.css') }}">
-    <link rel="stylesheet" href="{{ asset('frontend/assets/css/custom.css') }}">
+    <link rel="stylesheet" href="<?php echo e(asset('frontend/assets/css/bootstrap.min.css')); ?>">
+    <link rel="stylesheet" href="<?php echo e(asset('frontend/assets/css/animate.min.css')); ?>">
+    <link rel="stylesheet" href="<?php echo e(asset('frontend/assets/css/magnific-popup.css')); ?>">
+    <link rel="stylesheet" href="<?php echo e(asset('frontend/assets/css/fontawesome-all.min.css')); ?>">
+    <link rel="stylesheet" href="<?php echo e(asset('frontend/assets/css/swiper-bundle.min.css')); ?>">
+    <link rel="stylesheet" href="<?php echo e(asset('frontend/assets/css/flatpicker.css')); ?>">
+    <link rel="stylesheet" href="<?php echo e(asset('frontend/assets/css/odometer.css')); ?>">
+    <link rel="stylesheet" href="<?php echo e(asset('frontend/assets/css/default.css')); ?>">
+    <link rel="stylesheet" href="<?php echo e(asset('frontend/assets/css/main.css')); ?>">
+    <link rel="stylesheet" href="<?php echo e(asset('frontend/assets/css/dev.css')); ?>">
+    <link rel="stylesheet" href="<?php echo e(asset('frontend/assets/css/cookie_consent.css')); ?>">
+    <link rel="stylesheet" href="<?php echo e(asset('frontend/assets/css/custom.css')); ?>">
 
-    <link rel="stylesheet" href="{{ asset('global/toastr/toastr.min.css') }}">
+    <link rel="stylesheet" href="<?php echo e(asset('global/toastr/toastr.min.css')); ?>">
 
-    @stack('style_section')
+    <?php echo $__env->yieldPushContent('style_section'); ?>
 
 
-    @if ($general_setting->google_analytic_status == 1)
-        <script async src="https://www.googletagmanager.com/gtag/js?id={{ $general_setting->google_analytic_id }}"></script>
+    <?php if($general_setting->google_analytic_status == 1): ?>
+        <script async src="https://www.googletagmanager.com/gtag/js?id=<?php echo e($general_setting->google_analytic_id); ?>"></script>
         <script>
             window.dataLayer = window.dataLayer || [];
 
@@ -41,12 +41,12 @@
                 dataLayer.push(arguments);
             }
             gtag('js', new Date());
-            gtag('config', '{{ $general_setting->google_analytic_id }}');
+            gtag('config', '<?php echo e($general_setting->google_analytic_id); ?>');
         </script>
-    @endif
+    <?php endif; ?>
 
 
-    @if ($general_setting->pixel_status == 1)
+    <?php if($general_setting->pixel_status == 1): ?>
         <script>
             ! function (f, b, e, v, n, t, s) {
                 if (f.fbq) return;
@@ -66,33 +66,33 @@
                 s.parentNode.insertBefore(t, s)
             }(window, document, 'script',
                 'https://connect.facebook.net/en_US/fbevents.js');
-            fbq('init', '{{ $general_setting->pixel_app_id }}');
+            fbq('init', '<?php echo e($general_setting->pixel_app_id); ?>');
             fbq('track', 'PageView');
         </script>
         <noscript>
             <img height="1" width="1" style="display:none"
-                src="https://www.facebook.com/tr?id={{ $general_setting->pixel_app_id }}&ev=PageView&noscript=1" /></noscript>
-    @endif
+                src="https://www.facebook.com/tr?id=<?php echo e($general_setting->pixel_app_id); ?>&ev=PageView&noscript=1" /></noscript>
+    <?php endif; ?>
 
 </head>
 
 <body class="td_theme_2">
 
-    @if ($general_setting->preloader_status == 'enable')
+    <?php if($general_setting->preloader_status == 'enable'): ?>
         <!-- Start Preloader -->
         <div id="loading">
             <div class="loader"></div>
         </div>
         <!-- End Preloader -->
-    @endif
+    <?php endif; ?>
 
-    @if ($general_setting->preloader_status == 'enable')
+    <?php if($general_setting->preloader_status == 'enable'): ?>
         <!-- Scroll-top -->
         <button class="scroll__top scroll-to-target" data-target="html">
             <i class="fa-sharp fa-regular fa-arrow-up"></i>
         </button>
         <!-- Scroll-top-end-->
-    @endif
+    <?php endif; ?>
 
 
     <!-- header-area -->
@@ -103,14 +103,14 @@
                     <div class="col-lg-8 col-6">
                         <div class="tgmenu__wrap d-flex align-items-center">
                             <div class="logo">
-                                <a class="logo-1" href="{{ route('home') }}"><img
-                                        src="{{ asset($general_setting->logo) }}" alt="Logo"></a>
-                                <a class="logo-2 d-none" href="{{ route('home') }}"><img
-                                        src="{{ asset($general_setting->secondary_logo) }}" alt="Logo"></a>
+                                <a class="logo-1" href="<?php echo e(route('home')); ?>"><img
+                                        src="<?php echo e(asset($general_setting->logo)); ?>" alt="Logo"></a>
+                                <a class="logo-2 d-none" href="<?php echo e(route('home')); ?>"><img
+                                        src="<?php echo e(asset($general_setting->secondary_logo)); ?>" alt="Logo"></a>
                             </div>
                             <nav class="tgmenu__nav tgmenu-1-space ml-180">
                                 <div class="tgmenu__navbar-wrap tgmenu__main-menu d-none d-xl-flex">
-                                    @include('components.common_navitems')
+                                    <?php echo $__env->make('components.common_navitems', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
                                 </div>
                             </nav>
                         </div>
@@ -119,43 +119,44 @@
                         <div class="tg-menu-right-action d-flex align-items-center justify-content-end">
                             <div class="tg-header-contact-info d-flex align-items-center">
                                 <span class="tg-header-contact-icon mr-8 d-none d-xl-block">
-                                    @include('svg.search_phone')
+                                    <?php echo $__env->make('svg.search_phone', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
                                 </span>
                                 <div class="tg-header-contact-number d-none d-xl-block">
-                                    <span class="d-none d-lg-inline">{{ __('translate.Call Us') }}:</span>
-                                    <a href="tel:{{ $footer->phone }}">{{ $footer->phone }}</a>
+                                    <span class="d-none d-lg-inline"><?php echo e(__('translate.Call Us')); ?>:</span>
+                                    <a href="tel:<?php echo e($footer->phone); ?>"><?php echo e($footer->phone); ?></a>
                                 </div>
                             </div>
                             <div class="tg-header-currency ml-15 d-none d-xl-block">
                                 <span class="tg-header-border"></span>
                                 <select class="currency_code" name="currency_code"
                                     style="padding: 6px 10px; border-radius: 4px; border: 1px solid #e0e0e0; background: #fff; font-size: 13px; cursor: pointer; min-width: 90px;">
-                                    @foreach($currency_list as $currency)
-                                        <option value="{{ $currency->currency_code }}" {{ session('currency_code') == $currency->currency_code ? 'selected' : '' }}>
-                                            {{ $currency->currency_name }} ({{ $currency->currency_icon }})
+                                    <?php $__currentLoopData = $currency_list; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $currency): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                        <option value="<?php echo e($currency->currency_code); ?>" <?php echo e(session('currency_code') == $currency->currency_code ? 'selected' : ''); ?>>
+                                            <?php echo e($currency->currency_name); ?> (<?php echo e($currency->currency_icon); ?>)
                                         </option>
-                                    @endforeach
+                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                 </select>
                             </div>
                             <div class="tg-header-language ml-15 d-none d-xl-block">
                                 <span class="tg-header-border"></span>
                                 <select class="language_code" name="language_code"
                                     style="padding: 6px 10px; border-radius: 4px; border: 1px solid #e0e0e0; background: #fff; font-size: 13px; cursor: pointer; min-width: 90px;">
-                                    @foreach($language_list as $lang)
-                                        <option value="{{ $lang->lang_code }}" {{ session('front_lang') == $lang->lang_code ? 'selected' : '' }}>
-                                            {{ $lang->lang_name }}
+                                    <?php $__currentLoopData = $language_list; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $lang): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                        <option value="<?php echo e($lang->lang_code); ?>" <?php echo e(session('front_lang') == $lang->lang_code ? 'selected' : ''); ?>>
+                                            <?php echo e($lang->lang_name); ?>
+
                                         </option>
-                                    @endforeach
+                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                 </select>
                             </div>
                             <div class="tg-header-cart p-relative ml-15 pl-15 d-none d-xl-block">
                                 <span class="tg-header-border"></span>
-                                @include('components.cart')
+                                <?php echo $__env->make('components.cart', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
                             </div>
 
                             <div class="tg-header-btn ml-10 d-none d-sm-block">
-                                @guest('web')
-                                    <a class="tg-btn-header" href="{{ route('user.login') }}">
+                                <?php if(auth()->guard('web')->guest()): ?>
+                                    <a class="tg-btn-header" href="<?php echo e(route('user.login')); ?>">
                                         <span>
                                             <svg width="18" height="18" viewBox="0 0 18 18" fill="none"
                                                 xmlns="http://www.w3.org/2000/svg">
@@ -164,11 +165,12 @@
                                                     fill="currentColor" />
                                             </svg>
                                         </span>
-                                        {{ __('translate.Login') }}
+                                        <?php echo e(__('translate.Login')); ?>
+
                                     </a>
-                                @else
+                                <?php else: ?>
                                     <a class="tg-btn-header"
-                                        href="{{ Auth::guard('web')->user()->is_seller == 1 ? route('agency.dashboard') : route('user.dashboard') }}">
+                                        href="<?php echo e(Auth::guard('web')->user()->is_seller == 1 ? route('agency.dashboard') : route('user.dashboard')); ?>">
                                         <span>
                                             <svg width="18" height="18" viewBox="0 0 18 18" fill="none"
                                                 xmlns="http://www.w3.org/2000/svg">
@@ -177,9 +179,10 @@
                                                     fill="currentColor" />
                                             </svg>
                                         </span>
-                                        {{ __('translate.Dashboard') }}
+                                        <?php echo e(__('translate.Dashboard')); ?>
+
                                     </a>
-                                @endguest
+                                <?php endif; ?>
                             </div>
                             <div class="tg-header-menu-bar lh-1 p-relative ml-15 pl-15">
                                 <span class="tg-header-border d-none d-xl-block"></span>
@@ -201,36 +204,36 @@
         </div>
 
         <!-- Mobile Menu  -->
-        @include('components.common_mobile_menu')
+        <?php echo $__env->make('components.common_mobile_menu', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
         <!-- End Mobile Menu -->
-        @include('components.common_offcanvas')
+        <?php echo $__env->make('components.common_offcanvas', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
     </header>
     <!-- header-area-end -->
-    @yield('front-content')
+    <?php echo $__env->yieldContent('front-content'); ?>
 
 
     <!-- footer-area-start -->
     <footer>
-        <div class="tg-footer-area pt-130 include-bg {{ request()->routeIs('faq') || request()->routeIs('pricing') ? 'tg-footer-space' : '' }} "
-            data-background="{{ asset('frontend/assets/img/others/footer/footer.jpg') }}">
+        <div class="tg-footer-area pt-130 include-bg <?php echo e(request()->routeIs('faq') || request()->routeIs('pricing') ? 'tg-footer-space' : ''); ?> "
+            data-background="<?php echo e(asset('frontend/assets/img/others/footer/footer.jpg')); ?>">
             <div class="container">
                 <div class="tg-footer-top pb-40">
                     <div class="row">
                         <div class="col-xl-3 col-lg-3 col-md-6 col-sm-6">
                             <div class="tg-footer-widget mb-40">
                                 <div class="tg-footer-logo mb-20">
-                                    @if ($general_setting->footer_logo)
-                                        <a href="{{ route('home') }}"><img src="{{ asset($general_setting->footer_logo) }}"
+                                    <?php if($general_setting->footer_logo): ?>
+                                        <a href="<?php echo e(route('home')); ?>"><img src="<?php echo e(asset($general_setting->footer_logo)); ?>"
                                                 alt=""></a>
-                                    @else
-                                        <a href="{{ route('home') }}"><img src="{{ asset($general_setting->logo) }}"
+                                    <?php else: ?>
+                                        <a href="<?php echo e(route('home')); ?>"><img src="<?php echo e(asset($general_setting->logo)); ?>"
                                                 alt=""></a>
-                                    @endif
+                                    <?php endif; ?>
                                 </div>
-                                <p class="mb-20">{{ $footer->about_us }}</p>
+                                <p class="mb-20"><?php echo e($footer->about_us); ?></p>
                                 <div class="tg-footer-form mb-30">
-                                    <form action="{{ route('store-newsletter') }}" method="POST">
-                                        @csrf
+                                    <form action="<?php echo e(route('store-newsletter')); ?>" method="POST">
+                                        <?php echo csrf_field(); ?>
                                         <input type="email" placeholder="Enter your mail" name="email">
                                         <button class="tg-footer-form-btn" type="submit">
                                             <svg width="22" height="17" viewBox="0 0 22 17" fill="none"
@@ -244,31 +247,31 @@
                                     </form>
                                 </div>
                                 <div class="tg-footer-social">
-                                    @isset($footer->facebook)
-                                        <a href="{{ $footer->facebook }}"><i class="fa-brands fa-facebook-f"></i></a>
-                                    @endisset
-                                    @isset($footer->twitter)
-                                        <a href="{{ $footer->twitter }}"><i class="fa-brands fa-twitter"></i></a>
-                                    @endisset
-                                    @isset($footer->instagram)
-                                        <a href="{{ $footer->instagram }}"><i class="fa-brands fa-instagram"></i></a>
-                                    @endisset
-                                    @isset($footer->pinterest)
-                                        <a href="{{ $footer->pinterest }}"><i class="fa-brands fa-pinterest-p"></i></a>
-                                    @endisset
-                                    @isset($footer->youtube)
-                                        <a href="{{ $footer->youtube }}"><i class="fa-brands fa-youtube"></i></a>
-                                    @endisset
-                                    @isset($footer->linkedin)
-                                        <a href="{{ $footer->linkedin }}"><i class="fa-brands fa-linkedin"></i></a>
-                                    @endisset
+                                    <?php if(isset($footer->facebook)): ?>
+                                        <a href="<?php echo e($footer->facebook); ?>"><i class="fa-brands fa-facebook-f"></i></a>
+                                    <?php endif; ?>
+                                    <?php if(isset($footer->twitter)): ?>
+                                        <a href="<?php echo e($footer->twitter); ?>"><i class="fa-brands fa-twitter"></i></a>
+                                    <?php endif; ?>
+                                    <?php if(isset($footer->instagram)): ?>
+                                        <a href="<?php echo e($footer->instagram); ?>"><i class="fa-brands fa-instagram"></i></a>
+                                    <?php endif; ?>
+                                    <?php if(isset($footer->pinterest)): ?>
+                                        <a href="<?php echo e($footer->pinterest); ?>"><i class="fa-brands fa-pinterest-p"></i></a>
+                                    <?php endif; ?>
+                                    <?php if(isset($footer->youtube)): ?>
+                                        <a href="<?php echo e($footer->youtube); ?>"><i class="fa-brands fa-youtube"></i></a>
+                                    <?php endif; ?>
+                                    <?php if(isset($footer->linkedin)): ?>
+                                        <a href="<?php echo e($footer->linkedin); ?>"><i class="fa-brands fa-linkedin"></i></a>
+                                    <?php endif; ?>
                                 </div>
                             </div>
                         </div>
                         <div class="col-xl-3 col-lg-3 col-md-6 col-sm-6">
                             <div class="tg-footer-widget tg-footer-link ml-80 mb-40">
-                                <h3 class="tg-footer-widget-title mb-25">{{ __('translate.Quick Links') }}</h3>
-                                {!! wp_nav_menu([
+                                <h3 class="tg-footer-widget-title mb-25"><?php echo e(__('translate.Quick Links')); ?></h3>
+                                <?php echo wp_nav_menu([
     'theme_location' => 'footer_menu_1',
     'menu_class' => '',
     'container' => false,
@@ -278,14 +281,16 @@
     'after' => '',
     'link_before' => '',
     'link_after' => '',
-]) !!}
+]); ?>
+
                                 <ul
                                     style="margin-top: 15px; padding-top: 15px; border-top: 1px solid rgba(255,255,255,0.1);">
                                     <li>
-                                        <a href="{{ route('agency.registration') }}"
+                                        <a href="<?php echo e(route('agency.registration')); ?>"
                                             style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; font-weight: 600;">
                                             <i class="fa-solid fa-briefcase"></i>
-                                            {{ __('translate.Become an Agency Partner') }}
+                                            <?php echo e(__('translate.Become an Agency Partner')); ?>
+
                                         </a>
                                     </li>
                                 </ul>
@@ -293,11 +298,11 @@
                         </div>
                         <div class="col-xl-3 col-lg-3 col-md-6 col-sm-6">
                             <div class="tg-footer-widget tg-footer-info mb-40">
-                                <h3 class="tg-footer-widget-title mb-25">{{ __('translate.Information') }}</h3>
+                                <h3 class="tg-footer-widget-title mb-25"><?php echo e(__('translate.Information')); ?></h3>
                                 <ul>
-                                    @if ($footer->address || $footer->address_url)
+                                    <?php if($footer->address || $footer->address_url): ?>
                                         <li>
-                                            <a class="d-flex" href="{{ $footer->address_url }}">
+                                            <a class="d-flex" href="<?php echo e($footer->address_url); ?>">
                                                 <span class="mr-15">
                                                     <svg width="20" height="24" viewBox="0 0 20 24" fill="none"
                                                         xmlns="http://www.w3.org/2000/svg">
@@ -311,21 +316,23 @@
                                                             stroke-linejoin="round" />
                                                     </svg>
                                                 </span>
-                                                {{ $footer->address }}
+                                                <?php echo e($footer->address); ?>
+
                                             </a>
                                         </li>
-                                    @endif
-                                    @if ($footer->phone)
+                                    <?php endif; ?>
+                                    <?php if($footer->phone): ?>
                                         <li>
                                             <a class="d-flex" href="tel:+1238889999">
                                                 <span class="mr-15">
                                                     <i class="fa-sharp text-white fa-solid fa-phone"></i>
                                                 </span>
-                                                {{ $footer->phone }}
+                                                <?php echo e($footer->phone); ?>
+
                                             </a>
                                         </li>
-                                    @endif
-                                    @if ($footer->working_days)
+                                    <?php endif; ?>
+                                    <?php if($footer->working_days): ?>
                                         <li class="d-flex">
                                             <span class="mr-15">
                                                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
@@ -337,23 +344,25 @@
                                                 </svg>
                                             </span>
                                             <p class="mb-0">
-                                                {{ $footer->working_days }}
+                                                <?php echo e($footer->working_days); ?>
+
                                             </p>
                                         </li>
-                                    @endif
+                                    <?php endif; ?>
                                 </ul>
                             </div>
                         </div>
                         <div class="col-xl-3 col-lg-3 col-md-6 col-sm-6">
                             <div class="tg-footer-widget tg-footer-link mb-40">
-                                <h3 class="tg-footer-widget-title mb-25">{{ __('translate.Utility Pages') }}</h3>
-                                {!! wp_nav_menu([
+                                <h3 class="tg-footer-widget-title mb-25"><?php echo e(__('translate.Utility Pages')); ?></h3>
+                                <?php echo wp_nav_menu([
     'theme_location' => 'footer_menu_2',
     'menu_class' => '',
     'container' => false,
     'items_wrap' => '<ul id="%1$s" class="%2$s">%3$s</ul>',
     'menu_id' => 'main-nav',
-]) !!}
+]); ?>
+
                             </div>
                         </div>
                     </div>
@@ -361,14 +370,15 @@
             </div>
             <div class="tg-footer-copyright text-center">
                 <span>
-                    {{ $footer->copyright }}
+                    <?php echo e($footer->copyright); ?>
+
                 </span>
             </div>
         </div>
     </footer>
     <!-- footer-area-end -->
 
-    @if ($general_setting->tawk_status == 1)
+    <?php if($general_setting->tawk_status == 1): ?>
         <script type="text/javascript">
             var Tawk_API = Tawk_API || {},
                 Tawk_LoadStart = new Date();
@@ -376,64 +386,64 @@
                 var s1 = document.createElement("script"),
                     s0 = document.getElementsByTagName("script")[0];
                 s1.async = true;
-                s1.src = '{{ $general_setting->tawk_chat_link }}';
+                s1.src = '<?php echo e($general_setting->tawk_chat_link); ?>';
                 s1.charset = 'UTF-8';
                 s1.setAttribute('crossorigin', '*');
                 s0.parentNode.insertBefore(s1, s0);
             })();
         </script>
-    @endif
+    <?php endif; ?>
 
 
 
-    @if ($general_setting->cookie_consent_status == 1)
+    <?php if($general_setting->cookie_consent_status == 1): ?>
         <!-- common-modal start  -->
         <div class="common-modal cookie_consent_modal d-none bg-white">
             <button type="button" class="btn-close cookie_consent_close_btn" aria-label="Close"></button>
 
-            <h5>{{ __('translate.Cookies') }}</h5>
-            <p>{{ $general_setting->cookie_consent_message }}</p>
+            <h5><?php echo e(__('translate.Cookies')); ?></h5>
+            <p><?php echo e($general_setting->cookie_consent_message); ?></p>
 
 
             <a href="javascript:;"
                 class="td_btn td_style_1 td_type_3 td_radius_30 td_medium td_fs_14 report-modal-btn cookie_consent_accept_btn">
                 <span class="td_btn_in td_accent_color">
-                    <span>{{ __('translate.Accept') }}</span>
+                    <span><?php echo e(__('translate.Accept')); ?></span>
                 </span>
             </a>
 
         </div>
         <!-- common-modal end  -->
-    @endif
+    <?php endif; ?>
 
 
     <!-- Script -->
-    <script src="{{ asset('global/js/jquery-3.7.1.min.js') }}"></script>
-    <script src="{{ asset('frontend/assets/js/bootstrap.min.js') }}"></script>
-    <script src="{{ asset('frontend/assets/js/isotope.pkgd.min.js') }}"></script>
-    <script src="{{ asset('frontend/assets/js/imagesloaded.pkgd.min.js') }}"></script>
-    <script src="{{ asset('frontend/assets/js/jquery.magnific-popup.min.js') }}"></script>
-    <script src="{{ asset('frontend/assets/js/jquery.odometer.min.js') }}"></script>
-    <script src="{{ asset('frontend/assets/js/jquery.appear.js') }}"></script>
-    <script src="{{ asset('frontend/assets/js/swiper-bundle.min.js') }}"></script>
-    <script src="{{ asset('frontend/assets/js/flatpickr.js') }}"></script>
-    <script src="{{ asset('frontend/assets/js/nice-select.js') }}"></script>
-    <script src="{{ asset('frontend/assets/js/ajax-form.js') }}"></script>
-    <script src="{{ asset('frontend/assets/js/wow.min.js') }}"></script>
-    <script src="{{ asset('frontend/assets/js/cart.js') }}"></script>
-    <script src="{{ asset('frontend/assets/js/main.js') }}"></script>
-    <script src="{{ asset('global/toastr/toastr.min.js') }}"></script>
+    <script src="<?php echo e(asset('global/js/jquery-3.7.1.min.js')); ?>"></script>
+    <script src="<?php echo e(asset('frontend/assets/js/bootstrap.min.js')); ?>"></script>
+    <script src="<?php echo e(asset('frontend/assets/js/isotope.pkgd.min.js')); ?>"></script>
+    <script src="<?php echo e(asset('frontend/assets/js/imagesloaded.pkgd.min.js')); ?>"></script>
+    <script src="<?php echo e(asset('frontend/assets/js/jquery.magnific-popup.min.js')); ?>"></script>
+    <script src="<?php echo e(asset('frontend/assets/js/jquery.odometer.min.js')); ?>"></script>
+    <script src="<?php echo e(asset('frontend/assets/js/jquery.appear.js')); ?>"></script>
+    <script src="<?php echo e(asset('frontend/assets/js/swiper-bundle.min.js')); ?>"></script>
+    <script src="<?php echo e(asset('frontend/assets/js/flatpickr.js')); ?>"></script>
+    <script src="<?php echo e(asset('frontend/assets/js/nice-select.js')); ?>"></script>
+    <script src="<?php echo e(asset('frontend/assets/js/ajax-form.js')); ?>"></script>
+    <script src="<?php echo e(asset('frontend/assets/js/wow.min.js')); ?>"></script>
+    <script src="<?php echo e(asset('frontend/assets/js/cart.js')); ?>"></script>
+    <script src="<?php echo e(asset('frontend/assets/js/main.js')); ?>"></script>
+    <script src="<?php echo e(asset('global/toastr/toastr.min.js')); ?>"></script>
 
     <script>
         (function ($) {
             "use strict"
             $(document).ready(function () {
 
-                const session_notify_message = @json(Session::get('message'));
-                const demo_mode_message = @json(Session::get('demo_mode'));
+                const session_notify_message = <?php echo json_encode(Session::get('message'), 15, 512) ?>;
+                const demo_mode_message = <?php echo json_encode(Session::get('demo_mode'), 15, 512) ?>;
 
                 if (session_notify_message != null) {
-                    const session_notify_type = @json(Session::get('alert-type', 'info'));
+                    const session_notify_type = <?php echo json_encode(Session::get('alert-type', 'info'), 512) ?>;
                     switch (session_notify_type) {
                         case 'info':
                             toastr.info(session_notify_message);
@@ -452,12 +462,12 @@
 
                 if (demo_mode_message != null) {
                     toastr.warning(
-                        "{{ __('translate.All Language keywords are not implemented in the demo mode') }}"
+                        "<?php echo e(__('translate.All Language keywords are not implemented in the demo mode')); ?>"
                     );
-                    toastr.info("{{ __('translate.Admin can translate every word from the admin panel') }}");
+                    toastr.info("<?php echo e(__('translate.Admin can translate every word from the admin panel')); ?>");
                 }
 
-                const validation_errors = @json($errors->all());
+                const validation_errors = <?php echo json_encode($errors->all(), 15, 512) ?>;
 
                 if (validation_errors.length > 0) {
                     validation_errors.forEach(error => toastr.error(error));
@@ -477,20 +487,20 @@
                 });
 
                 $('.before_auth_wishlist').on("click", function () {
-                    toastr.error("{{ __('translate.Please login first') }}")
+                    toastr.error("<?php echo e(__('translate.Please login first')); ?>")
                 });
 
                 $(".currency_code").on('change', function () {
                     var currency_code = $(this).val();
 
-                    window.location.href = "{{ route('currency-switcher') }}" + "?currency_code=" +
+                    window.location.href = "<?php echo e(route('currency-switcher')); ?>" + "?currency_code=" +
                         currency_code;
                 });
 
                 $(".language_code").on('change', function () {
                     var language_code = $(this).val();
 
-                    window.location.href = "{{ route('language-switcher') }}" + "?lang_code=" +
+                    window.location.href = "<?php echo e(route('language-switcher')); ?>" + "?lang_code=" +
                         language_code;
                 });
 
@@ -499,9 +509,9 @@
     </script>
 
 
-    @stack('js_section')
+    <?php echo $__env->yieldPushContent('js_section'); ?>
 
 
 </body>
 
-</html>
+</html><?php /**PATH D:\xampp\htdocs\archive\archive\resources\views/layout_inner_page.blade.php ENDPATH**/ ?>

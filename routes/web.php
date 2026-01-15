@@ -18,6 +18,8 @@ use App\Http\Controllers\Auth\RegisterController as UserRegisterController;
 use App\Http\Controllers\User\ProfileController as UserProfileController;
 use App\Http\Controllers\Agency\ProfileController as AgencyProfileController;
 use App\Http\Controllers\User\OrderController;
+use App\Http\Controllers\AgencyRegistrationController;
+use App\Http\Controllers\Admin\AgencyApplicationController;
 use Illuminate\Support\Facades\Artisan;
 
 Route::group(['middleware' => ['HtmlSpecialchars', 'MaintenanceMode']], function () {
@@ -42,12 +44,15 @@ Route::group(['middleware' => ['HtmlSpecialchars', 'MaintenanceMode']], function
 
     Route::get('/contact-us', [HomeController::class, 'contact_us'])->name('contact-us');
 
-    Route::get('/language-switcher', [HomeController::class,  'language_switcher'])->name('language-switcher');
+    Route::get('/language-switcher', [HomeController::class, 'language_switcher'])->name('language-switcher');
     Route::get('/currency-switcher', [HomeController::class, 'currency_switcher'])->name('currency-switcher');
 
 
     Route::get('/download-file/{file}', [HomeController::class, 'download_file'])->name('download-file');
 
+    // Agency Registration Routes (Public)
+    Route::get('/agency-registration', [AgencyRegistrationController::class, 'showRegistrationForm'])->name('agency.registration');
+    Route::post('/agency-registration', [AgencyRegistrationController::class, 'submitApplication'])->name('agency.submit-application');
 
     Route::get('/teams', [HomeController::class, 'teams'])->name('teams');
     Route::get('/team/{slug}', [HomeController::class, 'teamPerson'])->name('teamPerson');
@@ -95,8 +100,10 @@ Route::group(['middleware' => ['HtmlSpecialchars', 'MaintenanceMode']], function
             Route::put('/update-password', [UserProfileController::class, 'update_password'])->name('update-password');
 
 
-            Route::get('/create-agency', [UserProfileController::class, 'create_agency'])->name('create-agency');
-            Route::post('/agency-application', [UserProfileController::class, 'agency_application'])->name('agency-application');
+            // Redirect old create-agency route to new registration page
+            Route::get('/create-agency', function () {
+                return redirect()->route('agency.registration');
+            })->name('create-agency');
 
             Route::get('/account-delete', [UserProfileController::class, 'account_delete'])->name('account-delete');
             Route::delete('/confirm-account-delete', [UserProfileController::class, 'confirm_account_delete'])->name('confirm-account-delete');
@@ -191,6 +198,15 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin'], function () {
             Route::put('seller-joining-reject/{id}', 'seller_joining_reject')->name('seller-joining-reject');
         });
 
+        // Agency Application Management
+        Route::controller(AgencyApplicationController::class)->group(function () {
+            Route::get('agency-applications', 'index')->name('agency-applications.index');
+            Route::get('agency-applications/{id}', 'show')->name('agency-applications.show');
+            Route::post('agency-applications/{id}/approve', 'approve')->name('agency-applications.approve');
+            Route::post('agency-applications/{id}/reject', 'reject')->name('agency-applications.reject');
+            Route::delete('agency-applications/{id}', 'destroy')->name('agency-applications.destroy');
+        });
+
         // Theme Management
         Route::controller(App\Http\Controllers\Admin\ThemeController::class)->group(function () {
             Route::get('themes', 'index')->name('themes.index');
@@ -207,6 +223,19 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin'], function () {
             Route::put('store/{key}/{id?}', 'store')->name('store');
             Route::get('/frontend-field-template', 'getFieldTemplate')->name('field-template');
             Route::post('/upload-image', [App\Http\Controllers\Admin\UploadController::class, 'editorImage'])->name('upload-image');
+        });
+
+        // Development Settings (Password Protected)
+        Route::controller(App\Http\Controllers\Admin\DevelopmentSettingsController::class)->prefix('development')->name('development.')->group(function () {
+            Route::get('/login', 'showLogin')->name('login');
+            Route::post('/verify', 'verifyPassword')->name('verify');
+
+            Route::middleware(\App\Http\Middleware\CheckDevelopmentAccess::class)->group(function () {
+                Route::get('/', 'index')->name('index');
+                Route::post('/toggle-menu', 'toggleMenu')->name('toggle-menu');
+                Route::post('/update-password', 'updatePassword')->name('update-password');
+                Route::get('/logout', 'logout')->name('logout');
+            });
         });
     });
 });

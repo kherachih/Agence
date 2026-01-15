@@ -60,6 +60,90 @@
                                         </ul>
                                     </div>
                                 </div>
+                                <div class="tg-booking-form-parent-inner tg-hero-quantity p-relative mb-5">
+                                    <span class="tg-booking-form-title">{{ __('translate.Month:') }}</span>
+                                    <div
+                                        class="tg-booking-add-input-field tg-booking-quantity-toggle month-selector-wrapper">
+                                        <span class="location">
+                                            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"
+                                                xmlns="http://www.w3.org/2000/svg">
+                                                <path
+                                                    d="M9.76501 0.777771V3.26668M4.23413 0.777771V3.26668M0.777344 5.75548H13.2218M2.16006 2.02211H11.8391C12.6027 2.02211 13.2218 2.57927 13.2218 3.26656V11.9778C13.2218 12.6651 12.6027 13.2222 11.8391 13.2222H2.16006C1.39641 13.2222 0.777344 12.6651 0.777344 11.9778V3.26656C0.777344 2.57927 1.39641 2.02211 2.16006 2.02211Z"
+                                                    stroke="currentColor" stroke-width="0.977778" stroke-linecap="round"
+                                                    stroke-linejoin="round" />
+                                            </svg>
+                                        </span>
+
+                                        <span x-show="selected_month" x-text="selected_month"
+                                            class="tg-booking-title-value">
+                                            {{ __('translate.Select Month') }}
+                                        </span>
+                                        <span x-show="!selected_month" class="tg-booking-title-value">
+                                            {{ __('translate.Select Month') }}
+                                        </span>
+
+                                        <span class="angle-down">
+                                            <svg width="14" height="8" viewBox="0 0 14 8" fill="none"
+                                                xmlns="http://www.w3.org/2000/svg">
+                                                <path d="M1.6665 1L6.99984 6.33333L12.3332 1" stroke="#353844"
+                                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                            </svg>
+                                        </span>
+                                    </div>
+                                    <div
+                                        class="tg-booking-form-location-list tg-quantity tg-booking-quantity-active month-dropdown">
+                                        <ul class="month-list">
+                                            <li @click="selectMonth('January', '01')">
+                                                <i class="fas fa-calendar-alt"></i>
+                                                <span>January</span>
+                                            </li>
+                                            <li @click="selectMonth('February', '02')">
+                                                <i class="fas fa-calendar-alt"></i>
+                                                <span>February</span>
+                                            </li>
+                                            <li @click="selectMonth('March', '03')">
+                                                <i class="fas fa-calendar-alt"></i>
+                                                <span>March</span>
+                                            </li>
+                                            <li @click="selectMonth('April', '04')">
+                                                <i class="fas fa-calendar-alt"></i>
+                                                <span>April</span>
+                                            </li>
+                                            <li @click="selectMonth('May', '05')">
+                                                <i class="fas fa-calendar-alt"></i>
+                                                <span>May</span>
+                                            </li>
+                                            <li @click="selectMonth('June', '06')">
+                                                <i class="fas fa-calendar-alt"></i>
+                                                <span>June</span>
+                                            </li>
+                                            <li @click="selectMonth('July', '07')">
+                                                <i class="fas fa-calendar-alt"></i>
+                                                <span>July</span>
+                                            </li>
+                                            <li @click="selectMonth('August', '08')">
+                                                <i class="fas fa-calendar-alt"></i>
+                                                <span>August</span>
+                                            </li>
+                                            <li @click="selectMonth('September', '09')">
+                                                <i class="fas fa calendar-alt"></i>
+                                                <span>September</span>
+                                            </li>
+                                            <li @click="selectMonth('October', '10')">
+                                                <i class="fas fa-calendar-alt"></i>
+                                                <span>October</span>
+                                            </li>
+                                            <li @click="selectMonth('November', '11')">
+                                                <i class="fas fa-calendar-alt"></i>
+                                                <span>November</span>
+                                            </li>
+                                            <li @click="selectMonth('December', '12')">
+                                                <i class="fas fa-calendar-alt"></i>
+                                                <span>December</span>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
                                 <div class="tg-booking-form-parent-inner mb-5">
                                     <span class="tg-booking-form-title">Check in:</span>
                                     <div class="tg-booking-add-input-date p-relative">
@@ -139,21 +223,20 @@
                                                 <span class="mr-20">Rooms</span>
                                                 <div class="tg-booking-quantity-item">
                                                     <span @click="incrementRooms" class="increment">
-                                                        <svg width="15" height="14" viewBox="0 0 15 14"
-                                                            fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                        <svg width="15" height="14" viewBox="0 0 15 14" fill="none"
+                                                            xmlns="http://www.w3.org/2000/svg">
                                                             <path d="M1.21924 7H13.3836" stroke="currentColor"
                                                                 stroke-width="1.5" stroke-linecap="round"
                                                                 stroke-linejoin="round" />
-                                                            <path d="M7.30176 13V1" stroke="currentColor"
-                                                                stroke-width="1.5" stroke-linecap="round"
-                                                                stroke-linejoin="round" />
+                                                            <path d="M7.30176 13V1" stroke="currentColor" stroke-width="1.5"
+                                                                stroke-linecap="round" stroke-linejoin="round" />
                                                         </svg>
                                                     </span>
                                                     <input x-bind:value="bookingForm.rooms" class="tg-quantity-input"
                                                         type="text">
                                                     <span @click="decrementRooms" class="decrement">
-                                                        <svg width="14" height="2" viewBox="0 0 14 2"
-                                                            fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                        <svg width="14" height="2" viewBox="0 0 14 2" fill="none"
+                                                            xmlns="http://www.w3.org/2000/svg">
                                                             <path d="M1 1H13" stroke="currentColor" stroke-width="1.5"
                                                                 stroke-linecap="round" stroke-linejoin="round" />
                                                         </svg>
@@ -164,21 +247,20 @@
                                                 <span class="mr-20">Adults</span>
                                                 <div class="tg-booking-quantity-item">
                                                     <span @click="incrementAdults" class="increment">
-                                                        <svg width="15" height="14" viewBox="0 0 15 14"
-                                                            fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                        <svg width="15" height="14" viewBox="0 0 15 14" fill="none"
+                                                            xmlns="http://www.w3.org/2000/svg">
                                                             <path d="M1.21924 7H13.3836" stroke="currentColor"
                                                                 stroke-width="1.5" stroke-linecap="round"
                                                                 stroke-linejoin="round" />
-                                                            <path d="M7.30176 13V1" stroke="currentColor"
-                                                                stroke-width="1.5" stroke-linecap="round"
-                                                                stroke-linejoin="round" />
+                                                            <path d="M7.30176 13V1" stroke="currentColor" stroke-width="1.5"
+                                                                stroke-linecap="round" stroke-linejoin="round" />
                                                         </svg>
                                                     </span>
                                                     <input x-bind:value="bookingForm.adults" class="tg-quantity-input"
                                                         type="text">
                                                     <span @click="decrementAdults" class="decrement">
-                                                        <svg width="14" height="2" viewBox="0 0 14 2"
-                                                            fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                        <svg width="14" height="2" viewBox="0 0 14 2" fill="none"
+                                                            xmlns="http://www.w3.org/2000/svg">
                                                             <path d="M1 1H13" stroke="currentColor" stroke-width="1.5"
                                                                 stroke-linecap="round" stroke-linejoin="round" />
                                                         </svg>
@@ -189,21 +271,20 @@
                                                 <span class="mr-20">Children</span>
                                                 <div class="tg-booking-quantity-item">
                                                     <span @click="incrementChildren" class="increment">
-                                                        <svg width="15" height="14" viewBox="0 0 15 14"
-                                                            fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                        <svg width="15" height="14" viewBox="0 0 15 14" fill="none"
+                                                            xmlns="http://www.w3.org/2000/svg">
                                                             <path d="M1.21924 7H13.3836" stroke="currentColor"
                                                                 stroke-width="1.5" stroke-linecap="round"
                                                                 stroke-linejoin="round" />
-                                                            <path d="M7.30176 13V1" stroke="currentColor"
-                                                                stroke-width="1.5" stroke-linecap="round"
-                                                                stroke-linejoin="round" />
+                                                            <path d="M7.30176 13V1" stroke="currentColor" stroke-width="1.5"
+                                                                stroke-linecap="round" stroke-linejoin="round" />
                                                         </svg>
                                                     </span>
                                                     <input x-bind:value="bookingForm.children" class="tg-quantity-input"
                                                         type="text">
                                                     <span @click="decrementChildren" class="decrement">
-                                                        <svg width="14" height="2" viewBox="0 0 14 2"
-                                                            fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                        <svg width="14" height="2" viewBox="0 0 14 2" fill="none"
+                                                            xmlns="http://www.w3.org/2000/svg">
                                                             <path d="M1 1H13" stroke="currentColor" stroke-width="1.5"
                                                                 stroke-linecap="round" stroke-linejoin="round" />
                                                         </svg>
@@ -259,9 +340,8 @@
                                         @foreach ($serviceTypes as $key => $serviceType)
                                             <li x-show="showPropertyType || {{ $key }} < 4" x-transition>
                                                 <div class="checkbox d-flex">
-                                                    <input value="{{ $serviceType?->id }}"
-                                                        x-model="filters.service_type_ids" class="tg-checkbox"
-                                                        type="checkbox" id="australia_{{ $key }}">
+                                                    <input value="{{ $serviceType?->id }}" x-model="filters.service_type_ids"
+                                                        class="tg-checkbox" type="checkbox" id="australia_{{ $key }}">
                                                     <label for="australia_{{ $key }}" class="tg-label">
                                                         {{ $serviceType?->name }}
                                                     </label>
@@ -275,9 +355,8 @@
                                     <div class="tg-filter-seemore mt-2 cp select-none"
                                         @click="showPropertyType = !showPropertyType">
                                         <span class="plus">
-                                            <i
-                                                :class="showPropertyType ? 'fa-solid fa-minus' :
-                                                    'fa-sharp fa-solid fa-plus'"></i>
+                                            <i :class="showPropertyType ? 'fa-solid fa-minus' :
+                                                                    'fa-sharp fa-solid fa-plus'"></i>
                                         </span>
                                         <span class="more" x-text="showPropertyType ? 'See Less' : 'See More'"></span>
                                     </div>
@@ -307,12 +386,10 @@
 
 
                                 @if (count($amenities) > 4)
-                                    <div class="tg-filter-seemore mt-2 cp select-none"
-                                        @click="showAmenity = !showAmenity">
+                                    <div class="tg-filter-seemore mt-2 cp select-none" @click="showAmenity = !showAmenity">
                                         <span class="plus">
-                                            <i
-                                                :class="showAmenity ? 'fa-solid fa-minus' :
-                                                    'fa-sharp fa-solid fa-plus'"></i>
+                                            <i :class="showAmenity ? 'fa-solid fa-minus' :
+                                                                    'fa-sharp fa-solid fa-plus'"></i>
                                         </span>
                                         <span class="more" x-text="showAmenity ? 'See Less' : 'See More'"></span>
                                     </div>
@@ -327,17 +404,15 @@
                                     @for ($i = 5; $i >= 1; $i--)
                                         <li>
                                             <div class="checkbox d-flex">
-                                                <input id="rating_{{ $i }}" x-model="filters.ratings"
-                                                    class="tg-checkbox" type="checkbox" value="{{ $i }}"
-                                                    name="filter_ratings[]">
+                                                <input id="rating_{{ $i }}" x-model="filters.ratings" class="tg-checkbox"
+                                                    type="checkbox" value="{{ $i }}" name="filter_ratings[]">
                                                 <div class="tg-filter-review">
                                                     <label for="rating_{{ $i }}">
                                                         @for ($j = 1; $j <= 5; $j++)
                                                             @if ($j <= $i)
                                                                 <span><i class="fa-solid fa-star-sharp"></i></span>
                                                             @else
-                                                                <span class="bad-review"><i
-                                                                        class="fa-light fa-star-sharp"></i></span>
+                                                                <span class="bad-review"><i class="fa-light fa-star-sharp"></i></span>
                                                             @endif
                                                         @endfor
                                                     </label>
@@ -357,8 +432,7 @@
                                             <li x-show="showMoreLanguages || {{ $key }} < 4" x-transition>
                                                 <div class="checkbox d-flex">
                                                     <input value="{{ $language?->name }}" x-model="filters.languages"
-                                                        class="tg-checkbox" type="checkbox"
-                                                        id="language_{{ $key }}">
+                                                        class="tg-checkbox" type="checkbox" id="language_{{ $key }}">
                                                     <label for="language_{{ $key }}" class="tg-label">
                                                         {{ $language?->value }}
                                                     </label>
@@ -372,9 +446,8 @@
                                     <div class="tg-filter-seemore mt-2 cp select-none"
                                         @click="showMoreLanguages = !showMoreLanguages">
                                         <span class="plus">
-                                            <i
-                                                :class="showMoreLanguages ? 'fa-solid fa-minus' :
-                                                    'fa-sharp fa-solid fa-plus'"></i>
+                                            <i :class="showMoreLanguages ? 'fa-solid fa-minus' :
+                                                                    'fa-sharp fa-solid fa-plus'"></i>
                                         </span>
                                         <span class="more" x-text="showMoreLanguages ? 'See Less' : 'See More'"></span>
                                     </div>
@@ -423,11 +496,10 @@
                                             <div class="tg-listing-box-view ml-10 d-flex">
                                                 <div class="list-switch-item">
                                                     <button @click="isListView = false" class="grid-view active">
-                                                        <svg width="20" height="20" viewBox="0 0 20 20"
-                                                            fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                            <path d="M8 1H1V8H8V1Z" stroke="currentColor"
-                                                                stroke-width="1.4" stroke-linecap="round"
-                                                                stroke-linejoin="round" />
+                                                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none"
+                                                            xmlns="http://www.w3.org/2000/svg">
+                                                            <path d="M8 1H1V8H8V1Z" stroke="currentColor" stroke-width="1.4"
+                                                                stroke-linecap="round" stroke-linejoin="round" />
                                                             <path d="M19 1H12V8H19V1Z" stroke="currentColor"
                                                                 stroke-width="1.4" stroke-linecap="round"
                                                                 stroke-linejoin="round" />
@@ -442,8 +514,8 @@
                                                 </div>
                                                 <div class="list-switch-item ml-5">
                                                     <button @click="isListView = true" class="list-view">
-                                                        <svg width="20" height="14" viewBox="0 0 20 14"
-                                                            fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                        <svg width="20" height="14" viewBox="0 0 20 14" fill="none"
+                                                            xmlns="http://www.w3.org/2000/svg">
                                                             <path d="M6 1H19M6 7H19M6 13H19M1 1H1.01M1 7H1.01M1 13H1.01"
                                                                 stroke="currentColor" stroke-width="2"
                                                                 stroke-linecap="round" stroke-linejoin="round" />
@@ -468,9 +540,9 @@
 
 @push('js_section')
     <script>
-        (function($) {
+        (function ($) {
             "use strict"
-            $(document).ready(function() {
+            $(document).ready(function () {
 
                 // Initialize timepicker
                 $(".timepicker").flatpickr({
@@ -496,6 +568,8 @@
                 defaultBookingForm: {
                     destination_id: '',
                     destination: 'Where are you going . . .',
+                    month: '',
+                    selected_month: '',
                     checkIn: '',
                     checkOut: '',
                     rooms: 1,
@@ -505,6 +579,8 @@
                 bookingForm: {
                     destination_id: `{{ request('destination_id', '') }}`,
                     destination: `{{ request('destination', '') }}`,
+                    month: `{{ request('month', '') }}`,
+                    selected_month: `{{ request('selected_month', '') }}`,
                     checkIn: `{{ request('checkIn', '') }}`,
                     checkOut: `{{ request('checkOut', '') }}`,
                     rooms: `{{ request('rooms', '') }}`,
@@ -538,6 +614,10 @@
                 selectDestination(destinationId, destinationName) {
                     this.bookingForm.destination_id = destinationId;
                     this.bookingForm.destination = destinationName;
+                },
+                selectMonth(monthName, monthValue) {
+                    this.bookingForm.selected_month = monthName;
+                    this.bookingForm.month = monthValue;
                 },
                 filters: {
                     search: `{{ request('search', '') }}`,
@@ -605,6 +685,8 @@
                     this.bookingForm = JSON.parse(JSON.stringify({
                         destination_id: '',
                         destination: '',
+                        month: '',
+                        selected_month: '',
                         checkIn: '',
                         checkOut: '',
                         rooms: '',
@@ -642,15 +724,15 @@
                             isListView: this.isListView,
                             style: this.style
                         },
-                        success: function(response) {
+                        success: function (response) {
                             $('#filter_data').html(response.view);
                             $('.custom_pagination_count').html(response
                                 .customPaginationCount);
                         },
-                        error: function(xhr, status, error) {
+                        error: function (xhr, status, error) {
                             console.error(error);
                         },
-                        complete: function() {
+                        complete: function () {
                             that.loadingOverlay("hide");
                         }
                     });
@@ -749,6 +831,68 @@
         .list-card.list-card-open .tg-listing-card-thumb img {
             max-width: 317px;
             min-width: 317px;
+        }
+
+        /* Month Selector Styles */
+        .month-selector-wrapper {
+            cursor: pointer;
+        }
+
+        .month-dropdown {
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .month-dropdown .month-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .month-dropdown .month-list li {
+            padding: 12px 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-radius: 8px;
+            margin-bottom: 5px;
+        }
+
+        .month-dropdown .month-list li:hover {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #ffffff;
+            transform: translateX(5px);
+        }
+
+        .month-dropdown .month-list li i {
+            font-size: 14px;
+            width: 20px;
+            text-align: center;
+        }
+
+        .month-dropdown .month-list li span {
+            font-weight: 500;
+        }
+
+        /* Custom scrollbar for month dropdown */
+        .month-dropdown::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .month-dropdown::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 3px;
+        }
+
+        .month-dropdown::-webkit-scrollbar-thumb {
+            background: #667eea;
+            border-radius: 3px;
+        }
+
+        .month-dropdown::-webkit-scrollbar-thumb:hover {
+            background: #764ba2;
         }
     </style>
 @endpush

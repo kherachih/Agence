@@ -29,6 +29,25 @@
 
     <link rel="stylesheet" href="{{ asset('global/toastr/toastr.min.css') }}">
 
+    <style>
+        .modern-select:hover {
+            background: rgba(255,255,255,0.25) !important;
+            border-color: rgba(255,255,255,0.4) !important;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15) !important;
+        }
+        
+        .modern-select:focus {
+            outline: none;
+            background: rgba(255,255,255,0.25) !important;
+            border-color: rgba(255,255,255,0.5) !important;
+            box-shadow: 0 0 0 3px rgba(255,255,255,0.1) !important;
+        }
+        
+        .modern-selector-wrapper:hover i {
+            color: rgba(255,255,255,1) !important;
+        }
+    </style>
+
     @stack('style_section')
 
 
@@ -48,9 +67,9 @@
 
     @if ($general_setting->pixel_status == 1)
         <script>
-            ! function(f, b, e, v, n, t, s) {
+            ! function (f, b, e, v, n, t, s) {
                 if (f.fbq) return;
-                n = f.fbq = function() {
+                n = f.fbq = function () {
                     n.callMethod ?
                         n.callMethod.apply(n, arguments) : n.queue.push(arguments)
                 };
@@ -114,9 +133,8 @@
                         <div class="search__form">
                             <form action="{{ route('front.tourbooking.services') }}" method="GET">
                                 <div class="search__input">
-                                    <input class="search-input-field" type="text"
-                                        value="{{ request()->get('search') }}" name="search"
-                                        placeholder="Type keywords here">
+                                    <input class="search-input-field" type="text" value="{{ request()->get('search') }}"
+                                        name="search" placeholder="Type keywords here">
                                     <span class="search-focus-border"></span>
                                     <button type="submit">
                                         <svg width="20" height="20" viewBox="0 0 20 20" fill="none"
@@ -149,8 +167,8 @@
                         <div class="col-lg-6">
                             @if ($footer->address || $footer->email)
                                 <div class="tg-header-top-info d-flex align-items-center">
-                                    <a href="{{ $footer->address_url }}"><i
-                                            class="mr-5 fa-regular fa-location-dot"></i> {{ $footer->address }}</a>
+                                    <a href="{{ $footer->address_url }}"><i class="mr-5 fa-regular fa-location-dot"></i>
+                                        {{ $footer->address }}</a>
                                     <span class="tg-header-dvdr mr-20 ml-20"></span>
                                     <a href="mailto:{{ $footer->email }}"><i class="mr-5 fa-regular fa-envelope"></i>
                                         {{ $footer->email }}</a>
@@ -162,21 +180,33 @@
                                 <a href="tel:{{ $footer->phone }}"><i class="fa-sharp fa-regular fa-phone"></i>
                                     {{ $footer->phone }}</a>
                                 <span class="tg-header-dvdr mr-8 ml-8"></span>
-                                <select class="currency_code" name="currency_code" style="padding: 5px 8px; border-radius: 3px; border: 1px solid rgba(255,255,255,0.3); background: rgba(255,255,255,0.1); color: #fff; font-size: 12px; cursor: pointer; min-width: 80px;">
-                                    @foreach($currency_list as $currency)
-                                        <option value="{{ $currency->currency_code }}" {{ session('currency_code') == $currency->currency_code ? 'selected' : '' }}>
-                                            {{ $currency->currency_name }} ({{ $currency->currency_icon }})
-                                        </option>
-                                    @endforeach
-                                </select>
+                                <div class="modern-selector-wrapper" style="position: relative; display: inline-block;">
+                                    <i class="fa-solid fa-money-bill-wave"
+                                        style="position: absolute; left: 10px; top: 50%; transform: translateY(-50%); color: rgba(255,255,255,0.8); font-size: 13px; pointer-events: none; z-index: 1;"></i>
+                                    <select class="currency_code modern-select" name="currency_code"
+                                        style="padding: 8px 12px 8px 32px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.2); background: rgba(255,255,255,0.15); backdrop-filter: blur(10px); color: #fff; font-size: 13px; font-weight: 500; cursor: pointer; min-width: 100px; transition: all 0.3s ease; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+                                        @foreach($currency_list as $currency)
+                                            <option value="{{ $currency->currency_code }}" {{ session('currency_code') == $currency->currency_code ? 'selected' : '' }}
+                                                style="background: #2c3e50; color: #fff; padding: 8px;">
+                                                {{ $currency->currency_name }} ({{ $currency->currency_icon }})
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
                                 <span class="tg-header-dvdr mr-8 ml-8"></span>
-                                <select class="language_code" name="language_code" style="padding: 5px 8px; border-radius: 3px; border: 1px solid rgba(255,255,255,0.3); background: rgba(255,255,255,0.1); color: #fff; font-size: 12px; cursor: pointer; min-width: 85px;">
-                                    @foreach($language_list as $lang)
-                                        <option value="{{ $lang->lang_code }}" {{ session('front_lang') == $lang->lang_code ? 'selected' : '' }}>
-                                            {{ $lang->lang_name }}
-                                        </option>
-                                    @endforeach
-                                </select>
+                                <div class="modern-selector-wrapper" style="position: relative; display: inline-block;">
+                                    <i class="fa-solid fa-globe"
+                                        style="position: absolute; left: 10px; top: 50%; transform: translateY(-50%); color: rgba(255,255,255,0.8); font-size: 13px; pointer-events: none; z-index: 1;"></i>
+                                    <select class="language_code modern-select" name="language_code"
+                                        style="padding: 8px 12px 8px 32px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.2); background: rgba(255,255,255,0.15); backdrop-filter: blur(10px); color: #fff; font-size: 13px; font-weight: 500; cursor: pointer; min-width: 100px; transition: all 0.3s ease; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+                                        @foreach($language_list as $lang)
+                                            <option value="{{ $lang->lang_code }}" {{ session('front_lang') == $lang->lang_code ? 'selected' : '' }}
+                                                style="background: #2c3e50; color: #fff; padding: 8px;">
+                                                {{ $lang->lang_name }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
                                 <span class="tg-header-dvdr mr-8 ml-8"></span>
                                 @guest('web')
                                     <a href="{{ route('user.login') }}"><i class="fa-regular fa-user"></i>
@@ -205,8 +235,8 @@
                         <div class="col-lg-9 col-6">
                             <div class="tgmenu__wrap d-flex align-items-center">
                                 <div class="logo flex-auto">
-                                    <a href="{{ route('home') }}"><img src="{{ asset($general_setting->secondary_logo) }}"
-                                            alt="Logo">
+                                    <a href="{{ route('home') }}"><img
+                                            src="{{ asset($general_setting->secondary_logo) }}" alt="Logo">
                                     </a>
                                 </div>
                                 <nav class="tgmenu__nav  ml-90 d-none d-xl-block">
@@ -302,8 +332,8 @@
                             <div class="tg-footer-widget mb-40">
                                 <div class="tg-footer-logo mb-20">
                                     @if ($general_setting->footer_logo)
-                                        <a href="{{ route('home') }}"><img
-                                                src="{{ asset($general_setting->footer_logo) }}" alt=""></a>
+                                        <a href="{{ route('home') }}"><img src="{{ asset($general_setting->footer_logo) }}"
+                                                alt=""></a>
                                     @else
                                         <a href="{{ route('home') }}"><img src="{{ asset($general_setting->logo) }}"
                                                 alt=""></a>
@@ -351,16 +381,16 @@
                             <div class="tg-footer-widget tg-footer-link ml-80 mb-40">
                                 <h3 class="tg-footer-widget-title mb-25">{{ __('translate.Quick Links') }}</h3>
                                 {!! wp_nav_menu([
-                                    'theme_location' => 'footer_menu_1',
-                                    'menu_class' => '',
-                                    'container' => false,
-                                    'items_wrap' => '<ul id="%1$s" class="%2$s">%3$s</ul>',
-                                    'menu_id' => 'main-nav',
-                                    'before' => '',
-                                    'after' => '',
-                                    'link_before' => '',
-                                    'link_after' => '',
-                                ]) !!}
+    'theme_location' => 'footer_menu_1',
+    'menu_class' => '',
+    'container' => false,
+    'items_wrap' => '<ul id="%1$s" class="%2$s">%3$s</ul>',
+    'menu_id' => 'main-nav',
+    'before' => '',
+    'after' => '',
+    'link_before' => '',
+    'link_after' => '',
+]) !!}
                             </div>
                         </div>
                         <div class="col-xl-3 col-lg-3 col-md-6 col-sm-6">
@@ -368,51 +398,50 @@
                                 <h3 class="tg-footer-widget-title mb-25">{{ __('translate.Information') }}</h3>
                                 <ul>
                                     @if ($footer->address || $footer->address_url)
-                                    <li>
-                                        <a class="d-flex"
-                                            href="{{ $footer->address_url }}">
+                                        <li>
+                                            <a class="d-flex" href="{{ $footer->address_url }}">
+                                                <span class="mr-15">
+                                                    <svg width="20" height="24" viewBox="0 0 20 24" fill="none"
+                                                        xmlns="http://www.w3.org/2000/svg">
+                                                        <path
+                                                            d="M19.0013 10.0608C19.0013 16.8486 10.3346 22.6668 10.3346 22.6668C10.3346 22.6668 1.66797 16.8486 1.66797 10.0608C1.66797 7.74615 2.58106 5.52634 4.20638 3.88965C5.83169 2.25297 8.03609 1.3335 10.3346 1.3335C12.6332 1.3335 14.8376 2.25297 16.4629 3.88965C18.0882 5.52634 19.0013 7.74615 19.0013 10.0608Z"
+                                                            stroke="white" stroke-width="1.73333" stroke-linecap="round"
+                                                            stroke-linejoin="round" />
+                                                        <path
+                                                            d="M10.3346 12.9699C11.9301 12.9699 13.2235 11.6674 13.2235 10.0608C13.2235 8.45412 11.9301 7.15168 10.3346 7.15168C8.73915 7.15168 7.44575 8.45412 7.44575 10.0608C7.44575 11.6674 8.73915 12.9699 10.3346 12.9699Z"
+                                                            stroke="white" stroke-width="1.73333" stroke-linecap="round"
+                                                            stroke-linejoin="round" />
+                                                    </svg>
+                                                </span>
+                                                {{ $footer->address }}
+                                            </a>
+                                        </li>
+                                    @endif
+                                    @if ($footer->phone)
+                                        <li>
+                                            <a class="d-flex" href="tel:+1238889999">
+                                                <span class="mr-15">
+                                                    <i class="fa-sharp text-white fa-solid fa-phone"></i>
+                                                </span>
+                                                {{ $footer->phone }}
+                                            </a>
+                                        </li>
+                                    @endif
+                                    @if ($footer->working_days)
+                                        <li class="d-flex">
                                             <span class="mr-15">
-                                                <svg width="20" height="24" viewBox="0 0 20 24"
-                                                    fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                                    xmlns="http://www.w3.org/2000/svg">
                                                     <path
-                                                        d="M19.0013 10.0608C19.0013 16.8486 10.3346 22.6668 10.3346 22.6668C10.3346 22.6668 1.66797 16.8486 1.66797 10.0608C1.66797 7.74615 2.58106 5.52634 4.20638 3.88965C5.83169 2.25297 8.03609 1.3335 10.3346 1.3335C12.6332 1.3335 14.8376 2.25297 16.4629 3.88965C18.0882 5.52634 19.0013 7.74615 19.0013 10.0608Z"
-                                                        stroke="white" stroke-width="1.73333" stroke-linecap="round"
-                                                        stroke-linejoin="round" />
-                                                    <path
-                                                        d="M10.3346 12.9699C11.9301 12.9699 13.2235 11.6674 13.2235 10.0608C13.2235 8.45412 11.9301 7.15168 10.3346 7.15168C8.73915 7.15168 7.44575 8.45412 7.44575 10.0608C7.44575 11.6674 8.73915 12.9699 10.3346 12.9699Z"
-                                                        stroke="white" stroke-width="1.73333" stroke-linecap="round"
+                                                        d="M11.9987 5.60006V12.0001L16.2654 14.1334M22.6654 12.0002C22.6654 17.8912 17.8897 22.6668 11.9987 22.6668C6.10766 22.6668 1.33203 17.8912 1.33203 12.0002C1.33203 6.10912 6.10766 1.3335 11.9987 1.3335C17.8897 1.3335 22.6654 6.10912 22.6654 12.0002Z"
+                                                        stroke="white" stroke-width="1.6" stroke-linecap="round"
                                                         stroke-linejoin="round" />
                                                 </svg>
                                             </span>
-                                            {{ $footer->address }}
-                                        </a>
-                                    </li>
-                                    @endif
-                                    @if ($footer->phone)
-                                    <li>
-                                        <a class="d-flex" href="tel:+1238889999">
-                                            <span class="mr-15">
-                                                <i class="fa-sharp text-white fa-solid fa-phone"></i>
-                                            </span>
-                                            {{ $footer->phone }}
-                                        </a>
-                                    </li>
-                                    @endif
-                                    @if ($footer->working_days)
-                                    <li class="d-flex">
-                                        <span class="mr-15">
-                                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                                xmlns="http://www.w3.org/2000/svg">
-                                                <path
-                                                    d="M11.9987 5.60006V12.0001L16.2654 14.1334M22.6654 12.0002C22.6654 17.8912 17.8897 22.6668 11.9987 22.6668C6.10766 22.6668 1.33203 17.8912 1.33203 12.0002C1.33203 6.10912 6.10766 1.3335 11.9987 1.3335C17.8897 1.3335 22.6654 6.10912 22.6654 12.0002Z"
-                                                    stroke="white" stroke-width="1.6" stroke-linecap="round"
-                                                    stroke-linejoin="round" />
-                                            </svg>
-                                        </span>
-                                        <p class="mb-0">
-                                            {{ $footer->working_days }}
-                                        </p>
-                                    </li>
+                                            <p class="mb-0">
+                                                {{ $footer->working_days }}
+                                            </p>
+                                        </li>
                                     @endif
                                 </ul>
                             </div>
@@ -421,12 +450,12 @@
                             <div class="tg-footer-widget tg-footer-link mb-40">
                                 <h3 class="tg-footer-widget-title mb-25">{{ __('translate.Utility Pages') }}</h3>
                                 {!! wp_nav_menu([
-                                    'theme_location' => 'footer_menu_2',
-                                    'menu_class' => '',
-                                    'container' => false,
-                                    'items_wrap' => '<ul id="%1$s" class="%2$s">%3$s</ul>',
-                                    'menu_id' => 'main-nav',
-                                ]) !!}
+    'theme_location' => 'footer_menu_2',
+    'menu_class' => '',
+    'container' => false,
+    'items_wrap' => '<ul id="%1$s" class="%2$s">%3$s</ul>',
+    'menu_id' => 'main-nav',
+]) !!}
                             </div>
                         </div>
                     </div>
@@ -445,7 +474,7 @@
         <script type="text/javascript">
             var Tawk_API = Tawk_API || {},
                 Tawk_LoadStart = new Date();
-            (function() {
+            (function () {
                 var s1 = document.createElement("script"),
                     s0 = document.getElementsByTagName("script")[0];
                 s1.async = true;
@@ -498,9 +527,9 @@
     <script src="{{ asset('global/toastr/toastr.min.js') }}"></script>
 
     <script>
-        (function($) {
+        (function ($) {
             "use strict"
-            $(document).ready(function() {
+            $(document).ready(function () {
 
                 const session_notify_message = @json(Session::get('message'));
                 const demo_mode_message = @json(Session::get('demo_mode'));
@@ -540,27 +569,27 @@
                     $('.cookie_consent_modal').removeClass('d-none');
                 }
 
-                $('.cookie_consent_close_btn').on('click', function() {
+                $('.cookie_consent_close_btn').on('click', function () {
                     $('.cookie_consent_modal').addClass('d-none');
                 });
 
-                $('.cookie_consent_accept_btn').on('click', function() {
+                $('.cookie_consent_accept_btn').on('click', function () {
                     localStorage.setItem('tourex-cookie', '1');
                     $('.cookie_consent_modal').addClass('d-none');
                 });
 
-                $('.before_auth_wishlist').on("click", function() {
+                $('.before_auth_wishlist').on("click", function () {
                     toastr.error("{{ __('translate.Please login first') }}")
                 });
 
-                $(".currency_code").on('change', function() {
+                $(".currency_code").on('change', function () {
                     var currency_code = $(this).val();
 
                     window.location.href = "{{ route('currency-switcher') }}" + "?currency_code=" +
                         currency_code;
                 });
 
-                $(".language_code").on('change', function() {
+                $(".language_code").on('change', function () {
                     var language_code = $(this).val();
 
                     window.location.href = "{{ route('language-switcher') }}" + "?lang_code=" +

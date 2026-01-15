@@ -31,7 +31,8 @@ final class FrontServiceController extends Controller
     public function __construct(
         private ServiceRepository $serviceRepository,
         private ServiceTypeRepository $serviceTypeRepository,
-    ) {}
+    ) {
+    }
 
     /**
      * Display the home page of the tour booking module.
@@ -40,12 +41,18 @@ final class FrontServiceController extends Controller
     {
         $featuredServices = Service::where('status', true)
             ->where('is_featured', true)
+            ->whereHas('serviceType', function ($query) {
+                $query->where('name', 'Tours');
+            })
             ->with('thumbnail')
             ->take(8)
             ->get();
 
         $popularServices = Service::where('status', true)
             ->where('is_popular', true)
+            ->whereHas('serviceType', function ($query) {
+                $query->where('name', 'Tours');
+            })
             ->with('thumbnail')
             ->take(8)
             ->get();
@@ -221,6 +228,10 @@ final class FrontServiceController extends Controller
         $allServices = Service::select('id', 'price_per_person', 'slug', 'location', 'is_featured', 'full_price', 'discount_price', 'is_new', 'duration', 'group_size')
             ->withExists('myWishlist')
             ->where('status', true)
+            // Filter to show only Tours (not hotels, restaurants, etc.)
+            ->whereHas('serviceType', function ($query) {
+                $query->where('name', 'Tours');
+            })
             ->with(['thumbnail:id,service_id,caption,file_path', 'translation:id,service_id,locale,title,short_description'])
             ->withCount('activeReviews')
             ->withAvg('activeReviews', 'rating')
@@ -262,6 +273,39 @@ final class FrontServiceController extends Controller
             ->when($request->filled('destination_id'), function ($query) use ($request) {
                 return $query->where('destination_id', $request->destination_id);
             })
+            // Filter by month - show only tours with available dates in the selected month
+            ->when($request->filled('month'), function ($query) use ($request) {
+                $month = $request->month;
+                $year = date('Y'); // Current year by default
+    
+                // Filter by availabilities or availability_periods
+                return $query->where(function ($q) use ($month, $year) {
+                    // Check in availabilities table (specific dates)
+                    $q->whereHas('availabilities', function ($availQuery) use ($month, $year) {
+                        $availQuery->where('is_available', true)
+                            ->whereMonth('date', $month)
+                            ->whereYear('date', '>=', $year);
+                    })
+                        // OR check in availability_periods table (date ranges)
+                        ->orWhereHas('availability_periods', function ($periodQuery) use ($month, $year) {
+                        $periodQuery->where('is_active', true)
+                            ->where(function ($dateQuery) use ($month, $year) {
+                                $firstDayOfMonth = "$year-" . str_pad($month, 2, '0', STR_PAD_LEFT) . "-01";
+                                $lastDayOfMonth = date("Y-m-t", strtotime($firstDayOfMonth));
+
+                                // Period overlaps with the selected month
+                                $dateQuery->where(function ($overlap) use ($firstDayOfMonth, $lastDayOfMonth) {
+                                    $overlap->whereBetween('start_date', [$firstDayOfMonth, $lastDayOfMonth])
+                                        ->orWhereBetween('end_date', [$firstDayOfMonth, $lastDayOfMonth])
+                                        ->orWhere(function ($contains) use ($firstDayOfMonth, $lastDayOfMonth) {
+                                            $contains->where('start_date', '<=', $firstDayOfMonth)
+                                                ->where('end_date', '>=', $lastDayOfMonth);
+                                        });
+                                });
+                            });
+                    });
+                });
+            })
             ->when($request->filled('checkIn'), function ($query) use ($request) {
                 return $query->whereTime('check_in_time', $request->checkIn);
             })
@@ -277,8 +321,17 @@ final class FrontServiceController extends Controller
             ->when($request->filled('children'), function ($query) use ($request) {
                 return $query->where('children_count', $request->children);
             })
-            ->when($request->filled('destination_id'), function ($query) use ($request) {
-                return $query->where('destination_id', $request->destination_id);
+            // Global filter: Ensure ALL tours have at least some available dates
+            // This ensures we never show tours without any availability
+            ->where(function ($query) {
+                $query->whereHas('availabilities', function ($availQuery) {
+                    $availQuery->where('is_available', true)
+                        ->where('date', '>=', date('Y-m-d'));
+                })
+                    ->orWhereHas('availability_periods', function ($periodQuery) {
+                        $periodQuery->where('is_active', true)
+                            ->where('end_date', '>=', date('Y-m-d'));
+                    });
             })
             ->when($request->filled('ratings') && is_array($request->ratings), function ($query) use ($request) {
                 $minRating = min($request->ratings);
@@ -356,38 +409,42 @@ final class FrontServiceController extends Controller
             $serviceView = 'tourbooking::front.services.service-detail';
         } elseif ($requestView == 'tour_detail_two' || $selected_service_layout == 'tour_detail_two') {
             $serviceView = 'tourbooking::front.services.service-detail2';
-        }else {
+        } else {
             $serviceView = 'tourbooking::front.services.service-detail';
         }
 
         $service = Service::where('slug', $slug)
             ->where('status', true)
+            // Only allow access to Tours on front-end
+            ->whereHas('serviceType', function ($query) {
+                $query->where('name', 'Tours');
+            })
             ->with([
-                'translation',
-                'media:id,service_id,file_name,file_path,is_thumbnail',
-                'serviceType:id,name',
-                'extraCharges' => function ($query) {
-                    $query->where('status', true);
-                },
-                'availabilities',
-                'availability_periods' => function ($query) {
-                    $query->where('is_active', true)
-                        ->where('end_date', '>=', now()->toDateString())
-                        ->orderBy('start_date');
-                },
-                'itineraries' => function ($query) {
-                    $query->orderBy('day_number');
-                }
-            ])
+                    'translation',
+                    'media:id,service_id,file_name,file_path,is_thumbnail',
+                    'serviceType:id,name',
+                    'extraCharges' => function ($query) {
+                        $query->where('status', true);
+                    },
+                    'availabilities',
+                    'availability_periods' => function ($query) {
+                        $query->where('is_active', true)
+                            ->where('end_date', '>=', now()->toDateString())
+                            ->orderBy('start_date');
+                    },
+                    'itineraries' => function ($query) {
+                        $query->orderBy('day_number');
+                    }
+                ])
             ->withCount('activeReviews')
             ->withAvg('activeReviews', 'rating')
             ->withExists('myWishlist')
             ->firstOrFail();
 
-            // dd($service);
+        // dd($service);
 
         $amenities = [];
-        if ( is_array($service->amenities) && $service->amenities) {
+        if (is_array($service->amenities) && $service->amenities) {
             $amenities = AmenityTranslation::select('id', 'name')->whereIn('id', $service->amenities ?? [])->get();
         }
 
@@ -408,7 +465,8 @@ final class FrontServiceController extends Controller
         foreach ($reviews as $review) {
             $attributes = $review->rating_attributes; // Ensure it's an array
 
-            if (!is_array($attributes)) continue;
+            if (!is_array($attributes))
+                continue;
 
             foreach ($attributes as $attr) {
                 $category = $attr['category'];
@@ -451,10 +509,13 @@ final class FrontServiceController extends Controller
             ->where('is_popular', true)
             ->withExists('myWishlist')
             ->where('status', true)
+            ->whereHas('serviceType', function ($query) {
+                $query->where('name', 'Tours');
+            })
             ->with([
-                'thumbnail:id,service_id,caption,file_path',
-                'translation:id,service_id,locale,title,short_description'
-            ])
+                    'thumbnail:id,service_id,caption,file_path',
+                    'translation:id,service_id,locale,title,short_description'
+                ])
             ->withCount('activeReviews')
             ->withAvg('activeReviews', 'rating')
             ->latest()
@@ -489,35 +550,35 @@ final class FrontServiceController extends Controller
     }
 
     /**
-     * Display all hotels.
+     * Redirect hotels to main services page (Tours only site).
      */
-    public function hotels(): View
+    public function hotels(): RedirectResponse
     {
-        return $this->getServicesByType('hotels');
+        return redirect()->route('front.tourbooking.services');
     }
 
     /**
-     * Display all restaurants.
+     * Redirect restaurants to main services page (Tours only site).
      */
-    public function restaurants(): View
+    public function restaurants(): RedirectResponse
     {
-        return $this->getServicesByType('restaurants');
+        return redirect()->route('front.tourbooking.services');
     }
 
     /**
-     * Display all rentals.
+     * Redirect rentals to main services page (Tours only site).
      */
-    public function rentals(): View
+    public function rentals(): RedirectResponse
     {
-        return $this->getServicesByType('rentals');
+        return redirect()->route('front.tourbooking.services');
     }
 
     /**
-     * Display all activities.
+     * Redirect activities to main services page (Tours only site).
      */
-    public function activities(): View
+    public function activities(): RedirectResponse
     {
-        return $this->getServicesByType('activities');
+        return redirect()->route('front.tourbooking.services');
     }
 
     /**
@@ -635,22 +696,34 @@ final class FrontServiceController extends Controller
         $service = Service::where('slug', $slug)
             ->where('status', true)
             ->with([
-                'translation',
-                'media:id,service_id,file_name,file_path,is_thumbnail',
-                'serviceType:id,name',
-                'itineraries' => function ($query) {
-                    $query->orderBy('day_number');
-                }
-            ])
+                    'translation',
+                    'media:id,service_id,file_name,file_path,is_thumbnail',
+                    'serviceType:id,name',
+                    'itineraries' => function ($query) {
+                        $query->orderBy('day_number');
+                    },
+                    'availability_periods' => function ($query) {
+                        $query->where('is_active', true)
+                            ->where('end_date', '>=', now()->toDateString())
+                            ->orderBy('start_date');
+                    },
+                    'extraCharges' => function ($query) {
+                        $query->where('status', true);
+                    },
+                    'roomTypes' => function ($query) {
+                        $query->where('is_active', true);
+                    },
+                    'hotels'
+                ])
             ->firstOrFail();
 
         // Get general settings for logo and app name
         $general_setting = Cache::rememberForever('setting', function () {
             $settings = GlobalSetting::all();
             if ($settings->isEmpty()) {
-                return (object)[]; // Return an empty object if no settings are found
+                return (object) []; // Return an empty object if no settings are found
             }
-            return (object)$settings->pluck('value', 'key')->all();
+            return (object) $settings->pluck('value', 'key')->all();
         });
 
         // Set paper size and orientation

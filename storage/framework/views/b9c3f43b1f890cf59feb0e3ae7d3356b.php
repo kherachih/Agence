@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ optional($service->translation)->title ?? $service->title }} - Tour Plan</title>
+    <title><?php echo e(optional($service->translation)->title ?? $service->title); ?> - Tour Plan</title>
     <style>
         /* PDF Styling - Professional Booking.com Inspired Design */
         * {
@@ -577,269 +577,279 @@
         <div class="pdf-header">
             <div class="header-content">
                 <div class="logo-section">
-                    @if(isset($general_setting->logo) && $general_setting->logo && file_exists(public_path($general_setting->logo)))
-                        <img src="{{ public_path($general_setting->logo) }}" alt="Logo" class="logo-container">
-                    @endif
-                    <div class="app-name">{{ $general_setting->app_name ?? 'Tour Agency' }}</div>
+                    <?php if(isset($general_setting->logo) && $general_setting->logo && file_exists(public_path($general_setting->logo))): ?>
+                        <img src="<?php echo e(public_path($general_setting->logo)); ?>" alt="Logo" class="logo-container">
+                    <?php endif; ?>
+                    <div class="app-name"><?php echo e($general_setting->app_name ?? 'Tour Agency'); ?></div>
                 </div>
                 <div class="header-date">
                     <strong>Tour Plan Document</strong><br>
-                    Generated: {{ now()->format('d M Y') }}
+                    Generated: <?php echo e(now()->format('d M Y')); ?>
+
                 </div>
             </div>
         </div>
 
         <!-- Images Grid Section - Two Images Side by Side -->
-        @php
+        <?php
             $thumbnails = $service->media->where('is_thumbnail', 1)->sortBy('display_order')->values();
             $nonThumbnails = $service->media->where('is_thumbnail', 0)->sortBy('display_order')->values();
             $allImages = collect([$thumbnails->first()])->concat($nonThumbnails->take(1))->filter();
-        @endphp
+        ?>
 
-        @if($allImages->count() > 0)
+        <?php if($allImages->count() > 0): ?>
             <div class="images-grid-section">
-                @if($allImages->count() == 1)
+                <?php if($allImages->count() == 1): ?>
                     <!-- Single Image Layout -->
                     <div class="single-image-container">
-                        <img class="grid-image-full" src="{{ public_path('storage/' . $allImages[0]->file_path) }}"
-                            alt="{{ optional($service->translation)->title ?? '' }}">
+                        <img class="grid-image-full" src="<?php echo e(public_path('storage/' . $allImages[0]->file_path)); ?>"
+                            alt="<?php echo e(optional($service->translation)->title ?? ''); ?>">
                     </div>
-                @else
+                <?php else: ?>
                     <!-- Two Images Layout -->
                     <div class="two-images-container">
                         <div class="image-left">
-                            <img class="grid-image-half" src="{{ public_path('storage/' . $allImages[0]->file_path) }}"
+                            <img class="grid-image-half" src="<?php echo e(public_path('storage/' . $allImages[0]->file_path)); ?>"
                                 alt="Image 1">
                         </div>
                         <div class="image-right">
-                            <img class="grid-image-half" src="{{ public_path('storage/' . $allImages[1]->file_path) }}"
+                            <img class="grid-image-half" src="<?php echo e(public_path('storage/' . $allImages[1]->file_path)); ?>"
                                 alt="Image 2">
                         </div>
                     </div>
-                @endif
+                <?php endif; ?>
             </div>
-        @endif
+        <?php endif; ?>
 
         <!-- Service Title Bar -->
         <div class="title-bar">
-            <h1 class="service-title-main">{{ optional($service->translation)->title ?? $service->title }}</h1>
-            @if($service->location)
-                <div class="service-location-main">📍 {{ $service->location }}</div>
-            @endif
+            <h1 class="service-title-main"><?php echo e(optional($service->translation)->title ?? $service->title); ?></h1>
+            <?php if($service->location): ?>
+                <div class="service-location-main">📍 <?php echo e($service->location); ?></div>
+            <?php endif; ?>
         </div>
 
         <!-- Info Cards -->
         <div class="info-cards">
-            @if($service->duration)
+            <?php if($service->duration): ?>
                 <div class="info-card">
                     <div class="info-card-label">Duration</div>
-                    <div class="info-card-value">{{ $service->duration }}</div>
+                    <div class="info-card-value"><?php echo e($service->duration); ?></div>
                 </div>
-            @endif
+            <?php endif; ?>
 
-            @if($service->serviceType)
+            <?php if($service->serviceType): ?>
                 <div class="info-card">
                     <div class="info-card-label">Tour Type</div>
-                    <div class="info-card-value">{{ $service->serviceType->name }}</div>
+                    <div class="info-card-value"><?php echo e($service->serviceType->name); ?></div>
                 </div>
-            @endif
+            <?php endif; ?>
 
-            @if($service->group_size)
+            <?php if($service->group_size): ?>
                 <div class="info-card">
                     <div class="info-card-label">Group Size</div>
-                    <div class="info-card-value">{{ $service->group_size }}</div>
+                    <div class="info-card-value"><?php echo e($service->group_size); ?></div>
                 </div>
-            @endif
+            <?php endif; ?>
 
-            @if($service->languages && is_array($service->languages) && count($service->languages) > 0)
+            <?php if($service->languages && is_array($service->languages) && count($service->languages) > 0): ?>
                 <div class="info-card">
                     <div class="info-card-label">Languages</div>
-                    <div class="info-card-value">{{ implode(', ', $service->languages) }}</div>
+                    <div class="info-card-value"><?php echo e(implode(', ', $service->languages)); ?></div>
                 </div>
-            @endif
+            <?php endif; ?>
         </div>
 
         <!-- Price Banner -->
         <div class="price-banner">
             <div class="price-content">
                 <div class="price-label">Starting From</div>
-                <div class="price-value">{!! $service->adult_price_display !!}</div>
+                <div class="price-value"><?php echo $service->adult_price_display; ?></div>
                 <div class="price-note">per person</div>
             </div>
         </div>
 
         <!-- About Section -->
-        @if(optional($service->translation)->short_description)
+        <?php if(optional($service->translation)->short_description): ?>
             <div class="section no-break">
                 <div class="section-header">
-                    <h3 class="section-title">{{ __('translate.About This Tour') }}</h3>
+                    <h3 class="section-title"><?php echo e(__('translate.About This Tour')); ?></h3>
                 </div>
                 <div class="section-content">
                     <div class="section-text">
-                        {!! strip_tags($service->translation->short_description) !!}
+                        <?php echo strip_tags($service->translation->short_description); ?>
+
                     </div>
                 </div>
             </div>
-        @endif
+        <?php endif; ?>
 
         <!-- Available Dates Section -->
-        @if($service->availability_periods && $service->availability_periods->count() > 0)
+        <?php if($service->availability_periods && $service->availability_periods->count() > 0): ?>
             <div class="section no-break" style="margin-bottom: 15px;">
                 <div class="section-header">
                     <h3 class="section-title">📅 Available Departure Dates</h3>
                 </div>
                 <div class="section-content" style="padding-bottom: 10px;">
                     <div class="dates-grid">
-                        @foreach($service->availability_periods->take(6) as $period)
-                            @php
+                        <?php $__currentLoopData = $service->availability_periods->take(6); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $period): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                            <?php
                                 $startDate = \Carbon\Carbon::parse($period->start_date);
                                 $endDate = \Carbon\Carbon::parse($period->end_date);
                                 $days = $startDate->diffInDays($endDate) + 1;
-                            @endphp
+                            ?>
                             <div class="date-card">
                                 <div class="date-range">
-                                    {{ $startDate->format('d M') }}
+                                    <?php echo e($startDate->format('d M')); ?>
+
                                     <span class="date-separator">→</span>
-                                    {{ $endDate->format('d M Y') }}
+                                    <?php echo e($endDate->format('d M Y')); ?>
+
                                 </div>
                                 <div class="date-duration">
-                                    🕐 {{ $days }} {{ $days == 1 ? 'day' : 'days' }}
+                                    🕐 <?php echo e($days); ?> <?php echo e($days == 1 ? 'day' : 'days'); ?>
+
                                 </div>
                             </div>
-                        @endforeach
+                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                     </div>
-                    @if($service->availability_periods->count() > 6)
+                    <?php if($service->availability_periods->count() > 6): ?>
                         <div class="highlight-box" style="margin-top: 10px; margin-bottom: 0;">
                             <div class="highlight-text">
-                                + {{ $service->availability_periods->count() - 6 }} more dates available. Contact us for full
+                                + <?php echo e($service->availability_periods->count() - 6); ?> more dates available. Contact us for full
                                 schedule.
                             </div>
                         </div>
-                    @endif
+                    <?php endif; ?>
                 </div>
             </div>
-        @endif
+        <?php endif; ?>
 
         <!-- Tour Plan Section -->
-        @if($service->itineraries && $service->itineraries->count() > 0)
+        <?php if($service->itineraries && $service->itineraries->count() > 0): ?>
             <div class="section" style="margin-top: 15px;">
                 <div class="section-header">
                     <h3 class="section-title">🗺️ Detailed Itinerary</h3>
                 </div>
                 <div class="section-content">
-                    @if($service->tour_plan_sub_title)
+                    <?php if($service->tour_plan_sub_title): ?>
                         <div class="highlight-box">
-                            <div class="highlight-text">{{ $service->tour_plan_sub_title }}</div>
+                            <div class="highlight-text"><?php echo e($service->tour_plan_sub_title); ?></div>
                         </div>
-                    @endif
+                    <?php endif; ?>
 
-                    @foreach($service->itineraries as $itinerary)
+                    <?php $__currentLoopData = $service->itineraries; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $itinerary): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                         <div class="itinerary-item">
-                            <span class="day-badge">Day {{ $itinerary->day_number }}</span>
-                            <div class="day-title">{{ $itinerary->title }}</div>
+                            <span class="day-badge">Day <?php echo e($itinerary->day_number); ?></span>
+                            <div class="day-title"><?php echo e($itinerary->title); ?></div>
 
-                            @if($itinerary->image && file_exists(public_path('storage/' . $itinerary->image)))
-                                <img class="day-image" src="{{ public_path('storage/' . $itinerary->image) }}"
-                                    alt="Day {{ $itinerary->day_number }}">
-                            @endif
+                            <?php if($itinerary->image && file_exists(public_path('storage/' . $itinerary->image))): ?>
+                                <img class="day-image" src="<?php echo e(public_path('storage/' . $itinerary->image)); ?>"
+                                    alt="Day <?php echo e($itinerary->day_number); ?>">
+                            <?php endif; ?>
 
-                            @if($itinerary->description)
+                            <?php if($itinerary->description): ?>
                                 <div class="day-description">
-                                    {!! strip_tags($itinerary->description) !!}
-                                </div>
-                            @endif
+                                    <?php echo strip_tags($itinerary->description); ?>
 
-                            @if($itinerary->location || $itinerary->duration || $itinerary->meal_included)
-                                <div class="day-details">
-                                    @if($itinerary->location)
-                                        <span class="detail-tag">
-                                            <span class="detail-tag-icon">📍</span> {{ $itinerary->location }}
-                                        </span>
-                                    @endif
-                                    @if($itinerary->duration)
-                                        <span class="detail-tag">
-                                            <span class="detail-tag-icon">⏱</span> {{ $itinerary->duration }}
-                                        </span>
-                                    @endif
-                                    @if($itinerary->meal_included)
-                                        <span class="detail-tag">
-                                            <span class="detail-tag-icon">🍽</span> {{ $itinerary->meal_included }}
-                                        </span>
-                                    @endif
                                 </div>
-                            @endif
+                            <?php endif; ?>
+
+                            <?php if($itinerary->location || $itinerary->duration || $itinerary->meal_included): ?>
+                                <div class="day-details">
+                                    <?php if($itinerary->location): ?>
+                                        <span class="detail-tag">
+                                            <span class="detail-tag-icon">📍</span> <?php echo e($itinerary->location); ?>
+
+                                        </span>
+                                    <?php endif; ?>
+                                    <?php if($itinerary->duration): ?>
+                                        <span class="detail-tag">
+                                            <span class="detail-tag-icon">⏱</span> <?php echo e($itinerary->duration); ?>
+
+                                        </span>
+                                    <?php endif; ?>
+                                    <?php if($itinerary->meal_included): ?>
+                                        <span class="detail-tag">
+                                            <span class="detail-tag-icon">🍽</span> <?php echo e($itinerary->meal_included); ?>
+
+                                        </span>
+                                    <?php endif; ?>
+                                </div>
+                            <?php endif; ?>
                         </div>
-                    @endforeach
+                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                 </div>
             </div>
-        @endif
+        <?php endif; ?>
 
         <!-- Included/Excluded Section -->
-        @if($service->included || $service->excluded)
+        <?php if($service->included || $service->excluded): ?>
             <div class="section no-break">
                 <div class="section-header">
                     <h3 class="section-title">✓ What's Included & Excluded</h3>
                 </div>
                 <div class="section-content">
                     <div class="two-column-grid">
-                        @if($service->included && json_decode($service->included))
+                        <?php if($service->included && json_decode($service->included)): ?>
                             <div class="column">
                                 <div class="list-header included">✓ Included</div>
-                                @foreach(json_decode($service->included) as $item)
-                                    <div class="list-item included">{{ $item }}</div>
-                                @endforeach
+                                <?php $__currentLoopData = json_decode($service->included); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                    <div class="list-item included"><?php echo e($item); ?></div>
+                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                             </div>
-                        @endif
+                        <?php endif; ?>
 
-                        @if($service->excluded && json_decode($service->excluded))
+                        <?php if($service->excluded && json_decode($service->excluded)): ?>
                             <div class="column">
                                 <div class="list-header excluded">✗ Excluded</div>
-                                @foreach(json_decode($service->excluded) as $item)
-                                    <div class="list-item excluded">{{ $item }}</div>
-                                @endforeach
+                                <?php $__currentLoopData = json_decode($service->excluded); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                    <div class="list-item excluded"><?php echo e($item); ?></div>
+                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                             </div>
-                        @endif
+                        <?php endif; ?>
                     </div>
                 </div>
             </div>
-        @endif
+        <?php endif; ?>
 
         <!-- Extra Services Section -->
-        @if($service->extraCharges && $service->extraCharges->count() > 0)
+        <?php if($service->extraCharges && $service->extraCharges->count() > 0): ?>
             <div class="section no-break">
                 <div class="section-header">
                     <h3 class="section-title">➕ Optional Add-Ons</h3>
                 </div>
                 <div class="section-content">
                     <div class="extras-grid">
-                        @foreach($service->extraCharges as $extra)
+                        <?php $__currentLoopData = $service->extraCharges; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $extra): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                             <div class="extra-item">
-                                <div class="extra-name">{{ $extra->name }}</div>
-                                <div class="extra-price">{{ currency($extra->price) }}</div>
+                                <div class="extra-name"><?php echo e($extra->name); ?></div>
+                                <div class="extra-price"><?php echo e(currency($extra->price)); ?></div>
                             </div>
-                        @endforeach
+                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                     </div>
                 </div>
             </div>
-        @endif
+        <?php endif; ?>
 
         <!-- Footer -->
         <div class="pdf-footer">
-            @if(isset($general_setting->logo) && $general_setting->logo && file_exists(public_path($general_setting->logo)))
-                <img src="{{ public_path($general_setting->logo) }}" alt="Logo" class="footer-logo">
-            @endif
-            <div class="footer-text"><strong>{{ $general_setting->app_name ?? 'Tour Agency' }}</strong></div>
-            @if(isset($general_setting->contact_message_mail) && $general_setting->contact_message_mail)
-                <div class="footer-contact">📧 {{ $general_setting->contact_message_mail }}</div>
-            @endif
-            @if(isset($general_setting->phone) && $general_setting->phone)
-                <div class="footer-contact">📞 {{ $general_setting->phone }}</div>
-            @endif
+            <?php if(isset($general_setting->logo) && $general_setting->logo && file_exists(public_path($general_setting->logo))): ?>
+                <img src="<?php echo e(public_path($general_setting->logo)); ?>" alt="Logo" class="footer-logo">
+            <?php endif; ?>
+            <div class="footer-text"><strong><?php echo e($general_setting->app_name ?? 'Tour Agency'); ?></strong></div>
+            <?php if(isset($general_setting->contact_message_mail) && $general_setting->contact_message_mail): ?>
+                <div class="footer-contact">📧 <?php echo e($general_setting->contact_message_mail); ?></div>
+            <?php endif; ?>
+            <?php if(isset($general_setting->phone) && $general_setting->phone): ?>
+                <div class="footer-contact">📞 <?php echo e($general_setting->phone); ?></div>
+            <?php endif; ?>
             <div class="footer-text" style="margin-top: 10px;">
-                This document was generated on {{ now()->format('d M Y, H:i') }}
+                This document was generated on <?php echo e(now()->format('d M Y, H:i')); ?>
+
             </div>
         </div>
     </div>
 </body>
 
-</html>
+</html><?php /**PATH D:\xampp\htdocs\archive\archive\Modules/TourBooking\resources/views/front/services/tour-plan-pdf.blade.php ENDPATH**/ ?>

@@ -2,7 +2,7 @@
     <nav class="tgmobile__menu-box">
         <div class="close-btn"><i class="fa-solid fa-xmark"></i></div>
         <div class="nav-logo">
-            <a href="{{ route('home') }}"><img src="{{ asset($general_setting->secondary_logo) }}"
+            <a href="<?php echo e(route('home')); ?>"><img src="<?php echo e(asset($general_setting->secondary_logo)); ?>"
                     alt="logo"></a>
         </div>
         <div class="tgmobile__menu-outer">
@@ -10,31 +10,33 @@
         </div>
         <div class="mobile-selectors">
             <div class="mobile-selector-item">
-                <label class="mobile-selector-label">{{ __('translate.Currency') }}</label>
+                <label class="mobile-selector-label"><?php echo e(__('translate.Currency')); ?></label>
                 <select class="currency_code mobile-select" name="currency_code">
-                    @foreach($currency_list as $currency)
-                        <option value="{{ $currency->currency_code }}" {{ session('currency_code') == $currency->currency_code ? 'selected' : '' }}>
-                            {{ $currency->currency_name }} ({{ $currency->currency_icon }})
+                    <?php $__currentLoopData = $currency_list; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $currency): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                        <option value="<?php echo e($currency->currency_code); ?>" <?php echo e(session('currency_code') == $currency->currency_code ? 'selected' : ''); ?>>
+                            <?php echo e($currency->currency_name); ?> (<?php echo e($currency->currency_icon); ?>)
                         </option>
-                    @endforeach
+                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                 </select>
             </div>
             <div class="mobile-selector-item">
-                <label class="mobile-selector-label">{{ __('translate.Language') }}</label>
+                <label class="mobile-selector-label"><?php echo e(__('translate.Language')); ?></label>
                 <select class="language_code mobile-select" name="language_code">
-                    @foreach($language_list as $lang)
-                        <option value="{{ $lang->lang_code }}" {{ session('front_lang') == $lang->lang_code ? 'selected' : '' }}>
-                            {{ $lang->lang_name }}
+                    <?php $__currentLoopData = $language_list; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $lang): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                        <option value="<?php echo e($lang->lang_code); ?>" <?php echo e(session('front_lang') == $lang->lang_code ? 'selected' : ''); ?>>
+                            <?php echo e($lang->lang_name); ?>
+
                         </option>
-                    @endforeach
+                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                 </select>
             </div>
         </div>
         <div class="mobile-agency-btn" style="padding: 20px 0; border-top: 1px solid rgba(255, 255, 255, 0.1); margin-top: 20px;">
-            <a class="tg-btn-partner-mobile" href="{{ route('agency.registration') }}"
+            <a class="tg-btn-partner-mobile" href="<?php echo e(route('agency.registration')); ?>"
                 style="display: inline-flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 12px 24px; border-radius: 8px; font-size: 16px; font-weight: 600; white-space: nowrap; width: 100%; text-decoration: none; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);">
                 <i class="fa-solid fa-briefcase" style="margin-right: 8px;"></i>
-                {{ __('translate.Become an Agency Partner') }}
+                <?php echo e(__('translate.Become an Agency Partner')); ?>
+
             </a>
         </div>
         <style>
@@ -140,23 +142,23 @@
         </style>
         <div class="social-links">
             <ul class="list-wrap">
-                @if ($footer->facebook)
-                    <li><a href="{{ $footer->facebook }}"><i class="fab fa-facebook-f"></i></a></li>
-                @endif
-                @if ($footer->twitter)
-                    <li><a href="{{ $footer->twitter }}"><i class="fab fa-twitter"></i></a></li>
-                @endif
-                @if ($footer->instagram)
-                    <li><a href="{{ $footer->instagram }}"><i class="fab fa-instagram"></i></a></li>
-                @endif
-                @if ($footer->linkedin)
-                    <li><a href="{{ $footer->linkedin }}"><i class="fab fa-linkedin-in"></i></a></li>
-                @endif
-                @if ($footer->youtube)
-                    <li><a href="{{ $footer->youtube }}"><i class="fab fa-youtube"></i></a></li>
-                @endif
+                <?php if($footer->facebook): ?>
+                    <li><a href="<?php echo e($footer->facebook); ?>"><i class="fab fa-facebook-f"></i></a></li>
+                <?php endif; ?>
+                <?php if($footer->twitter): ?>
+                    <li><a href="<?php echo e($footer->twitter); ?>"><i class="fab fa-twitter"></i></a></li>
+                <?php endif; ?>
+                <?php if($footer->instagram): ?>
+                    <li><a href="<?php echo e($footer->instagram); ?>"><i class="fab fa-instagram"></i></a></li>
+                <?php endif; ?>
+                <?php if($footer->linkedin): ?>
+                    <li><a href="<?php echo e($footer->linkedin); ?>"><i class="fab fa-linkedin-in"></i></a></li>
+                <?php endif; ?>
+                <?php if($footer->youtube): ?>
+                    <li><a href="<?php echo e($footer->youtube); ?>"><i class="fab fa-youtube"></i></a></li>
+                <?php endif; ?>
             </ul>
         </div>
     </nav>
 </div>
-<div class="tgmobile__menu-backdrop"></div>
+<div class="tgmobile__menu-backdrop"></div><?php /**PATH D:\xampp\htdocs\archive\archive\resources\views/components/common_mobile_menu.blade.php ENDPATH**/ ?>

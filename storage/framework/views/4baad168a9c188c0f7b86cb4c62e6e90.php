@@ -1,0 +1,197 @@
+    <!-- header-area -->
+    <header class="tg-header-height">
+        <div class="tg-header__area tg-header-tu-menu tg-header-lg-space z-index-999 tg-transparent" id="header-sticky">
+            <div class="container-fluid">
+                <div class="row align-items-center">
+                    <div class="col-xxl-7 col-xl-6 col-lg-6 col-6">
+                        <div class="tgmenu__wrap d-flex align-items-center">
+                            <div class="logo mr-25">
+                                <a class="logo-1" href="<?php echo e(route('home')); ?>"><img src="<?php echo e(asset($general_setting->logo)); ?>"
+                                        alt="Logo"></a>
+                                <a class="logo-2 d-none" href="<?php echo e(route('home')); ?>"><img src="<?php echo e(asset($general_setting->secondary_logo)); ?>"
+                                        alt="Logo"></a>
+                            </div>
+                            <button class="tgmenu-offcanvas-open-btn menu-tigger d-none d-xl-block">
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                            </button>
+                            <nav class="tgmenu__nav tgmenu-1-space ml-150">
+                                <div class="tgmenu__navbar-wrap tgmenu__main-menu d-none d-xl-flex">
+                                    <?php echo $__env->make('components.common_navitems', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+                                </div>
+                            </nav>
+                        </div>
+                    </div>
+                    <div class="col-xxl-5 col-xl-6 col-lg-6 col-6">
+                        <div class="tg-menu-right-action d-flex align-items-center justify-content-end">
+                            <div class="tg-header-contact-info d-flex align-items-center">
+                                <span class="tg-header-contact-icon mr-8 d-none d-xl-block">
+                                    <svg width="18" height="18" viewBox="0 0 21 21" fill="none"
+                                        xmlns="http://www.w3.org/2000/svg">
+                                        <path fill-rule="evenodd" clip-rule="evenodd"
+                                            d="M17.5747 15.8619L15.8138 17.6228C15.7656 17.6732 15.7236 17.7026 15.6627 17.7362C13.1757 19.0753 8.40326 16.5734 6.21009 14.2626C6.18698 14.2374 6.16809 14.2185 6.14502 14.1954C3.83427 12.0021 1.33257 7.22927 2.67157 4.7421C2.70515 4.68124 2.73453 4.64134 2.78491 4.5931L4.54573 2.83006C4.67586 2.69992 4.82067 2.64116 5.00114 2.64116H5.01583C5.20471 2.64327 5.35163 2.71044 5.47965 2.84895L7.75047 5.30044C7.98973 5.55651 7.98131 5.95109 7.73368 6.19877L6.26666 7.66589C5.85321 8.08148 5.67271 8.62926 5.75877 9.20856C5.94134 10.428 6.55419 11.574 7.63293 12.7095C7.65603 12.7326 7.67489 12.7536 7.69799 12.7746C8.83342 13.8534 9.97723 14.4663 11.1966 14.6488C11.7779 14.7349 12.3257 14.5544 12.7412 14.1388L14.2062 12.6738C14.4538 12.4261 14.8484 12.4177 15.1065 12.6549L17.5578 14.9259C17.6963 15.0539 17.7614 15.2008 17.7656 15.3897C17.7698 15.5785 17.709 15.7276 17.5747 15.8619ZM18.3428 14.0779L15.8914 11.8069C15.1779 11.1457 14.0781 11.1667 13.3897 11.8552L11.9227 13.3223C11.7695 13.4755 11.5827 13.5364 11.3687 13.5049C10.3907 13.358 9.45254 12.8459 8.49341 11.9349C8.485 11.9287 8.47872 11.9202 8.47031 11.9118C7.56155 10.9547 7.04946 10.0144 6.90257 9.03849C6.87109 8.82439 6.93195 8.6376 7.08518 8.48229L8.5522 7.01728C9.2406 6.32883 9.2616 5.22902 8.59837 4.51331L6.32966 2.06182C5.98758 1.69451 5.54055 1.49304 5.03893 1.48462C4.53735 1.47624 4.08401 1.65672 3.72725 2.01354L1.96638 3.77452C1.83836 3.90256 1.73971 4.0348 1.65368 4.19431C1.24444 4.95199 1.08073 5.8776 1.16679 6.93962C1.24023 7.85682 1.49628 8.86008 1.92863 9.91793C2.70726 11.8279 3.9854 13.742 5.34746 15.035C5.35794 15.0434 5.36425 15.0497 5.37263 15.0581C6.66546 16.4202 8.57737 17.7006 10.4872 18.4792C11.5471 18.9095 12.5482 19.1656 13.4653 19.2411C13.6479 19.2558 13.8263 19.2621 14.0005 19.2621C14.8421 19.2621 15.5829 19.0921 16.2105 18.7542C16.37 18.6681 16.5043 18.5695 16.6323 18.4415L18.3931 16.6784C18.7478 16.3237 18.9304 15.8704 18.922 15.3687C18.9115 14.8649 18.7122 14.42 18.3428 14.0779Z"
+                                            fill="currentColor" />
+                                    </svg>
+                                </span>
+                                <div class="tg-header-contact-number d-none d-xl-block">
+                                    <span class="d-none d-lg-inline"><?php echo e(__('translate.Call Us')); ?>:</span>
+                                    <a href="tel:<?php echo e($footer->phone); ?>"><?php echo e($footer->phone); ?></a>
+                                </div>
+                            </div>
+                            <div class="tg-header-currency ml-15 d-none d-xl-block">
+                                <div class="custom-select-wrapper">
+                                    <select class="currency_code modern-select" name="currency_code">
+                                        <?php $__currentLoopData = $currency_list; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $currency): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                            <option value="<?php echo e($currency->currency_code); ?>" <?php echo e(session('currency_code') == $currency->currency_code ? 'selected' : ''); ?>>
+                                                <?php echo e($currency->currency_name); ?> (<?php echo e($currency->currency_icon); ?>)
+                                            </option>
+                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="tg-header-language ml-15 d-none d-xl-block">
+                                <div class="custom-select-wrapper">
+                                    <select class="language_code modern-select" name="language_code">
+                                        <?php $__currentLoopData = $language_list; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $lang): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                            <option value="<?php echo e($lang->lang_code); ?>" <?php echo e(session('front_lang') == $lang->lang_code ? 'selected' : ''); ?>>
+                                                <?php echo e($lang->lang_name); ?>
+
+                                            </option>
+                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                    </select>
+                                </div>
+                            </div>
+                            <style>
+                                .custom-select-wrapper {
+                                    position: relative;
+                                    display: inline-block;
+                                }
+                                
+                                .modern-select {
+                                    appearance: none;
+                                    -webkit-appearance: none;
+                                    -moz-appearance: none;
+                                    padding: 8px 32px 8px 12px;
+                                    border: 2px solid #e8ecf4;
+                                    border-radius: 10px;
+                                    background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+                                    font-size: 13px;
+                                    font-weight: 500;
+                                    color: #2d3436;
+                                    cursor: pointer;
+                                    min-width: 100px;
+                                    max-width: 120px;
+                                    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+                                    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+                                    font-family: inherit;
+                                }
+                                
+                                .modern-select:hover {
+                                    border-color: #4a90e2;
+                                    box-shadow: 0 4px 12px rgba(74, 144, 226, 0.15);
+                                    transform: translateY(-1px);
+                                }
+                                
+                                .modern-select:focus {
+                                    outline: none;
+                                    border-color: #4a90e2;
+                                    box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.1), 0 4px 12px rgba(74, 144, 226, 0.15);
+                                }
+                                
+                                .custom-select-wrapper::after {
+                                    content: '';
+                                    position: absolute;
+                                    top: 50%;
+                                    right: 14px;
+                                    transform: translateY(-50%);
+                                    width: 0;
+                                    height: 0;
+                                    border-left: 5px solid transparent;
+                                    border-right: 5px solid transparent;
+                                    border-top: 6px solid #4a90e2;
+                                    pointer-events: none;
+                                    transition: transform 0.3s ease;
+                                }
+                                
+                                .custom-select-wrapper:hover::after {
+                                    transform: translateY(-50%) rotate(180deg);
+                                }
+                                
+                                .modern-select option {
+                                    padding: 12px 16px;
+                                    background: #ffffff;
+                                    color: #2d3436;
+                                    font-weight: 500;
+                                }
+                                
+                                .modern-select option:hover {
+                                    background: #f0f7ff;
+                                }
+                                
+                                .modern-select option:checked {
+                                    background: linear-gradient(135deg, #4a90e2 0%, #357abd 100%);
+                                    color: #ffffff;
+                                }
+                                
+                                @media (max-width: 1399px) {
+                                    .modern-select {
+                                        padding: 7px 28px 7px 10px;
+                                        font-size: 12px;
+                                        min-width: 90px;
+                                        max-width: 105px;
+                                    }
+                                }
+                            </style>
+                            <div class="tg-header-btn ml-15 d-none d-sm-block">
+                                <?php if(auth()->guard('web')->guest()): ?>
+                                <a class="tg-btn-header" href="<?php echo e(route('user.login')); ?>">
+                                    <span>
+                                        <svg width="18" height="18" viewBox="0 0 18 18" fill="none"
+                                            xmlns="http://www.w3.org/2000/svg">
+                                            <path
+                                                d="M1.7 17.2C1.5 17.2 1.3 17.1 1.2 17C1.1 16.8 1 16.7 1 16.5C1 15.1 1.4 13.7 2.1 12.4C2.8 11.2 3.9 10.1 5.1 9.4C4.6 8.8 4.2 8 4 7.2C3.9 6.4 3.9 5.5 4.1 4.8C4.3 4 4.8 3.2 5.3 2.6C5.9 2 6.6 1.5 7.3 1.3C7.9 1.1 8.5 1 9.1 1C9.3 1 9.6 1 9.8 1C10.6 1.1 11.4 1.4 12.1 1.9C12.8 2.4 13.3 3 13.7 3.7C14.1 4.4 14.3 5.2 14.3 6.1C14.3 7.3 13.9 8.5 13.1 9.4C13.7 9.8 14.3 10.2 14.9 10.7C15.7 11.5 16.2 12.3 16.7 13.3C17.1 14.3 17.3 15.3 17.3 16.4C17.3 16.6 17.2 16.8 17.1 16.9C17 17 16.8 17.1 16.6 17.1C16.5 17.1 16.4 17.1 16.3 17C16.2 17 16.1 16.9 16.1 16.8C16 16.7 16 16.7 15.9 16.6C15.9 16.5 15.8 16.4 15.8 16.3C15.8 15.4 15.6 14.6 15.3 13.8C15 13 14.5 12.3 13.8 11.7C13.2 11.2 12.6 10.7 11.9 10.4C11.1 10.9 10.2 11.2 9.1 11.2C8.1 11.2 7.1 10.9 6.3 10.4C5.2 10.9 4.2 11.7 3.5 12.8C2.8 13.9 2.4 15.1 2.4 16.4C2.4 16.6 2.3 16.8 2.2 16.9C2.1 17.1 1.9 17.2 1.7 17.2ZM9.1 2.5C8.4 2.5 7.7 2.7 7.1 3.1C6.4 3.5 6 4.1 5.7 4.7C5.4 5.4 5.3 6.1 5.5 6.9C5.6 7.6 6 8.3 6.5 8.8C7 9.3 7.7 9.7 8.4 9.8C8.6 9.8 8.9 9.9 9.1 9.9C9.6 9.9 10.1 9.8 10.5 9.6C11.2 9.3 11.7 8.9 12.2 8.2C12.6 7.6 12.8 6.9 12.8 6.2C12.8 5.2 12.4 4.3 11.7 3.6C11 2.8 10.1 2.5 9.1 2.5Z"
+                                                fill="currentColor" />
+                                        </svg>
+                                    </span>
+                                    <?php echo e(__('translate.Login')); ?>
+
+                                </a>
+                                <?php else: ?>
+                                <a class="tg-btn-header"
+                                    href="<?php echo e(Auth::guard('web')->user()->is_seller == 1 ? route('agency.dashboard') : route('user.dashboard')); ?>">
+                                    <span>
+                                        <svg width="18" height="18" viewBox="0 0 18 18" fill="none"
+                                            xmlns="http://www.w3.org/2000/svg">
+                                            <path
+                                                d="M1.7 17.2C1.5 17.2 1.3 17.1 1.2 17C1.1 16.8 1 16.7 1 16.5C1 15.1 1.4 13.7 2.1 12.4C2.8 11.2 3.9 10.1 5.1 9.4C4.6 8.8 4.2 8 4 7.2C3.9 6.4 3.9 5.5 4.1 4.8C4.3 4 4.8 3.2 5.3 2.6C5.9 2 6.6 1.5 7.3 1.3C7.9 1.1 8.5 1 9.1 1C9.3 1 9.6 1 9.8 1C10.6 1.1 11.4 1.4 12.1 1.9C12.8 2.4 13.3 3 13.7 3.7C14.1 4.4 14.3 5.2 14.3 6.1C14.3 7.3 13.9 8.5 13.1 9.4C13.7 9.8 14.3 10.2 14.9 10.7C15.7 11.5 16.2 12.3 16.7 13.3C17.1 14.3 17.3 15.3 17.3 16.4C17.3 16.6 17.2 16.8 17.1 16.9C17 17 16.8 17.1 16.6 17.1C16.5 17.1 16.4 17.1 16.3 17C16.2 17 16.1 16.9 16.1 16.8C16 16.7 16 16.7 15.9 16.6C15.9 16.5 15.8 16.4 15.8 16.3C15.8 15.4 15.6 14.6 15.3 13.8C15 13 14.5 12.3 13.8 11.7C13.2 11.2 12.6 10.7 11.9 10.4C11.1 10.9 10.2 11.2 9.1 11.2C8.1 11.2 7.1 10.9 6.3 10.4C5.2 10.9 4.2 11.7 3.5 12.8C2.8 13.9 2.4 15.1 2.4 16.4C2.4 16.6 2.3 16.8 2.2 16.9C2.1 17.1 1.9 17.2 1.7 17.2ZM9.1 2.5C8.4 2.5 7.7 2.7 7.1 3.1C6.4 3.5 6 4.1 5.7 4.7C5.4 5.4 5.3 6.1 5.5 6.9C5.6 7.6 6 8.3 6.5 8.8C7 9.3 7.7 9.7 8.4 9.8C8.6 9.8 8.9 9.9 9.1 9.9C9.6 9.9 10.1 9.8 10.5 9.6C11.2 9.3 11.7 8.9 12.2 8.2C12.6 7.6 12.8 6.9 12.8 6.2C12.8 5.2 12.4 4.3 11.7 3.6C11 2.8 10.1 2.5 9.1 2.5Z"
+                                                fill="currentColor" />
+                                        </svg>
+                                    </span>
+                                </a>
+                                <?php endif; ?>
+                            </div>
+                            <div class="tg-header-menu-bar p-relative">
+                                <button class="tgmenu-offcanvas-open-btn mobile-nav-toggler d-block d-xl-none ml-10">
+                                    <span></span>
+                                    <span></span>
+                                    <span></span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    <!-- Mobile Menu  -->
+    <?php echo $__env->make('components.common_mobile_menu', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+    <!-- End Mobile Menu -->
+
+    <!-- offCanvas-menu -->
+    <?php echo $__env->make('components.common_offcanvas', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+    <!-- offCanvas-menu-end -->
+
+    </header>
+    <!-- header-area-end -->
+<?php /**PATH D:\xampp\htdocs\archive\archive\Cms/themes/theme3/views/components/header.blade.php ENDPATH**/ ?>

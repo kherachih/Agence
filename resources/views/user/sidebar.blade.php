@@ -30,8 +30,8 @@
                     class="collapsed" href="{{ route('user.orders') }}"><span class="menu-bar__text">
                         <span class="crancy-menu-icon crancy-svg-icon__v1">
 
-                            <svg class="crancy-svg-icon" width="24" height="24" viewBox="0 0 24 24"
-                                fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <svg class="crancy-svg-icon" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
                                 <path
                                     d="M2 8H22M11 19H4C2.89543 19 2 18.1046 2 17V5C2 3.89543 2.89543 3 4 3H20C21.1046 3 22 3.89543 22 5V9.5"
                                     stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
@@ -45,8 +45,8 @@
             </li>
 
             <li class="{{ Route::is('user.wishlist.index') || Route::is('user.wishlist.services') ? 'active' : '' }}">
-                <a href="#!" class="collapsed" data-bs-toggle="collapse"
-                    data-bs-target="#menu-item__course_list"><span class="menu-bar__text">
+                <a href="#!" class="collapsed" data-bs-toggle="collapse" data-bs-target="#menu-item__course_list"><span
+                        class="menu-bar__text">
                         <span class="crancy-menu-icon crancy-svg-icon__v1">
 
                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
@@ -108,8 +108,8 @@
                         <span class="crancy-menu-icon crancy-svg-icon__v1">
                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
                                 xmlns="http://www.w3.org/2000/svg">
-                                <ellipse cx="12" cy="17.5" rx="7" ry="3.5"
-                                    stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" />
+                                <ellipse cx="12" cy="17.5" rx="7" ry="3.5" stroke="currentColor" stroke-width="1.5"
+                                    stroke-linejoin="round" />
                                 <circle cx="12" cy="7" r="4" stroke="currentColor" stroke-width="1.5"
                                     stroke-linejoin="round" />
                             </svg>
@@ -252,17 +252,5 @@
 
         </ul>
     </div>
-    @if ($auth_user->instructor_joining_request == 'approved')
-        <div class="d-flex d-md-none justify-content-center pt-5">
-            <a href="{{ route('agency.dashboard') }}"
-                class="panel-switcher-btn">{{ __('translate.Agency Dashboard') }}</a>
-        </div>
-    @else
-        <div class="d-flex d-md-none justify-content-center pt-5">
-            <a href="{{ route('user.create-agency') }}"
-                class="panel-switcher-btn">{{ __('translate.Create a agency') }}</a>
-        </div>
-    @endif
-
     <!-- End Nav Menu -->
 </div>

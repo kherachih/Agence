@@ -6,9 +6,9 @@
         <ul id="CrancyMenu" class="menu-bar__one crancy-dashboard-menu">
 
 
-            @if(\App\Models\MenuVisibilitySetting::isMenuEnabled('dashboard'))
-                <li class="{{ Route::is('admin.dashboard') ? 'active' : '' }}"><a class="collapsed"
-                        href="{{ route('admin.dashboard') }}"><span class="menu-bar__text">
+            <?php if(\App\Models\MenuVisibilitySetting::isMenuEnabled('dashboard')): ?>
+                <li class="<?php echo e(Route::is('admin.dashboard') ? 'active' : ''); ?>"><a class="collapsed"
+                        href="<?php echo e(route('admin.dashboard')); ?>"><span class="menu-bar__text">
                             <span class="crancy-menu-icon crancy-svg-icon__v1">
 
                                 <svg class="crancy-svg-icon" width="24" height="24" viewBox="0 0 24 24" fill="none"
@@ -22,16 +22,16 @@
                                 </svg>
 
                             </span>
-                            <span class="menu-bar__name">{{ __('translate.Dashboard') }}</span></span></a>
+                            <span class="menu-bar__name"><?php echo e(__('translate.Dashboard')); ?></span></span></a>
                 </li>
-            @endif
+            <?php endif; ?>
 
 
-            @include('tourbooking::admin.sidebar')
+            <?php echo $__env->make('tourbooking::admin.sidebar', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
 
-            @if(\App\Models\MenuVisibilitySetting::isMenuEnabled('manage_withdraw'))
+            <?php if(\App\Models\MenuVisibilitySetting::isMenuEnabled('manage_withdraw')): ?>
                 <li
-                    class="{{ Route::is('admin.withdraw-methods.*') || Route::is('admin.withdraw-list.*') ? 'active' : '' }}">
+                    class="<?php echo e(Route::is('admin.withdraw-methods.*') || Route::is('admin.withdraw-list.*') ? 'active' : ''); ?>">
                     <a href="#!" class="collapsed" data-bs-toggle="collapse"
                         data-bs-target="#menu-item__withdraw_list"><span class="menu-bar__text">
                             <span class="crancy-menu-icon crancy-svg-icon__v1">
@@ -54,29 +54,29 @@
 
                             </span>
 
-                            <span class="menu-bar__name">{{ __('translate.Manage Withdraw') }}</span></span> <span
+                            <span class="menu-bar__name"><?php echo e(__('translate.Manage Withdraw')); ?></span></span> <span
                             class="crancy__toggle"></span></a></span>
                     <!-- Dropdown Menu -->
-                    <div class="collapse crancy__dropdown {{ Route::is('admin.withdraw-methods.*') || Route::is('admin.withdraw-list.*') ? 'show' : '' }}"
+                    <div class="collapse crancy__dropdown <?php echo e(Route::is('admin.withdraw-methods.*') || Route::is('admin.withdraw-list.*') ? 'show' : ''); ?>"
                         id="menu-item__withdraw_list" data-bs-parent="#CrancyMenu">
                         <ul class="menu-bar__one-dropdown">
 
-                            <li><a href="{{ route('admin.withdraw-methods.index') }}"><span class="menu-bar__text"><span
-                                            class="menu-bar__name">{{ __('translate.Withdraw Method') }}</span></span></a>
+                            <li><a href="<?php echo e(route('admin.withdraw-methods.index')); ?>"><span class="menu-bar__text"><span
+                                            class="menu-bar__name"><?php echo e(__('translate.Withdraw Method')); ?></span></span></a>
                             </li>
 
-                            <li><a href="{{ route('admin.withdraw-list.index') }}"><span class="menu-bar__text"><span
-                                            class="menu-bar__name">{{ __('translate.Withdraw List') }}</span></span></a>
+                            <li><a href="<?php echo e(route('admin.withdraw-list.index')); ?>"><span class="menu-bar__text"><span
+                                            class="menu-bar__name"><?php echo e(__('translate.Withdraw List')); ?></span></span></a>
                             </li>
 
                         </ul>
                     </div>
                 </li>
-            @endif
+            <?php endif; ?>
 
-            @if(\App\Models\MenuVisibilitySetting::isMenuEnabled('manage_agency'))
+            <?php if(\App\Models\MenuVisibilitySetting::isMenuEnabled('manage_agency')): ?>
                 <li
-                    class="{{ Route::is('admin.seller-list') || Route::is('admin.pending-seller') || Route::is('admin.seller-show') || Route::is('admin.seller-joining-request') || Route::is('admin.seller-joining-detail') || Route::is('admin.agency-applications.*') ? 'active' : '' }}">
+                    class="<?php echo e(Route::is('admin.seller-list') || Route::is('admin.pending-seller') || Route::is('admin.seller-show') || Route::is('admin.seller-joining-request') || Route::is('admin.seller-joining-detail') || Route::is('admin.agency-applications.*') ? 'active' : ''); ?>">
                     <a href="#!" class="collapsed" data-bs-toggle="collapse" data-bs-target="#menu-item__seller"><span
                             class="menu-bar__text">
                             <span class="crancy-menu-icon crancy-svg-icon__v1">
@@ -89,34 +89,34 @@
 
 
                             </span>
-                            <span class="menu-bar__name">{{ __('translate.Manage Agency') }}</span></span> <span
+                            <span class="menu-bar__name"><?php echo e(__('translate.Manage Agency')); ?></span></span> <span
                             class="crancy__toggle"></span></a></span>
                     <!-- Dropdown Menu -->
-                    <div class="collapse crancy__dropdown {{ Route::is('admin.seller-list') || Route::is('admin.pending-seller') || Route::is('admin.seller-show') || Route::is('admin.seller-joining-request') || Route::is('admin.seller-joining-detail') || Route::is('admin.agency-applications.*') ? 'show' : '' }}"
+                    <div class="collapse crancy__dropdown <?php echo e(Route::is('admin.seller-list') || Route::is('admin.pending-seller') || Route::is('admin.seller-show') || Route::is('admin.seller-joining-request') || Route::is('admin.seller-joining-detail') || Route::is('admin.agency-applications.*') ? 'show' : ''); ?>"
                         id="menu-item__seller" data-bs-parent="#CrancyMenu">
                         <ul class="menu-bar__one-dropdown">
 
-                            <li><a href="{{ route('admin.seller-list') }}"><span class="menu-bar__text"><span
-                                            class="menu-bar__name">{{ __('translate.Agency List') }}</span></span></a>
+                            <li><a href="<?php echo e(route('admin.seller-list')); ?>"><span class="menu-bar__text"><span
+                                            class="menu-bar__name"><?php echo e(__('translate.Agency List')); ?></span></span></a>
                             </li>
 
-                            <li><a href="{{ route('admin.seller-joining-request') }}"><span class="menu-bar__text"><span
-                                            class="menu-bar__name">{{ __('translate.Join Request') }}</span></span></a>
+                            <li><a href="<?php echo e(route('admin.seller-joining-request')); ?>"><span class="menu-bar__text"><span
+                                            class="menu-bar__name"><?php echo e(__('translate.Join Request')); ?></span></span></a>
                             </li>
 
-                            <li><a href="{{ route('admin.agency-applications.index') }}"><span class="menu-bar__text"><span
-                                            class="menu-bar__name">{{ __('translate.Agency Applications') }}</span></span></a>
+                            <li><a href="<?php echo e(route('admin.agency-applications.index')); ?>"><span class="menu-bar__text"><span
+                                            class="menu-bar__name"><?php echo e(__('translate.Agency Applications')); ?></span></span></a>
                             </li>
 
 
                         </ul>
                     </div>
                 </li>
-            @endif
+            <?php endif; ?>
 
-            @if(\App\Models\MenuVisibilitySetting::isMenuEnabled('manage_user'))
+            <?php if(\App\Models\MenuVisibilitySetting::isMenuEnabled('manage_user')): ?>
                 <li
-                    class="{{ Route::is('admin.user-list') || Route::is('admin.pending-user') || Route::is('admin.user-show') ? 'active' : '' }}">
+                    class="<?php echo e(Route::is('admin.user-list') || Route::is('admin.pending-user') || Route::is('admin.user-show') ? 'active' : ''); ?>">
                     <a href="#!" class="collapsed" data-bs-toggle="collapse" data-bs-target="#menu-item__users"><span
                             class="menu-bar__text">
                             <span class="crancy-menu-icon crancy-svg-icon__v1">
@@ -130,30 +130,30 @@
 
 
                             </span>
-                            <span class="menu-bar__name">{{ __('translate.Manage User') }}</span></span> <span
+                            <span class="menu-bar__name"><?php echo e(__('translate.Manage User')); ?></span></span> <span
                             class="crancy__toggle"></span></a></span>
                     <!-- Dropdown Menu -->
-                    <div class="collapse crancy__dropdown {{ Route::is('admin.user-list') || Route::is('admin.pending-user') || Route::is('admin.user-show') ? 'show' : '' }}"
+                    <div class="collapse crancy__dropdown <?php echo e(Route::is('admin.user-list') || Route::is('admin.pending-user') || Route::is('admin.user-show') ? 'show' : ''); ?>"
                         id="menu-item__users" data-bs-parent="#CrancyMenu">
                         <ul class="menu-bar__one-dropdown">
 
-                            <li><a href="{{ route('admin.user-list') }}"><span class="menu-bar__text"><span
-                                            class="menu-bar__name">{{ __('translate.User List') }}</span></span></a>
+                            <li><a href="<?php echo e(route('admin.user-list')); ?>"><span class="menu-bar__text"><span
+                                            class="menu-bar__name"><?php echo e(__('translate.User List')); ?></span></span></a>
                             </li>
 
-                            <li><a href="{{ route('admin.pending-user') }}"><span class="menu-bar__text"><span
-                                            class="menu-bar__name">{{ __('translate.Pending User') }}</span></span></a>
+                            <li><a href="<?php echo e(route('admin.pending-user')); ?>"><span class="menu-bar__text"><span
+                                            class="menu-bar__name"><?php echo e(__('translate.Pending User')); ?></span></span></a>
                             </li>
 
 
                         </ul>
                     </div>
                 </li>
-            @endif
+            <?php endif; ?>
 
-            @if(\App\Models\MenuVisibilitySetting::isMenuEnabled('contact_message'))
-                <li class="{{ Route::is('admin.contact-message') || Route::is('admin.show-message') ? 'active' : '' }}"><a
-                        class="collapsed" href="{{ route('admin.contact-message') }}">
+            <?php if(\App\Models\MenuVisibilitySetting::isMenuEnabled('contact_message')): ?>
+                <li class="<?php echo e(Route::is('admin.contact-message') || Route::is('admin.show-message') ? 'active' : ''); ?>"><a
+                        class="collapsed" href="<?php echo e(route('admin.contact-message')); ?>">
                         <span class="menu-bar__text">
                             <span class="crancy-menu-icon crancy-svg-icon__v1">
                                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
@@ -165,16 +165,16 @@
 
 
                             </span>
-                            <span class="menu-bar__name">{{ __('translate.Contact Message') }}</span>
+                            <span class="menu-bar__name"><?php echo e(__('translate.Contact Message')); ?></span>
                         </span>
 
                     </a>
                 </li>
-            @endif
+            <?php endif; ?>
 
-            @if(\App\Models\MenuVisibilitySetting::isMenuEnabled('support_ticket'))
-                <li class="{{ Route::is('admin.support-tickets') || Route::is('admin.support-ticket') ? 'active' : '' }}">
-                    <a class="collapsed" href="{{ route('admin.support-tickets') }}">
+            <?php if(\App\Models\MenuVisibilitySetting::isMenuEnabled('support_ticket')): ?>
+                <li class="<?php echo e(Route::is('admin.support-tickets') || Route::is('admin.support-ticket') ? 'active' : ''); ?>">
+                    <a class="collapsed" href="<?php echo e(route('admin.support-tickets')); ?>">
                         <span class="menu-bar__text">
                             <span class="crancy-menu-icon crancy-svg-icon__v1">
                                 <svg width="18" height="22" viewBox="0 0 18 22" fill="none"
@@ -185,17 +185,17 @@
                                 </svg>
 
                             </span>
-                            <span class="menu-bar__name">{{ __('translate.Support Ticket') }}</span>
+                            <span class="menu-bar__name"><?php echo e(__('translate.Support Ticket')); ?></span>
                         </span>
 
                     </a>
                 </li>
-            @endif
+            <?php endif; ?>
 
-            @if(false)
-                <h4 class="admin-menu__title pt-2">{{ __('translate.Product & Review') }}</h4>
+            <?php if(false): ?>
+                <h4 class="admin-menu__title pt-2"><?php echo e(__('translate.Product & Review')); ?></h4>
                 <li
-                    class="{{ Route::is('admin.orders') || Route::is('admin.order') || Route::is('admin.active-orders') || Route::is('admin.reject-orders') || Route::is('admin.delivered-orders') || Route::is('admin.complete-orders') || Route::is('admin.pending-payment-orders') ? 'active' : '' }}">
+                    class="<?php echo e(Route::is('admin.orders') || Route::is('admin.order') || Route::is('admin.active-orders') || Route::is('admin.reject-orders') || Route::is('admin.delivered-orders') || Route::is('admin.complete-orders') || Route::is('admin.pending-payment-orders') ? 'active' : ''); ?>">
                     <a href="#!" class="collapsed" data-bs-toggle="collapse" data-bs-target="#menu-item__order"><span
                             class="menu-bar__text">
                             <span class="crancy-menu-icon crancy-svg-icon__v1">
@@ -226,35 +226,35 @@
 
                             </span>
 
-                            <span class="menu-bar__name">{{ __('translate.Manage Order') }}</span></span> <span
+                            <span class="menu-bar__name"><?php echo e(__('translate.Manage Order')); ?></span></span> <span
                             class="crancy__toggle"></span></a></span>
                     <!-- Dropdown Menu -->
-                    <div class="collapse crancy__dropdown {{ Route::is('admin.orders') || Route::is('admin.order') || Route::is('admin.active-orders') || Route::is('admin.reject-orders') || Route::is('admin.delivered-orders') || Route::is('admin.complete-orders') || Route::is('admin.pending-payment-orders') ? 'show' : '' }}"
+                    <div class="collapse crancy__dropdown <?php echo e(Route::is('admin.orders') || Route::is('admin.order') || Route::is('admin.active-orders') || Route::is('admin.reject-orders') || Route::is('admin.delivered-orders') || Route::is('admin.complete-orders') || Route::is('admin.pending-payment-orders') ? 'show' : ''); ?>"
                         id="menu-item__order" data-bs-parent="#CrancyMenu">
                         <ul class="menu-bar__one-dropdown">
 
 
-                            <li><a href="{{ route('admin.orders') }}"><span class="menu-bar__text"><span
-                                            class="menu-bar__name">{{ __('translate.All Orders') }}</span></span></a></li>
+                            <li><a href="<?php echo e(route('admin.orders')); ?>"><span class="menu-bar__text"><span
+                                            class="menu-bar__name"><?php echo e(__('translate.All Orders')); ?></span></span></a></li>
 
-                            <li><a href="{{ route('admin.active-orders') }}"><span class="menu-bar__text"><span
-                                            class="menu-bar__name">{{ __('translate.Active Orders') }}</span></span></a>
+                            <li><a href="<?php echo e(route('admin.active-orders')); ?>"><span class="menu-bar__text"><span
+                                            class="menu-bar__name"><?php echo e(__('translate.Active Orders')); ?></span></span></a>
                             </li>
 
-                            <li><a href="{{ route('admin.reject-orders') }}"><span class="menu-bar__text"><span
-                                            class="menu-bar__name">{{ __('translate.Rejected Orders') }}</span></span></a>
+                            <li><a href="<?php echo e(route('admin.reject-orders')); ?>"><span class="menu-bar__text"><span
+                                            class="menu-bar__name"><?php echo e(__('translate.Rejected Orders')); ?></span></span></a>
                             </li>
 
-                            <li><a href="{{ route('admin.delivered-orders') }}"><span class="menu-bar__text"><span
-                                            class="menu-bar__name">{{ __('translate.Delivered Orders') }}</span></span></a>
+                            <li><a href="<?php echo e(route('admin.delivered-orders')); ?>"><span class="menu-bar__text"><span
+                                            class="menu-bar__name"><?php echo e(__('translate.Delivered Orders')); ?></span></span></a>
                             </li>
 
-                            <li><a href="{{ route('admin.complete-orders') }}"><span class="menu-bar__text"><span
-                                            class="menu-bar__name">{{ __('translate.Complete Orders') }}</span></span></a>
+                            <li><a href="<?php echo e(route('admin.complete-orders')); ?>"><span class="menu-bar__text"><span
+                                            class="menu-bar__name"><?php echo e(__('translate.Complete Orders')); ?></span></span></a>
                             </li>
 
-                            <li><a href="{{ route('admin.pending-payment-orders') }}"><span class="menu-bar__text"><span
-                                            class="menu-bar__name">{{ __('translate.Pending Payment Order') }}</span></span></a>
+                            <li><a href="<?php echo e(route('admin.pending-payment-orders')); ?>"><span class="menu-bar__text"><span
+                                            class="menu-bar__name"><?php echo e(__('translate.Pending Payment Order')); ?></span></span></a>
                             </li>
 
                         </ul>
@@ -264,7 +264,7 @@
 
 
                 <li
-                    class="{{ Route::is('admin.product.index') || Route::is('admin.product.create') || Route::is('admin.product.edit') || Route::is('admin.brand.*') || Route::is('admin.category.*') || Route::is('admin.sub-category.*') ? 'active' : '' }}">
+                    class="<?php echo e(Route::is('admin.product.index') || Route::is('admin.product.create') || Route::is('admin.product.edit') || Route::is('admin.brand.*') || Route::is('admin.category.*') || Route::is('admin.sub-category.*') ? 'active' : ''); ?>">
                     <a href="#!" class="collapsed" data-bs-toggle="collapse" data-bs-target="#menu-item__ecommerce"><span
                             class="menu-bar__text">
                             <span class="crancy-menu-icon crancy-svg-icon__v1">
@@ -281,33 +281,33 @@
 
                             </span>
 
-                            <span class="menu-bar__name">{{ __('translate.Manage Product') }}</span></span> <span
+                            <span class="menu-bar__name"><?php echo e(__('translate.Manage Product')); ?></span></span> <span
                             class="crancy__toggle"></span></a></span>
-                    <div class="collapse crancy__dropdown {{ Route::is('admin.product.index') || Route::is('admin.product.create') || Route::is('admin.product.edit') || Route::is('admin.brand.*') || Route::is('admin.category.*') || Route::is('admin.sub-category.*') ? 'show' : '' }}"
+                    <div class="collapse crancy__dropdown <?php echo e(Route::is('admin.product.index') || Route::is('admin.product.create') || Route::is('admin.product.edit') || Route::is('admin.brand.*') || Route::is('admin.category.*') || Route::is('admin.sub-category.*') ? 'show' : ''); ?>"
                         id="menu-item__ecommerce" data-bs-parent="#CrancyMenu">
                         <ul class="menu-bar__one-dropdown">
-                            <li><a href="{{ route('admin.product.create') }}"><span class="menu-bar__text"><span
-                                            class="menu-bar__name">{{ __('translate.Create Product') }}</span></span></a>
+                            <li><a href="<?php echo e(route('admin.product.create')); ?>"><span class="menu-bar__text"><span
+                                            class="menu-bar__name"><?php echo e(__('translate.Create Product')); ?></span></span></a>
                             </li>
 
-                            <li><a href="{{ route('admin.product.index') }}"><span class="menu-bar__text"><span
-                                            class="menu-bar__name">{{ __('translate.Product List') }}</span></span></a>
+                            <li><a href="<?php echo e(route('admin.product.index')); ?>"><span class="menu-bar__text"><span
+                                            class="menu-bar__name"><?php echo e(__('translate.Product List')); ?></span></span></a>
                             </li>
 
-                            <li><a href="{{ route('admin.category.index') }}"><span class="menu-bar__text"><span
-                                            class="menu-bar__name">{{ __('translate.Category List') }}</span></span></a>
+                            <li><a href="<?php echo e(route('admin.category.index')); ?>"><span class="menu-bar__text"><span
+                                            class="menu-bar__name"><?php echo e(__('translate.Category List')); ?></span></span></a>
                             </li>
 
-                            <li><a href="{{ route('admin.brand.index') }}"><span class="menu-bar__text"><span
-                                            class="menu-bar__name">{{ __('translate.Brand List') }}</span></span></a></li>
+                            <li><a href="<?php echo e(route('admin.brand.index')); ?>"><span class="menu-bar__text"><span
+                                            class="menu-bar__name"><?php echo e(__('translate.Brand List')); ?></span></span></a></li>
 
                         </ul>
                     </div>
                 </li>
 
 
-                <li class="{{ Route::is('admin.product.review.list') ? 'active' : '' }}">
-                    <a class="collapsed" href="{{ route('admin.product.review.list') }}">
+                <li class="<?php echo e(Route::is('admin.product.review.list') ? 'active' : ''); ?>">
+                    <a class="collapsed" href="<?php echo e(route('admin.product.review.list')); ?>">
                         <span class="menu-bar__text">
                             <span class="crancy-menu-icon crancy-svg-icon__v1">
                                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
@@ -326,13 +326,13 @@
                                 </svg>
 
                             </span>
-                            <span class="menu-bar__name">{{ __('translate.Review List') }}</span>
+                            <span class="menu-bar__name"><?php echo e(__('translate.Review List')); ?></span>
                         </span>
                     </a>
                 </li>
 
-                <li class="{{ Route::is('admin.shipping-method.index') ? 'active' : '' }}">
-                    <a class="collapsed" href="{{ route('admin.shipping-method.index') }}">
+                <li class="<?php echo e(Route::is('admin.shipping-method.index') ? 'active' : ''); ?>">
+                    <a class="collapsed" href="<?php echo e(route('admin.shipping-method.index')); ?>">
                         <span class="menu-bar__text">
                             <span class="crancy-menu-icon crancy-svg-icon__v1">
                                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
@@ -350,17 +350,17 @@
                                 </svg>
 
                             </span>
-                            <span class="menu-bar__name">{{ __('translate.Shipping') }}</span>
+                            <span class="menu-bar__name"><?php echo e(__('translate.Shipping')); ?></span>
                         </span>
                     </a>
                 </li>
-            @endif
+            <?php endif; ?>
 
-            <h4 class="admin-menu__title pt-2">{{ __('translate.Team & Users') }}</h4>
+            <h4 class="admin-menu__title pt-2"><?php echo e(__('translate.Team & Users')); ?></h4>
 
-            @if(\App\Models\MenuVisibilitySetting::isMenuEnabled('manage_team'))
-                <li class="{{ Route::is('admin.team.*') ? 'active' : '' }}">
-                    <a class="collapsed" href="{{ route('admin.team.index') }}">
+            <?php if(\App\Models\MenuVisibilitySetting::isMenuEnabled('manage_team')): ?>
+                <li class="<?php echo e(Route::is('admin.team.*') ? 'active' : ''); ?>">
+                    <a class="collapsed" href="<?php echo e(route('admin.team.index')); ?>">
                         <span class="menu-bar__text">
                             <span class="crancy-menu-icon crancy-svg-icon__v1">
                                 <!-- Team SVG Icon -->
@@ -395,15 +395,15 @@
                                 </svg>
 
                             </span>
-                            <span class="menu-bar__name">{{ __('translate.Manage Team') }}</span>
+                            <span class="menu-bar__name"><?php echo e(__('translate.Manage Team')); ?></span>
                         </span>
                     </a>
                 </li>
-            @endif
+            <?php endif; ?>
 
-            @if(\App\Models\MenuVisibilitySetting::isMenuEnabled('manage_users'))
+            <?php if(\App\Models\MenuVisibilitySetting::isMenuEnabled('manage_users')): ?>
                 <li
-                    class="{{ Route::is('admin.user-list') || Route::is('admin.pending-user') || Route::is('admin.user-show') ? 'active' : '' }}">
+                    class="<?php echo e(Route::is('admin.user-list') || Route::is('admin.pending-user') || Route::is('admin.user-show') ? 'active' : ''); ?>">
                     <a href="#!" class="collapsed" data-bs-toggle="collapse" data-bs-target="#menu-item__users"><span
                             class="menu-bar__text">
                             <span class="crancy-menu-icon crancy-svg-icon__v1">
@@ -426,29 +426,29 @@
 
 
                             </span>
-                            <span class="menu-bar__name">{{ __('translate.Manage Users') }}</span></span> <span
+                            <span class="menu-bar__name"><?php echo e(__('translate.Manage Users')); ?></span></span> <span
                             class="crancy__toggle"></span></a></span>
                     <!-- Dropdown Menu -->
-                    <div class="collapse crancy__dropdown {{ Route::is('admin.user-list') || Route::is('admin.pending-user') || Route::is('admin.user-show') ? 'show' : '' }}"
+                    <div class="collapse crancy__dropdown <?php echo e(Route::is('admin.user-list') || Route::is('admin.pending-user') || Route::is('admin.user-show') ? 'show' : ''); ?>"
                         id="menu-item__users" data-bs-parent="#CrancyMenu">
                         <ul class="menu-bar__one-dropdown">
 
-                            <li><a href="{{ route('admin.user-list') }}"><span class="menu-bar__text"><span
-                                            class="menu-bar__name">{{ __('translate.User List') }}</span></span></a></li>
+                            <li><a href="<?php echo e(route('admin.user-list')); ?>"><span class="menu-bar__text"><span
+                                            class="menu-bar__name"><?php echo e(__('translate.User List')); ?></span></span></a></li>
 
-                            <li><a href="{{ route('admin.pending-user') }}"><span class="menu-bar__text"><span
-                                            class="menu-bar__name">{{ __('translate.Pending User') }}</span></span></a>
+                            <li><a href="<?php echo e(route('admin.pending-user')); ?>"><span class="menu-bar__text"><span
+                                            class="menu-bar__name"><?php echo e(__('translate.Pending User')); ?></span></span></a>
                             </li>
                         </ul>
                     </div>
                 </li>
-            @endif
+            <?php endif; ?>
 
-            <h4 class="admin-menu__title pt-4">{{ __('translate.CMS & Blogs') }}</h4>
+            <h4 class="admin-menu__title pt-4"><?php echo e(__('translate.CMS & Blogs')); ?></h4>
 
-            @if(\App\Models\MenuVisibilitySetting::isMenuEnabled('manage_blog'))
+            <?php if(\App\Models\MenuVisibilitySetting::isMenuEnabled('manage_blog')): ?>
                 <li
-                    class="{{ Route::is('admin.blog.*') || Route::is('admin.blog-category.*') || Route::is('admin.comment-list') || Route::is('admin.show-comment') ? 'active' : '' }}">
+                    class="<?php echo e(Route::is('admin.blog.*') || Route::is('admin.blog-category.*') || Route::is('admin.comment-list') || Route::is('admin.show-comment') ? 'active' : ''); ?>">
                     <a href="#!" class="collapsed" data-bs-toggle="collapse" data-bs-target="#menu-item__blog"><span
                             class="menu-bar__text">
                             <span class="crancy-menu-icon crancy-svg-icon__v1">
@@ -467,41 +467,41 @@
                                 </svg>
 
                             </span>
-                            <span class="menu-bar__name">{{ __('translate.Manage Blog') }}</span></span> <span
+                            <span class="menu-bar__name"><?php echo e(__('translate.Manage Blog')); ?></span></span> <span
                             class="crancy__toggle"></span></a></span>
                     <!-- Dropdown Menu -->
-                    <div class="collapse crancy__dropdown {{ Route::is('admin.blog.*') || Route::is('admin.blog-category.*') || Route::is('admin.comment-list') || Route::is('admin.show-comment') ? 'show' : '' }}"
+                    <div class="collapse crancy__dropdown <?php echo e(Route::is('admin.blog.*') || Route::is('admin.blog-category.*') || Route::is('admin.comment-list') || Route::is('admin.show-comment') ? 'show' : ''); ?>"
                         id="menu-item__blog" data-bs-parent="#CrancyMenu">
                         <ul class="menu-bar__one-dropdown">
 
-                            <li><a href="{{ route('admin.blog-category.create') }}"><span class="menu-bar__text"><span
-                                            class="menu-bar__name">{{ __('translate.Create Categroy') }}</span></span></a>
+                            <li><a href="<?php echo e(route('admin.blog-category.create')); ?>"><span class="menu-bar__text"><span
+                                            class="menu-bar__name"><?php echo e(__('translate.Create Categroy')); ?></span></span></a>
                             </li>
 
-                            <li><a href="{{ route('admin.blog-category.index') }}"><span class="menu-bar__text"><span
-                                            class="menu-bar__name">{{ __('translate.Categroy List') }}</span></span></a>
+                            <li><a href="<?php echo e(route('admin.blog-category.index')); ?>"><span class="menu-bar__text"><span
+                                            class="menu-bar__name"><?php echo e(__('translate.Categroy List')); ?></span></span></a>
                             </li>
 
-                            <li><a href="{{ route('admin.blog.create') }}"><span class="menu-bar__text"><span
-                                            class="menu-bar__name">{{ __('translate.Create Blog') }}</span></span></a>
+                            <li><a href="<?php echo e(route('admin.blog.create')); ?>"><span class="menu-bar__text"><span
+                                            class="menu-bar__name"><?php echo e(__('translate.Create Blog')); ?></span></span></a>
                             </li>
 
-                            <li><a href="{{ route('admin.blog.index') }}"><span class="menu-bar__text"><span
-                                            class="menu-bar__name">{{ __('translate.Blog List') }}</span></span></a></li>
+                            <li><a href="<?php echo e(route('admin.blog.index')); ?>"><span class="menu-bar__text"><span
+                                            class="menu-bar__name"><?php echo e(__('translate.Blog List')); ?></span></span></a></li>
 
-                            <li><a href="{{ route('admin.comment-list') }}"><span class="menu-bar__text"><span
-                                            class="menu-bar__name">{{ __('translate.Comment List') }}</span></span></a>
+                            <li><a href="<?php echo e(route('admin.comment-list')); ?>"><span class="menu-bar__text"><span
+                                            class="menu-bar__name"><?php echo e(__('translate.Comment List')); ?></span></span></a>
                             </li>
 
 
                         </ul>
                     </div>
                 </li>
-            @endif
+            <?php endif; ?>
 
-            @if(\App\Models\MenuVisibilitySetting::isMenuEnabled('manage_pages'))
+            <?php if(\App\Models\MenuVisibilitySetting::isMenuEnabled('manage_pages')): ?>
                 <li
-                    class="{{ Route::is('admin.terms-conditions') || Route::is('admin.privacy-policy') || Route::is('admin.faq.*') || Route::is('admin.custom-page.*') || Route::is('admin.contact-us') ? 'active' : '' }}">
+                    class="<?php echo e(Route::is('admin.terms-conditions') || Route::is('admin.privacy-policy') || Route::is('admin.faq.*') || Route::is('admin.custom-page.*') || Route::is('admin.contact-us') ? 'active' : ''); ?>">
                     <a href="#!" class="collapsed" data-bs-toggle="collapse" data-bs-target="#menu-item__pages"><span
                             class="menu-bar__text">
                             <span class="crancy-menu-icon crancy-svg-icon__v1">
@@ -518,45 +518,45 @@
                                 </svg>
 
                             </span>
-                            <span class="menu-bar__name">{{ __('translate.Manage Pages') }}</span></span> <span
+                            <span class="menu-bar__name"><?php echo e(__('translate.Manage Pages')); ?></span></span> <span
                             class="crancy__toggle"></span></a></span>
                     <!-- Dropdown Menu -->
-                    <div class="collapse crancy__dropdown {{ Route::is('admin.terms-conditions') || Route::is('admin.privacy-policy') || Route::is('admin.faq.*') || Route::is('admin.custom-page.*') || Route::is('admin.contact-us') ? 'show' : '' }}"
+                    <div class="collapse crancy__dropdown <?php echo e(Route::is('admin.terms-conditions') || Route::is('admin.privacy-policy') || Route::is('admin.faq.*') || Route::is('admin.custom-page.*') || Route::is('admin.contact-us') ? 'show' : ''); ?>"
                         id="menu-item__pages" data-bs-parent="#CrancyMenu">
                         <ul class="menu-bar__one-dropdown">
 
 
-                            <li><a href="{{ route('admin.contact-us', ['lang_code' => admin_lang()]) }}"><span
+                            <li><a href="<?php echo e(route('admin.contact-us', ['lang_code' => admin_lang()])); ?>"><span
                                         class="menu-bar__text"><span
-                                            class="menu-bar__name">{{ __('translate.Contact Us') }}</span></span></a>
+                                            class="menu-bar__name"><?php echo e(__('translate.Contact Us')); ?></span></span></a>
                             </li>
 
-                            <li><a href="{{ route('admin.terms-conditions', ['lang_code' => admin_lang()]) }}"><span
+                            <li><a href="<?php echo e(route('admin.terms-conditions', ['lang_code' => admin_lang()])); ?>"><span
                                         class="menu-bar__text"><span
-                                            class="menu-bar__name">{{ __('translate.Terms and Conditions') }}</span></span></a>
+                                            class="menu-bar__name"><?php echo e(__('translate.Terms and Conditions')); ?></span></span></a>
                             </li>
 
-                            <li><a href="{{ route('admin.privacy-policy', ['lang_code' => admin_lang()]) }}"><span
+                            <li><a href="<?php echo e(route('admin.privacy-policy', ['lang_code' => admin_lang()])); ?>"><span
                                         class="menu-bar__text"><span
-                                            class="menu-bar__name">{{ __('translate.Privacy Policy') }}</span></span></a>
+                                            class="menu-bar__name"><?php echo e(__('translate.Privacy Policy')); ?></span></span></a>
                             </li>
 
-                            <li><a href="{{ route('admin.faq.index') }}"><span class="menu-bar__text"><span
-                                            class="menu-bar__name">{{ __('translate.FAQ') }}</span></span></a></li>
+                            <li><a href="<?php echo e(route('admin.faq.index')); ?>"><span class="menu-bar__text"><span
+                                            class="menu-bar__name"><?php echo e(__('translate.FAQ')); ?></span></span></a></li>
 
 
-                            <li><a href="{{ route('admin.custom-page.index') }}"><span class="menu-bar__text"><span
-                                            class="menu-bar__name">{{ __('translate.Custom Page') }}</span></span></a>
+                            <li><a href="<?php echo e(route('admin.custom-page.index')); ?>"><span class="menu-bar__text"><span
+                                            class="menu-bar__name"><?php echo e(__('translate.Custom Page')); ?></span></span></a>
                             </li>
 
                         </ul>
                     </div>
                 </li>
-            @endif
+            <?php endif; ?>
 
-            @if(\App\Models\MenuVisibilitySetting::isMenuEnabled('manage_content'))
+            <?php if(\App\Models\MenuVisibilitySetting::isMenuEnabled('manage_content')): ?>
                 <li
-                    class="{{ Route::is('admin.front-end.frontend-section') || Route::is('admin.front-end.section') || Route::is('admin.testimonial.*') || Route::is('admin.partner.*') || Route::is('admin.footer') ? 'active' : '' }}">
+                    class="<?php echo e(Route::is('admin.front-end.frontend-section') || Route::is('admin.front-end.section') || Route::is('admin.testimonial.*') || Route::is('admin.partner.*') || Route::is('admin.footer') ? 'active' : ''); ?>">
                     <a href="#!" class="collapsed" data-bs-toggle="collapse" data-bs-target="#menu-item__for_section"><span
                             class="menu-bar__text">
                             <span class="crancy-menu-icon crancy-svg-icon__v1">
@@ -578,44 +578,44 @@
 
 
                             </span>
-                            <span class="menu-bar__name">{{ __('translate.Manage Content') }}</span></span> <span
+                            <span class="menu-bar__name"><?php echo e(__('translate.Manage Content')); ?></span></span> <span
                             class="crancy__toggle"></span></a></span>
                     <!-- Dropdown Menu -->
-                    <div class="collapse crancy__dropdown {{ Route::is('admin.front-end.frontend-section') || Route::is('admin.front-end.section') || Route::is('admin.testimonial.*') || Route::is('admin.partner.*') || Route::is('admin.footer') ? 'show' : '' }}"
+                    <div class="collapse crancy__dropdown <?php echo e(Route::is('admin.front-end.frontend-section') || Route::is('admin.front-end.section') || Route::is('admin.testimonial.*') || Route::is('admin.partner.*') || Route::is('admin.footer') ? 'show' : ''); ?>"
                         id="menu-item__for_section" data-bs-parent="#CrancyMenu">
                         <ul class="menu-bar__one-dropdown">
 
 
-                            <li><a href="{{ route('admin.front-end.frontend-section') }}"><span class="menu-bar__text"><span
-                                            class="menu-bar__name">{{ __('translate.Frontend Section') }}</span></span></a>
+                            <li><a href="<?php echo e(route('admin.front-end.frontend-section')); ?>"><span class="menu-bar__text"><span
+                                            class="menu-bar__name"><?php echo e(__('translate.Frontend Section')); ?></span></span></a>
                             </li>
 
 
-                            <li><a href="{{ route('admin.footer', ['lang_code' => admin_lang()]) }}"><span
+                            <li><a href="<?php echo e(route('admin.footer', ['lang_code' => admin_lang()])); ?>"><span
                                         class="menu-bar__text"><span
-                                            class="menu-bar__name">{{ __('translate.Footer Info') }}</span></span></a>
+                                            class="menu-bar__name"><?php echo e(__('translate.Footer Info')); ?></span></span></a>
                             </li>
 
 
-                            <li><a href="{{ route('admin.testimonial.index') }}"><span class="menu-bar__text"><span
-                                            class="menu-bar__name">{{ __('translate.Testimonial') }}</span></span></a>
+                            <li><a href="<?php echo e(route('admin.testimonial.index')); ?>"><span class="menu-bar__text"><span
+                                            class="menu-bar__name"><?php echo e(__('translate.Testimonial')); ?></span></span></a>
                             </li>
 
-                            <li><a href="{{ route('admin.partner.index') }}"><span class="menu-bar__text"><span
-                                            class="menu-bar__name">{{ __('translate.Partner') }}</span></span></a></li>
+                            <li><a href="<?php echo e(route('admin.partner.index')); ?>"><span class="menu-bar__text"><span
+                                            class="menu-bar__name"><?php echo e(__('translate.Partner')); ?></span></span></a></li>
 
                         </ul>
                     </div>
                 </li>
-            @endif
+            <?php endif; ?>
 
 
-            <h4 class="admin-menu__title pt-4">{{ __('translate.Setting & Configuration') }}</h4>
+            <h4 class="admin-menu__title pt-4"><?php echo e(__('translate.Setting & Configuration')); ?></h4>
 
 
-            @if(\App\Models\MenuVisibilitySetting::isMenuEnabled('general_setting'))
-                <li class="{{ Route::is('admin.general-setting') ? 'active' : '' }}"><a class="collapsed"
-                        href="{{ route('admin.general-setting') }}"><span class="menu-bar__text">
+            <?php if(\App\Models\MenuVisibilitySetting::isMenuEnabled('general_setting')): ?>
+                <li class="<?php echo e(Route::is('admin.general-setting') ? 'active' : ''); ?>"><a class="collapsed"
+                        href="<?php echo e(route('admin.general-setting')); ?>"><span class="menu-bar__text">
                             <span class="crancy-menu-icon crancy-svg-icon__v1">
                                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
                                     xmlns="http://www.w3.org/2000/svg">
@@ -626,13 +626,13 @@
                                 </svg>
 
                             </span>
-                            <span class="menu-bar__name">{{ __('translate.Setting') }}</span></span></a>
+                            <span class="menu-bar__name"><?php echo e(__('translate.Setting')); ?></span></span></a>
                 </li>
-            @endif
+            <?php endif; ?>
 
-            @if(\App\Models\MenuVisibilitySetting::isMenuEnabled('multi_currency'))
-                <li class="{{ Route::is('admin.multi-currency.*') ? 'active' : '' }}"><a class="collapsed"
-                        href="{{ route('admin.multi-currency.index') }}">
+            <?php if(\App\Models\MenuVisibilitySetting::isMenuEnabled('multi_currency')): ?>
+                <li class="<?php echo e(Route::is('admin.multi-currency.*') ? 'active' : ''); ?>"><a class="collapsed"
+                        href="<?php echo e(route('admin.multi-currency.index')); ?>">
                         <span class="menu-bar__text">
                             <span class="crancy-menu-icon crancy-svg-icon__v1">
                                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
@@ -643,15 +643,15 @@
                                 </svg>
 
                             </span>
-                            <span class="menu-bar__name">{{ __('translate.Multi Currency') }}</span>
+                            <span class="menu-bar__name"><?php echo e(__('translate.Multi Currency')); ?></span>
                         </span>
 
                     </a>
                 </li>
-            @endif
+            <?php endif; ?>
 
-            @if(\App\Models\MenuVisibilitySetting::isMenuEnabled('language'))
-                <li class="{{ Route::is('admin.language.*') || Route::is('admin.theme-language') ? 'active' : '' }}"><a
+            <?php if(\App\Models\MenuVisibilitySetting::isMenuEnabled('language')): ?>
+                <li class="<?php echo e(Route::is('admin.language.*') || Route::is('admin.theme-language') ? 'active' : ''); ?>"><a
                         href="#!" class="collapsed" data-bs-toggle="collapse" data-bs-target="#menu-item__languages"><span
                             class="menu-bar__text">
                             <span class="crancy-menu-icon crancy-svg-icon__v1">
@@ -669,30 +669,30 @@
                                 </svg>
 
                             </span>
-                            <span class="menu-bar__name">{{ __('translate.Language') }}</span></span> <span
+                            <span class="menu-bar__name"><?php echo e(__('translate.Language')); ?></span></span> <span
                             class="crancy__toggle"></span></a></span>
                     <!-- Dropdown Menu -->
-                    <div class="collapse crancy__dropdown {{ Route::is('admin.language.*') || Route::is('admin.theme-language') ? 'show' : '' }}"
+                    <div class="collapse crancy__dropdown <?php echo e(Route::is('admin.language.*') || Route::is('admin.theme-language') ? 'show' : ''); ?>"
                         id="menu-item__languages" data-bs-parent="#CrancyMenu">
                         <ul class="menu-bar__one-dropdown">
 
-                            <li><a href="{{ route('admin.language.index') }}"><span class="menu-bar__text"><span
-                                            class="menu-bar__name">{{ __('translate.Languages') }}</span></span></a></li>
+                            <li><a href="<?php echo e(route('admin.language.index')); ?>"><span class="menu-bar__text"><span
+                                            class="menu-bar__name"><?php echo e(__('translate.Languages')); ?></span></span></a></li>
 
-                            <li><a href="{{ route('admin.theme-language', ['lang_code' => 'en']) }}"><span
+                            <li><a href="<?php echo e(route('admin.theme-language', ['lang_code' => 'en'])); ?>"><span
                                         class="menu-bar__text"><span
-                                            class="menu-bar__name">{{ __('translate.Theme Languages') }}</span></span></a>
+                                            class="menu-bar__name"><?php echo e(__('translate.Theme Languages')); ?></span></span></a>
                             </li>
 
                         </ul>
                     </div>
                 </li>
-            @endif
+            <?php endif; ?>
 
 
-            @if(\App\Models\MenuVisibilitySetting::isMenuEnabled('email_configuration'))
+            <?php if(\App\Models\MenuVisibilitySetting::isMenuEnabled('email_configuration')): ?>
             <li
-                class="{{ Route::is('admin.email-setting') || Route::is('admin.email-template') || Route::is('admin.edit-email-template') ? 'active' : '' }}">
+                class="<?php echo e(Route::is('admin.email-setting') || Route::is('admin.email-template') || Route::is('admin.edit-email-template') ? 'active' : ''); ?>">
                 <a href="#!" class="collapsed" data-bs-toggle="collapse"
                     data-bs-target="#menu-item__apps_email_config"><span class="menu-bar__text">
                         <span class="crancy-menu-icon crancy-svg-icon__v1">
@@ -704,31 +704,31 @@
                             </svg>
 
                         </span>
-                        <span class="menu-bar__name">{{ __('translate.Email Configuration') }}</span></span> <span
+                        <span class="menu-bar__name"><?php echo e(__('translate.Email Configuration')); ?></span></span> <span
                         class="crancy__toggle"></span></a></span>
                 <!-- Dropdown Menu -->
-                <div class="collapse crancy__dropdown {{ Route::is('admin.email-setting') || Route::is('admin.email-template') || Route::is('admin.edit-email-template') ? 'show' : '' }}"
+                <div class="collapse crancy__dropdown <?php echo e(Route::is('admin.email-setting') || Route::is('admin.email-template') || Route::is('admin.edit-email-template') ? 'show' : ''); ?>"
                     id="menu-item__apps_email_config" data-bs-parent="#CrancyMenu">
                     <ul class="menu-bar__one-dropdown">
 
-                        <li><a href="{{ route('admin.email-setting') }}"><span class="menu-bar__text"><span
-                                        class="menu-bar__name">{{ __('translate.Configuration') }}</span></span></a>
+                        <li><a href="<?php echo e(route('admin.email-setting')); ?>"><span class="menu-bar__text"><span
+                                        class="menu-bar__name"><?php echo e(__('translate.Configuration')); ?></span></span></a>
                         </li>
 
-                        <li><a href="{{ route('admin.email-template') }}"><span class="menu-bar__text"><span
-                                        class="menu-bar__name">{{ __('translate.Email Template') }}</span></span></a>
+                        <li><a href="<?php echo e(route('admin.email-template')); ?>"><span class="menu-bar__text"><span
+                                        class="menu-bar__name"><?php echo e(__('translate.Email Template')); ?></span></span></a>
                         </li>
 
 
                     </ul>
                 </div>
             </li>
-            @endif
+            <?php endif; ?>
 
 
-            @if(\App\Models\MenuVisibilitySetting::isMenuEnabled('website_setup'))
+            <?php if(\App\Models\MenuVisibilitySetting::isMenuEnabled('website_setup')): ?>
             <li
-                class="{{ Route::is('admin.cookie-consent') || Route::is('admin.error-image') || Route::is('admin.login-image') || Route::is('admin.breadcrumb') || Route::is('admin.social-login') || Route::is('admin.default-avatar') || Route::is('admin.maintenance-mode') || Route::is('admin.admin-login-image') ? 'active' : '' }}">
+                class="<?php echo e(Route::is('admin.cookie-consent') || Route::is('admin.error-image') || Route::is('admin.login-image') || Route::is('admin.breadcrumb') || Route::is('admin.social-login') || Route::is('admin.default-avatar') || Route::is('admin.maintenance-mode') || Route::is('admin.admin-login-image') ? 'active' : ''); ?>">
                 <a href="#!" class="collapsed" data-bs-toggle="collapse" data-bs-target="#menu-item__apps"><span
                         class="menu-bar__text">
                         <span class="crancy-menu-icon crancy-svg-icon__v1">
@@ -742,53 +742,53 @@
                             </svg>
 
                         </span>
-                        <span class="menu-bar__name">{{ __('translate.Website Setup') }}</span></span> <span
+                        <span class="menu-bar__name"><?php echo e(__('translate.Website Setup')); ?></span></span> <span
                         class="crancy__toggle"></span></a></span>
                 <!-- Dropdown Menu -->
-                <div class="collapse crancy__dropdown {{ Route::is('admin.cookie-consent') || Route::is('admin.error-image') || Route::is('admin.login-image') || Route::is('admin.breadcrumb') || Route::is('admin.social-login') || Route::is('admin.default-avatar') || Route::is('admin.maintenance-mode') || Route::is('admin.admin-login-image') ? 'show' : '' }}"
+                <div class="collapse crancy__dropdown <?php echo e(Route::is('admin.cookie-consent') || Route::is('admin.error-image') || Route::is('admin.login-image') || Route::is('admin.breadcrumb') || Route::is('admin.social-login') || Route::is('admin.default-avatar') || Route::is('admin.maintenance-mode') || Route::is('admin.admin-login-image') ? 'show' : ''); ?>"
                     id="menu-item__apps" data-bs-parent="#CrancyMenu">
                     <ul class="menu-bar__one-dropdown">
-                        <li><a href="{{ route('admin.cookie-consent') }}"><span class="menu-bar__text"><span
-                                        class="menu-bar__name">{{ __('translate.Cookie Consent') }}</span></span></a>
+                        <li><a href="<?php echo e(route('admin.cookie-consent')); ?>"><span class="menu-bar__text"><span
+                                        class="menu-bar__name"><?php echo e(__('translate.Cookie Consent')); ?></span></span></a>
                         </li>
 
-                        <li><a href="{{ route('admin.error-image') }}"><span class="menu-bar__text"><span
-                                        class="menu-bar__name">{{ __('translate.Error Page') }}</span></span></a>
+                        <li><a href="<?php echo e(route('admin.error-image')); ?>"><span class="menu-bar__text"><span
+                                        class="menu-bar__name"><?php echo e(__('translate.Error Page')); ?></span></span></a>
                         </li>
 
-                        <li><a href="{{ route('admin.login-image') }}"><span class="menu-bar__text"><span
-                                        class="menu-bar__name">{{ __('translate.Login Page') }}</span></span></a>
+                        <li><a href="<?php echo e(route('admin.login-image')); ?>"><span class="menu-bar__text"><span
+                                        class="menu-bar__name"><?php echo e(__('translate.Login Page')); ?></span></span></a>
                         </li>
 
-                        <li><a href="{{ route('admin.admin-login-image') }}"><span class="menu-bar__text"><span
-                                        class="menu-bar__name">{{ __('translate.Admin Login') }}</span></span></a>
+                        <li><a href="<?php echo e(route('admin.admin-login-image')); ?>"><span class="menu-bar__text"><span
+                                        class="menu-bar__name"><?php echo e(__('translate.Admin Login')); ?></span></span></a>
                         </li>
 
-                        <li><a href="{{ route('admin.breadcrumb') }}"><span class="menu-bar__text"><span
-                                        class="menu-bar__name">{{ __('translate.Breadcrumb Image') }}</span></span></a>
+                        <li><a href="<?php echo e(route('admin.breadcrumb')); ?>"><span class="menu-bar__text"><span
+                                        class="menu-bar__name"><?php echo e(__('translate.Breadcrumb Image')); ?></span></span></a>
                         </li>
 
-                        <li><a href="{{ route('admin.social-login') }}"><span class="menu-bar__text"><span
-                                        class="menu-bar__name">{{ __('translate.Social Login') }}</span></span></a>
+                        <li><a href="<?php echo e(route('admin.social-login')); ?>"><span class="menu-bar__text"><span
+                                        class="menu-bar__name"><?php echo e(__('translate.Social Login')); ?></span></span></a>
                         </li>
 
 
-                        <li><a href="{{ route('admin.default-avatar') }}"><span class="menu-bar__text"><span
-                                        class="menu-bar__name">{{ __('translate.Default Avatar') }}</span></span></a>
+                        <li><a href="<?php echo e(route('admin.default-avatar')); ?>"><span class="menu-bar__text"><span
+                                        class="menu-bar__name"><?php echo e(__('translate.Default Avatar')); ?></span></span></a>
                         </li>
 
-                        <li><a href="{{ route('admin.maintenance-mode') }}"><span class="menu-bar__text"><span
-                                        class="menu-bar__name">{{ __('translate.Maintenance mode') }}</span></span></a>
+                        <li><a href="<?php echo e(route('admin.maintenance-mode')); ?>"><span class="menu-bar__text"><span
+                                        class="menu-bar__name"><?php echo e(__('translate.Maintenance mode')); ?></span></span></a>
                         </li>
 
                     </ul>
                 </div>
             </li>
-            @endif
+            <?php endif; ?>
 
-            @if(\App\Models\MenuVisibilitySetting::isMenuEnabled('seo_setup'))
-            <li class="{{ Route::is('admin.seo-setting') ? 'active' : '' }}"><a class="collapsed"
-                    href="{{ route('admin.seo-setting') }}"><span class="menu-bar__text">
+            <?php if(\App\Models\MenuVisibilitySetting::isMenuEnabled('seo_setup')): ?>
+            <li class="<?php echo e(Route::is('admin.seo-setting') ? 'active' : ''); ?>"><a class="collapsed"
+                    href="<?php echo e(route('admin.seo-setting')); ?>"><span class="menu-bar__text">
                         <span class="crancy-menu-icon crancy-svg-icon__v1">
                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
                                 xmlns="http://www.w3.org/2000/svg">
@@ -798,13 +798,13 @@
                             </svg>
 
                         </span>
-                        <span class="menu-bar__name">{{ __('translate.SEO Setup') }}</span></span></a>
+                        <span class="menu-bar__name"><?php echo e(__('translate.SEO Setup')); ?></span></span></a>
             </li>
-            @endif
+            <?php endif; ?>
 
-            @if(\App\Models\MenuVisibilitySetting::isMenuEnabled('payment_method'))
-            <li class="{{ Route::is('admin.paymentgateway') ? 'active' : '' }}"><a class="collapsed"
-                    href="{{ route('admin.paymentgateway') }}"><span class="menu-bar__text">
+            <?php if(\App\Models\MenuVisibilitySetting::isMenuEnabled('payment_method')): ?>
+            <li class="<?php echo e(Route::is('admin.paymentgateway') ? 'active' : ''); ?>"><a class="collapsed"
+                    href="<?php echo e(route('admin.paymentgateway')); ?>"><span class="menu-bar__text">
                         <span class="crancy-menu-icon crancy-svg-icon__v1">
                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
                                 xmlns="http://www.w3.org/2000/svg">
@@ -822,13 +822,13 @@
                             </svg>
 
                         </span>
-                        <span class="menu-bar__name">{{ __('translate.Payment Method') }}</span></span></a>
+                        <span class="menu-bar__name"><?php echo e(__('translate.Payment Method')); ?></span></span></a>
             </li>
-            @endif
+            <?php endif; ?>
 
-            @if(\App\Models\MenuVisibilitySetting::isMenuEnabled('theme_management'))
-            <li class="{{ Route::is('admin.themes.*') ? 'active' : '' }}"><a class="collapsed"
-                    href="{{ route('admin.themes.index') }}">
+            <?php if(\App\Models\MenuVisibilitySetting::isMenuEnabled('theme_management')): ?>
+            <li class="<?php echo e(Route::is('admin.themes.*') ? 'active' : ''); ?>"><a class="collapsed"
+                    href="<?php echo e(route('admin.themes.index')); ?>">
                     <span class="menu-bar__text">
                         <span class="crancy-menu-icon crancy-svg-icon__v1">
                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
@@ -841,15 +841,15 @@
                                     stroke-linecap="round" stroke-linejoin="round" />
                             </svg>
                         </span>
-                        <span class="menu-bar__name">{{ __('translate.Theme Management') }}</span>
+                        <span class="menu-bar__name"><?php echo e(__('translate.Theme Management')); ?></span>
                     </span>
                 </a>
             </li>
-            @endif
+            <?php endif; ?>
 
-            @if(\App\Models\MenuVisibilitySetting::isMenuEnabled('menu_management'))
-            <li class="{{ Route::is('admin.menus.*') ? 'active' : '' }}"><a class="collapsed"
-                    href="{{ route('admin.menus.index') }}">
+            <?php if(\App\Models\MenuVisibilitySetting::isMenuEnabled('menu_management')): ?>
+            <li class="<?php echo e(Route::is('admin.menus.*') ? 'active' : ''); ?>"><a class="collapsed"
+                    href="<?php echo e(route('admin.menus.index')); ?>">
                     <span class="menu-bar__text">
                         <span class="crancy-menu-icon crancy-svg-icon__v1">
                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
@@ -862,11 +862,11 @@
                                     stroke-linecap="round" stroke-linejoin="round" />
                             </svg>
                         </span>
-                        <span class="menu-bar__name">{{ __('translate.Menu Management') }}</span>
+                        <span class="menu-bar__name"><?php echo e(__('translate.Menu Management')); ?></span>
                     </span>
                 </a>
             </li>
-            @endif
+            <?php endif; ?>
 
         </ul>
     </div>
@@ -875,12 +875,12 @@
 
 
 <div class="crancy-sidebar-padding pd-btm-40 pb-btm2">
-    <h4 class="admin-menu__title">{{ __('translate.Others') }}</h4>
+    <h4 class="admin-menu__title"><?php echo e(__('translate.Others')); ?></h4>
     <!-- Nav Menu -->
     <div class="menu-bar">
         <ul class="menu-bar__one crancy-dashboard-menu" id="CrancyMenu">
-            @if(\App\Models\MenuVisibilitySetting::isMenuEnabled('newsletter'))
-            <li class="{{ Route::is('admin.newsletter-list') || Route::is('admin.newsletter-email') ? 'active' : '' }}">
+            <?php if(\App\Models\MenuVisibilitySetting::isMenuEnabled('newsletter')): ?>
+            <li class="<?php echo e(Route::is('admin.newsletter-list') || Route::is('admin.newsletter-email') ? 'active' : ''); ?>">
                 <a href="#!" class="collapsed" data-bs-toggle="collapse"
                     data-bs-target="#menu-item__apps_newsletter"><span class="menu-bar__text">
                         <span class="crancy-menu-icon crancy-svg-icon__v1">
@@ -893,27 +893,27 @@
                             </svg>
 
                         </span>
-                        <span class="menu-bar__name">{{ __('translate.Newsletter') }}</span></span> <span
+                        <span class="menu-bar__name"><?php echo e(__('translate.Newsletter')); ?></span></span> <span
                         class="crancy__toggle"></span></a></span>
                 <!-- Dropdown Menu -->
-                <div class="collapse crancy__dropdown {{ Route::is('admin.newsletter-list') || Route::is('admin.newsletter-email') ? 'show' : '' }}"
+                <div class="collapse crancy__dropdown <?php echo e(Route::is('admin.newsletter-list') || Route::is('admin.newsletter-email') ? 'show' : ''); ?>"
                     id="menu-item__apps_newsletter" data-bs-parent="#CrancyMenu">
                     <ul class="menu-bar__one-dropdown">
 
-                        <li><a href="{{ route('admin.newsletter-list') }}"><span class="menu-bar__text"><span
-                                        class="menu-bar__name">{{ __('translate.Subscriber List') }}</span></span></a>
+                        <li><a href="<?php echo e(route('admin.newsletter-list')); ?>"><span class="menu-bar__text"><span
+                                        class="menu-bar__name"><?php echo e(__('translate.Subscriber List')); ?></span></span></a>
                         </li>
 
-                        <li><a href="{{ route('admin.newsletter-email') }}"><span class="menu-bar__text"><span
-                                        class="menu-bar__name">{{ __('translate.Send Mail') }}</span></span></a></li>
+                        <li><a href="<?php echo e(route('admin.newsletter-email')); ?>"><span class="menu-bar__text"><span
+                                        class="menu-bar__name"><?php echo e(__('translate.Send Mail')); ?></span></span></a></li>
 
                     </ul>
                 </div>
             </li>
-            @endif
+            <?php endif; ?>
 
-            @if(\App\Models\MenuVisibilitySetting::isMenuEnabled('cache_clear'))
-            <li><a class="collapsed" href="{{ route('admin.cache-clear') }}"><span class="menu-bar__text">
+            <?php if(\App\Models\MenuVisibilitySetting::isMenuEnabled('cache_clear')): ?>
+            <li><a class="collapsed" href="<?php echo e(route('admin.cache-clear')); ?>"><span class="menu-bar__text">
                         <span class="crancy-menu-icon crancy-svg-icon__v1">
                             <svg width="20" height="20" viewBox="0 0 20 20" fill="none"
                                 xmlns="http://www.w3.org/2000/svg">
@@ -925,12 +925,12 @@
 
 
                         </span>
-                        <span class="menu-bar__name">{{ __('translate.Cache Clear') }}</span></span></a>
+                        <span class="menu-bar__name"><?php echo e(__('translate.Cache Clear')); ?></span></span></a>
             </li>
-            @endif
+            <?php endif; ?>
 
-            <li class="{{ Route::is('admin.development.*') ? 'active' : '' }}"><a class="collapsed"
-                    href="{{ route('admin.development.login') }}"><span class="menu-bar__text">
+            <li class="<?php echo e(Route::is('admin.development.*') ? 'active' : ''); ?>"><a class="collapsed"
+                    href="<?php echo e(route('admin.development.login')); ?>"><span class="menu-bar__text">
                         <span class="crancy-menu-icon crancy-svg-icon__v1">
                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
                                 xmlns="http://www.w3.org/2000/svg">
@@ -942,7 +942,7 @@
                                     stroke-linecap="round" />
                             </svg>
                         </span>
-                        <span class="menu-bar__name">{{ __('translate.Development') }}</span></span></a>
+                        <span class="menu-bar__name"><?php echo e(__('translate.Development')); ?></span></span></a>
             </li>
 
             <li><a href="javascript:;" onclick="event.preventDefault();
@@ -959,17 +959,17 @@
                                     stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
                             </svg>
                         </span>
-                        <span class="menu-bar__name">{{ __('translate.Logout') }}</span></span></a>
+                        <span class="menu-bar__name"><?php echo e(__('translate.Logout')); ?></span></span></a>
             </li>
 
-            <form id="admin-sidebar-logout" action="{{ route('admin.logout') }}" method="POST" class="d-none">
-                @csrf
+            <form id="admin-sidebar-logout" action="<?php echo e(route('admin.logout')); ?>" method="POST" class="d-none">
+                <?php echo csrf_field(); ?>
             </form>
 
         </ul>
     </div>
     <!-- End Nav Menu -->
     <!-- Support Card -->
-    <p class=" crancy-ybcolor mg-top-20">{{ __('translate.Version') }} : {{ $general_setting->app_version }}</p>
+    <p class=" crancy-ybcolor mg-top-20"><?php echo e(__('translate.Version')); ?> : <?php echo e($general_setting->app_version); ?></p>
     <!-- End Support Card -->
-</div>
+</div><?php /**PATH D:\xampp\htdocs\archive\archive\resources\views/admin/sidebar.blade.php ENDPATH**/ ?>
