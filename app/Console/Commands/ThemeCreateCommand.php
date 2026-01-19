@@ -35,41 +35,41 @@ class ThemeCreateCommand extends Command
         $name = $this->argument('name');
         $author = $this->option('author') ?: 'Anonymous';
         $description = $this->option('description') ?: 'A new theme for Tourex';
-        
+
         $themePath = base_path('cms/themes/' . $name);
-        
+
         // Check if the theme already exists
         if (File::exists($themePath)) {
             $this->error("Theme '{$name}' already exists!");
             return 1;
         }
-        
+
         // Create theme directory structure
         $this->createDirectories($themePath);
-        
+
         // Create theme.json file
         $this->createThemeJson($themePath, $name, $author, $description);
-        
+
         // Create config.php file
         $this->createConfigFile($themePath);
-        
+
         // Create sample views
         $this->createViews($themePath);
-        
+
         // Create functions file
         $this->createFunctionsFile($themePath);
-        
+
         // Create a basic vite.config.js
         $this->createViteConfig($themePath);
-        
+
         // Create basic assets
         $this->createBasicAssets($themePath);
-        
+
         $this->info("Theme '{$name}' created successfully!");
-        
+
         return 0;
     }
-    
+
     /**
      * Create the directory structure for the theme.
      *
@@ -97,13 +97,13 @@ class ThemeCreateCommand extends Command
             $themePath . '/src',
             $themePath . '/views',
         ];
-        
+
         foreach ($directories as $directory) {
             File::makeDirectory($directory, 0755, true);
             $this->info("Created directory: {$directory}");
         }
     }
-    
+
     /**
      * Create the theme.json file.
      *
@@ -125,21 +125,21 @@ class ThemeCreateCommand extends Command
             'description' => $description,
             'required_plugins' => []
         ];
-        
+
         File::put(
             $themePath . '/theme.json',
             json_encode($themeJson, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES)
         );
-        
+
         // Also create a placeholder screenshot
         File::copy(
             public_path('backend/img/placeholder-image.jpg'),
             $themePath . '/screenshot.png'
         );
-        
+
         $this->info("Created theme.json file");
     }
-    
+
     /**
      * Create the config.php file.
      *
@@ -167,11 +167,11 @@ return [
     ],
 ];
 EOT;
-        
+
         File::put($themePath . '/config.php', $configContent);
         $this->info("Created config.php file");
     }
-    
+
     /**
      * Create sample views.
      *
@@ -210,9 +210,9 @@ EOT;
 </body>
 </html>
 EOT;
-        
+
         File::put($themePath . '/views/layouts/app.blade.php', $layoutContent);
-        
+
         // Create index view
         $indexContent = <<<'EOT'
 @extends('theme::layouts.app')
@@ -245,9 +245,9 @@ EOT;
 </div>
 @endsection
 EOT;
-        
+
         File::put($themePath . '/views/index.blade.php', $indexContent);
-        
+
         // Create header partial
         $headerContent = <<<'EOT'
 <!-- Header -->
@@ -257,7 +257,7 @@ EOT;
             <div class="col-md-3">
                 <div class="logo">
                     <a href="/">
-                        <img src="{{ asset('themes/' . theme()->current() . '/public/images/logo.png') }}" alt="Tourex Logo">
+                        <img src="{{ asset('themes/' . theme()->current() . '/public/images/logo.png') }}" alt="Tour your WorldLogo">
                     </a>
                 </div>
             </div>
@@ -275,12 +275,12 @@ EOT;
     </div>
 </header>
 EOT;
-        
+
         // Create directory if it doesn't exist
         File::makeDirectory($themePath . '/views/partials', 0755, true, true);
-        
+
         File::put($themePath . '/views/partials/header.blade.php', $headerContent);
-        
+
         // Create footer partial
         $footerContent = <<<'EOT'
 <!-- Footer -->
@@ -289,7 +289,7 @@ EOT;
         <div class="row">
             <div class="col-md-4">
                 <h3>About Us</h3>
-                <p>Tourex is your premier tour experience provider.</p>
+                <p>Tour your Worldis your premier tour experience provider.</p>
             </div>
             <div class="col-md-4">
                 <h3>Quick Links</h3>
@@ -316,12 +316,12 @@ EOT;
     </div>
 </footer>
 EOT;
-        
+
         File::put($themePath . '/views/partials/footer.blade.php', $footerContent);
-        
+
         $this->info("Created views");
     }
-    
+
     /**
      * Create functions file.
      *
@@ -355,11 +355,11 @@ function theme_custom_function()
     return 'This is a custom function from the theme.';
 }
 EOT;
-        
+
         File::put($themePath . '/functions/functions.php', $functionsContent);
         $this->info("Created functions file");
     }
-    
+
     /**
      * Create vite config.
      *
@@ -389,11 +389,11 @@ export default defineConfig({
 EOT;
 
         $viteConfigContent = str_replace('themeName', $this->argument('name'), $viteConfigContent);
-        
+
         File::put($themePath . '/vite.config.js', $viteConfigContent);
         $this->info("Created vite.config.js file");
     }
-    
+
     /**
      * Create basic assets.
      *
@@ -484,9 +484,9 @@ body {
     text-align: center;
 }
 EOT;
-        
+
         File::put($themePath . '/assets/css/theme.css', $cssContent);
-        
+
         // Create JS file
         $jsContent = <<<'EOT'
 /**
@@ -506,9 +506,9 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 EOT;
-        
+
         File::put($themePath . '/assets/js/theme.js', $jsContent);
-        
+
         $this->info("Created basic assets");
     }
-} 
+}

@@ -46,7 +46,7 @@ return [
 
     // Footer
     'footer_about_title' => 'About TourEx',
-    'footer_about_text' => 'TourEx is your premier tour experience platform, offering high-quality courses and expert guidance.',
+    'footer_about_text' => 'Tour your Worldis your premier tour experience platform, offering high-quality courses and expert guidance.',
     'footer_links_title' => 'Quick Links',
     'footer_contact_title' => 'Contact Us',
     'footer_copyright' => 'All rights reserved.',

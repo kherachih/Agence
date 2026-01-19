@@ -70,7 +70,7 @@ class Theme1Service
         return [
             'about' => [
                 'title' => 'About TourEx',
-                'content' => 'TourEx is your premier tour experience platform, offering high-quality courses and expert guidance.'
+                'content' => 'Tour your Worldis your premier tour experience platform, offering high-quality courses and expert guidance.'
             ],
             'quick_links' => [
                 'title' => 'Quick Links',
@@ -101,4 +101,4 @@ class Theme1Service
             ];
         });
     }
-} 
+}

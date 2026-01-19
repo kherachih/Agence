@@ -42,11 +42,11 @@ return [
     'themes' => [
         'theme1' => [
             'name' => 'Theme One',
-            'description' => 'The default light theme for TourEx platform',
+            'description' => 'The default light theme for Tour your Worldplatform',
         ],
         'theme2' => [
             'name' => 'Theme Two',
-            'description' => 'The dark theme for TourEx platform',
+            'description' => 'The dark theme for Tour your Worldplatform',
         ],
     ],
 
@@ -59,4 +59,4 @@ return [
     |
     */
     'enable_switching' => true,
-]; 
+];

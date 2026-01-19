@@ -69,10 +69,10 @@ class ThemeGenerateCommand extends Command
             'id' => "tourex/{$name}",
             'name' => Str::title($name),
             'namespace' => 'Theme\\' . Str::studly($name) . '\\',
-            'author' => 'TourEx Developer',
+            'author' => 'Tour your WorldDeveloper',
             'url' => null,
             'version' => '1.0.0',
-            'description' => "The {$name} theme for TourEx platform",
+            'description' => "The {$name} theme for Tour your Worldplatform",
             'required_plugins' => []
         ];
 
@@ -287,7 +287,7 @@ JS;
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ $seo_setting->title ?? 'TourEx' }}</title>
-    <meta name="description" content="{{ $seo_setting->description ?? 'TourEx platform' }}">
+    <meta name="description" content="{{ $seo_setting->description ?? 'Tour your Worldplatform' }}">
     <meta name="keywords" content="{{ $seo_setting->keywords ?? 'tourex, theme, travel' }}">
 
     <!-- Favicon -->
@@ -367,7 +367,7 @@ JS;
             <div class="row">
                 <div class="col-md-4">
                     <h4>About TourEx</h4>
-                    <p>TourEx is your premier tour experience platform, offering high-quality courses and expert guidance.</p>
+                    <p>Tour your Worldis your premier tour experience platform, offering high-quality courses and expert guidance.</p>
                 </div>
                 <div class="col-md-4">
                     <h4>Quick Links</h4>
@@ -412,7 +412,7 @@ PHP;
         $themesConfig = include(config_path('themes.php'));
         $themesConfig['themes'][$name] = [
             'name' => Str::title($name),
-            'description' => "The {$name} theme for TourEx platform",
+            'description' => "The {$name} theme for Tour your Worldplatform",
         ];
 
         $configContent = "<?php\n\nreturn " . var_export($themesConfig, true) . ";\n";

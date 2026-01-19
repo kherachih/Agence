@@ -2,10 +2,10 @@
     "id": "tourex/theme4",
     "name": "Theme Four",
     "namespace": "Theme\\Theme4\\",
-    "author": "TourEx Developer",
+    "author": "Tour your WorldDeveloper",
     "url": null,
     "version": "1.0.0",
-    "description": "The default theme for TourEx platform",
+    "description": "The default theme for Tour your Worldplatform",
     "screenshot": "screenshot.png",
     "required_plugins": [],
     "features": [

@@ -1,3 +1,9 @@
+# Disable mod_security to prevent false positives with Laravel admin forms
+# This is necessary because PlanetHoster's WAF blocks legitimate URLs in form data
+<IfModule mod_security.c>
+    SecRuleEngine Off
+</IfModule>
+
 <IfModule mod_rewrite.c>
     <IfModule mod_negotiation.c>
         Options -MultiViews -Indexes

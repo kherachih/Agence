@@ -1049,7 +1049,7 @@ return array(
   'Download Certificate' => 'Download Certificate',
   'Previous' => 'Previous',
   'Next' => 'Next',
-  'Welcome to Tourex Admin Panel' => 'Welcome to Tourex Admin Panel',
+  'Welcome to Tour your WorldAdmin Panel' => 'Welcome to Tour your WorldAdmin Panel',
   'If you are facing unauthorised error, Please' => 'If you are facing unauthorised error, Please',
   'Click here' => 'Click here',
   'Your course has been submited' => 'Your course has been submited',
