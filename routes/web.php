@@ -57,6 +57,9 @@ Route::group(['middleware' => ['HtmlSpecialchars', 'MaintenanceMode']], function
     Route::get('/teams', [HomeController::class, 'teams'])->name('teams');
     Route::get('/team/{slug}', [HomeController::class, 'teamPerson'])->name('teamPerson');
 
+    // Quote Request
+    Route::post('/quote-request', [App\Http\Controllers\Front\QuoteRequestController::class, 'store'])->name('quote-request.store');
+
     Auth::routes();
 
     Route::group(['as' => 'user.', 'prefix' => 'user'], function () {
@@ -206,6 +209,10 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin'], function () {
             Route::post('agency-applications/{id}/reject', 'reject')->name('agency-applications.reject');
             Route::delete('agency-applications/{id}', 'destroy')->name('agency-applications.destroy');
         });
+
+        // Quote Requests Management
+        Route::post('quote-requests/{id}/send', [App\Http\Controllers\Admin\QuoteRequestController::class, 'sendQuote'])->name('quote-requests.send');
+        Route::resource('quote-requests', App\Http\Controllers\Admin\QuoteRequestController::class);
 
         // Theme Management
         Route::controller(App\Http\Controllers\Admin\ThemeController::class)->group(function () {

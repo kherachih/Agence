@@ -29,6 +29,31 @@
 
             @include('tourbooking::admin.sidebar')
 
+            <li class="{{ Route::is('admin.quote-requests.*') ? 'active' : '' }}">
+                <a class="collapsed" href="{{ route('admin.quote-requests.index') }}">
+                    <span class="menu-bar__text">
+                        <span class="crancy-menu-icon crancy-svg-icon__v1">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                    d="M14 2H6C4.89543 2 4 2.89543 4 4V20C4 21.1046 4.89543 22 6 22H18C19.1046 22 20 21.1046 20 20V8L14 2Z"
+                                    stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                                    stroke-linejoin="round" />
+                                <path d="M14 2V8H20" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                                    stroke-linejoin="round" />
+                                <path d="M16 13H8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                                    stroke-linejoin="round" />
+                                <path d="M16 17H8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                                    stroke-linejoin="round" />
+                                <path d="M10 9H8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                                    stroke-linejoin="round" />
+                            </svg>
+                        </span>
+                        <span class="menu-bar__name">{{ __('translate.Quote Requests') }}</span>
+                    </span>
+                </a>
+            </li>
+
             @if(\App\Models\MenuVisibilitySetting::isMenuEnabled('manage_withdraw'))
                 <li
                     class="{{ Route::is('admin.withdraw-methods.*') || Route::is('admin.withdraw-list.*') ? 'active' : '' }}">
@@ -691,181 +716,181 @@
 
 
             @if(\App\Models\MenuVisibilitySetting::isMenuEnabled('email_configuration'))
-            <li
-                class="{{ Route::is('admin.email-setting') || Route::is('admin.email-template') || Route::is('admin.edit-email-template') ? 'active' : '' }}">
-                <a href="#!" class="collapsed" data-bs-toggle="collapse"
-                    data-bs-target="#menu-item__apps_email_config"><span class="menu-bar__text">
-                        <span class="crancy-menu-icon crancy-svg-icon__v1">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                xmlns="http://www.w3.org/2000/svg">
-                                <path
-                                    d="M6 9L9.7812 11.5208C11.1248 12.4165 12.8752 12.4165 14.2188 11.5208L14.7092 11.1939M13.8027 4H6C3.79086 4 2 5.79086 2 8V18C2 20.2091 3.79086 22 6 22H18C20.2091 22 22 20.2091 22 18V12.1973M22 7C22 8.65685 20.6569 10 19 10C17.3431 10 16 8.65685 16 7C16 5.34315 17.3431 4 19 4C20.6569 4 22 5.34315 22 7Z"
-                                    stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
-                            </svg>
+                <li
+                    class="{{ Route::is('admin.email-setting') || Route::is('admin.email-template') || Route::is('admin.edit-email-template') ? 'active' : '' }}">
+                    <a href="#!" class="collapsed" data-bs-toggle="collapse"
+                        data-bs-target="#menu-item__apps_email_config"><span class="menu-bar__text">
+                            <span class="crancy-menu-icon crancy-svg-icon__v1">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path
+                                        d="M6 9L9.7812 11.5208C11.1248 12.4165 12.8752 12.4165 14.2188 11.5208L14.7092 11.1939M13.8027 4H6C3.79086 4 2 5.79086 2 8V18C2 20.2091 3.79086 22 6 22H18C20.2091 22 22 20.2091 22 18V12.1973M22 7C22 8.65685 20.6569 10 19 10C17.3431 10 16 8.65685 16 7C16 5.34315 17.3431 4 19 4C20.6569 4 22 5.34315 22 7Z"
+                                        stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+                                </svg>
 
-                        </span>
-                        <span class="menu-bar__name">{{ __('translate.Email Configuration') }}</span></span> <span
-                        class="crancy__toggle"></span></a></span>
-                <!-- Dropdown Menu -->
-                <div class="collapse crancy__dropdown {{ Route::is('admin.email-setting') || Route::is('admin.email-template') || Route::is('admin.edit-email-template') ? 'show' : '' }}"
-                    id="menu-item__apps_email_config" data-bs-parent="#CrancyMenu">
-                    <ul class="menu-bar__one-dropdown">
+                            </span>
+                            <span class="menu-bar__name">{{ __('translate.Email Configuration') }}</span></span> <span
+                            class="crancy__toggle"></span></a></span>
+                    <!-- Dropdown Menu -->
+                    <div class="collapse crancy__dropdown {{ Route::is('admin.email-setting') || Route::is('admin.email-template') || Route::is('admin.edit-email-template') ? 'show' : '' }}"
+                        id="menu-item__apps_email_config" data-bs-parent="#CrancyMenu">
+                        <ul class="menu-bar__one-dropdown">
 
-                        <li><a href="{{ route('admin.email-setting') }}"><span class="menu-bar__text"><span
-                                        class="menu-bar__name">{{ __('translate.Configuration') }}</span></span></a>
-                        </li>
+                            <li><a href="{{ route('admin.email-setting') }}"><span class="menu-bar__text"><span
+                                            class="menu-bar__name">{{ __('translate.Configuration') }}</span></span></a>
+                            </li>
 
-                        <li><a href="{{ route('admin.email-template') }}"><span class="menu-bar__text"><span
-                                        class="menu-bar__name">{{ __('translate.Email Template') }}</span></span></a>
-                        </li>
+                            <li><a href="{{ route('admin.email-template') }}"><span class="menu-bar__text"><span
+                                            class="menu-bar__name">{{ __('translate.Email Template') }}</span></span></a>
+                            </li>
 
 
-                    </ul>
-                </div>
-            </li>
+                        </ul>
+                    </div>
+                </li>
             @endif
 
 
             @if(\App\Models\MenuVisibilitySetting::isMenuEnabled('website_setup'))
-            <li
-                class="{{ Route::is('admin.cookie-consent') || Route::is('admin.error-image') || Route::is('admin.login-image') || Route::is('admin.breadcrumb') || Route::is('admin.social-login') || Route::is('admin.default-avatar') || Route::is('admin.maintenance-mode') || Route::is('admin.admin-login-image') ? 'active' : '' }}">
-                <a href="#!" class="collapsed" data-bs-toggle="collapse" data-bs-target="#menu-item__apps"><span
-                        class="menu-bar__text">
-                        <span class="crancy-menu-icon crancy-svg-icon__v1">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                xmlns="http://www.w3.org/2000/svg">
-                                <rect x="2" y="2" width="20" height="16" rx="3" stroke="currentColor"
-                                    stroke-width="1.5" />
-                                <path d="M9 22H12M15 22H12M12 22V18" stroke="currentColor" stroke-width="1.5"
-                                    stroke-linecap="round" stroke-linejoin="round" />
-                                <path d="M11 15H13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
-                            </svg>
+                <li
+                    class="{{ Route::is('admin.cookie-consent') || Route::is('admin.error-image') || Route::is('admin.login-image') || Route::is('admin.breadcrumb') || Route::is('admin.social-login') || Route::is('admin.default-avatar') || Route::is('admin.maintenance-mode') || Route::is('admin.admin-login-image') ? 'active' : '' }}">
+                    <a href="#!" class="collapsed" data-bs-toggle="collapse" data-bs-target="#menu-item__apps"><span
+                            class="menu-bar__text">
+                            <span class="crancy-menu-icon crancy-svg-icon__v1">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <rect x="2" y="2" width="20" height="16" rx="3" stroke="currentColor"
+                                        stroke-width="1.5" />
+                                    <path d="M9 22H12M15 22H12M12 22V18" stroke="currentColor" stroke-width="1.5"
+                                        stroke-linecap="round" stroke-linejoin="round" />
+                                    <path d="M11 15H13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+                                </svg>
 
-                        </span>
-                        <span class="menu-bar__name">{{ __('translate.Website Setup') }}</span></span> <span
-                        class="crancy__toggle"></span></a></span>
-                <!-- Dropdown Menu -->
-                <div class="collapse crancy__dropdown {{ Route::is('admin.cookie-consent') || Route::is('admin.error-image') || Route::is('admin.login-image') || Route::is('admin.breadcrumb') || Route::is('admin.social-login') || Route::is('admin.default-avatar') || Route::is('admin.maintenance-mode') || Route::is('admin.admin-login-image') ? 'show' : '' }}"
-                    id="menu-item__apps" data-bs-parent="#CrancyMenu">
-                    <ul class="menu-bar__one-dropdown">
-                        <li><a href="{{ route('admin.cookie-consent') }}"><span class="menu-bar__text"><span
-                                        class="menu-bar__name">{{ __('translate.Cookie Consent') }}</span></span></a>
-                        </li>
+                            </span>
+                            <span class="menu-bar__name">{{ __('translate.Website Setup') }}</span></span> <span
+                            class="crancy__toggle"></span></a></span>
+                    <!-- Dropdown Menu -->
+                    <div class="collapse crancy__dropdown {{ Route::is('admin.cookie-consent') || Route::is('admin.error-image') || Route::is('admin.login-image') || Route::is('admin.breadcrumb') || Route::is('admin.social-login') || Route::is('admin.default-avatar') || Route::is('admin.maintenance-mode') || Route::is('admin.admin-login-image') ? 'show' : '' }}"
+                        id="menu-item__apps" data-bs-parent="#CrancyMenu">
+                        <ul class="menu-bar__one-dropdown">
+                            <li><a href="{{ route('admin.cookie-consent') }}"><span class="menu-bar__text"><span
+                                            class="menu-bar__name">{{ __('translate.Cookie Consent') }}</span></span></a>
+                            </li>
 
-                        <li><a href="{{ route('admin.error-image') }}"><span class="menu-bar__text"><span
-                                        class="menu-bar__name">{{ __('translate.Error Page') }}</span></span></a>
-                        </li>
+                            <li><a href="{{ route('admin.error-image') }}"><span class="menu-bar__text"><span
+                                            class="menu-bar__name">{{ __('translate.Error Page') }}</span></span></a>
+                            </li>
 
-                        <li><a href="{{ route('admin.login-image') }}"><span class="menu-bar__text"><span
-                                        class="menu-bar__name">{{ __('translate.Login Page') }}</span></span></a>
-                        </li>
+                            <li><a href="{{ route('admin.login-image') }}"><span class="menu-bar__text"><span
+                                            class="menu-bar__name">{{ __('translate.Login Page') }}</span></span></a>
+                            </li>
 
-                        <li><a href="{{ route('admin.admin-login-image') }}"><span class="menu-bar__text"><span
-                                        class="menu-bar__name">{{ __('translate.Admin Login') }}</span></span></a>
-                        </li>
+                            <li><a href="{{ route('admin.admin-login-image') }}"><span class="menu-bar__text"><span
+                                            class="menu-bar__name">{{ __('translate.Admin Login') }}</span></span></a>
+                            </li>
 
-                        <li><a href="{{ route('admin.breadcrumb') }}"><span class="menu-bar__text"><span
-                                        class="menu-bar__name">{{ __('translate.Breadcrumb Image') }}</span></span></a>
-                        </li>
+                            <li><a href="{{ route('admin.breadcrumb') }}"><span class="menu-bar__text"><span
+                                            class="menu-bar__name">{{ __('translate.Breadcrumb Image') }}</span></span></a>
+                            </li>
 
-                        <li><a href="{{ route('admin.social-login') }}"><span class="menu-bar__text"><span
-                                        class="menu-bar__name">{{ __('translate.Social Login') }}</span></span></a>
-                        </li>
+                            <li><a href="{{ route('admin.social-login') }}"><span class="menu-bar__text"><span
+                                            class="menu-bar__name">{{ __('translate.Social Login') }}</span></span></a>
+                            </li>
 
 
-                        <li><a href="{{ route('admin.default-avatar') }}"><span class="menu-bar__text"><span
-                                        class="menu-bar__name">{{ __('translate.Default Avatar') }}</span></span></a>
-                        </li>
+                            <li><a href="{{ route('admin.default-avatar') }}"><span class="menu-bar__text"><span
+                                            class="menu-bar__name">{{ __('translate.Default Avatar') }}</span></span></a>
+                            </li>
 
-                        <li><a href="{{ route('admin.maintenance-mode') }}"><span class="menu-bar__text"><span
-                                        class="menu-bar__name">{{ __('translate.Maintenance mode') }}</span></span></a>
-                        </li>
+                            <li><a href="{{ route('admin.maintenance-mode') }}"><span class="menu-bar__text"><span
+                                            class="menu-bar__name">{{ __('translate.Maintenance mode') }}</span></span></a>
+                            </li>
 
-                    </ul>
-                </div>
-            </li>
+                        </ul>
+                    </div>
+                </li>
             @endif
 
             @if(\App\Models\MenuVisibilitySetting::isMenuEnabled('seo_setup'))
-            <li class="{{ Route::is('admin.seo-setting') ? 'active' : '' }}"><a class="collapsed"
-                    href="{{ route('admin.seo-setting') }}"><span class="menu-bar__text">
-                        <span class="crancy-menu-icon crancy-svg-icon__v1">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                xmlns="http://www.w3.org/2000/svg">
-                                <path fill-rule="evenodd" clip-rule="evenodd"
-                                    d="M2.75 11.5C2.75 16.3325 6.66751 20.25 11.5 20.25C16.3325 20.25 20.25 16.3325 20.25 11.5C20.25 6.66751 16.3325 2.75 11.5 2.75C6.66751 2.75 2.75 6.66751 2.75 11.5ZM11.5 21.75C5.83908 21.75 1.25 17.1609 1.25 11.5C1.25 5.83908 5.83908 1.25 11.5 1.25C17.1609 1.25 21.75 5.83908 21.75 11.5C21.75 14.0605 20.8111 16.4017 19.2589 18.1982L22.5303 21.4697C22.8232 21.7626 22.8232 22.2374 22.5303 22.5303C22.2374 22.8232 21.7626 22.8232 21.4697 22.5303L18.1982 19.2589C16.4017 20.8111 14.0605 21.75 11.5 21.75Z"
-                                    fill="currentColor" />
-                            </svg>
+                <li class="{{ Route::is('admin.seo-setting') ? 'active' : '' }}"><a class="collapsed"
+                        href="{{ route('admin.seo-setting') }}"><span class="menu-bar__text">
+                            <span class="crancy-menu-icon crancy-svg-icon__v1">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path fill-rule="evenodd" clip-rule="evenodd"
+                                        d="M2.75 11.5C2.75 16.3325 6.66751 20.25 11.5 20.25C16.3325 20.25 20.25 16.3325 20.25 11.5C20.25 6.66751 16.3325 2.75 11.5 2.75C6.66751 2.75 2.75 6.66751 2.75 11.5ZM11.5 21.75C5.83908 21.75 1.25 17.1609 1.25 11.5C1.25 5.83908 5.83908 1.25 11.5 1.25C17.1609 1.25 21.75 5.83908 21.75 11.5C21.75 14.0605 20.8111 16.4017 19.2589 18.1982L22.5303 21.4697C22.8232 21.7626 22.8232 22.2374 22.5303 22.5303C22.2374 22.8232 21.7626 22.8232 21.4697 22.5303L18.1982 19.2589C16.4017 20.8111 14.0605 21.75 11.5 21.75Z"
+                                        fill="currentColor" />
+                                </svg>
 
-                        </span>
-                        <span class="menu-bar__name">{{ __('translate.SEO Setup') }}</span></span></a>
-            </li>
+                            </span>
+                            <span class="menu-bar__name">{{ __('translate.SEO Setup') }}</span></span></a>
+                </li>
             @endif
 
             @if(\App\Models\MenuVisibilitySetting::isMenuEnabled('payment_method'))
-            <li class="{{ Route::is('admin.paymentgateway') ? 'active' : '' }}"><a class="collapsed"
-                    href="{{ route('admin.paymentgateway') }}"><span class="menu-bar__text">
-                        <span class="crancy-menu-icon crancy-svg-icon__v1">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                xmlns="http://www.w3.org/2000/svg">
-                                <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="1.5" />
-                                <path
-                                    d="M14 10C14 8.89543 13.1046 8 12 8C10.8954 8 10 8.89543 10 10C10 11.1046 10.8954 12 12 12C13.1046 12 14 12.8954 14 14C14 15.1046 13.1046 16 12 16C10.8954 16 10 15.1046 10 14"
-                                    stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
-                                <path
-                                    d="M12 12C13.1046 12 14 12.8954 14 14C14 15.1046 13.1046 16 12 16C10.8954 16 10 15.1046 10 14"
-                                    stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
-                                <path d="M12 6.5V8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
-                                    stroke-linejoin="round" />
-                                <path d="M12 16V17.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
-                                    stroke-linejoin="round" />
-                            </svg>
+                <li class="{{ Route::is('admin.paymentgateway') ? 'active' : '' }}"><a class="collapsed"
+                        href="{{ route('admin.paymentgateway') }}"><span class="menu-bar__text">
+                            <span class="crancy-menu-icon crancy-svg-icon__v1">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="1.5" />
+                                    <path
+                                        d="M14 10C14 8.89543 13.1046 8 12 8C10.8954 8 10 8.89543 10 10C10 11.1046 10.8954 12 12 12C13.1046 12 14 12.8954 14 14C14 15.1046 13.1046 16 12 16C10.8954 16 10 15.1046 10 14"
+                                        stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+                                    <path
+                                        d="M12 12C13.1046 12 14 12.8954 14 14C14 15.1046 13.1046 16 12 16C10.8954 16 10 15.1046 10 14"
+                                        stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+                                    <path d="M12 6.5V8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                                        stroke-linejoin="round" />
+                                    <path d="M12 16V17.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                                        stroke-linejoin="round" />
+                                </svg>
 
-                        </span>
-                        <span class="menu-bar__name">{{ __('translate.Payment Method') }}</span></span></a>
-            </li>
+                            </span>
+                            <span class="menu-bar__name">{{ __('translate.Payment Method') }}</span></span></a>
+                </li>
             @endif
 
             @if(\App\Models\MenuVisibilitySetting::isMenuEnabled('theme_management'))
-            <li class="{{ Route::is('admin.themes.*') ? 'active' : '' }}"><a class="collapsed"
-                    href="{{ route('admin.themes.index') }}">
-                    <span class="menu-bar__text">
-                        <span class="crancy-menu-icon crancy-svg-icon__v1">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                xmlns="http://www.w3.org/2000/svg">
-                                <path
-                                    d="M2 9C2 6.79086 3.79086 5 6 5H18C20.2091 5 22 6.79086 22 9V15C22 17.2091 20.2091 19 18 19H6C3.79086 19 2 17.2091 2 15V9Z"
-                                    stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
-                                    stroke-linejoin="round" />
-                                <path d="M12 5V19M7 12H17" stroke="currentColor" stroke-width="1.5"
-                                    stroke-linecap="round" stroke-linejoin="round" />
-                            </svg>
+                <li class="{{ Route::is('admin.themes.*') ? 'active' : '' }}"><a class="collapsed"
+                        href="{{ route('admin.themes.index') }}">
+                        <span class="menu-bar__text">
+                            <span class="crancy-menu-icon crancy-svg-icon__v1">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path
+                                        d="M2 9C2 6.79086 3.79086 5 6 5H18C20.2091 5 22 6.79086 22 9V15C22 17.2091 20.2091 19 18 19H6C3.79086 19 2 17.2091 2 15V9Z"
+                                        stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                                        stroke-linejoin="round" />
+                                    <path d="M12 5V19M7 12H17" stroke="currentColor" stroke-width="1.5"
+                                        stroke-linecap="round" stroke-linejoin="round" />
+                                </svg>
+                            </span>
+                            <span class="menu-bar__name">{{ __('translate.Theme Management') }}</span>
                         </span>
-                        <span class="menu-bar__name">{{ __('translate.Theme Management') }}</span>
-                    </span>
-                </a>
-            </li>
+                    </a>
+                </li>
             @endif
 
             @if(\App\Models\MenuVisibilitySetting::isMenuEnabled('menu_management'))
-            <li class="{{ Route::is('admin.menus.*') ? 'active' : '' }}"><a class="collapsed"
-                    href="{{ route('admin.menus.index') }}">
-                    <span class="menu-bar__text">
-                        <span class="crancy-menu-icon crancy-svg-icon__v1">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                xmlns="http://www.w3.org/2000/svg">
-                                <path
-                                    d="M2 9C2 6.79086 3.79086 5 6 5H18C20.2091 5 22 6.79086 22 9V15C22 17.2091 20.2091 19 18 19H6C3.79086 19 2 17.2091 2 15V9Z"
-                                    stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
-                                    stroke-linejoin="round" />
-                                <path d="M12 5V19M7 12H17" stroke="currentColor" stroke-width="1.5"
-                                    stroke-linecap="round" stroke-linejoin="round" />
-                            </svg>
+                <li class="{{ Route::is('admin.menus.*') ? 'active' : '' }}"><a class="collapsed"
+                        href="{{ route('admin.menus.index') }}">
+                        <span class="menu-bar__text">
+                            <span class="crancy-menu-icon crancy-svg-icon__v1">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path
+                                        d="M2 9C2 6.79086 3.79086 5 6 5H18C20.2091 5 22 6.79086 22 9V15C22 17.2091 20.2091 19 18 19H6C3.79086 19 2 17.2091 2 15V9Z"
+                                        stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                                        stroke-linejoin="round" />
+                                    <path d="M12 5V19M7 12H17" stroke="currentColor" stroke-width="1.5"
+                                        stroke-linecap="round" stroke-linejoin="round" />
+                                </svg>
+                            </span>
+                            <span class="menu-bar__name">{{ __('translate.Menu Management') }}</span>
                         </span>
-                        <span class="menu-bar__name">{{ __('translate.Menu Management') }}</span>
-                    </span>
-                </a>
-            </li>
+                    </a>
+                </li>
             @endif
 
         </ul>
@@ -880,53 +905,53 @@
     <div class="menu-bar">
         <ul class="menu-bar__one crancy-dashboard-menu" id="CrancyMenu">
             @if(\App\Models\MenuVisibilitySetting::isMenuEnabled('newsletter'))
-            <li class="{{ Route::is('admin.newsletter-list') || Route::is('admin.newsletter-email') ? 'active' : '' }}">
-                <a href="#!" class="collapsed" data-bs-toggle="collapse"
-                    data-bs-target="#menu-item__apps_newsletter"><span class="menu-bar__text">
-                        <span class="crancy-menu-icon crancy-svg-icon__v1">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                xmlns="http://www.w3.org/2000/svg">
-                                <path
-                                    d="M8 9H12M8 13H16M8 17H16M15.9995 2V5M7.99951 2V5M7 3.5H17C19.2091 3.5 21 5.29086 21 7.5V18C21 20.2091 19.2091 22 17 22H7C4.79086 22 3 20.2091 3 18V7.5C3 5.29086 4.79086 3.5 7 3.5Z"
-                                    stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
-                                    stroke-linejoin="round" />
-                            </svg>
+                <li class="{{ Route::is('admin.newsletter-list') || Route::is('admin.newsletter-email') ? 'active' : '' }}">
+                    <a href="#!" class="collapsed" data-bs-toggle="collapse"
+                        data-bs-target="#menu-item__apps_newsletter"><span class="menu-bar__text">
+                            <span class="crancy-menu-icon crancy-svg-icon__v1">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path
+                                        d="M8 9H12M8 13H16M8 17H16M15.9995 2V5M7.99951 2V5M7 3.5H17C19.2091 3.5 21 5.29086 21 7.5V18C21 20.2091 19.2091 22 17 22H7C4.79086 22 3 20.2091 3 18V7.5C3 5.29086 4.79086 3.5 7 3.5Z"
+                                        stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                                        stroke-linejoin="round" />
+                                </svg>
 
-                        </span>
-                        <span class="menu-bar__name">{{ __('translate.Newsletter') }}</span></span> <span
-                        class="crancy__toggle"></span></a></span>
-                <!-- Dropdown Menu -->
-                <div class="collapse crancy__dropdown {{ Route::is('admin.newsletter-list') || Route::is('admin.newsletter-email') ? 'show' : '' }}"
-                    id="menu-item__apps_newsletter" data-bs-parent="#CrancyMenu">
-                    <ul class="menu-bar__one-dropdown">
+                            </span>
+                            <span class="menu-bar__name">{{ __('translate.Newsletter') }}</span></span> <span
+                            class="crancy__toggle"></span></a></span>
+                    <!-- Dropdown Menu -->
+                    <div class="collapse crancy__dropdown {{ Route::is('admin.newsletter-list') || Route::is('admin.newsletter-email') ? 'show' : '' }}"
+                        id="menu-item__apps_newsletter" data-bs-parent="#CrancyMenu">
+                        <ul class="menu-bar__one-dropdown">
 
-                        <li><a href="{{ route('admin.newsletter-list') }}"><span class="menu-bar__text"><span
-                                        class="menu-bar__name">{{ __('translate.Subscriber List') }}</span></span></a>
-                        </li>
+                            <li><a href="{{ route('admin.newsletter-list') }}"><span class="menu-bar__text"><span
+                                            class="menu-bar__name">{{ __('translate.Subscriber List') }}</span></span></a>
+                            </li>
 
-                        <li><a href="{{ route('admin.newsletter-email') }}"><span class="menu-bar__text"><span
-                                        class="menu-bar__name">{{ __('translate.Send Mail') }}</span></span></a></li>
+                            <li><a href="{{ route('admin.newsletter-email') }}"><span class="menu-bar__text"><span
+                                            class="menu-bar__name">{{ __('translate.Send Mail') }}</span></span></a></li>
 
-                    </ul>
-                </div>
-            </li>
+                        </ul>
+                    </div>
+                </li>
             @endif
 
             @if(\App\Models\MenuVisibilitySetting::isMenuEnabled('cache_clear'))
-            <li><a class="collapsed" href="{{ route('admin.cache-clear') }}"><span class="menu-bar__text">
-                        <span class="crancy-menu-icon crancy-svg-icon__v1">
-                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none"
-                                xmlns="http://www.w3.org/2000/svg">
-                                <path
-                                    d="M1 10C1 14.9706 5.02944 19 10 19C14.9706 19 19 14.9706 19 10C19 5.02944 14.9706 1 10 1C6.66873 1 3.76018 2.80989 2.20404 5.5M1.5 1L1.93552 6L7 5.5"
-                                    stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
-                                    stroke-linejoin="round" />
-                            </svg>
+                <li><a class="collapsed" href="{{ route('admin.cache-clear') }}"><span class="menu-bar__text">
+                            <span class="crancy-menu-icon crancy-svg-icon__v1">
+                                <svg width="20" height="20" viewBox="0 0 20 20" fill="none"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path
+                                        d="M1 10C1 14.9706 5.02944 19 10 19C14.9706 19 19 14.9706 19 10C19 5.02944 14.9706 1 10 1C6.66873 1 3.76018 2.80989 2.20404 5.5M1.5 1L1.93552 6L7 5.5"
+                                        stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                                        stroke-linejoin="round" />
+                                </svg>
 
 
-                        </span>
-                        <span class="menu-bar__name">{{ __('translate.Cache Clear') }}</span></span></a>
-            </li>
+                            </span>
+                            <span class="menu-bar__name">{{ __('translate.Cache Clear') }}</span></span></a>
+                </li>
             @endif
 
             <li class="{{ Route::is('admin.development.*') ? 'active' : '' }}"><a class="collapsed"
