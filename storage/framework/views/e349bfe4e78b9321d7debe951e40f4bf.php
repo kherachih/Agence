@@ -1,3 +1,5 @@
+
+
 <?php $__env->startSection('title'); ?>
     <title>Services</title>
     <meta name="title" content="Services">
@@ -654,8 +656,10 @@
                                     <button type="submit" class="tg-btn tg-btn-switch-animation w-100"><?php echo e(__('translate.Send Request')); ?></button>
                                 </form>
                             <?php else: ?>
-
-                            <form action="<?php echo e(route('front.tourbooking.book.checkout.view')); ?>">
+                            
+                            
+                            <div id="booking-form-container">
+                            <form id="booking-form" action="<?php echo e(route('front.tourbooking.book.checkout.view')); ?>" method="GET">
                                 <h4 class="tg-tour-about-title title-2 mb-15"><?php echo e(__('translate.Book This Tour')); ?></h4>
 
                                 <input type="hidden" name="service_id" value="<?php echo e($service->id); ?>">
@@ -797,6 +801,27 @@
                                     <div class="tg-tour-about-border-doted mb-15"></div>
                                 <?php endif; ?>
 
+                                
+                                <div class="tg-tour-about-flight-option mb-15">
+                                    <div class="checkbox d-flex align-items-start">
+                                        <input type="checkbox" 
+                                               name="flight_ticket_included" 
+                                               id="flight_ticket_included"
+                                               class="tg-checkbox"
+                                               x-model="flightTicketIncluded"
+                                               @change="toggleBookingForm()">
+                                        <label for="flight_ticket_included" class="tg-label" style="font-weight: 600; color: #d4a017;">
+                                            <i class="fas fa-plane"></i> <?php echo e(__('translate.Flight Ticket Included')); ?>
+
+                                        </label>
+                                    </div>
+                                    <small class="text-muted d-block mt-1" style="font-size: 12px;">
+                                        <?php echo e(__('translate.Check this if you want flight tickets included. This will redirect to quote request.')); ?>
+
+                                    </small>
+                                </div>
+                                <div class="tg-tour-about-border-doted mb-15"></div>
+
                                 <div
                                     class="tg-tour-about-coast d-flex align-items-center flex-wrap justify-content-between mb-20">
                                     <span class="tg-tour-about-sidebar-title d-inline-block">Total Cost:</span>
@@ -805,6 +830,60 @@
 
                                 <button type="submit" class="tg-btn tg-btn-switch-animation w-100"><?php echo e(__('translate.Book Now')); ?></button>
                             </form>
+                            </div>
+
+                            
+                            <div id="quote-form-container" style="display: none;">
+                            <form action="<?php echo e(route('quote-request.store')); ?>" method="POST">
+                                <?php echo csrf_field(); ?>
+                                <h4 class="tg-tour-about-title title-2 mb-15" style="color: #d4a017;">
+                                    <i class="fas fa-plane"></i> <?php echo e(__('translate.Request a Quote')); ?>
+
+                                </h4>
+                                <input type="hidden" name="service_id" value="<?php echo e($service->id); ?>">
+                                <input type="hidden" name="flight_ticket_included" value="1">
+
+                                <div class="tg-booking-form-parent-inner mb-10">
+                                    <div class="mb-3">
+                                        <input required class="form-control" name="first_name" type="text" placeholder="<?php echo e(__('translate.First Name')); ?>" value="<?php echo e(auth()->user()->name ?? ''); ?>">
+                                    </div>
+                                    <div class="mb-3">
+                                        <input required class="form-control" name="last_name" type="text" placeholder="<?php echo e(__('translate.Last Name')); ?>">
+                                    </div>
+                                    <div class="mb-3">
+                                        <input required class="form-control" name="email" type="email" placeholder="<?php echo e(__('translate.Email')); ?>" value="<?php echo e(auth()->user()->email ?? ''); ?>">
+                                    </div>
+                                    <div class="mb-3">
+                                        <input required class="form-control" name="phone" type="text" placeholder="<?php echo e(__('translate.Phone')); ?>" value="<?php echo e(auth()->user()->phone ?? ''); ?>">
+                                    </div>
+                                    <div class="mb-3">
+                                         <label class="form-label"><?php echo e(__('translate.Check In Date')); ?></label>
+                                        <input required class="form-control flatpickr" name="check_in_date" type="text" placeholder="<?php echo e(__('translate.Select Date')); ?>" value="<?php echo e(now()->format('Y-m-d')); ?>">
+                                    </div>
+                                    
+                                    <div class="mb-3">
+                                        <label class="form-label"><?php echo e(__('translate.Adults')); ?></label>
+                                        <input type="number" name="person" class="form-control" value="1" min="1">
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label class="form-label"><?php echo e(__('translate.Children')); ?> (< 18)</label>
+                                        <input type="number" name="children" class="form-control" value="0" min="0">
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label class="form-label"><?php echo e(__('translate.Room Details')); ?> / <?php echo e(__('translate.Message')); ?></label>
+                                        <textarea name="room_details" class="form-control" rows="3" placeholder="<?php echo e(__('translate.Example: Double Room, Triple Room, Flight preferences...')); ?>"></textarea>
+                                    </div>
+                                </div>
+
+                                <button type="submit" class="tg-btn tg-btn-switch-animation w-100" style="background: linear-gradient(135deg, #d4a017 0%, #b8860b 100%);">
+                                    <i class="fas fa-paper-plane"></i> <?php echo e(__('translate.Send Request')); ?>
+
+                                </button>
+                            </form>
+                            </div>
+                            
                             <?php endif; ?>
                         </div>
                     </div>
@@ -1094,6 +1173,7 @@
                 },
                 pricePerAdult: <?php echo e($service->discount_adult_price ?? $service->adult_price ?? 0); ?>,
                 pricePerChild: <?php echo e($service->discount_child_price ?? $service->child_price ?? 0); ?>,
+                flightTicketIncluded: false,
                 extras: {
                     <?php $__currentLoopData = $service->extraCharges; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $extra): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                         charge_<?php echo e($key); ?>: false,
@@ -1103,6 +1183,20 @@
                     <?php $__currentLoopData = $service->extraCharges; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $extra): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                         charge_<?php echo e($key); ?>: <?php echo e($extra->price ?? 0); ?>,
                     <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                },
+                toggleBookingForm() {
+                    const bookingForm = document.getElementById('booking-form-container');
+                    const quoteForm = document.getElementById('quote-form-container');
+                    
+                    if (this.flightTicketIncluded) {
+                        // Show quote form, hide booking form
+                        if (bookingForm) bookingForm.style.display = 'none';
+                        if (quoteForm) quoteForm.style.display = 'block';
+                    } else {
+                        // Show booking form, hide quote form
+                        if (bookingForm) bookingForm.style.display = 'block';
+                        if (quoteForm) quoteForm.style.display = 'none';
+                    }
                 },
                 get totalCost() {
                     let total = 0;
@@ -1127,6 +1221,30 @@
 
 <?php $__env->startPush('style_section'); ?>
     <style>
+        /* Alpine.js cloak - prevents flash of unstyled content */
+        [x-cloak] { display: none !important; }
+        
+        /* Smooth transition between forms */
+        #booking-form-container,
+        #quote-form-container {
+            transition: all 0.3s ease;
+        }
+        
+        /* Style for flight ticket checkbox */
+        #flight_ticket_included:checked + label {
+            color: #d4a017;
+        }
+        
+        /* Animation for form switch */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        #quote-form-container {
+            animation: fadeIn 0.3s ease;
+        }
+        
         a.tg-listing-item-wishlist.active {
             color: var(--tg-theme-primary);
         }

@@ -6,6 +6,7 @@ use Modules\TourBooking\App\Http\Controllers\Admin\ServiceTypeController;
 use Modules\TourBooking\App\Http\Controllers\Admin\ServiceController;
 use Modules\TourBooking\App\Http\Controllers\Admin\BookingController;
 use Modules\TourBooking\App\Http\Controllers\Admin\DestinationController;
+use Modules\TourBooking\App\Http\Controllers\Admin\ContinentController;
 use Modules\TourBooking\App\Http\Controllers\Admin\CouponController;
 use Modules\TourBooking\App\Http\Controllers\Admin\ReviewController;
 use Modules\TourBooking\App\Http\Controllers\Admin\ReportController;
@@ -97,6 +98,10 @@ Route::group(['as' => 'admin.tourbooking.', 'prefix' => 'admin/tourbooking', 'mi
     Route::get('passengers/{passenger}/download-passport', [AdminPassengerController::class, 'downloadPassport'])->name('passengers.download-passport');
     Route::get('passengers/{passenger}/download-insurance', [AdminPassengerController::class, 'downloadInsurance'])->name('passengers.download-insurance');
     Route::put('passengers/{passenger}', [AdminPassengerController::class, 'update'])->name('passengers.update');
+
+    // Continents
+    Route::resource('continents', ContinentController::class);
+    Route::put('continents/{continent}/status', [ContinentController::class, 'updateStatus'])->name('continents.update-status');
 
     // Destinations
     Route::resource('destinations', DestinationController::class);

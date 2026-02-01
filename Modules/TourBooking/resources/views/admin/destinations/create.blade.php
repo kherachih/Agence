@@ -131,6 +131,24 @@
                                                 <div class="col-lg-6 col-md-6 col-12">
                                                     <div class="crancy__item-form--group mg-top-form-20">
                                                         <label
+                                                            class="crancy__item-label">{{ __('translate.Continent') }}*</label>
+                                                        <select required class="crancy__item-input" name="continent_id" id="continent_id">
+                                                            <option value="">{{ __('translate.Select Continent') }}</option>
+                                                            @foreach($continents as $continent)
+                                                                <option value="{{ $continent->id }}" {{ old('continent_id') == $continent->id ? 'selected' : '' }}>
+                                                                    {{ $continent->name }}
+                                                                </option>
+                                                            @endforeach
+                                                        </select>
+                                                        @error('continent_id')
+                                                            <span class="text-danger">{{ $message }}</span>
+                                                        @enderror
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-lg-6 col-md-6 col-12">
+                                                    <div class="crancy__item-form--group mg-top-form-20">
+                                                        <label
                                                             class="crancy__item-label">{{ __('translate.Country') }}*</label>
                                                         <input required class="crancy__item-input" type="text"
                                                             name="country" id="country" value="{{ old('country') }}">

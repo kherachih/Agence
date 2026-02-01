@@ -622,8 +622,10 @@
                                     <button type="submit" class="tg-btn tg-btn-switch-animation w-100">{{ __('translate.Send Request') }}</button>
                                 </form>
                             @else
-
-                            <form action="{{ route('front.tourbooking.book.checkout.view') }}">
+                            
+                            {{-- Booking Form Container --}}
+                            <div id="booking-form-container">
+                            <form id="booking-form" action="{{ route('front.tourbooking.book.checkout.view') }}" method="GET">
                                 <h4 class="tg-tour-about-title title-2 mb-15">{{ __('translate.Book This Tour') }}</h4>
 
                                 <input type="hidden" name="service_id" value="{{ $service->id }}">
@@ -762,6 +764,25 @@
                                     <div class="tg-tour-about-border-doted mb-15"></div>
                                 @endif
 
+                                {{-- Flight Ticket Option - Only show for non-DZD currencies --}}
+                                <div class="tg-tour-about-flight-option mb-15">
+                                    <div class="checkbox d-flex align-items-start">
+                                        <input type="checkbox" 
+                                               name="flight_ticket_included" 
+                                               id="flight_ticket_included"
+                                               class="tg-checkbox"
+                                               x-model="flightTicketIncluded"
+                                               @change="toggleBookingForm()">
+                                        <label for="flight_ticket_included" class="tg-label" style="font-weight: 600; color: #d4a017;">
+                                            <i class="fas fa-plane"></i> {{ __('translate.Flight Ticket Included') }}
+                                        </label>
+                                    </div>
+                                    <small class="text-muted d-block mt-1" style="font-size: 12px;">
+                                        {{ __('translate.Check this if you want flight tickets included. This will redirect to quote request.') }}
+                                    </small>
+                                </div>
+                                <div class="tg-tour-about-border-doted mb-15"></div>
+
                                 <div
                                     class="tg-tour-about-coast d-flex align-items-center flex-wrap justify-content-between mb-20">
                                     <span class="tg-tour-about-sidebar-title d-inline-block">Total Cost:</span>
@@ -770,6 +791,58 @@
 
                                 <button type="submit" class="tg-btn tg-btn-switch-animation w-100">{{ __('translate.Book Now') }}</button>
                             </form>
+                            </div>{{-- End Booking Form Container --}}
+
+                            {{-- Quote Request Form Container (Hidden by default) --}}
+                            <div id="quote-form-container" style="display: none;">
+                            <form action="{{ route('quote-request.store') }}" method="POST">
+                                @csrf
+                                <h4 class="tg-tour-about-title title-2 mb-15" style="color: #d4a017;">
+                                    <i class="fas fa-plane"></i> {{ __('translate.Request a Quote') }}
+                                </h4>
+                                <input type="hidden" name="service_id" value="{{ $service->id }}">
+                                <input type="hidden" name="flight_ticket_included" value="1">
+
+                                <div class="tg-booking-form-parent-inner mb-10">
+                                    <div class="mb-3">
+                                        <input required class="form-control" name="first_name" type="text" placeholder="{{ __('translate.First Name') }}" value="{{ auth()->user()->name ?? '' }}">
+                                    </div>
+                                    <div class="mb-3">
+                                        <input required class="form-control" name="last_name" type="text" placeholder="{{ __('translate.Last Name') }}">
+                                    </div>
+                                    <div class="mb-3">
+                                        <input required class="form-control" name="email" type="email" placeholder="{{ __('translate.Email') }}" value="{{ auth()->user()->email ?? '' }}">
+                                    </div>
+                                    <div class="mb-3">
+                                        <input required class="form-control" name="phone" type="text" placeholder="{{ __('translate.Phone') }}" value="{{ auth()->user()->phone ?? '' }}">
+                                    </div>
+                                    <div class="mb-3">
+                                         <label class="form-label">{{ __('translate.Check In Date') }}</label>
+                                        <input required class="form-control flatpickr" name="check_in_date" type="text" placeholder="{{ __('translate.Select Date') }}" value="{{ now()->format('Y-m-d') }}">
+                                    </div>
+                                    
+                                    <div class="mb-3">
+                                        <label class="form-label">{{ __('translate.Adults') }}</label>
+                                        <input type="number" name="person" class="form-control" value="1" min="1">
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label class="form-label">{{ __('translate.Children') }} (< 18)</label>
+                                        <input type="number" name="children" class="form-control" value="0" min="0">
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label class="form-label">{{ __('translate.Room Details') }} / {{ __('translate.Message') }}</label>
+                                        <textarea name="room_details" class="form-control" rows="3" placeholder="{{ __('translate.Example: Double Room, Triple Room, Flight preferences...') }}"></textarea>
+                                    </div>
+                                </div>
+
+                                <button type="submit" class="tg-btn tg-btn-switch-animation w-100" style="background: linear-gradient(135deg, #d4a017 0%, #b8860b 100%);">
+                                    <i class="fas fa-paper-plane"></i> {{ __('translate.Send Request') }}
+                                </button>
+                            </form>
+                            </div>{{-- End Quote Form Container --}}
+                            
                             @endif
                         </div>
                     </div>
@@ -1059,6 +1132,7 @@
                 },
                 pricePerAdult: {{ $service->discount_adult_price ?? $service->adult_price ?? 0 }},
                 pricePerChild: {{ $service->discount_child_price ?? $service->child_price ?? 0 }},
+                flightTicketIncluded: false,
                 extras: {
                     @foreach ($service->extraCharges as $key => $extra)
                         charge_{{ $key }}: false,
@@ -1068,6 +1142,20 @@
                     @foreach ($service->extraCharges as $key => $extra)
                         charge_{{ $key }}: {{ $extra->price ?? 0 }},
                     @endforeach
+                },
+                toggleBookingForm() {
+                    const bookingForm = document.getElementById('booking-form-container');
+                    const quoteForm = document.getElementById('quote-form-container');
+                    
+                    if (this.flightTicketIncluded) {
+                        // Show quote form, hide booking form
+                        if (bookingForm) bookingForm.style.display = 'none';
+                        if (quoteForm) quoteForm.style.display = 'block';
+                    } else {
+                        // Show booking form, hide quote form
+                        if (bookingForm) bookingForm.style.display = 'block';
+                        if (quoteForm) quoteForm.style.display = 'none';
+                    }
                 },
                 get totalCost() {
                     let total = 0;
@@ -1092,6 +1180,30 @@
 
 @push('style_section')
     <style>
+        /* Alpine.js cloak - prevents flash of unstyled content */
+        [x-cloak] { display: none !important; }
+        
+        /* Smooth transition between forms */
+        #booking-form-container,
+        #quote-form-container {
+            transition: all 0.3s ease;
+        }
+        
+        /* Style for flight ticket checkbox */
+        #flight_ticket_included:checked + label {
+            color: #d4a017;
+        }
+        
+        /* Animation for form switch */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        #quote-form-container {
+            animation: fadeIn 0.3s ease;
+        }
+        
         a.tg-listing-item-wishlist.active {
             color: var(--tg-theme-primary);
         }

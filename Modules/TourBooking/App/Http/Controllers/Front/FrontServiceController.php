@@ -17,6 +17,7 @@ use Modules\GlobalSetting\App\Models\GlobalSetting;
 use Modules\TourBooking\App\Models\Amenity;
 use Modules\TourBooking\App\Models\AmenityTranslation;
 use Modules\TourBooking\App\Models\Booking;
+use Modules\TourBooking\App\Models\Continent;
 use Modules\TourBooking\App\Models\Destination;
 use Modules\TourBooking\App\Models\Review;
 use Modules\TourBooking\App\Models\Service;
@@ -582,15 +583,19 @@ final class FrontServiceController extends Controller
     }
 
     /**
-     * Display all destinations.
+     * Display all destinations grouped by continents.
      */
     public function destinations(): View
     {
-        $destinations = Destination::where('status', true)
-            ->with('thumbnail')
-            ->paginate(12);
+        $continents = Continent::where('status', true)
+            ->ordered()
+            ->with(['destinationsWithTours' => function ($query) {
+                $query->where('status', true)
+                    ->withCount('services');
+            }])
+            ->get();
 
-        return view('tourbooking::front.destinations', compact('destinations'));
+        return view('tourbooking::front.destinations', compact('continents'));
     }
 
     /**

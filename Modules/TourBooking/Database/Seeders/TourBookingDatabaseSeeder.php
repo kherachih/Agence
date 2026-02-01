@@ -12,6 +12,7 @@ class TourBookingDatabaseSeeder extends Seeder
     public function run(): void
     {
         $this->call([
+            ContinentSeeder::class,
             ServiceTypeSeeder::class,
             DestinationSeeder::class,
         ]);

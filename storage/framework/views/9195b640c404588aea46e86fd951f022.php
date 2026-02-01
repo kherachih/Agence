@@ -43,26 +43,27 @@
 </li>
 
 <li
-    class="<?php echo e(Route::is('admin.tourbooking.destinations.index') || Route::is(' admin.tourbooking.destinations.create') ? 'active' : ''); ?>">
+    class="<?php echo e(Route::is('admin.tourbooking.continents.index') || Route::is('admin.tourbooking.continents.create') || Route::is('admin.tourbooking.destinations.index') || Route::is('admin.tourbooking.destinations.create') ? 'active' : ''); ?>">
     <a href="#!" class="collapsed" data-bs-toggle="collapse" data-bs-target="#menu-item__destination_list"><span
             class="menu-bar__text">
             <span class="crancy-menu-icon crancy-svg-icon__v1">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
                     xmlns="http://www.w3.org/2000/svg">
-                    <path
-                        d="M2 21C2.5 20.0909 4.4 18.2727 8 18.2727C11.6 18.2727 13.5 16.0909 14 15M8 8V5C8 3.89543 8.89543 3 10 3H20C21.1046 3 22 3.89543 22 5V13C22 14.1046 21.1046 15 20 15H16.7397M12 7H18M10 13C10 14.1046 9.10457 15 8 15C6.89543 15 6 14.1046 6 13C6 11.8954 6.89543 11 8 11C9.10457 11 10 11.8954 10 13Z"
-                        stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
-                    <path d="M15 11H18" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+                    <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="1.5"/>
+                    <path d="M12 2C14.5 4.5 16 8 16 12C16 16 14.5 19.5 12 22C9.5 19.5 8 16 8 12C8 8 9.5 4.5 12 2Z" stroke="currentColor" stroke-width="1.5"/>
+                    <path d="M2 12H22" stroke="currentColor" stroke-width="1.5"/>
                 </svg>
             </span>
 
             <span class="menu-bar__name"><?php echo e(__('translate.Destinations')); ?></span></span> <span
             class="crancy__toggle"></span></a></span>
     <!-- Dropdown Menu -->
-    <div class="collapse crancy__dropdown <?php echo e(Route::is(' admin.tourbooking.destinations.index') || Route::is(' admin.tourbooking.destinations.create') ? 'show' : ''); ?>"
+    <div class="collapse crancy__dropdown <?php echo e(Route::is('admin.tourbooking.continents.index') || Route::is('admin.tourbooking.continents.create') || Route::is('admin.tourbooking.destinations.index') || Route::is('admin.tourbooking.destinations.create') ? 'show' : ''); ?>"
         id="menu-item__destination_list" data-bs-parent="#CrancyMenu">
         <ul class="menu-bar__one-dropdown">
 
+            <li><a href="<?php echo e(route('admin.tourbooking.continents.index')); ?>"><span class="menu-bar__text"><span
+                            class="menu-bar__name"><?php echo e(__('translate.Continents')); ?></span></span></a></li>
 
             <li><a href="<?php echo e(route('admin.tourbooking.destinations.index')); ?>"><span class="menu-bar__text"><span
                             class="menu-bar__name"><?php echo e(__('translate.Destinations')); ?></span></span></a></li>

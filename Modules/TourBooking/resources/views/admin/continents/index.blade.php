@@ -1,11 +1,11 @@
 @extends('admin.master_layout')
 @section('title')
-    <title>{{ __('translate.Destinations') }}</title>
+    <title>{{ __('translate.Continents') }}</title>
 @endsection
 
 @section('body-header')
-    <h3 class="crancy-header__title m-0">{{ __('translate.Destinations') }}</h3>
-    <p class="crancy-header__text">{{ __('translate.Tour Booking') }} >> {{ __('translate.Destinations') }}</p>
+    <h3 class="crancy-header__title m-0">{{ __('translate.Continents') }}</h3>
+    <p class="crancy-header__text">{{ __('translate.Tour Booking') }} >> {{ __('translate.Continents') }}</p>
 @endsection
 
 @section('body-content')
@@ -19,11 +19,11 @@
                                 <div class="crancy-customer-filter">
                                     <div
                                         class="crancy-header__form crancy-header__form--customer create_new_btn_inline_box">
-                                        <h4 class="crancy-product-card__title">{{ __('translate.All Destinations') }}</h4>
+                                        <h4 class="crancy-product-card__title">{{ __('translate.All Continents') }}</h4>
                                         <div class="d-flex align-items-center gap-2">
-                                            <a href="{{ route('admin.tourbooking.destinations.create') }}"
+                                            <a href="{{ route('admin.tourbooking.continents.create') }}"
                                                 class="crancy-btn"><i class="fa fa-plus"></i>
-                                                {{ __('translate.Add New Destination') }}</a>
+                                                {{ __('translate.Add New Continent') }}</a>
                                         </div>
                                     </div>
                                 </div>
@@ -36,22 +36,22 @@
                                                 <th class="crancy-table__column-2 crancy-table__h2 sorting">ID</th>
                                                 <th class="crancy-table__column-2 crancy-table__h2 sorting">Image</th>
                                                 <th class="crancy-table__column-2 crancy-table__h2 sorting">Name</th>
-                                                <th class="crancy-table__column-2 crancy-table__h2 sorting">Continent</th>
-                                                <th class="crancy-table__column-2 crancy-table__h2 sorting">Country</th>
+                                                <th class="crancy-table__column-2 crancy-table__h2 sorting">Code</th>
+                                                <th class="crancy-table__column-2 crancy-table__h2 sorting">Destinations</th>
                                                 <th class="crancy-table__column-2 crancy-table__h2 sorting">Status</th>
-                                                <th class="crancy-table__column-2 crancy-table__h2 sorting">Featured</th>
+                                                <th class="crancy-table__column-2 crancy-table__h2 sorting">Created At</th>
                                                 <th class="crancy-table__column-2 crancy-table__h2 sorting">Actions</th>
                                             </tr>
                                         </thead>
                                         <tbody class="crancy-table__body">
-                                            @forelse($destinations as $destination)
+                                            @forelse($continents as $continent)
                                                 <tr class="odd">
                                                     <td class="crancy-table__column-2 crancy-table__data-2">
-                                                        {{ $destination->id }}</td>
+                                                        {{ $continent->id }}</td>
                                                     <td class="crancy-table__column-2 crancy-table__data-2">
-                                                        @if ($destination->image)
-                                                            <img src="{{ asset('storage/' . $destination->image) }}"
-                                                                alt="{{ $destination->name }}" class="img-thumbnail"
+                                                        @if ($continent->image)
+                                                            <img src="{{ asset('storage/' . $continent->image) }}"
+                                                                alt="{{ $continent->name }}" class="img-thumbnail"
                                                                 width="50">
                                                         @else
                                                             <span class="badge badge-secondary">No
@@ -59,80 +59,58 @@
                                                         @endif
                                                     </td>
                                                     <td class="crancy-table__column-2 crancy-table__data-2">
-                                                        {{ $destination->name }}</td>
+                                                        {{ $continent->name }}</td>
                                                     <td class="crancy-table__column-2 crancy-table__data-2">
-                                                        @if($destination->continent)
-                                                            <span class="badge badge-info">{{ $destination->continent->name }}</span>
-                                                        @else
-                                                            <span class="badge badge-secondary">-</span>
-                                                        @endif
+                                                        {{ $continent->code ?? '-' }}</td>
+                                                    <td class="crancy-table__column-2 crancy-table__data-2">
+                                                        <span class="badge badge-info">{{ $continent->destinations_count }}</span>
                                                     </td>
                                                     <td class="crancy-table__column-2 crancy-table__data-2">
-                                                        {{ $destination->country }}</td>
-                                                    <td class="crancy-table__column-2 crancy-table__data-2">
-                                                        @if ($destination->status)
+                                                        @if ($continent->status)
                                                             <span class="badge badge-success">Active</span>
                                                         @else
                                                             <span class="badge badge-danger">Inactive</span>
                                                         @endif
                                                     </td>
-                                                    <td class="text-center">
-                                                        @if ($destination->is_featured)
-                                                            <span class="badge badge-info">Yes</span>
-                                                        @else
-                                                            <span class="badge badge-secondary">No</span>
-                                                        @endif
-                                                    </td>
                                                     <td class="crancy-table__column-2 crancy-table__data-2">
-                                                        {{ $destination->created_at->format('d M, Y') }}
+                                                        {{ $continent->created_at->format('d M, Y') }}
                                                     </td>
                                                     <td class="crancy-table__column-2 crancy-table__data-2">
                                                         <label class="crancy__item-switch" data-bs-toggle="tooltip"
                                                             data-bs-placement="top"
                                                             title="Toggle Status: Click to activate/deactivate">
-                                                            <input onClick="manageStatus({{ $destination->id }})"
+                                                            <input onClick="manageStatus({{ $continent->id }})"
                                                                 name="status" type="checkbox"
-                                                                {{ $destination->status == 1 ? 'checked' : '' }}>
+                                                                {{ $continent->status == 1 ? 'checked' : '' }}>
                                                             <span
                                                                 class="crancy__item-switch--slide crancy__item-switch--round"></span>
                                                         </label>
 
-                                                        <label class="crancy__item-switch" data-bs-toggle="tooltip"
-                                                            data-bs-placement="top"
-                                                            title="Toggle Featured: Click to activate/deactivate">
-                                                            <input onClick="manageFeatured({{ $destination->id }})"
-                                                                name="featured" type="checkbox"
-                                                                {{ $destination->is_featured == 1 ? 'checked' : '' }}>
-                                                            <span
-                                                                class="crancy__item-switch--slide crancy__item-switch--round"></span>
-                                                        </label>
-                                                        <a href="{{ route('admin.tourbooking.destinations.edit', $destination) }}"
+                                                        <a href="{{ route('admin.tourbooking.continents.edit', $continent) }}"
                                                             class="crancy-action__btn crancy-action__edit crancy-btn">
                                                             <i class="fas fa-edit"></i>
                                                         </a>
-                                                        <a href="{{ route('admin.tourbooking.destinations.show', $destination) }}"
-                                                            class="crancy-action__btn crancy-action__edit crancy-btn d-none">
-                                                            <i class="fas fa-eye"></i>
-                                                        </a>
-                                                        <a onclick="itemDeleteConfrimation({{ $destination->id }})"
+                                                        <a onclick="itemDeleteConfrimation({{ $continent->id }})"
                                                             href="javascript:;" data-bs-toggle="modal"
                                                             data-bs-target="#exampleModal"
-                                                            class="destination crancy-btn crancy-action__btn crancy-action__edit crancy-btn delete_danger_btn"><i
+                                                            class="continent crancy-btn crancy-action__btn crancy-action__edit crancy-btn delete_danger_btn"><i
                                                                 class="fas fa-trash"></i> {{ __('translate.Delete') }}
                                                         </a>
                                                     </td>
                                                 </tr>
                                             @empty
                                                 <tr>
-                                                    <td colspan="9" class="text-center">No
-                                                        destinations found</td>
+                                                    <td colspan="8" class="text-center">No
+                                                        continents found</td>
                                                 </tr>
                                             @endforelse
                                         </tbody>
                                     </table>
                                 </div>
 
-
+                                <div class="mt-3">
+                                    {{ $continents->links() }}
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -183,7 +161,7 @@
         "use strict"
 
         function itemDeleteConfrimation(id) {
-            $("#item_delect_confirmation").attr("action", '{{ url('admin/tourbooking/destinations') }}' + "/" + id)
+            $("#item_delect_confirmation").attr("action", '{{ url('admin/tourbooking/continents') }}' + "/" + id)
         }
 
         function manageStatus(id) {
@@ -198,36 +176,13 @@
                 data: {
                     _token: '{{ csrf_token() }}'
                 },
-                url: "{{ route('admin.tourbooking.destinations.update-status', ':id') }}".replace(':id', id),
+                url: "{{ route('admin.tourbooking.continents.update-status', ':id') }}".replace(':id', id),
                 success: function(response) {
                     toastr.success(response.message)
                 },
                 error: function(err) {
                     console.log(err);
                     toastr.error('An error occurred while updating status');
-                }
-            })
-        }
-
-        function manageFeatured(id) {
-            var appMODE = "{{ env('APP_MODE') }}"
-            if (appMODE == 'DEMO') {
-                toastr.error('This Is Demo Version. You Can Not Change Anything');
-                return;
-            }
-
-            $.ajax({
-                type: "PUT",
-                data: {
-                    _token: '{{ csrf_token() }}'
-                },
-                url: "{{ route('admin.tourbooking.destinations.update-featured', ':id') }}".replace(':id', id),
-                success: function(response) {
-                    toastr.success(response.message)
-                },
-                error: function(err) {
-                    console.log(err);
-                    toastr.error('An error occurred while updating featured');
                 }
             })
         }

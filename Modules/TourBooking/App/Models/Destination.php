@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Modules\TourBooking\App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -21,6 +22,7 @@ final class Destination extends Model
     protected $fillable = [
         'name',
         'slug',
+        'continent_id',
         'description',
         'image',
         'country',
@@ -51,6 +53,14 @@ final class Destination extends Model
         'show_on_homepage' => 'boolean',
         'ordering' => 'integer',
     ];
+
+    /**
+     * Get the continent that owns the destination.
+     */
+    public function continent(): BelongsTo
+    {
+        return $this->belongsTo(Continent::class);
+    }
 
     /**
      * Get services for this destination.

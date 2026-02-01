@@ -9,6 +9,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\View\View;
+use Modules\TourBooking\App\Models\Continent;
 use Modules\TourBooking\App\Models\Destination;
 use Modules\TourBooking\App\Models\Service;
 
@@ -19,7 +20,7 @@ final class DestinationController extends Controller
      */
     public function index(): View
     {
-        $destinations = Destination::with('translation')
+        $destinations = Destination::with(['translation', 'continent'])
             ->withCount('services')
             ->latest()
             ->paginate(15);
@@ -32,7 +33,8 @@ final class DestinationController extends Controller
      */
     public function create(): View
     {
-        return view('tourbooking::admin.destinations.create');
+        $continents = Continent::where('status', true)->ordered()->get();
+        return view('tourbooking::admin.destinations.create', compact('continents'));
     }
 
     /**
@@ -43,6 +45,7 @@ final class DestinationController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'slug' => 'required|string|unique:destinations,slug|max:255',
+            'continent_id' => 'required|exists:continents,id',
             'description' => 'nullable|string',
             'country' => 'required|string|max:100',
             'region' => 'nullable|string|max:100',
@@ -98,7 +101,8 @@ final class DestinationController extends Controller
      */
     public function edit(Destination $destination): View
     {
-        return view('tourbooking::admin.destinations.edit', compact('destination'));
+        $continents = Continent::where('status', true)->ordered()->get();
+        return view('tourbooking::admin.destinations.edit', compact('destination', 'continents'));
     }
 
     /**
@@ -109,6 +113,7 @@ final class DestinationController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'slug' => 'required|string|max:255|unique:destinations,slug,' . $destination->id,
+            'continent_id' => 'required|exists:continents,id',
             'description' => 'nullable|string',
             'country' => 'required|string|max:100',
             'region' => 'nullable|string|max:100',
