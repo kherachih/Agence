@@ -1,14 +1,14 @@
-@extends('layout_inner_page')
 
-@section('title')
+
+<?php $__env->startSection('title'); ?>
     <title>Services</title>
     <meta name="title" content="Services">
     <meta name="description" content="Services">
-@endsection
+<?php $__env->stopSection(); ?>
 
-@section('front-content')
+<?php $__env->startSection('front-content'); ?>
     <!-- tg-breadcrumb-area-start -->
-    @include('breadcrumb')
+    <?php echo $__env->make('breadcrumb', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
     <!-- tg-breadcrumb-area-end -->
 
     <div x-data="data">
@@ -46,23 +46,24 @@
                                         </div>
                                         <div class="tg-booking-form-location-list tg-booking-quantity-active">
                                             <ul class="scrool-bar scrool-height pr-5">
-                                                @foreach ($destinations as $key => $destination)
+                                                <?php $__currentLoopData = $destinations; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $destination): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                                     <li
-                                                        @click="selectDestination(`{{ $destination->id }}`, `{{ $destination->name }}`)">
+                                                        @click="selectDestination(`<?php echo e($destination->id); ?>`, `<?php echo e($destination->name); ?>`)">
                                                         <i class="fa-regular fa-location-dot"></i>
-                                                        <span>{{ $destination->name }}</span>
+                                                        <span><?php echo e($destination->name); ?></span>
                                                     </li>
-                                                @endforeach
+                                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                             </ul>
                                         </div>
                                     </div>
                                     <div class="tg-booking-form-parent-inner tg-hero-quantity p-relative mr-15 mb-15">
-                                        <span class="tg-booking-form-title mb-5">{{ __('translate.Month:') }}</span>
+                                        <span class="tg-booking-form-title mb-5"><?php echo e(__('translate.Month:')); ?></span>
                                         <div class="tg-booking-add-input-field tg-booking-quantity-toggle">
                                             <span x-show="bookingForm.selected_month" x-text="bookingForm.selected_month"
                                                 class="tg-booking-title-value"></span>
                                             <span x-show="!bookingForm.selected_month" class="tg-booking-title-value">
-                                                {{ __('translate.Select Month') }}
+                                                <?php echo e(__('translate.Select Month')); ?>
+
                                             </span>
                                             <span class="location">
                                                 <svg width="14" height="14" viewBox="0 0 14 14" fill="none"
@@ -136,7 +137,8 @@
                                                 <span
                                                     x-show="!bookingForm.rooms && !bookingForm.adults && !bookingForm.children"
                                                     class="tg-booking-title-value">
-                                                    {{ __('translate.+ Add Guests') }}
+                                                    <?php echo e(__('translate.+ Add Guests')); ?>
+
                                                 </span>
 
                                                 <!-- Show this when any value exists -->
@@ -322,22 +324,23 @@
                                     <h4 class="tg-filter-title mb-15">Property Type</h4>
                                     <div class="tg-filter-list">
                                         <ul>
-                                            @foreach ($serviceTypes as $key => $serviceType)
-                                                <li x-show="showPropertyType || {{ $key }} < 4" x-transition>
+                                            <?php $__currentLoopData = $serviceTypes; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $serviceType): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                                <li x-show="showPropertyType || <?php echo e($key); ?> < 4" x-transition>
                                                     <div class="checkbox d-flex">
-                                                        <input value="{{ $serviceType?->id }}"
+                                                        <input value="<?php echo e($serviceType?->id); ?>"
                                                             x-model="filters.service_type_ids" class="tg-checkbox"
-                                                            type="checkbox" id="australia_{{ $key }}">
-                                                        <label for="australia_{{ $key }}" class="tg-label">
-                                                            {{ $serviceType?->name }}
+                                                            type="checkbox" id="australia_<?php echo e($key); ?>">
+                                                        <label for="australia_<?php echo e($key); ?>" class="tg-label">
+                                                            <?php echo e($serviceType?->name); ?>
+
                                                         </label>
                                                     </div>
                                                 </li>
-                                            @endforeach
+                                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                         </ul>
                                     </div>
 
-                                    @if (count($serviceTypes) > 4)
+                                    <?php if(count($serviceTypes) > 4): ?>
                                         <div class="tg-filter-seemore mt-2 cp select-none"
                                             @click="showPropertyType = !showPropertyType">
                                             <span class="plus">
@@ -346,7 +349,7 @@
                                             </span>
                                             <span class="more" x-text="showPropertyType ? 'See Less' : 'See More'"></span>
                                         </div>
-                                    @endif
+                                    <?php endif; ?>
 
                                     <span class="tg-filter-border mt-25 mb-25"></span>
                                 </div>
@@ -373,23 +376,24 @@
                                     <h4 class="tg-filter-title mb-15">Amenities</h4>
                                     <div class="tg-filter-list">
                                         <ul>
-                                            @foreach ($amenities as $key => $amenity)
-                                                <li x-show="showAmenity || {{ $key }} < 4" x-transition>
+                                            <?php $__currentLoopData = $amenities; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $amenity): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                                <li x-show="showAmenity || <?php echo e($key); ?> < 4" x-transition>
                                                     <div class="checkbox d-flex">
-                                                        <input value="{{ $amenity?->translation?->id }}"
+                                                        <input value="<?php echo e($amenity?->translation?->id); ?>"
                                                             x-model="filters.amenity_ids" class="tg-checkbox" type="checkbox"
-                                                            id="amenity_{{ $key }}">
-                                                        <label for="amenity_{{ $key }}" class="tg-label">
-                                                            {{ $amenity?->translation?->name }}
+                                                            id="amenity_<?php echo e($key); ?>">
+                                                        <label for="amenity_<?php echo e($key); ?>" class="tg-label">
+                                                            <?php echo e($amenity?->translation?->name); ?>
+
                                                         </label>
                                                     </div>
                                                 </li>
-                                            @endforeach
+                                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                         </ul>
                                     </div>
 
 
-                                    @if (count($amenities) > 4)
+                                    <?php if(count($amenities) > 4): ?>
                                         <div class="tg-filter-seemore mt-2 cp select-none" @click="showAmenity = !showAmenity">
                                             <span class="plus">
                                                 <i :class="showAmenity ? 'fa-solid fa-minus' :
@@ -397,7 +401,7 @@
                                             </span>
                                             <span class="more" x-text="showAmenity ? 'See Less' : 'See More'"></span>
                                         </div>
-                                    @endif
+                                    <?php endif; ?>
 
                                     <span class="tg-filter-border mt-25 mb-25"></span>
                                 </div>
@@ -405,26 +409,26 @@
                                 <h4 class="tg-filter-title mb-15">Top Reviews</h4>
                                 <div class="tg-filter-list">
                                     <ul>
-                                        @for ($i = 5; $i >= 1; $i--)
+                                        <?php for($i = 5; $i >= 1; $i--): ?>
                                             <li>
                                                 <div class="checkbox d-flex">
-                                                    <input id="rating_{{ $i }}" x-model="filters.ratings" class="tg-checkbox"
-                                                        type="checkbox" value="{{ $i }}" name="filter_ratings[]">
+                                                    <input id="rating_<?php echo e($i); ?>" x-model="filters.ratings" class="tg-checkbox"
+                                                        type="checkbox" value="<?php echo e($i); ?>" name="filter_ratings[]">
                                                     <div class="tg-filter-review">
-                                                        <label for="rating_{{ $i }}">
-                                                            @for ($j = 1; $j <= 5; $j++)
-                                                                @if ($j <= $i)
+                                                        <label for="rating_<?php echo e($i); ?>">
+                                                            <?php for($j = 1; $j <= 5; $j++): ?>
+                                                                <?php if($j <= $i): ?>
                                                                     <span><i class="fa-solid fa-star-sharp"></i></span>
-                                                                @else
+                                                                <?php else: ?>
                                                                     <span class="bad-review"><i
                                                                             class="fa-light fa-star-sharp"></i></span>
-                                                                @endif
-                                                            @endfor
+                                                                <?php endif; ?>
+                                                            <?php endfor; ?>
                                                         </label>
                                                     </div>
                                                 </div>
                                             </li>
-                                        @endfor
+                                        <?php endfor; ?>
                                     </ul>
                                 </div>
                                 <span class="tg-filter-border mt-25 mb-25"></span>
@@ -433,21 +437,22 @@
                                     <h4 class="tg-filter-title mb-15">Language</h4>
                                     <div class="tg-filter-list">
                                         <ul>
-                                            @foreach ($languages as $key => $language)
-                                                <li x-show="showMoreLanguages || {{ $key }} < 4" x-transition>
+                                            <?php $__currentLoopData = $languages; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $language): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                                <li x-show="showMoreLanguages || <?php echo e($key); ?> < 4" x-transition>
                                                     <div class="checkbox d-flex">
-                                                        <input value="{{ $language?->name }}" x-model="filters.languages"
-                                                            class="tg-checkbox" type="checkbox" id="language_{{ $key }}">
-                                                        <label for="language_{{ $key }}" class="tg-label">
-                                                            {{ $language?->value }}
+                                                        <input value="<?php echo e($language?->name); ?>" x-model="filters.languages"
+                                                            class="tg-checkbox" type="checkbox" id="language_<?php echo e($key); ?>">
+                                                        <label for="language_<?php echo e($key); ?>" class="tg-label">
+                                                            <?php echo e($language?->value); ?>
+
                                                         </label>
                                                     </div>
                                                 </li>
-                                            @endforeach
+                                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                         </ul>
                                     </div>
 
-                                    @if (count($languages) > 4)
+                                    <?php if(count($languages) > 4): ?>
                                         <div class="tg-filter-seemore mt-2 cp select-none"
                                             @click="showMoreLanguages = !showMoreLanguages">
                                             <span class="plus">
@@ -456,7 +461,7 @@
                                             </span>
                                             <span class="more" x-text="showMoreLanguages ? 'See Less' : 'See More'"></span>
                                         </div>
-                                    @endif
+                                    <?php endif; ?>
                                 </div>
 
                             </div>
@@ -542,10 +547,10 @@
         </div>
         <!-- tg-listing-grid-area-end -->
     </div>
-@endsection
+<?php $__env->stopSection(); ?>
 
 
-@push('js_section')
+<?php $__env->startPush('js_section'); ?>
     <script>
         (function ($) {
             "use strict"
@@ -584,15 +589,15 @@
                     children: 0
                 },
                 bookingForm: {
-                    destination_id: `{{ request('destination_id', '') }}`,
-                    destination: `{{ request('destination', '') }}`,
-                    month: `{{ request('month', '') }}`,
-                    selected_month: `{{ request('selected_month', '') }}`,
-                    checkIn: `{{ request('checkIn', '') }}`,
-                    checkOut: `{{ request('checkOut', '') }}`,
-                    rooms: `{{ request('rooms', '') }}`,
-                    adults: `{{ request('adults', '') }}`,
-                    children: `{{ request('children', '') }}`,
+                    destination_id: `<?php echo e(request('destination_id', '')); ?>`,
+                    destination: `<?php echo e(request('destination', '')); ?>`,
+                    month: `<?php echo e(request('month', '')); ?>`,
+                    selected_month: `<?php echo e(request('selected_month', '')); ?>`,
+                    checkIn: `<?php echo e(request('checkIn', '')); ?>`,
+                    checkOut: `<?php echo e(request('checkOut', '')); ?>`,
+                    rooms: `<?php echo e(request('rooms', '')); ?>`,
+                    adults: `<?php echo e(request('adults', '')); ?>`,
+                    children: `<?php echo e(request('children', '')); ?>`,
                 },
                 incrementRooms() {
                     this.bookingForm.rooms++;
@@ -627,14 +632,14 @@
                     this.bookingForm.month = monthValue;
                 },
                 filters: {
-                    search: `{{ request('search', '') }}`,
-                    service_type_ids: {!! json_encode(request('service_type_ids', [])) !!},
-                    max_price: `{{ request('max_price', '') }}`,
-                    min_price: `{{ request('min_price', '') }}`,
-                    amenity_ids: {!! json_encode(request('amenity_ids', [])) !!},
-                    languages: {!! json_encode(request('languages', [])) !!},
-                    sort_by: `{{ request('sort_by', '') }}`,
-                    ratings: {!! json_encode(request('ratings', [])) !!},
+                    search: `<?php echo e(request('search', '')); ?>`,
+                    service_type_ids: <?php echo json_encode(request('service_type_ids', [])); ?>,
+                    max_price: `<?php echo e(request('max_price', '')); ?>`,
+                    min_price: `<?php echo e(request('min_price', '')); ?>`,
+                    amenity_ids: <?php echo json_encode(request('amenity_ids', [])); ?>,
+                    languages: <?php echo json_encode(request('languages', [])); ?>,
+                    sort_by: `<?php echo e(request('sort_by', '')); ?>`,
+                    ratings: <?php echo json_encode(request('ratings', [])); ?>,
                 },
                 defaultFilters: {
                     search: '',
@@ -722,7 +727,7 @@
                     this.loadingOverlay("show");
 
                     $.ajax({
-                        url: `{{ route('front.tourbooking.services.load.ajax') }}`,
+                        url: `<?php echo e(route('front.tourbooking.services.load.ajax')); ?>`,
                         method: 'GET',
                         data: {
                             ...this.filters,
@@ -794,9 +799,9 @@
             }));
         });
     </script>
-@endpush
+<?php $__env->stopPush(); ?>
 
-@push('style_section')
+<?php $__env->startPush('style_section'); ?>
     <style>
         .item_loading {
             top: 20px;
@@ -921,4 +926,5 @@
             padding: 8px 15px;
         }
     </style>
-@endpush
+<?php $__env->stopPush(); ?>
+<?php echo $__env->make('layout_inner_page', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH D:\xampp\htdocs\archive\archive\Modules/TourBooking\resources/views/front/services/services2.blade.php ENDPATH**/ ?>

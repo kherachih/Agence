@@ -1,28 +1,28 @@
-@if ($allServices->count() > 0)
+<?php if($allServices->count() > 0): ?>
     <div class="tg-listing-grid-item">
-        <div @class(['row list-card', 'list-card-open' => $isListView == 'true'])>
-            @foreach ($allServices as $key => $service)
+        <div class="<?php echo \Illuminate\Support\Arr::toCssClasses(['row list-card', 'list-card-open' => $isListView == 'true']); ?>">
+            <?php $__currentLoopData = $allServices; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $service): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                 <div class="col-xxl-4 col-xl-6 col-lg-6 col-md-6 tg-grid-full">
                     <div class="tg-listing-card-item mb-30">
                         <div class="tg-listing-card-thumb fix mb-15 p-relative">
-                            <a href="{{ route('front.tourbooking.services.show', ['slug' => $service?->slug]) }}">
+                            <a href="<?php echo e(route('front.tourbooking.services.show', ['slug' => $service?->slug])); ?>">
                                 <img class="tg-card-border w-100"
-                                    src="{{ asset('storage/' . $service?->thumbnail?->file_path) }}"
-                                    alt="{{ $service?->thumbnail?->caption ?? $service?->translation?->title }}">
-                                @if ($service?->is_new == 1)
+                                    src="<?php echo e(asset('storage/' . $service?->thumbnail?->file_path)); ?>"
+                                    alt="<?php echo e($service?->thumbnail?->caption ?? $service?->translation?->title); ?>">
+                                <?php if($service?->is_new == 1): ?>
                                     <span class="tg-listing-item-price-discount shape"
-                                        style="background-image: url('{{ asset('frontend/assets/img/shape/price-shape-2.png') }}')">New</span>
-                                @endif
+                                        style="background-image: url('<?php echo e(asset('frontend/assets/img/shape/price-shape-2.png')); ?>')">New</span>
+                                <?php endif; ?>
 
-                                @if ($service?->discount_price)
+                                <?php if($service?->discount_price): ?>
                                     <span class="tg-listing-item-price-discount shape-2"
-                                        style="background-image: url('{{ asset('frontend/assets/img/shape/offter.png') }}')">Sale
+                                        style="background-image: url('<?php echo e(asset('frontend/assets/img/shape/offter.png')); ?>')">Sale
                                         offer</span>
-                                @endif
+                                <?php endif; ?>
 
-                                @if ($service?->is_featured == 1)
+                                <?php if($service?->is_featured == 1): ?>
                                     <span class="tg-listing-item-price-discount shape-3"
-                                        style="background-image: url('{{ asset('frontend/assets/img/shape/featured.png') }}')">
+                                        style="background-image: url('<?php echo e(asset('frontend/assets/img/shape/featured.png')); ?>')">
                                         <svg width="12" height="14" viewBox="0 0 12 14" fill="none"
                                             xmlns="http://www.w3.org/2000/svg">
                                             <path
@@ -32,14 +32,14 @@
                                         </svg>
                                         Featured
                                     </span>
-                                @endif
+                                <?php endif; ?>
 
                             </a>
-                            <div @class([
+                            <div class="<?php echo \Illuminate\Support\Arr::toCssClasses([
                                 'tg-listing-item-wishlist',
                                 'active' => $service?->my_wishlist_exists == 1,
-                            ]) data-url="{{ route('user.wishlist.store') }}"
-                                onclick="addToWishlist({{ $service->id }}, this, 'service')">
+                            ]); ?>" data-url="<?php echo e(route('user.wishlist.store')); ?>"
+                                onclick="addToWishlist(<?php echo e($service->id); ?>, this, 'service')">
                                 <a href="javascript:void(0)">
                                     <svg width="20" height="18" viewBox="0 0 20 18" fill="none"
                                         xmlns="http://www.w3.org/2000/svg">
@@ -55,8 +55,9 @@
                             <div class="tg-listing-card-content">
                                 <h4 class="tg-listing-card-title">
                                     <a
-                                        href="{{ route('front.tourbooking.services.show', ['slug' => $service?->slug]) }}">
-                                        {{ Str::limit($service?->translation?->title, 45) }}
+                                        href="<?php echo e(route('front.tourbooking.services.show', ['slug' => $service?->slug])); ?>">
+                                        <?php echo e(Str::limit($service?->translation?->title, 45)); ?>
+
                                     </a>
                                 </h4>
                                 <div class="tg-listing-card-duration-tour">
@@ -72,10 +73,11 @@
                                                 stroke="currentColor" stroke-width="1.15556" stroke-linecap="round"
                                                 stroke-linejoin="round" />
                                         </svg>
-                                        {{ $service?->location }}
+                                        <?php echo e($service?->location); ?>
+
                                     </span>
 
-                                    @if ($service?->duration)
+                                    <?php if($service?->duration): ?>
                                         <span class="tg-listing-card-duration-time">
                                             <svg width="16" height="16" viewBox="0 0 16 16" fill="none"
                                                 xmlns="http://www.w3.org/2000/svg">
@@ -84,53 +86,57 @@
                                                     stroke="currentColor" stroke-width="1.06667" stroke-linecap="round"
                                                     stroke-linejoin="round" />
                                             </svg>
-                                            {{ $service?->duration }}
+                                            <?php echo e($service?->duration); ?>
+
                                         </span>
-                                    @endif
+                                    <?php endif; ?>
                                 </div>
                             </div>
                             <div class="tg-listing-card-price d-flex align-items-end justify-content-between flex-wrap gap-2">
                                 <div class="tg-listing-card-price-wrap price-bg d-flex align-items-center"
-                                    style="background-image: url('{{ asset('frontend/assets/img/shape/price-shape.png') }}')">
+                                    style="background-image: url('<?php echo e(asset('frontend/assets/img/shape/price-shape.png')); ?>')">
                                     <span class="tg-listing-card-currency-amount mr-5">
-                                        {!! $service->price_display !!}
+                                        <?php echo $service->price_display; ?>
+
                                     </span>
                                 </div>
                                 <div class="d-flex align-items-center gap-2 tg-listing-card-actions">
                                     <a class="tg-listing-avai-btn btn-sm"
-                                        href="{{ route('front.tourbooking.services.show', ['slug' => $service?->slug]) }}"
-                                        title="{{ __('translate.Voir disponibilité') }}">
-                                        <span class="d-none d-md-inline">{{ __('translate.Voir disponibilité') }}</span>
+                                        href="<?php echo e(route('front.tourbooking.services.show', ['slug' => $service?->slug])); ?>"
+                                        title="<?php echo e(__('translate.Voir disponibilité')); ?>">
+                                        <span class="d-none d-md-inline"><?php echo e(__('translate.Voir disponibilité')); ?></span>
                                         <span class="d-md-none"><i class="fa-solid fa-calendar-check"></i></span>
                                     </a>
                                     <a class="tg-btn tg-btn-switch-animation btn-sm" 
-                                       href="{{ route('front.tourbooking.services.download-tour-plan', $service->slug) }}"
+                                       href="<?php echo e(route('front.tourbooking.services.download-tour-plan', $service->slug)); ?>"
                                        target="_blank"
-                                       title="{{ __('translate.Download the brochure') }}">
+                                       title="<?php echo e(__('translate.Download the brochure')); ?>">
                                         <i class="fa-solid fa-file-pdf"></i>
-                                        <span class="d-none d-lg-inline ml-5">{{ __('translate.Download') }}</span>
+                                        <span class="d-none d-lg-inline ml-5"><?php echo e(__('translate.Download')); ?></span>
                                     </a>
                                 </div>
                             </div>
                             <div class="tg-listing-card-review mt-10">
                                 <span class="tg-listing-rating-icon"><i
-                                        class="fa-sharp fa-solid fa-star {{ $service?->active_reviews_avg_rating > 0 ? 'active' : '' }}"></i></span>
+                                        class="fa-sharp fa-solid fa-star <?php echo e($service?->active_reviews_avg_rating > 0 ? 'active' : ''); ?>"></i></span>
                                 <span class="tg-listing-rating-percent">
-                                    ({{ __($service?->active_reviews_count ?? 0) }}
-                                    {{ __($service?->active_reviews_count > 1 ? __('translate.Reviews') : __('translate.Review')) }})
+                                    (<?php echo e(__($service?->active_reviews_count ?? 0)); ?>
+
+                                    <?php echo e(__($service?->active_reviews_count > 1 ? __('translate.Reviews') : __('translate.Review'))); ?>)
                                 </span>
                             </div>
                         </div>
                     </div>
                 </div>
-            @endforeach
+            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
         </div>
         <div class="text-center mt-50 mb-30">
-            @include('components.front.custom-pagination', ['items' => $allServices])
+            <?php echo $__env->make('components.front.custom-pagination', ['items' => $allServices], \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
         </div>
     </div>
-@else
+<?php else: ?>
     <div class="col-12">
         Data Not found.
     </div>
-@endif
+<?php endif; ?>
+<?php /**PATH D:\xampp\htdocs\archive\archive\Modules/TourBooking\resources/views/front/services/services-item2.blade.php ENDPATH**/ ?>

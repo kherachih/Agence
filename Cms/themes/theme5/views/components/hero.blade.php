@@ -93,21 +93,18 @@
                                 </div>
                             </div>
                             <div class="tg-booking-form-parent-inner tg-hero-quantity p-relative mr-15 mb-15">
-                                <span class="tg-booking-form-title mb-5">{{ __('translate.Guest:') }}</span>
+                                <span class="tg-booking-form-title mb-5">Who is travelling?</span>
                                 <div class="tg-booking-add-input-field tg-booking-quantity-toggle">
                                     <div>
                                         <!-- Show this when no values are selected -->
-                                        <span x-show="!rooms && !adults && !children" class="tg-booking-title-value">
+                                        <span x-show="!adults && !children" class="tg-booking-title-value">
                                             {{ __('translate.+ Add Guests') }}
                                         </span>
 
                                         <!-- Show this when any value exists -->
-                                        <span x-show="rooms || adults || children" class="tg-booking-title-value">
-                                            <template x-if="rooms">
-                                                <span x-text="rooms + ' Room'"></span>
-                                            </template>
+                                        <span x-show="adults || children" class="tg-booking-title-value">
                                             <template x-if="adults">
-                                                <span x-text="', ' + adults + ' Adult'"></span>
+                                                <span x-text="adults + ' Adult'"></span>
                                             </template>
                                             <template x-if="children">
                                                 <span x-text="', ' + children + ' Child'"></span>
@@ -132,31 +129,6 @@
                                 </div>
                                 <div class="tg-booking-form-location-list tg-quantity tg-booking-quantity-active">
                                     <ul>
-                                        <li>
-                                            <span class="mr-20">{{ __('translate.Rooms') }}</span>
-                                            <div class="tg-booking-quantity-item">
-                                                <span @click="incrementRooms" class="increment">
-                                                    <svg width="15" height="14" viewBox="0 0 15 14"
-                                                        fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                        <path d="M1.21924 7H13.3836" stroke="currentColor"
-                                                            stroke-width="1.5" stroke-linecap="round"
-                                                            stroke-linejoin="round" />
-                                                        <path d="M7.30176 13V1" stroke="currentColor"
-                                                            stroke-width="1.5" stroke-linecap="round"
-                                                            stroke-linejoin="round" />
-                                                    </svg>
-                                                </span>
-                                                <input x-bind:value="rooms" class="tg-quantity-input"
-                                                    type="text">
-                                                <span @click="decrementRooms" class="decrement">
-                                                    <svg width="14" height="2" viewBox="0 0 14 2"
-                                                        fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                        <path d="M1 1H13" stroke="currentColor" stroke-width="1.5"
-                                                            stroke-linecap="round" stroke-linejoin="round" />
-                                                    </svg>
-                                                </span>
-                                            </div>
-                                        </li>
                                         <li>
                                             <span class="mr-20">{{ __('translate.Adults') }}</span>
                                             <div class="tg-booking-quantity-item">
@@ -293,21 +265,12 @@
                 destination_id: '',
                 check_in: '',
                 check_out: '',
-                rooms: '',
                 adults: '',
                 children: '',
 
                 selectDestination(destinationId, destinationName) {
                     this.destination_id = destinationId;
                     this.destination = destinationName;
-                },
-                incrementRooms() {
-                    this.rooms++;
-                },
-                decrementRooms() {
-                    if (this.rooms > 0) {
-                        this.rooms--;
-                    }
                 },
                 incrementAdults() {
                     this.adults++;
@@ -332,7 +295,6 @@
                         destination_id: this.destination_id,
                         check_in: this.check_in,
                         check_out: this.check_out,
-                        rooms: this.rooms,
                         adults: this.adults,
                         children: this.children
                     });

@@ -1572,7 +1572,7 @@ return array(
   'Destination tags' => 'Destination tags',
   'Separator by comma. Ex: 01 Tour, 02 Hotel' => 'Separator by comma. Ex: 01 Tour, 02 Hotel',
   'Location:' => 'Location:',
-  'Select location' => 'Select location',
+  'Where to ?' => 'Where to ?',
   'Rooms' => 'Rooms',
   '% Offer' => '% Offer',
   'Sale offer' => 'Sale offer',
@@ -1896,5 +1896,7 @@ return array(
   'Flight Ticket Included' => 'Flight Ticket Included',
   'Check this if you want flight tickets included. This will redirect to quote request.' => 'Check this if you want flight tickets included. This will redirect to quote request.',
   'Request Quote' => 'Request Quote',
+  'Download the brochure' => 'Download the brochure',
+  'Download' => 'Download',
 );
 
