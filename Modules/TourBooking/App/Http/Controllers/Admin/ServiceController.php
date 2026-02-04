@@ -82,15 +82,6 @@ final class ServiceController extends Controller
 
         $data = $request->validated();
 
-        // Calculate discount prices from percentages
-        if (!empty($data['adult_price']) && !empty($data['adult_discount_percentage'])) {
-            $data['discount_adult_price'] = $data['adult_price'] - ($data['adult_price'] * ($data['adult_discount_percentage'] / 100));
-        }
-        
-        if (!empty($data['child_price']) && !empty($data['child_discount_percentage'])) {
-            $data['discount_child_price'] = $data['child_price'] - ($data['child_price'] * ($data['child_discount_percentage'] / 100));
-        }
-
         // Handle JSON fields
         $jsonFields = ['included', 'excluded', 'facilities', 'rules', 'safety', 'social_links'];
         foreach ($jsonFields as $field) {
@@ -261,15 +252,6 @@ final class ServiceController extends Controller
 
         // Handle main service update only if we're editing in admin language
         if ($lang_code === admin_lang()) {
-            // Calculate discount prices from percentages
-            if (!empty($data['adult_price']) && !empty($data['adult_discount_percentage'])) {
-                $data['discount_adult_price'] = $data['adult_price'] - ($data['adult_price'] * ($data['adult_discount_percentage'] / 100));
-            }
-            
-            if (!empty($data['child_price']) && !empty($data['child_discount_percentage'])) {
-                $data['discount_child_price'] = $data['child_price'] - ($data['child_price'] * ($data['child_discount_percentage'] / 100));
-            }
-
             // Handle JSON fields - convert newline-separated strings to arrays
             $jsonFields = ['included', 'excluded', 'facilities', 'rules', 'safety', 'social_links'];
             foreach ($jsonFields as $field) {
@@ -713,6 +695,12 @@ final class ServiceController extends Controller
             'periods.*.start_date' => 'required|date|after_or_equal:today',
             'periods.*.end_date' => 'required|date|after_or_equal:periods.*.start_date',
             'periods.*.max_people' => 'required|integer|min:1',
+            'periods.*.adult_price' => 'required|numeric|min:0',
+            'periods.*.child_price' => 'nullable|numeric|min:0',
+            'periods.*.adult_discount_percentage' => 'nullable|numeric|min:0|max:100',
+            'periods.*.child_discount_percentage' => 'nullable|numeric|min:0|max:100',
+            'periods.*.discount_adult_price' => 'nullable|numeric|min:0',
+            'periods.*.discount_child_price' => 'nullable|numeric|min:0',
         ]);
 
         $createdCount = 0;
@@ -731,11 +719,34 @@ final class ServiceController extends Controller
                 ->exists();
 
             if (!$overlapping) {
+                // Calculate discount prices if percentage is provided
+                $adultPrice = $periodData['adult_price'] ?? null;
+                $adultDiscountPercentage = $periodData['adult_discount_percentage'] ?? null;
+                $discountAdultPrice = $periodData['discount_adult_price'] ?? null;
+                
+                if ($adultPrice && $adultDiscountPercentage && !$discountAdultPrice) {
+                    $discountAdultPrice = $adultPrice - ($adultPrice * ($adultDiscountPercentage / 100));
+                }
+                
+                $childPrice = $periodData['child_price'] ?? null;
+                $childDiscountPercentage = $periodData['child_discount_percentage'] ?? null;
+                $discountChildPrice = $periodData['discount_child_price'] ?? null;
+                
+                if ($childPrice && $childDiscountPercentage && !$discountChildPrice) {
+                    $discountChildPrice = $childPrice - ($childPrice * ($childDiscountPercentage / 100));
+                }
+                
                 AvailabilityPeriod::create([
                     'service_id' => $service->id,
                     'start_date' => $periodData['start_date'],
                     'end_date' => $periodData['end_date'],
                     'max_people' => $periodData['max_people'],
+                    'adult_price' => $adultPrice,
+                    'child_price' => $childPrice,
+                    'adult_discount_percentage' => $adultDiscountPercentage,
+                    'child_discount_percentage' => $childDiscountPercentage,
+                    'discount_adult_price' => $discountAdultPrice,
+                    'discount_child_price' => $discountChildPrice,
                     'is_active' => true,
                 ]);
                 $createdCount++;

@@ -1,17 +1,18 @@
-@extends('admin.master_layout')
-@section('title')
-    <title>{{ __('translate.Service Availability') }}</title>
-@endsection
 
-@section('body-header')
-    <h3 class="crancy-header__title m-0">{{ __('translate.Service Availability Management') }}</h3>
+<?php $__env->startSection('title'); ?>
+    <title><?php echo e(__('translate.Service Availability')); ?></title>
+<?php $__env->stopSection(); ?>
+
+<?php $__env->startSection('body-header'); ?>
+    <h3 class="crancy-header__title m-0"><?php echo e(__('translate.Service Availability Management')); ?></h3>
     <p class="crancy-header__text">
-        {{ __('translate.Manage Availability') }} >> {{ $service->title }}
-    </p>
-@endsection
+        <?php echo e(__('translate.Manage Availability')); ?> >> <?php echo e($service->title); ?>
 
-@push('style_section')
-    <link rel="stylesheet" href="{{ asset('global/select2/select2.min.css') }}">
+    </p>
+<?php $__env->stopSection(); ?>
+
+<?php $__env->startPush('style_section'); ?>
+    <link rel="stylesheet" href="<?php echo e(asset('global/select2/select2.min.css')); ?>">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <style>
         .availability-calendar {
@@ -130,9 +131,9 @@
             gap: 10px;
         }
     </style>
-@endpush
+<?php $__env->stopPush(); ?>
 
-@section('body-content')
+<?php $__env->startSection('body-content'); ?>
     <section class="crancy-adashboard crancy-show">
         <div class="container container__bscreen">
             <div class="row">
@@ -144,14 +145,14 @@
                                     <div class="crancy-product-card">
                                         <div class="create_new_btn_inline_box">
                                             <h4 class="crancy-product-card__title">
-                                                {{ __('translate.Service Availability') }}</h4>
+                                                <?php echo e(__('translate.Service Availability')); ?></h4>
                                             <div>
-                                                <a href="{{ route('admin.tourbooking.services.edit', $service) }}"
+                                                <a href="<?php echo e(route('admin.tourbooking.services.edit', $service)); ?>"
                                                     class="crancy-btn"><i class="fa fa-edit"></i>
-                                                    {{ __('translate.Edit Service') }}</a>
-                                                <a href="{{ route('admin.tourbooking.services.index') }}"
+                                                    <?php echo e(__('translate.Edit Service')); ?></a>
+                                                <a href="<?php echo e(route('admin.tourbooking.services.index')); ?>"
                                                     class="crancy-btn"><i class="fa fa-list"></i>
-                                                    {{ __('translate.Service List') }}</a>
+                                                    <?php echo e(__('translate.Service List')); ?></a>
                                             </div>
                                         </div>
 
@@ -160,59 +161,60 @@
                                             <div class="col-12">
                                                 <div class="card">
                                                     <div class="card-header">
-                                                        <h5>{{ __('translate.Availability') }}</h5>
+                                                        <h5><?php echo e(__('translate.Availability')); ?></h5>
                                                     </div>
                                                     <div class="card-body">
                                                         <div class="alert alert-info">
                                                             <i class="fa fa-info-circle"></i>
-                                                            {{ __('translate.Add multiple availability periods with maximum number of people for each period.') }}
+                                                            <?php echo e(__('translate.Add multiple availability periods with maximum number of people for each period.')); ?>
+
                                                         </div>
 
                                                         <!-- Add New Period Form -->
                                                         <div class="date-range-select">
                                                             <h5 class="date-range-title">
-                                                                <i class="fa fa-plus-circle"></i> {{ __('translate.Add New Period') }}</h5>
+                                                                <i class="fa fa-plus-circle"></i> <?php echo e(__('translate.Add New Period')); ?></h5>
                                                             <div class="row">
                                                                 <div class="col-md-3">
                                                                     <div class="date-picker-container">
-                                                                        <label>{{ __('translate.Start Date') }}</label>
+                                                                        <label><?php echo e(__('translate.Start Date')); ?></label>
                                                                         <input type="text" id="startDate"
                                                                             class="crancy__item-input datepicker-start"
-                                                                            placeholder="{{ __('translate.Select start date') }}" readonly>
+                                                                            placeholder="<?php echo e(__('translate.Select start date')); ?>" readonly>
                                                                     </div>
                                                                 </div>
                                                                 <div class="col-md-3">
                                                                     <div class="date-picker-container">
-                                                                        <label>{{ __('translate.End Date') }}</label>
+                                                                        <label><?php echo e(__('translate.End Date')); ?></label>
                                                                         <input type="text" id="endDate"
                                                                             class="crancy__item-input datepicker-end"
-                                                                            placeholder="{{ __('translate.Select end date') }}" readonly>
+                                                                            placeholder="<?php echo e(__('translate.Select end date')); ?>" readonly>
                                                                     </div>
                                                                 </div>
                                                                 <div class="col-md-2">
                                                                     <div class="date-picker-container">
-                                                                        <label>{{ __('translate.Max People') }}</label>
+                                                                        <label><?php echo e(__('translate.Max People')); ?></label>
                                                                         <input type="number" id="maxPeople"
                                                                             class="crancy__item-input"
-                                                                            placeholder="{{ __('translate.Max people') }}"
+                                                                            placeholder="<?php echo e(__('translate.Max people')); ?>"
                                                                             min="1" required>
                                                                     </div>
                                                                 </div>
                                                                 <div class="col-md-2">
                                                                     <div class="date-picker-container">
-                                                                        <label>{{ __('translate.Adult Price') }} <span class="text-danger">*</span></label>
+                                                                        <label><?php echo e(__('translate.Adult Price')); ?> <span class="text-danger">*</span></label>
                                                                         <input type="number" step="0.01" id="adultPrice"
                                                                             class="crancy__item-input"
-                                                                            placeholder="{{ __('translate.Adult price') }}"
+                                                                            placeholder="<?php echo e(__('translate.Adult price')); ?>"
                                                                             min="0" required>
                                                                     </div>
                                                                 </div>
                                                                 <div class="col-md-2">
                                                                     <div class="date-picker-container">
-                                                                        <label>{{ __('translate.Child Price') }}</label>
+                                                                        <label><?php echo e(__('translate.Child Price')); ?></label>
                                                                         <input type="number" step="0.01" id="childPrice"
                                                                             class="crancy__item-input"
-                                                                            placeholder="{{ __('translate.Child price') }}"
+                                                                            placeholder="<?php echo e(__('translate.Child price')); ?>"
                                                                             min="0">
                                                                     </div>
                                                                 </div>
@@ -221,27 +223,27 @@
                                                             <!-- Pricing & Discount Section -->
                                                             <div class="row mt-3 pricing-section" style="background: #f8f9fa; padding: 15px; border-radius: 5px; border-left: 4px solid #28a745;">
                                                                 <div class="col-12 mb-3">
-                                                                    <h6 class="mb-0"><i class="fa fa-tags text-success"></i> {{ __('translate.Pricing & Discounts') }}</h6>
-                                                                    <small class="text-danger"><strong>* {{ __('translate.Adult Price is required') }}</strong></small>
+                                                                    <h6 class="mb-0"><i class="fa fa-tags text-success"></i> <?php echo e(__('translate.Pricing & Discounts')); ?></h6>
+                                                                    <small class="text-danger"><strong>* <?php echo e(__('translate.Adult Price is required')); ?></strong></small>
                                                                 </div>
                                                                 
                                                                 <!-- Adult Pricing -->
                                                                 <div class="col-md-6">
                                                                     <div class="card border-success">
                                                                         <div class="card-header bg-success text-white py-2">
-                                                                            <strong><i class="fa fa-user"></i> {{ __('translate.Adult Pricing') }} <span class="text-warning">*</span></strong>
+                                                                            <strong><i class="fa fa-user"></i> <?php echo e(__('translate.Adult Pricing')); ?> <span class="text-warning">*</span></strong>
                                                                         </div>
                                                                         <div class="card-body">
                                                                             <div class="row">
                                                                                 <div class="col-md-6">
-                                                                                    <label>{{ __('translate.Base Price') }}</label>
+                                                                                    <label><?php echo e(__('translate.Base Price')); ?></label>
                                                                                     <input type="number" step="0.01" id="adultPriceDetail"
                                                                                         class="crancy__item-input"
-                                                                                        placeholder="{{ __('translate.Base price') }}"
+                                                                                        placeholder="<?php echo e(__('translate.Base price')); ?>"
                                                                                         min="0">
                                                                                 </div>
                                                                                 <div class="col-md-6">
-                                                                                    <label>{{ __('translate.Discount %') }}</label>
+                                                                                    <label><?php echo e(__('translate.Discount %')); ?></label>
                                                                                     <input type="number" step="0.01" id="adultDiscountPercentage"
                                                                                         class="crancy__item-input"
                                                                                         placeholder="0%"
@@ -250,10 +252,10 @@
                                                                             </div>
                                                                             <div class="row mt-2">
                                                                                 <div class="col-md-6">
-                                                                                    <label>{{ __('translate.Final Price') }}</label>
+                                                                                    <label><?php echo e(__('translate.Final Price')); ?></label>
                                                                                     <input type="number" step="0.01" id="discountAdultPrice"
                                                                                         class="crancy__item-input bg-light"
-                                                                                        placeholder="{{ __('translate.Auto calculated') }}"
+                                                                                        placeholder="<?php echo e(__('translate.Auto calculated')); ?>"
                                                                                         min="0" readonly>
                                                                                 </div>
                                                                                 <div class="col-md-6 d-flex align-items-end">
@@ -268,19 +270,19 @@
                                                                 <div class="col-md-6">
                                                                     <div class="card border-info">
                                                                         <div class="card-header bg-info text-white py-2">
-                                                                            <strong><i class="fa fa-child"></i> {{ __('translate.Child Pricing') }}</strong>
+                                                                            <strong><i class="fa fa-child"></i> <?php echo e(__('translate.Child Pricing')); ?></strong>
                                                                         </div>
                                                                         <div class="card-body">
                                                                             <div class="row">
                                                                                 <div class="col-md-6">
-                                                                                    <label>{{ __('translate.Base Price') }}</label>
+                                                                                    <label><?php echo e(__('translate.Base Price')); ?></label>
                                                                                     <input type="number" step="0.01" id="childPriceDetail"
                                                                                         class="crancy__item-input"
-                                                                                        placeholder="{{ __('translate.Base price') }}"
+                                                                                        placeholder="<?php echo e(__('translate.Base price')); ?>"
                                                                                         min="0">
                                                                                 </div>
                                                                                 <div class="col-md-6">
-                                                                                    <label>{{ __('translate.Discount %') }}</label>
+                                                                                    <label><?php echo e(__('translate.Discount %')); ?></label>
                                                                                     <input type="number" step="0.01" id="childDiscountPercentage"
                                                                                         class="crancy__item-input"
                                                                                         placeholder="0%"
@@ -289,10 +291,10 @@
                                                                             </div>
                                                                             <div class="row mt-2">
                                                                                 <div class="col-md-6">
-                                                                                    <label>{{ __('translate.Final Price') }}</label>
+                                                                                    <label><?php echo e(__('translate.Final Price')); ?></label>
                                                                                     <input type="number" step="0.01" id="discountChildPrice"
                                                                                         class="crancy__item-input bg-light"
-                                                                                        placeholder="{{ __('translate.Auto calculated') }}"
+                                                                                        placeholder="<?php echo e(__('translate.Auto calculated')); ?>"
                                                                                         min="0" readonly>
                                                                                 </div>
                                                                                 <div class="col-md-6 d-flex align-items-end">
@@ -309,7 +311,8 @@
                                                                     <div class="availability-actions">
                                                                         <button type="button" id="addPeriodBtn"
                                                                             class="crancy-btn btn-success">
-                                                                            <i class="fa fa-plus"></i> {{ __('translate.Add Period') }}
+                                                                            <i class="fa fa-plus"></i> <?php echo e(__('translate.Add Period')); ?>
+
                                                                         </button>
                                                                     </div>
                                                                 </div>
@@ -319,7 +322,8 @@
                                                         <!-- Periods List -->
                                                         <div id="periodsList" class="mt-4">
                                                             <h5 class="date-range-title">
-                                                                <i class="fa fa-calendar"></i> {{ __('translate.Availability Periods') }}
+                                                                <i class="fa fa-calendar"></i> <?php echo e(__('translate.Availability Periods')); ?>
+
                                                                 <span id="periodsCount" class="badge bg-primary ms-2">0</span>
                                                             </h5>
                                                             <div id="periodsContainer">
@@ -329,11 +333,12 @@
 
                                                         <!-- Save All Periods Button -->
                                                         <div class="mt-4">
-                                                            <form id="saveAllPeriodsForm" method="POST" action="{{ route('admin.tourbooking.services.availability.periods.store', $service) }}">
-                                                                @csrf
+                                                            <form id="saveAllPeriodsForm" method="POST" action="<?php echo e(route('admin.tourbooking.services.availability.periods.store', $service)); ?>">
+                                                                <?php echo csrf_field(); ?>
                                                                 <div id="periodsInputContainer"></div>
                                                                 <button type="submit" class="crancy-btn btn-success">
-                                                                    <i class="fa fa-save"></i> {{ __('translate.Save All Periods') }}
+                                                                    <i class="fa fa-save"></i> <?php echo e(__('translate.Save All Periods')); ?>
+
                                                                 </button>
                                                             </form>
                                                         </div>
@@ -343,73 +348,77 @@
 
                                             <!-- Existing Availability Periods Table -->
                                             <div class="col-12 mg-top-30">
-                                                <h5>{{ __('translate.Saved Availability Periods') }}</h5>
+                                                <h5><?php echo e(__('translate.Saved Availability Periods')); ?></h5>
                                                 <div class="table-responsive">
                                                     <table class="table table-bordered table-hover">
                                                         <thead>
                                                             <tr>
-                                                                <th>{{ __('translate.Start Date') }}</th>
-                                                                <th>{{ __('translate.End Date') }}</th>
-                                                                <th>{{ __('translate.Max People') }}</th>
-                                                                <th>{{ __('translate.Adult Price') }}</th>
-                                                                <th>{{ __('translate.Child Price') }}</th>
-                                                                <th>{{ __('translate.Status') }}</th>
-                                                                <th>{{ __('translate.Action') }}</th>
+                                                                <th><?php echo e(__('translate.Start Date')); ?></th>
+                                                                <th><?php echo e(__('translate.End Date')); ?></th>
+                                                                <th><?php echo e(__('translate.Max People')); ?></th>
+                                                                <th><?php echo e(__('translate.Adult Price')); ?></th>
+                                                                <th><?php echo e(__('translate.Child Price')); ?></th>
+                                                                <th><?php echo e(__('translate.Status')); ?></th>
+                                                                <th><?php echo e(__('translate.Action')); ?></th>
                                                             </tr>
                                                         </thead>
                                                         <tbody>
-                                                            @if(isset($service->availability_periods) && count($service->availability_periods) > 0)
-                                                                @foreach($service->availability_periods as $period)
+                                                            <?php if(isset($service->availability_periods) && count($service->availability_periods) > 0): ?>
+                                                                <?php $__currentLoopData = $service->availability_periods; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $period): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                                                     <tr>
-                                                                        <td>{{ date('d M Y', strtotime($period->start_date)) }}</td>
-                                                                        <td>{{ date('d M Y', strtotime($period->end_date)) }}</td>
-                                                                        <td><span class="badge bg-info">{{ $period->max_people }}</span></td>
+                                                                        <td><?php echo e(date('d M Y', strtotime($period->start_date))); ?></td>
+                                                                        <td><?php echo e(date('d M Y', strtotime($period->end_date))); ?></td>
+                                                                        <td><span class="badge bg-info"><?php echo e($period->max_people); ?></span></td>
                                                                         <td>
-                                                                            @if($period->adult_price)
+                                                                            <?php if($period->adult_price): ?>
                                                                                 <div>
-                                                                                    {!! $period->adult_price_display !!}
-                                                                                    @if($period->adult_discount_badge)
-                                                                                        <br>{!! $period->adult_discount_badge !!}
-                                                                                    @endif
+                                                                                    <?php echo $period->adult_price_display; ?>
+
+                                                                                    <?php if($period->adult_discount_badge): ?>
+                                                                                        <br><?php echo $period->adult_discount_badge; ?>
+
+                                                                                    <?php endif; ?>
                                                                                 </div>
-                                                                            @else
-                                                                                <span class="text-muted">{{ __('translate.Default') }}</span>
-                                                                            @endif
+                                                                            <?php else: ?>
+                                                                                <span class="text-muted"><?php echo e(__('translate.Default')); ?></span>
+                                                                            <?php endif; ?>
                                                                         </td>
                                                                         <td>
-                                                                            @if($period->child_price)
+                                                                            <?php if($period->child_price): ?>
                                                                                 <div>
-                                                                                    {!! $period->child_price_display !!}
-                                                                                    @if($period->child_discount_badge)
-                                                                                        <br>{!! $period->child_discount_badge !!}
-                                                                                    @endif
+                                                                                    <?php echo $period->child_price_display; ?>
+
+                                                                                    <?php if($period->child_discount_badge): ?>
+                                                                                        <br><?php echo $period->child_discount_badge; ?>
+
+                                                                                    <?php endif; ?>
                                                                                 </div>
-                                                                            @else
-                                                                                <span class="text-muted">{{ __('translate.Default') }}</span>
-                                                                            @endif
+                                                                            <?php else: ?>
+                                                                                <span class="text-muted"><?php echo e(__('translate.Default')); ?></span>
+                                                                            <?php endif; ?>
                                                                         </td>
                                                                         <td>
-                                                                            @if($period->is_active)
-                                                                                <span class="badge bg-success">{{ __('translate.Active') }}</span>
-                                                                            @else
-                                                                                <span class="badge bg-danger">{{ __('translate.Inactive') }}</span>
-                                                                            @endif
+                                                                            <?php if($period->is_active): ?>
+                                                                                <span class="badge bg-success"><?php echo e(__('translate.Active')); ?></span>
+                                                                            <?php else: ?>
+                                                                                <span class="badge bg-danger"><?php echo e(__('translate.Inactive')); ?></span>
+                                                                            <?php endif; ?>
                                                                         </td>
                                                                         <td class="availability-flex">
                                                                             <button type="button" class="btn btn-sm btn-danger delete-period"
-                                                                                data-id="{{ $period->id }}"
-                                                                                data-start-date="{{ date('d M Y', strtotime($period->start_date)) }}"
-                                                                                data-end-date="{{ date('d M Y', strtotime($period->end_date)) }}">
+                                                                                data-id="<?php echo e($period->id); ?>"
+                                                                                data-start-date="<?php echo e(date('d M Y', strtotime($period->start_date))); ?>"
+                                                                                data-end-date="<?php echo e(date('d M Y', strtotime($period->end_date))); ?>">
                                                                                 <i class="fa fa-trash"></i>
                                                                             </button>
                                                                         </td>
                                                                     </tr>
-                                                                @endforeach
-                                                            @else
+                                                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                                            <?php else: ?>
                                                                 <tr>
-                                                                    <td colspan="7" class="text-center">{{ __('translate.No availability periods configured') }}</td>
+                                                                    <td colspan="7" class="text-center"><?php echo e(__('translate.No availability periods configured')); ?></td>
                                                                 </tr>
-                                                            @endif
+                                                            <?php endif; ?>
                                                         </tbody>
                                                     </table>
                                                 </div>
@@ -428,49 +437,49 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">{{ __('translate.Edit Availability') }}</h5>
+                    <h5 class="modal-title"><?php echo e(__('translate.Edit Availability')); ?></h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <form id="editAvailabilityForm" method="POST">
-                    @csrf
-                    @method('PUT')
+                    <?php echo csrf_field(); ?>
+                    <?php echo method_field('PUT'); ?>
                     <div class="modal-body">
                         <div class="form-group mb-3">
-                            <label>{{ __('translate.Date') }}</label>
+                            <label><?php echo e(__('translate.Date')); ?></label>
                             <input type="text" id="edit_date" class="crancy__item-input datepicker" required>
                         </div>
                         <div class="form-group mb-3">
-                            <label>{{ __('translate.Start Time') }}</label>
+                            <label><?php echo e(__('translate.Start Time')); ?></label>
                             <input type="time" id="edit_start_time" class="crancy__item-input">
                         </div>
                         <div class="form-group mb-3">
-                            <label>{{ __('translate.End Time') }}</label>
+                            <label><?php echo e(__('translate.End Time')); ?></label>
                             <input type="time" id="edit_end_time" class="crancy__item-input">
                         </div>
                         <div class="form-group mb-3">
-                            <label>{{ __('translate.Available Spots') }}</label>
+                            <label><?php echo e(__('translate.Available Spots')); ?></label>
                             <input type="number" id="edit_available_spots" class="crancy__item-input" min="1">
                         </div>
                         <div class="form-group mb-3">
-                            <label>{{ __('translate.Special Price') }}</label>
+                            <label><?php echo e(__('translate.Special Price')); ?></label>
                             <input type="number" step="0.01" id="edit_special_price" class="crancy__item-input">
                         </div>
                         <div class="form-group mb-3">
-                            <label>{{ __('translate.Status') }}</label>
+                            <label><?php echo e(__('translate.Status')); ?></label>
                             <div class="form-check form-switch">
                                 <input class="form-check-input" type="checkbox" name="is_available" id="edit_is_available" value="1">
-                                <label class="form-check-label" for="edit_is_available">{{ __('translate.Available') }}</label>
+                                <label class="form-check-label" for="edit_is_available"><?php echo e(__('translate.Available')); ?></label>
                             </div>
                         </div>
                         <div class="form-group mb-3">
-                            <label>{{ __('translate.Notes') }}</label>
+                            <label><?php echo e(__('translate.Notes')); ?></label>
                             <textarea id="edit_notes" class="crancy__item-input" rows="3"></textarea>
                         </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary"
-                            data-bs-dismiss="modal">{{ __('translate.Cancel') }}</button>
-                        <button type="submit" class="btn btn-primary">{{ __('translate.Update') }}</button>
+                            data-bs-dismiss="modal"><?php echo e(__('translate.Cancel')); ?></button>
+                        <button type="submit" class="btn btn-primary"><?php echo e(__('translate.Update')); ?></button>
                     </div>
                 </form>
             </div>
@@ -482,30 +491,30 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">{{ __('translate.Delete Period') }}</h5>
+                    <h5 class="modal-title"><?php echo e(__('translate.Delete Period')); ?></h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <p>{{ __('translate.Are you sure you want to delete this period?') }}</p>
-                    <p><strong>{{ __('translate.Start Date') }}:</strong> <span id="deletePeriodStartDate"></span></p>
-                    <p><strong>{{ __('translate.End Date') }}:</strong> <span id="deletePeriodEndDate"></span></p>
+                    <p><?php echo e(__('translate.Are you sure you want to delete this period?')); ?></p>
+                    <p><strong><?php echo e(__('translate.Start Date')); ?>:</strong> <span id="deletePeriodStartDate"></span></p>
+                    <p><strong><?php echo e(__('translate.End Date')); ?>:</strong> <span id="deletePeriodEndDate"></span></p>
                 </div>
                 <div class="modal-footer">
                     <form id="deletePeriodForm" method="POST">
-                        @csrf
-                        @method('DELETE')
+                        <?php echo csrf_field(); ?>
+                        <?php echo method_field('DELETE'); ?>
                         <button type="button" class="btn btn-secondary"
-                            data-bs-dismiss="modal">{{ __('translate.Cancel') }}</button>
-                        <button type="submit" class="btn btn-danger">{{ __('translate.Delete') }}</button>
+                            data-bs-dismiss="modal"><?php echo e(__('translate.Cancel')); ?></button>
+                        <button type="submit" class="btn btn-danger"><?php echo e(__('translate.Delete')); ?></button>
                     </form>
                 </div>
             </div>
         </div>
     </div>
-@endsection
+<?php $__env->stopSection(); ?>
 
-@push('js_section')
-    <script src="{{ asset('global/select2/select2.min.js') }}"></script>
+<?php $__env->startPush('js_section'); ?>
+    <script src="<?php echo e(asset('global/select2/select2.min.js')); ?>"></script>
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script>
         (function($) {
@@ -651,17 +660,17 @@
 
                     // Validation
                     if (!startDate || !endDate) {
-                        alert('{{ __("translate.Please select both start and end dates.") }}');
+                        alert('<?php echo e(__("translate.Please select both start and end dates.")); ?>');
                         return;
                     }
 
                     if (maxPeople === '' || maxPeople < 1) {
-                        alert('{{ __("translate.Please enter a valid number of people.") }}');
+                        alert('<?php echo e(__("translate.Please enter a valid number of people.")); ?>');
                         return;
                     }
                     
                     if (!adultPrice || adultPrice <= 0) {
-                        alert('{{ __("translate.Please enter a valid adult price.") }}');
+                        alert('<?php echo e(__("translate.Please enter a valid adult price.")); ?>');
                         return;
                     }
 
@@ -706,7 +715,7 @@
                     periodsContainer.empty();
  
                     if (periods.length === 0) {
-                        periodsContainer.html('<div class="alert alert-warning">{{ __("translate.No periods added yet.") }}</div>');
+                        periodsContainer.html('<div class="alert alert-warning"><?php echo e(__("translate.No periods added yet.")); ?></div>');
                         $('#periodsCount').text('0');
                         return;
                     }
@@ -748,9 +757,9 @@
                             <div class="period-card" data-id="${period.id}">
                                 <div class="period-header">
                                     <div>
-                                        <strong>{{ __("translate.Period") }} ${index + 1}:</strong>
+                                        <strong><?php echo e(__("translate.Period")); ?> ${index + 1}:</strong>
                                         <span class="badge bg-primary">${formattedStartDate} - ${formattedEndDate}</span>
-                                        <span class="badge bg-secondary">{{ __("translate.Max People") }}: ${period.max_people}</span>
+                                        <span class="badge bg-secondary"><?php echo e(__("translate.Max People")); ?>: ${period.max_people}</span>
                                         ${pricingHtml}
                                     </div>
                                     <button type="button" class="btn btn-sm btn-danger remove-period" data-id="${period.id}">
@@ -812,7 +821,7 @@
                     $('#deletePeriodStartDate').text(startDate);
                     $('#deletePeriodEndDate').text(endDate);
 
-                    const url = "{{ route('admin.tourbooking.services.periods.destroy', ['service' => $service->id, 'period' => ':id']) }}";
+                    const url = "<?php echo e(route('admin.tourbooking.services.periods.destroy', ['service' => $service->id, 'period' => ':id'])); ?>";
                     $('#deletePeriodForm').attr('action', url.replace(':id', id));
 
                     $('#deletePeriodModal').modal('show');
@@ -823,4 +832,6 @@
             });
         })(jQuery);
     </script>
-@endpush
+<?php $__env->stopPush(); ?>
+
+<?php echo $__env->make('admin.master_layout', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH D:\xampp\htdocs\archive\archive\Modules/TourBooking\resources/views/admin/services/availability.blade.php ENDPATH**/ ?>

@@ -7,6 +7,201 @@
 <?php $__env->stopSection(); ?>
 
 <?php $__env->startSection('front-content'); ?>
+
+<?php $__env->startPush('css'); ?>
+<style>
+    /* Month Selector Styles */
+    .month-selector-container {
+        background: #f8f9fa;
+        border-radius: 12px;
+        padding: 15px;
+        border: 1px solid #e9ecef;
+    }
+    
+    .year-navigation {
+        background: white;
+        border-radius: 8px;
+        padding: 10px 15px;
+        margin-bottom: 15px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    }
+    
+    .year-nav-btn {
+        background: #f8f9fa;
+        border: none;
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .year-nav-btn:hover:not(:disabled) {
+        background: #e9ecef;
+    }
+    
+    .year-nav-btn:disabled {
+        opacity: 0.4;
+        cursor: not-allowed;
+    }
+    
+    .current-year {
+        font-size: 18px;
+        font-weight: 700;
+        color: #333;
+    }
+    
+    .year-block {
+        display: none;
+    }
+    
+    .year-block.active {
+        display: block;
+        animation: fadeIn 0.3s ease;
+    }
+    
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(-10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .months-row {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 8px;
+    }
+    
+    @media (max-width: 576px) {
+        .months-row {
+            grid-template-columns: repeat(3, 1fr);
+        }
+    }
+    
+    .month-cell {
+        background: white;
+        border: 2px solid transparent;
+        border-radius: 10px;
+        padding: 12px 8px;
+        text-align: center;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        min-height: 70px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+    
+    .month-cell:hover:not(.unavailable) {
+        border-color: #28a745;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(40, 167, 69, 0.15);
+    }
+    
+    .month-cell.selected {
+        border-color: #28a745;
+        background: #d4edda;
+    }
+    
+    .month-cell.available {
+        background: white;
+    }
+    
+    .month-cell.unavailable {
+        background: #f8f9fa;
+        opacity: 0.6;
+        cursor: not-allowed;
+    }
+    
+    .month-cell.discounted {
+        background: #fff3cd;
+        border-color: #ffc107;
+    }
+    
+    .month-cell.discounted:hover {
+        border-color: #e0a800;
+        box-shadow: 0 4px 12px rgba(255, 193, 7, 0.25);
+    }
+    
+    .month-name {
+        font-size: 13px;
+        font-weight: 600;
+        color: #495057;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+    
+    .month-price {
+        font-size: 12px;
+        color: #6c757d;
+        margin-top: 4px;
+        font-weight: 500;
+    }
+    
+    .month-price.price-discounted {
+        color: #dc3545;
+        font-weight: 700;
+    }
+    
+    .month-cell.unavailable .month-name {
+        color: #adb5bd;
+    }
+    
+    .month-cell.unavailable .month-price {
+        color: #ced4da;
+    }
+    
+    .selected-month-info .alert {
+        border-radius: 8px;
+        border: none;
+    }
+    
+    /* Discount Badge */
+    .discount-badge {
+        display: inline-block;
+        background: #dc3545;
+        color: white;
+        font-size: 10px;
+        font-weight: 700;
+        padding: 2px 6px;
+        border-radius: 10px;
+        margin-top: 2px;
+    }
+    
+    /* Period Details in Info Box */
+    .period-price-info {
+        display: flex;
+        gap: 15px;
+        margin-top: 8px;
+        flex-wrap: wrap;
+    }
+    
+    .period-price-info .price-item {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        font-size: 13px;
+    }
+    
+    .period-price-info .price-item i {
+        color: #28a745;
+    }
+    
+    .period-price-info .price-item .original-price {
+        text-decoration: line-through;
+        color: #6c757d;
+    }
+    
+    .period-price-info .price-item .discounted-price {
+        color: #dc3545;
+        font-weight: 700;
+    }
+</style>
+<?php $__env->stopPush(); ?>
+
     <!-- main-area -->
     <main>
 
@@ -696,41 +891,168 @@
                                 </div>
 
                                 <?php if($service->availability_periods && $service->availability_periods->count() > 0): ?>
+                                    <?php
+                                        // Group periods by month and year
+                                        $periodsByMonth = [];
+                                        $currentYear = now()->year;
+                                        $years = [];
+                                        
+                                        foreach ($service->availability_periods as $period) {
+                                            $startDate = \Carbon\Carbon::parse($period->start_date);
+                                            $endDate = \Carbon\Carbon::parse($period->end_date);
+                                            
+                                            // Get all months covered by this period
+                                            $currentDate = $startDate->copy();
+                                            while ($currentDate <= $endDate) {
+                                                $year = $currentDate->year;
+                                                $month = $currentDate->month;
+                                                $key = $year . '-' . $month;
+                                                
+                                                if (!isset($periodsByMonth[$year])) {
+                                                    $periodsByMonth[$year] = [];
+                                                }
+                                                if (!isset($periodsByMonth[$year][$month])) {
+                                                    $periodsByMonth[$year][$month] = [];
+                                                }
+                                                
+                                                // Only add period if not already added for this month
+                                                $alreadyAdded = false;
+                                                foreach ($periodsByMonth[$year][$month] as $existingPeriod) {
+                                                    if ($existingPeriod['id'] === $period->id) {
+                                                        $alreadyAdded = true;
+                                                        break;
+                                                    }
+                                                }
+                                                
+                                                if (!$alreadyAdded) {
+                                                    // Calculate price for display
+                                                    $adultPrice = $period->adult_price ?? $service->adult_price;
+                                                    $discountPercentage = $period->adult_discount_percentage ?? $service->adult_discount_percentage;
+                                                    $discountedPrice = $adultPrice;
+                                                    
+                                                    if ($discountPercentage > 0) {
+                                                        $discountedPrice = $adultPrice - ($adultPrice * ($discountPercentage / 100));
+                                                    } elseif ($period->discount_adult_price) {
+                                                        $discountedPrice = $period->discount_adult_price;
+                                                    } elseif ($service->discount_adult_price) {
+                                                        $discountedPrice = $service->discount_adult_price;
+                                                    }
+                                                    
+                                                    $periodsByMonth[$year][$month][] = [
+                                                        'id' => $period->id,
+                                                        'start_date' => $period->start_date,
+                                                        'end_date' => $period->end_date,
+                                                        'adult_price' => $adultPrice,
+                                                        'discounted_price' => $discountedPrice,
+                                                        'discount_percentage' => $discountPercentage,
+                                                        'max_people' => $period->max_people,
+                                                    ];
+                                                }
+                                                
+                                                $currentDate->addMonth();
+                                                $currentDate->day = 1; // Reset to first day of month
+                                            }
+                                            
+                                            if (!in_array($startDate->year, $years)) {
+                                                $years[] = $startDate->year;
+                                            }
+                                            if (!in_array($endDate->year, $years)) {
+                                                $years[] = $endDate->year;
+                                            }
+                                        }
+                                        
+                                        sort($years);
+                                        $monthNames = [
+                                            1 => __('translate.Jan'), 2 => __('translate.Feb'), 3 => __('translate.Mar'),
+                                            4 => __('translate.Apr'), 5 => __('translate.May'), 6 => __('translate.Jun'),
+                                            7 => __('translate.Jul'), 8 => __('translate.Aug'), 9 => __('translate.Sep'),
+                                            10 => __('translate.Oct'), 11 => __('translate.Nov'), 12 => __('translate.Dec')
+                                        ];
+                                        $monthNamesFull = [
+                                            1 => __('translate.January'), 2 => __('translate.February'), 3 => __('translate.March'),
+                                            4 => __('translate.April'), 5 => __('translate.May'), 6 => __('translate.June'),
+                                            7 => __('translate.July'), 8 => __('translate.August'), 9 => __('translate.September'),
+                                            10 => __('translate.October'), 11 => __('translate.November'), 12 => __('translate.December')
+                                        ];
+                                    ?>
+                                    
                                     <div class="tg-tour-about-time mb-10">
-                                        <span class="time mb-10 d-block">Available Dates:</span>
-                                        <div class="availability-date-picker">
-                                            <div class="availability-dropdown-container">
-                                                <button type="button" class="availability-dropdown-btn" id="availability-dropdown-toggle">
-                                                    <span id="selected-period-text">Select a period</span>
-                                                    <i class="fa-solid fa-chevron-down dropdown-arrow"></i>
+                                        <span class="time mb-10 d-block"><?php echo e(__('translate.Availability by Month')); ?>:</span>
+                                        
+                                        <!-- Month Selector Component -->
+                                        <div class="month-selector-container">
+                                            <!-- Year Navigation -->
+                                            <div class="year-navigation d-flex justify-content-between align-items-center mb-3">
+                                                <button type="button" class="year-nav-btn prev-year" id="prevYearBtn">
+                                                    <i class="fa-solid fa-chevron-left"></i>
                                                 </button>
-                                                <div class="availability-dropdown-menu" id="availability-dropdown-menu">
-                                                    <div class="availability-dropdown-search">
-                                                        <input type="text" id="period-search" placeholder="Search dates...">
-                                                    </div>
-                                                    <div class="availability-dropdown-list" id="availability-dropdown-list">
-                                                        <?php $__currentLoopData = $service->availability_periods; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $period): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                                            <?php
-                                                                $startDate = \Carbon\Carbon::parse($period->start_date);
-                                                                $endDate = \Carbon\Carbon::parse($period->end_date);
-                                                                $days = $startDate->diffInDays($endDate) + 1;
-                                                            ?>
-                                                            <div class="availability-period-option" data-period-id="<?php echo e($period->id); ?>" data-start-date="<?php echo e($period->start_date); ?>" data-end-date="<?php echo e($period->end_date); ?>" data-days="<?php echo e($days); ?>">
-                                                                <div class="period-dates">
-                                                                    <span class="period-start"><?php echo e(\Carbon\Carbon::parse($period->start_date)->format('d M')); ?></span>
-                                                                    <span class="period-separator">→</span>
-                                                                    <span class="period-end"><?php echo e(\Carbon\Carbon::parse($period->end_date)->format('d M Y')); ?></span>
+                                                <span class="current-year" id="currentYearDisplay"><?php echo e($years[0] ?? $currentYear); ?></span>
+                                                <button type="button" class="year-nav-btn next-year" id="nextYearBtn">
+                                                    <i class="fa-solid fa-chevron-right"></i>
+                                                </button>
+                                            </div>
+                                            
+                                            <!-- Months Grid -->
+                                            <div class="months-grid" id="monthsGrid">
+                                                <?php $__currentLoopData = $years; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $year): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                                    <div class="year-block <?php echo e($loop->first ? 'active' : ''); ?>" data-year="<?php echo e($year); ?>" id="yearBlock<?php echo e($year); ?>">
+                                                        <div class="months-row">
+                                                            <?php for($month = 1; $month <= 12; $month++): ?>
+                                                                <?php
+                                                                    $hasAvailability = isset($periodsByMonth[$year][$month]) && count($periodsByMonth[$year][$month]) > 0;
+                                                                    $period = $hasAvailability ? $periodsByMonth[$year][$month][0] : null;
+                                                                    $priceDisplay = '';
+                                                                    $isDiscounted = false;
+                                                                    
+                                                                    if ($hasAvailability && $period) {
+                                                                        $adultPrice = $period['adult_price'];
+                                                                        $discountedPrice = $period['discounted_price'];
+                                                                        $discountPercentage = $period['discount_percentage'];
+                                                                        
+                                                                        if ($discountPercentage > 0 || $discountedPrice < $adultPrice) {
+                                                                            $isDiscounted = true;
+                                                                        }
+                                                                        
+                                                                        $displayPrice = $discountedPrice ?? $adultPrice;
+                                                                        $priceDisplay = currency($displayPrice);
+                                                                    }
+                                                                ?>
+                                                                
+                                                                <div class="month-cell <?php echo e($hasAvailability ? 'available' : 'unavailable'); ?> <?php echo e($isDiscounted ? 'discounted' : ''); ?>" 
+                                                                     data-year="<?php echo e($year); ?>" 
+                                                                     data-month="<?php echo e($month); ?>"
+                                                                     data-month-name="<?php echo e($monthNamesFull[$month]); ?>"
+                                                                     <?php if($hasAvailability && $period): ?>
+                                                                         data-period-id="<?php echo e($period['id']); ?>"
+                                                                         data-start-date="<?php echo e($period['start_date']); ?>"
+                                                                         data-end-date="<?php echo e($period['end_date']); ?>"
+                                                                         data-adult-price="<?php echo e($period['adult_price']); ?>"
+                                                                         data-discounted-price="<?php echo e($period['discounted_price']); ?>"
+                                                                         data-discount-percentage="<?php echo e($period['discount_percentage']); ?>"
+                                                                     <?php endif; ?>
+                                                                >
+                                                                    <span class="month-name"><?php echo e($monthNames[$month]); ?></span>
+                                                                    <?php if($hasAvailability): ?>
+                                                                        <span class="month-price <?php echo e($isDiscounted ? 'price-discounted' : ''); ?>"><?php echo e($priceDisplay); ?></span>
+                                                                    <?php else: ?>
+                                                                        <span class="month-price">-</span>
+                                                                    <?php endif; ?>
                                                                 </div>
-                                                                <div class="period-details">
-                                                                    <span class="period-days"><i class="fa-solid fa-calendar-days"></i> <?php echo e($days); ?> <?php echo e($days == 1 ? 'day' : 'days'); ?></span>
-                                                                </div>
-                                                            </div>
-                                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                                            <?php endfor; ?>
+                                                        </div>
                                                     </div>
+                                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                            </div>
+                                            
+                                            <!-- Selected Period Info -->
+                                            <input type="hidden" name="availability_period_id" id="selected-availability-period-id">
+                                            <input type="hidden" name="check_in_date" id="selected-check-in-date">
+                                            <div id="selected-month-info" class="selected-month-info mt-3" style="display: none;">
+                                                <div class="alert alert-success mb-0">
+                                                    <strong id="selected-month-name"></strong>
+                                                    <p class="mb-0 mt-1" id="selected-period-details"></p>
                                                 </div>
                                             </div>
-                                            <input type="hidden" name="availability_period_id" id="selected-availability-period-id">
-                                            <div id="period-info" class="period-info mt-2"></div>
                                         </div>
                                     </div>
                                 <?php endif; ?>
@@ -745,14 +1067,14 @@
                                             <span>Adult</span>
                                             <p class="mb-0">
                                                 (18+ years)
-                                                <span><?php echo $service->adult_price_display; ?></span>
-                                            </p>
-                                            <?php if($service->adult_discount_badge): ?>
-                                                <div class="discount-badge-below-price">
-                                                    <?php echo $service->adult_discount_badge; ?>
+                                                <span x-html="formatCurrency(pricePerAdult)">
+                                                    <?php echo $service->adult_price_display; ?>
 
-                                                </div>
-                                            <?php endif; ?>
+                                                </span>
+                                            </p>
+                                            <div id="adult-discount-badge" class="discount-badge-below-price" style="display: none;">
+                                                <span class="badge bg-danger"></span>
+                                            </div>
                                         </div>
                                         <div class="tg-tour-about-tickets-quantity">
                                             <select name="person" class="item-first custom-select" x-model.number="tickets.person">
@@ -768,14 +1090,14 @@
                                             <span>Children </span>
                                             <p class="mb-0">
                                                 (13-17 years)
-                                                <span><?php echo $service->child_price_display; ?></span>
-                                            </p>
-                                            <?php if($service->child_discount_badge): ?>
-                                                <div class="discount-badge-below-price">
-                                                    <?php echo $service->child_discount_badge; ?>
+                                                <span x-html="formatCurrency(pricePerChild)">
+                                                    <?php echo $service->child_price_display; ?>
 
-                                                </div>
-                                            <?php endif; ?>
+                                                </span>
+                                            </p>
+                                            <div id="child-discount-badge" class="discount-badge-below-price" style="display: none;">
+                                                <span class="badge bg-danger"></span>
+                                            </div>
                                         </div>
                                         <div class="tg-tour-about-tickets-quantity">
                                             <select name="children" class="item-first custom-select" x-model.number="tickets.children">
@@ -878,134 +1200,139 @@
                         start_date: period.start_date,
                         end_date: period.end_date,
                         max_people: period.max_people,
-                        is_active: period.is_active
+                        is_active: period.is_active,
+                        adult_price: period.adult_price,
+                        child_price: period.child_price,
+                        adult_discount_percentage: period.adult_discount_percentage,
+                        child_discount_percentage: period.child_discount_percentage
                     };
                 });
 
-                // Availability dropdown functionality
-                const dropdownToggle = document.getElementById('availability-dropdown-toggle');
-                const dropdownMenu = document.getElementById('availability-dropdown-menu');
-                const dropdownList = document.getElementById('availability-dropdown-list');
-                const searchInput = document.getElementById('period-search');
+                // Month Selector Functionality
+                const prevYearBtn = document.getElementById('prevYearBtn');
+                const nextYearBtn = document.getElementById('nextYearBtn');
+                const currentYearDisplay = document.getElementById('currentYearDisplay');
+                const yearBlocks = document.querySelectorAll('.year-block');
+                const monthCells = document.querySelectorAll('.month-cell');
                 const periodInput = document.getElementById('selected-availability-period-id');
-                const selectedPeriodText = document.getElementById('selected-period-text');
-                const periodInfo = document.getElementById('period-info');
+                const checkInDateInput = document.getElementById('selected-check-in-date');
+                const selectedMonthInfo = document.getElementById('selected-month-info');
+                const selectedMonthName = document.getElementById('selected-month-name');
+                const selectedPeriodDetails = document.getElementById('selected-period-details');
                 const bookBtn = document.querySelector('button[type="submit"]');
-
-                // Toggle dropdown
-                dropdownToggle.addEventListener('click', function(e) {
-                    e.stopPropagation();
-                    dropdownMenu.classList.toggle('show');
-                    dropdownToggle.classList.toggle('active');
-                });
-
-                // Close dropdown when clicking outside
-                document.addEventListener('click', function(e) {
-                    if (!dropdownMenu.contains(e.target) && !dropdownToggle.contains(e.target)) {
-                        dropdownMenu.classList.remove('show');
-                        dropdownToggle.classList.remove('active');
-                    }
-                });
-
-                // Search functionality
-                searchInput.addEventListener('input', function(e) {
-                    const searchTerm = e.target.value.toLowerCase();
-                    const periodOptions = dropdownList.querySelectorAll('.availability-period-option');
-                    
-                    periodOptions.forEach(option => {
-                        const text = option.textContent.toLowerCase();
-                        if (text.includes(searchTerm)) {
-                            option.style.display = 'block';
-                        } else {
-                            option.style.display = 'none';
-                        }
-                    });
-                });
-
-                // Filter out past periods - only show periods with future start dates
-                function filterAvailabilityPeriods() {
-                    const periodOptions = dropdownList.querySelectorAll('.availability-period-option');
-                    const today = new Date();
-                    today.setHours(0, 0, 0, 0); // Set to start of today
-                    
-                    periodOptions.forEach(option => {
-                        const startDateStr = option.dataset.startDate;
-                        const startDate = new Date(startDateStr);
-                        
-                        // Hide periods that have already started (start date is before today)
-                        if (startDate < today) {
-                            option.style.display = 'none';
-                        } else {
-                            option.style.display = 'block';
-                        }
-                    });
+                
+                let currentYearIndex = 0;
+                const years = Array.from(yearBlocks).map(block => parseInt(block.dataset.year));
+                
+                // Update year navigation buttons
+                function updateYearNavButtons() {
+                    if (prevYearBtn) prevYearBtn.disabled = currentYearIndex === 0;
+                    if (nextYearBtn) nextYearBtn.disabled = currentYearIndex === years.length - 1;
                 }
-
-                // Filter periods when dropdown opens
-                dropdownToggle.addEventListener('click', function() {
-                    setTimeout(filterAvailabilityPeriods, 100);
-                });
-
-                // Period selection
-                dropdownList.addEventListener('click', function(e) {
-                    const periodOption = e.target.closest('.availability-period-option');
-                    if (periodOption) {
-                        const periodId = periodOption.dataset.periodId;
-                        const startDate = periodOption.dataset.startDate;
-                        const endDate = periodOption.dataset.endDate;
-                        const days = periodOption.dataset.days;
-
-                        // Update selected period text
-                        const startDateFormatted = new Date(startDate).toLocaleDateString('en-US', {
-                            day: 'numeric',
-                            month: 'short'
-                        });
-                        const endDateFormatted = new Date(endDate).toLocaleDateString('en-US', {
-                            day: 'numeric',
-                            month: 'short',
-                            year: 'numeric'
-                        });
-                        selectedPeriodText.textContent = `${startDateFormatted} → ${endDateFormatted}`;
-
-                        // Store the selected period ID
-                        periodInput.value = periodId;
-
-                        // Update period info display
-                        const fullStartDateFormatted = new Date(startDate).toLocaleDateString('en-US', {
-                            year: 'numeric',
-                            month: 'long',
-                            day: 'numeric'
-                        });
-                        const fullEndDateFormatted = new Date(endDate).toLocaleDateString('en-US', {
-                            year: 'numeric',
-                            month: 'long',
-                            day: 'numeric'
-                        });
-
-                        let html = '<div class="alert alert-success mt-2 mb-0">';
-                        html += `<p class="mb-1"><strong>Selected Period:</strong> ${fullStartDateFormatted} - ${fullEndDateFormatted}</p>`;
-                        html += `<p class="mb-0"><strong>Duration:</strong> ${days} ${days == 1 ? 'day' : 'days'}</p>`;
-                        html += '</div>';
-                        periodInfo.innerHTML = html;
-                        periodInfo.style.display = 'block';
-
+                
+                // Show year block
+                function showYear(index) {
+                    if (index < 0 || index >= years.length) return;
+                    
+                    currentYearIndex = index;
+                    const year = years[index];
+                    
+                    yearBlocks.forEach(block => {
+                        block.classList.remove('active');
+                    });
+                    
+                    const activeBlock = document.getElementById('yearBlock' + year);
+                    if (activeBlock) activeBlock.classList.add('active');
+                    
+                    if (currentYearDisplay) currentYearDisplay.textContent = year;
+                    updateYearNavButtons();
+                }
+                
+                // Year navigation event listeners
+                if (prevYearBtn) {
+                    prevYearBtn.addEventListener('click', () => showYear(currentYearIndex - 1));
+                }
+                
+                if (nextYearBtn) {
+                    nextYearBtn.addEventListener('click', () => showYear(currentYearIndex + 1));
+                }
+                
+                // Initialize year navigation
+                updateYearNavButtons();
+                
+                // Month cell click handler
+                monthCells.forEach(cell => {
+                    cell.addEventListener('click', function() {
+                        if (this.classList.contains('unavailable')) return;
+                        
+                        const periodId = this.dataset.periodId;
+                        const startDate = this.dataset.startDate;
+                        const endDate = this.dataset.endDate;
+                        const monthName = this.dataset.monthName;
+                        const year = this.dataset.year;
+                        const adultPrice = this.dataset.adultPrice;
+                        const discountedPrice = this.dataset.discountedPrice;
+                        const discountPercentage = this.dataset.discountPercentage;
+                        
+                        // Update selected state
+                        monthCells.forEach(c => c.classList.remove('selected'));
+                        this.classList.add('selected');
+                        
+                        // Set hidden inputs
+                        if (periodInput) periodInput.value = periodId;
+                        if (checkInDateInput) checkInDateInput.value = startDate;
+                        
+                        // Calculate duration
+                        const start = new Date(startDate);
+                        const end = new Date(endDate);
+                        const days = Math.ceil((end - start) / (1000 * 60 * 60 * 24)) + 1;
+                        
+                        // Build price info
+                        let priceInfo = '';
+                        if (discountedPrice && parseFloat(discountedPrice) < parseFloat(adultPrice)) {
+                            priceInfo = `<span class="original-price">${formatCurrency(adultPrice)}</span> <span class="discounted-price">${formatCurrency(discountedPrice)}</span>`;
+                        } else {
+                            priceInfo = `<strong>${formatCurrency(adultPrice)}</strong>`;
+                        }
+                        
+                        // Show selected info
+                        if (selectedMonthName) selectedMonthName.textContent = `${monthName} ${year}`;
+                        if (selectedPeriodDetails) {
+                            let detailsHtml = '';
+                            detailsHtml += `<strong><?php echo e(__('translate.From')); ?></strong> ${start.toLocaleDateString('<?php echo e(app()->getLocale()); ?>', {day: 'numeric', month: 'long', year: 'numeric'})} `;
+                            detailsHtml += `<strong><?php echo e(__('translate.to')); ?></strong> ${end.toLocaleDateString('<?php echo e(app()->getLocale()); ?>', {day: 'numeric', month: 'long', year: 'numeric'})}<br>`;
+                            detailsHtml += `<div class="period-price-info">`;
+                            detailsHtml += `<span class="price-item"><i class="fa fa-user"></i> <?php echo e(__('translate.Adult')); ?>: ${priceInfo}</span>`;
+                            if (discountPercentage && parseFloat(discountPercentage) > 0) {
+                                detailsHtml += `<span class="badge bg-danger">-${discountPercentage}% OFF</span>`;
+                            }
+                            detailsHtml += `</div>`;
+                            selectedPeriodDetails.innerHTML = detailsHtml;
+                        }
+                        if (selectedMonthInfo) selectedMonthInfo.style.display = 'block';
+                        
+                        // Update booking prices based on selected period
+                        const finalAdultPrice = discountedPrice && parseFloat(discountedPrice) < parseFloat(adultPrice) 
+                            ? parseFloat(discountedPrice) 
+                            : parseFloat(adultPrice);
+                        const periodData = availabilityPeriodsMap[periodId];
+                        const finalChildPrice = periodData && periodData.child_price 
+                            ? (periodData.child_discount_percentage 
+                                ? periodData.child_price - (periodData.child_price * (periodData.child_discount_percentage / 100))
+                                : (periodData.child_price))
+                            : null;
+                        updateBookingPrices(finalAdultPrice, finalChildPrice);
+                        
                         // Enable book button
-                        bookBtn.disabled = false;
-
-                        // Close dropdown
-                        dropdownMenu.classList.remove('show');
-                        dropdownToggle.classList.remove('active');
-
-                        // Highlight selected option
-                        dropdownList.querySelectorAll('.availability-period-option').forEach(opt => {
-                            opt.classList.remove('selected');
-                        });
-                        periodOption.classList.add('selected');
-                    }
+                        if (bookBtn) bookBtn.disabled = false;
+                    });
                 });
-
-                // Hide the old date input
-                $('input[name="check_in_date"]').closest('.tg-booking-form-parent-inner').hide();
+                
+                // Hide the old date input (keep it for form submission)
+                const oldDateInput = document.querySelector('input[name="check_in_date"]');
+                if (oldDateInput) {
+                    oldDateInput.closest('.tg-booking-form-parent-inner').style.display = 'none';
+                }
 
             });
         })(jQuery);
@@ -1127,6 +1454,8 @@
                     person: 1,
                     children: 0
                 },
+                basePricePerAdult: <?php echo e($service->discount_adult_price ?? $service->adult_price ?? 0); ?>,
+                basePricePerChild: <?php echo e($service->discount_child_price ?? $service->child_price ?? 0); ?>,
                 pricePerAdult: <?php echo e($service->discount_adult_price ?? $service->adult_price ?? 0); ?>,
                 pricePerChild: <?php echo e($service->discount_child_price ?? $service->child_price ?? 0); ?>,
                 flightTicketIncluded: false,
@@ -1139,6 +1468,16 @@
                     <?php $__currentLoopData = $service->extraCharges; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $extra): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                         charge_<?php echo e($key); ?>: <?php echo e($extra->price ?? 0); ?>,
                     <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                },
+                // Method to update prices based on selected period
+                updatePrices(adultPrice, childPrice) {
+                    this.pricePerAdult = adultPrice || this.basePricePerAdult;
+                    this.pricePerChild = childPrice || this.basePricePerChild;
+                },
+                // Reset prices to base service prices
+                resetPrices() {
+                    this.pricePerAdult = this.basePricePerAdult;
+                    this.pricePerChild = this.basePricePerChild;
                 },
                 get totalCost() {
                     let total = 0;
@@ -1157,6 +1496,18 @@
                     return formatCurrency(this.totalCost);
                 }
             };
+        }
+        
+        // Global function to update booking prices from month selection
+        function updateBookingPrices(adultPrice, childPrice) {
+            // Find the Alpine.js component and update prices
+            const bookingFormEl = document.querySelector('[x-data="bookingForm()"]');
+            if (bookingFormEl && bookingFormEl._x_dataStack) {
+                const component = bookingFormEl._x_dataStack[0];
+                if (component && component.updatePrices) {
+                    component.updatePrices(adultPrice, childPrice);
+                }
+            }
         }
     </script>
 <?php $__env->stopPush(); ?>

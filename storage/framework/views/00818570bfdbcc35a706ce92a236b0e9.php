@@ -1,129 +1,110 @@
 <?php if($allServices->count() > 0): ?>
-    <div class="tg-listing-grid-item">
+    <div class="tg-listing-grid-item tour-radar-style">
         <div class="<?php echo \Illuminate\Support\Arr::toCssClasses(['row list-card', 'list-card-open' => $isListView == 'true']); ?>">
             <?php $__currentLoopData = $allServices; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $service): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                 <div class="col-xxl-4 col-xl-6 col-lg-6 col-md-6 tg-grid-full">
-                    <div class="tg-listing-card-item mb-30">
-                        <div class="tg-listing-card-thumb fix mb-15 p-relative">
-                            <a href="<?php echo e(route('front.tourbooking.services.show', ['slug' => $service?->slug])); ?>">
-                                <img class="tg-card-border w-100"
+                    <div class="tour-card">
+                        
+                        <div class="tour-card__hero">
+                            <a href="<?php echo e(route('front.tourbooking.services.show', ['slug' => $service?->slug])); ?>" class="tour-card__hero-link">
+                                <img class="tour-card__hero-image"
                                     src="<?php echo e(asset('storage/' . $service?->thumbnail?->file_path)); ?>"
                                     alt="<?php echo e($service?->thumbnail?->caption ?? $service?->translation?->title); ?>">
-                                <?php if($service?->is_new == 1): ?>
-                                    <span class="tg-listing-item-price-discount shape"
-                                        style="background-image: url('<?php echo e(asset('frontend/assets/img/shape/price-shape-2.png')); ?>')">New</span>
+                                
+                                
+                                <?php if($service?->adult_discount_percentage > 0): ?>
+                                    <span class="tour-card__badge tour-card__badge--discount">-<?php echo e(number_format($service?->adult_discount_percentage, 0)); ?>%</span>
+                                <?php elseif($service?->is_new == 1): ?>
+                                    <span class="tour-card__badge tour-card__badge--new">New</span>
                                 <?php endif; ?>
-
-                                <?php if($service?->discount_price): ?>
-                                    <span class="tg-listing-item-price-discount shape-2"
-                                        style="background-image: url('<?php echo e(asset('frontend/assets/img/shape/offter.png')); ?>')">Sale
-                                        offer</span>
-                                <?php endif; ?>
-
+                                
                                 <?php if($service?->is_featured == 1): ?>
-                                    <span class="tg-listing-item-price-discount shape-3"
-                                        style="background-image: url('<?php echo e(asset('frontend/assets/img/shape/featured.png')); ?>')">
-                                        <svg width="12" height="14" viewBox="0 0 12 14" fill="none"
-                                            xmlns="http://www.w3.org/2000/svg">
-                                            <path
-                                                d="M6.60156 1L0.601562 8.2H6.00156L5.40156 13L11.4016 5.8H6.00156L6.60156 1Z"
-                                                stroke="white" stroke-width="0.857143" stroke-linecap="round"
-                                                stroke-linejoin="round"></path>
-                                        </svg>
-                                        Featured
+                                    <span class="tour-card__badge tour-card__badge--featured">
+                                        <i class="fa-solid fa-star"></i> Featured
                                     </span>
                                 <?php endif; ?>
-
                             </a>
+                            
+                            
                             <div class="<?php echo \Illuminate\Support\Arr::toCssClasses([
-                                'tg-listing-item-wishlist',
+                                'tour-card__wishlist',
                                 'active' => $service?->my_wishlist_exists == 1,
                             ]); ?>" data-url="<?php echo e(route('user.wishlist.store')); ?>"
                                 onclick="addToWishlist(<?php echo e($service->id); ?>, this, 'service')">
-                                <a href="javascript:void(0)">
-                                    <svg width="20" height="18" viewBox="0 0 20 18" fill="none"
-                                        xmlns="http://www.w3.org/2000/svg">
-                                        <path
-                                            d="M10.5167 16.3416C10.2334 16.4416 9.76675 16.4416 9.48341 16.3416C7.06675 15.5166 1.66675 12.075 1.66675 6.24165C1.66675 3.66665 3.74175 1.58331 6.30008 1.58331C7.81675 1.58331 9.15841 2.31665 10.0001 3.44998C10.8417 2.31665 12.1917 1.58331 13.7001 1.58331C16.2584 1.58331 18.3334 3.66665 18.3334 6.24165C18.3334 12.075 12.9334 15.5166 10.5167 16.3416Z"
-                                            stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
-                                            stroke-linejoin="round" />
-                                    </svg>
-                                </a>
+                                <i class="fa-regular fa-heart"></i>
                             </div>
                         </div>
-                        <div class="tg-listing-main-content">
-                            <div class="tg-listing-card-content">
-                                <h4 class="tg-listing-card-title">
-                                    <a
-                                        href="<?php echo e(route('front.tourbooking.services.show', ['slug' => $service?->slug])); ?>">
-                                        <?php echo e(Str::limit($service?->translation?->title, 45)); ?>
-
-                                    </a>
-                                </h4>
-                                <div class="tg-listing-card-duration-tour">
-                                    <span class="tg-listing-card-duration-map mb-5">
-                                        <svg width="13" height="16" viewBox="0 0 13 16" fill="none"
-                                            xmlns="http://www.w3.org/2000/svg">
-                                            <path
-                                                d="M12.3329 6.7071C12.3329 11.2324 6.55512 15.1111 6.55512 15.1111C6.55512 15.1111 0.777344 11.2324 0.777344 6.7071C0.777344 5.16402 1.38607 3.68414 2.46962 2.59302C3.55316 1.5019 5.02276 0.888916 6.55512 0.888916C8.08748 0.888916 9.55708 1.5019 10.6406 2.59302C11.7242 3.68414 12.3329 5.16402 12.3329 6.7071Z"
-                                                stroke="currentColor" stroke-width="1.15556" stroke-linecap="round"
-                                                stroke-linejoin="round" />
-                                            <path
-                                                d="M6.55512 8.64649C7.61878 8.64649 8.48105 7.7782 8.48105 6.7071C8.48105 5.636 7.61878 4.7677 6.55512 4.7677C5.49146 4.7677 4.6292 5.636 4.6292 6.7071C4.6292 7.7782 5.49146 8.64649 6.55512 8.64649Z"
-                                                stroke="currentColor" stroke-width="1.15556" stroke-linecap="round"
-                                                stroke-linejoin="round" />
-                                        </svg>
-                                        <?php echo e($service?->location); ?>
-
-                                    </span>
-
-                                    <?php if($service?->duration): ?>
-                                        <span class="tg-listing-card-duration-time">
-                                            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"
-                                                xmlns="http://www.w3.org/2000/svg">
-                                                <path
-                                                    d="M8.00175 3.73329V7.99996L10.8462 9.42218M15.1128 8.00003C15.1128 11.9274 11.9291 15.1111 8.00174 15.1111C4.07438 15.1111 0.890625 11.9274 0.890625 8.00003C0.890625 4.07267 4.07438 0.888916 8.00174 0.888916C11.9291 0.888916 15.1128 4.07267 15.1128 8.00003Z"
-                                                    stroke="currentColor" stroke-width="1.06667" stroke-linecap="round"
-                                                    stroke-linejoin="round" />
-                                            </svg>
-                                            <?php echo e($service?->duration); ?>
-
-                                        </span>
-                                    <?php endif; ?>
-                                </div>
-                            </div>
-                            <div class="tg-listing-card-price d-flex align-items-end justify-content-between flex-wrap gap-2">
-                                <div class="tg-listing-card-price-wrap price-bg d-flex align-items-center"
-                                    style="background-image: url('<?php echo e(asset('frontend/assets/img/shape/price-shape.png')); ?>')">
-                                    <span class="tg-listing-card-currency-amount mr-5">
-                                        <?php echo $service->price_display; ?>
-
-                                    </span>
-                                </div>
-                                <div class="d-flex align-items-center gap-2 tg-listing-card-actions">
-                                    <a class="tg-listing-avai-btn btn-sm"
-                                        href="<?php echo e(route('front.tourbooking.services.show', ['slug' => $service?->slug])); ?>"
-                                        title="<?php echo e(__('translate.Voir disponibilité')); ?>">
-                                        <span class="d-none d-md-inline"><?php echo e(__('translate.Voir disponibilité')); ?></span>
-                                        <span class="d-md-none"><i class="fa-solid fa-calendar-check"></i></span>
-                                    </a>
-                                    <a class="tg-btn tg-btn-switch-animation btn-sm" 
-                                       href="<?php echo e(route('front.tourbooking.services.download-tour-plan', $service->slug)); ?>"
-                                       target="_blank"
-                                       title="<?php echo e(__('translate.Download the brochure')); ?>">
-                                        <i class="fa-solid fa-file-pdf"></i>
-                                        <span class="d-none d-lg-inline ml-5"><?php echo e(__('translate.Download')); ?></span>
-                                    </a>
-                                </div>
-                            </div>
-                            <div class="tg-listing-card-review mt-10">
-                                <span class="tg-listing-rating-icon"><i
-                                        class="fa-sharp fa-solid fa-star <?php echo e($service?->active_reviews_avg_rating > 0 ? 'active' : ''); ?>"></i></span>
-                                <span class="tg-listing-rating-percent">
-                                    (<?php echo e(__($service?->active_reviews_count ?? 0)); ?>
-
-                                    <?php echo e(__($service?->active_reviews_count > 1 ? __('translate.Reviews') : __('translate.Review'))); ?>)
+                        
+                        
+                        <div class="tour-card__content">
+                            
+                            <div class="tour-card__rating">
+                                <span class="tour-card__rating-score"><?php echo e(number_format($service?->active_reviews_avg_rating ?? 0, 1)); ?></span>
+                                <span class="tour-card__rating-stars">
+                                    <?php $__currentLoopData = range(1, 5); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $star): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                        <i class="fa-solid fa-star <?php echo e($service?->active_reviews_avg_rating >= $star ? 'active' : ''); ?>"></i>
+                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                 </span>
+                                <span class="tour-card__rating-count">(<?php echo e($service?->active_reviews_count ?? 0); ?> <?php echo e($service?->active_reviews_count > 1 ? __('translate.Reviews') : __('translate.Review')); ?>)</span>
+                            </div>
+                            
+                            
+                            <h3 class="tour-card__title">
+                                <a href="<?php echo e(route('front.tourbooking.services.show', ['slug' => $service?->slug])); ?>">
+                                    <?php echo e(Str::limit($service?->translation?->title, 50)); ?>
+
+                                </a>
+                            </h3>
+                            
+                            
+                            <div class="tour-card__meta">
+                                <div class="tour-card__meta-item">
+                                    <i class="fa-solid fa-location-dot"></i>
+                                    <span><?php echo e($service?->location); ?></span>
+                                </div>
+                                <?php if($service?->duration): ?>
+                                    <div class="tour-card__meta-item">
+                                        <i class="fa-regular fa-clock"></i>
+                                        <span><?php echo e($service?->duration); ?></span>
+                                    </div>
+                                <?php endif; ?>
+                                <?php if(!empty($service?->languages)): ?>
+                                    <div class="tour-card__meta-item">
+                                        <i class="fa-solid fa-globe"></i>
+                                        <span><?php echo e(is_array($service?->languages) ? implode(', ', $service?->languages) : $service?->languages); ?></span>
+                                    </div>
+                                <?php endif; ?>
+                            </div>
+                        </div>
+                        
+                        
+                        <div class="tour-card__details">
+                            <?php if($service?->adult_discount_percentage > 0): ?>
+                                <span class="tour-card__discount-badge"><?php echo e($service?->adult_discount_percentage); ?>% <?php echo e(__('translate.OFF')); ?></span>
+                            <?php endif; ?>
+                            
+                            <div class="tour-card__price-row">
+                                <div class="tour-card__price-wrap">
+                                    <?php if($service?->adult_price && ($service?->discount_adult_price || $service?->adult_discount_percentage > 0)): ?>
+                                        <span class="tour-card__price-old"><?php echo e(currency($service?->adult_price)); ?></span>
+                                    <?php endif; ?>
+                                    <div class="tour-card__price-main">
+                                        <span class="tour-card__price-value"><?php echo $service->discounted_price ? currency($service->discounted_price) : currency($service?->adult_price); ?></span>
+                                        <span class="tour-card__price-label"><?php echo e(__('translate.per person')); ?></span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            
+                            <div class="tour-card__actions">
+                                <a class="tour-card__btn tour-card__btn--primary" href="<?php echo e(route('front.tourbooking.services.show', ['slug' => $service?->slug])); ?>">
+                                    <?php echo e(__('translate.See availability')); ?>
+
+                                </a>
+                                <a class="tour-card__btn tour-card__btn--secondary" href="<?php echo e(route('front.tourbooking.services.download-tour-plan', $service->slug)); ?>" target="_blank">
+                                    <i class="fa-solid fa-book-open"></i>
+                                    <span class="btn-text"><?php echo e(__('translate.Brochure')); ?></span>
+                                </a>
                             </div>
                         </div>
                     </div>
@@ -134,9 +115,431 @@
             <?php echo $__env->make('components.front.custom-pagination', ['items' => $allServices], \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
         </div>
     </div>
+    
+    
+    <style>
+        /* Tour Card - TourRadar Style */
+        .tour-radar-style .tour-card {
+            background: #fff;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            transition: box-shadow 0.3s ease;
+        }
+        
+        .tour-radar-style .tour-card:hover {
+            box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+        }
+        
+        /* Hero Image */
+        .tour-card__hero {
+            position: relative;
+            aspect-ratio: 16/10;
+            overflow: hidden;
+        }
+        
+        .tour-card__hero-link {
+            display: block;
+            width: 100%;
+            height: 100%;
+        }
+        
+        .tour-card__hero-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+        
+        .tour-card:hover .tour-card__hero-image {
+            transform: scale(1.03);
+        }
+        
+        /* Badges */
+        .tour-card__badge {
+            position: absolute;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .tour-card__badge--discount {
+            top: 12px;
+            left: 12px;
+            background: #ff4757;
+            color: white;
+        }
+        
+        .tour-card__badge--new {
+            top: 12px;
+            left: 12px;
+            background: #2ed573;
+            color: white;
+        }
+        
+        .tour-card__badge--featured {
+            top: 12px;
+            right: 12px;
+            background: rgba(0,0,0,0.7);
+            color: #ffd700;
+        }
+        
+        .tour-card__badge--featured i {
+            font-size: 10px;
+            margin-right: 3px;
+        }
+        
+        /* Wishlist */
+        .tour-card__wishlist {
+            position: absolute;
+            bottom: 12px;
+            right: 12px;
+            width: 36px;
+            height: 36px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+            transition: all 0.2s ease;
+        }
+        
+        .tour-card__wishlist i {
+            font-size: 16px;
+            color: #666;
+            transition: color 0.2s ease;
+        }
+        
+        .tour-card__wishlist:hover {
+            transform: scale(1.1);
+        }
+        
+        .tour-card__wishlist:hover i,
+        .tour-card__wishlist.active i {
+            color: #ff4757;
+        }
+        
+        .tour-card__wishlist.active i {
+            font-weight: 900;
+        }
+        
+        /* Content */
+        .tour-card__content {
+            padding: 16px;
+            flex: 1;
+        }
+        
+        /* Rating */
+        .tour-card__rating {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-bottom: 8px;
+        }
+        
+        .tour-card__rating-score {
+            font-size: 14px;
+            font-weight: 700;
+            color: #333;
+        }
+        
+        .tour-card__rating-stars {
+            display: flex;
+            gap: 2px;
+        }
+        
+        .tour-card__rating-stars i {
+            font-size: 12px;
+            color: #ddd;
+        }
+        
+        .tour-card__rating-stars i.active {
+            color: #ffc107;
+        }
+        
+        .tour-card__rating-count {
+            font-size: 13px;
+            color: #666;
+        }
+        
+        /* Title */
+        .tour-card__title {
+            font-size: 16px;
+            font-weight: 600;
+            line-height: 1.4;
+            margin-bottom: 12px;
+        }
+        
+        .tour-card__title a {
+            color: #333;
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+        
+        .tour-card__title a:hover {
+            color: var(--tg-theme-primary, #ff6b35);
+        }
+        
+        /* Meta */
+        .tour-card__meta {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+        
+        .tour-card__meta-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            color: #666;
+        }
+        
+        .tour-card__meta-item i {
+            font-size: 14px;
+            color: #999;
+            width: 16px;
+            text-align: center;
+        }
+        
+        /* Details / Price Section */
+        .tour-card__details {
+            padding: 16px;
+            border-top: 1px solid #f0f0f0;
+            background: #fafafa;
+        }
+        
+        .tour-card__discount-badge {
+            display: inline-block;
+            background: #ff4757;
+            color: white;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        
+        .tour-card__price-row {
+            margin-bottom: 12px;
+        }
+        
+        .tour-card__price-wrap {
+            display: flex;
+            align-items: baseline;
+            gap: 8px;
+        }
+        
+        .tour-card__price-old {
+            font-size: 14px;
+            color: #999;
+            text-decoration: line-through;
+        }
+        
+        .tour-card__price-main {
+            display: flex;
+            align-items: baseline;
+            gap: 4px;
+        }
+        
+        .tour-card__price-value {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--tg-theme-primary, #ff6b35);
+        }
+        
+        .tour-card__price-label {
+            font-size: 13px;
+            color: #666;
+        }
+        
+        /* Action Buttons */
+        .tour-card__actions {
+            display: flex;
+            gap: 8px;
+        }
+        
+        .tour-card__btn {
+            flex: 1;
+            padding: 10px 12px;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 600;
+            text-align: center;
+            text-decoration: none;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .tour-card__btn--primary {
+            background: var(--tg-theme-primary, #ff6b35);
+            color: white;
+        }
+        
+        .tour-card__btn--primary:hover {
+            background: var(--tg-theme-secondary, #e55a2b);
+            color: white;
+        }
+        
+        .tour-card__btn--secondary {
+            background: white;
+            color: #333;
+            border: 1px solid #ddd;
+        }
+        
+        .tour-card__btn--secondary:hover {
+            background: #f5f5f5;
+            border-color: #ccc;
+            color: #333;
+        }
+        
+        .tour-card__btn i {
+            font-size: 14px;
+        }
+        
+        /* ===== RESPONSIVE DESIGN ===== */
+        
+        /* Mobile (up to 767px) */
+        @media (max-width: 767px) {
+            .tour-card__hero {
+                aspect-ratio: 16/9;
+                min-height: 180px;
+            }
+            
+            .tour-card__title {
+                font-size: 15px;
+                line-height: 1.3;
+            }
+            
+            .tour-card__content,
+            .tour-card__details {
+                padding: 12px;
+            }
+            
+            .tour-card__rating-score {
+                font-size: 13px;
+            }
+            
+            .tour-card__rating-count {
+                font-size: 12px;
+            }
+            
+            .tour-card__price-value {
+                font-size: 18px;
+            }
+            
+            .tour-card__btn {
+                padding: 10px 8px;
+                font-size: 12px;
+            }
+            
+            /* Sur mobile, cacher le texte du bouton brochure et montrer seulement l'icone + PDF */
+            .tour-card__btn--secondary .btn-text {
+                display: none;
+            }
+            
+            .tour-card__btn--secondary::after {
+                content: 'PDF';
+                margin-left: 4px;
+            }
+        }
+        
+        /* Tablet (768px - 991px) */
+        @media (min-width: 768px) and (max-width: 991px) {
+            .tour-card__title {
+                font-size: 15px;
+            }
+            
+            .tour-card__hero {
+                aspect-ratio: 16/10;
+            }
+        }
+        
+        /* Desktop (992px+) */
+        @media (min-width: 992px) {
+            .tour-card__hero {
+                aspect-ratio: 16/10;
+            }
+        }
+        
+        /* Large Desktop (1200px+) */
+        @media (min-width: 1200px) {
+            .tour-card__title {
+                font-size: 17px;
+            }
+        }
+        
+        /* ===== LIST VIEW ===== */
+        .list-card-open .tg-grid-full {
+            flex: 0 0 100%;
+            max-width: 100%;
+        }
+        
+        .list-card-open .tour-card {
+            flex-direction: row;
+            align-items: stretch;
+        }
+        
+        .list-card-open .tour-card__hero {
+            width: 320px;
+            flex-shrink: 0;
+            aspect-ratio: auto;
+        }
+        
+        .list-card-open .tour-card__content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        .list-card-open .tour-card__details {
+            width: 280px;
+            flex-shrink: 0;
+            border-top: none;
+            border-left: 1px solid #f0f0f0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        /* List View Mobile */
+        @media (max-width: 991px) {
+            .list-card-open .tour-card {
+                flex-direction: column;
+            }
+            
+            .list-card-open .tour-card__hero {
+                width: 100%;
+                aspect-ratio: 16/9;
+            }
+            
+            .list-card-open .tour-card__details {
+                width: 100%;
+                border-left: none;
+                border-top: 1px solid #f0f0f0;
+            }
+        }
+    </style>
 <?php else: ?>
     <div class="col-12">
-        Data Not found.
+        <div class="text-center py-5">
+            <i class="fa-regular fa-folder-open fa-3x text-muted mb-3"></i>
+            <p class="text-muted"><?php echo e(__('translate.No tours found')); ?></p>
+        </div>
     </div>
 <?php endif; ?>
 <?php /**PATH D:\xampp\htdocs\archive\archive\Modules/TourBooking\resources/views/front/services/services-item2.blade.php ENDPATH**/ ?>
