@@ -8,182 +8,452 @@
 
 @section('front-content')
 
-@push('css')
+@push('style_section')
 <style>
-    /* Month Selector Styles */
-    .month-selector-container {
-        background: #f8f9fa;
-        border-radius: 12px;
-        padding: 15px;
+    /* ============================================
+       MONTH SELECTOR V2 - MODERN DESIGN
+       ============================================ */
+    
+    .month-selector-v2 {
+        background: linear-gradient(145deg, #ffffff 0%, #f8f9fa 100%);
+        border-radius: 16px;
+        padding: 20px;
         border: 1px solid #e9ecef;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
     }
     
-    .year-navigation {
-        background: white;
-        border-radius: 8px;
-        padding: 10px 15px;
-        margin-bottom: 15px;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    /* --- Year Selector Dropdown --- */
+    .year-selector-wrapper {
+        position: relative;
     }
     
-    .year-nav-btn {
-        background: #f8f9fa;
-        border: none;
-        width: 36px;
-        height: 36px;
-        border-radius: 50%;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-    
-    .year-nav-btn:hover:not(:disabled) {
-        background: #e9ecef;
-    }
-    
-    .year-nav-btn:disabled {
-        opacity: 0.4;
-        cursor: not-allowed;
-    }
-    
-    .current-year {
-        font-size: 18px;
-        font-weight: 700;
-        color: #333;
-    }
-    
-    .year-block {
-        display: none;
-    }
-    
-    .year-block.active {
+    .year-selector-label {
         display: block;
-        animation: fadeIn 0.3s ease;
+        font-size: 12px;
+        font-weight: 600;
+        color: #6c757d;
+        text-transform: uppercase;
+        letter-spacing: 0.8px;
+        margin-bottom: 8px;
     }
     
-    @keyframes fadeIn {
-        from { opacity: 0; transform: translateY(-10px); }
-        to { opacity: 1; transform: translateY(0); }
+    .year-dropdown {
+        position: relative;
     }
     
-    .months-row {
-        display: grid;
-        grid-template-columns: repeat(4, 1fr);
-        gap: 8px;
+    .year-dropdown-toggle {
+        width: 100%;
+        background: linear-gradient(145deg, #ffffff 0%, #f1f3f4 100%);
+        border: 2px solid #e9ecef;
+        border-radius: 12px;
+        padding: 14px 18px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        cursor: pointer;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        font-size: 16px;
+        font-weight: 600;
+        color: #2d3436;
     }
     
-    @media (max-width: 576px) {
-        .months-row {
-            grid-template-columns: repeat(3, 1fr);
+    .year-dropdown-toggle:hover {
+        border-color: var(--tg-theme-primary, #560CE3);
+        box-shadow: 0 4px 12px rgba(86, 12, 227, 0.12);
+    }
+    
+    .year-dropdown-toggle.active {
+        border-color: var(--tg-theme-primary, #560CE3);
+        box-shadow: 0 4px 16px rgba(86, 12, 227, 0.18);
+    }
+    
+    .year-dropdown-toggle i {
+        transition: transform 0.3s ease;
+        color: #6c757d;
+    }
+    
+    .year-dropdown-toggle.active i {
+        transform: rotate(180deg);
+        color: var(--tg-theme-primary, #560CE3);
+    }
+    
+    .year-dropdown-menu {
+        position: absolute;
+        top: calc(100% + 8px);
+        left: 0;
+        right: 0;
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+        z-index: 100;
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(-10px);
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        max-height: 250px;
+        overflow-y: auto;
+        padding: 8px;
+    }
+    
+    .year-dropdown-menu.show {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+    }
+    
+    .year-option {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 12px 16px;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        margin-bottom: 4px;
+    }
+    
+    .year-option:last-child {
+        margin-bottom: 0;
+    }
+    
+    .year-option:hover {
+        background: #f8f9fa;
+    }
+    
+    .year-option.active {
+        background: linear-gradient(135deg, var(--tg-theme-primary, #560CE3) 0%, #7c3aed 100%);
+        color: white;
+    }
+    
+    .year-option.active .year-badge {
+        background: rgba(255, 255, 255, 0.25);
+        color: white;
+    }
+    
+    .year-text {
+        font-weight: 600;
+        font-size: 15px;
+    }
+    
+    .year-badge {
+        font-size: 11px;
+        font-weight: 500;
+        padding: 4px 10px;
+        border-radius: 20px;
+        background: #e9ecef;
+        color: #6c757d;
+    }
+    
+    /* --- Months Container --- */
+    .months-container {
+        position: relative;
+        min-height: 200px;
+    }
+    
+    .year-months-block {
+        display: none;
+        animation: fadeInMonths 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    
+    .year-months-block.active {
+        display: block;
+    }
+    
+    @keyframes fadeInMonths {
+        from {
+            opacity: 0;
+            transform: translateY(15px) scale(0.98);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0) scale(1);
         }
     }
     
-    .month-cell {
+    /* --- Months Grid V2 - 12 Beautiful Rectangles --- */
+    .months-grid-v2 {
+        display: grid !important;
+        grid-template-columns: repeat(4, 1fr) !important;
+        gap: 10px !important;
+        width: 100% !important;
+    }
+    
+    /* Force grid on the container */
+    .year-months-block .months-grid-v2,
+    .months-container .months-grid-v2 {
+        display: grid !important;
+        grid-template-columns: repeat(4, 1fr) !important;
+    }
+    
+    @media (max-width: 1200px) {
+        .months-grid-v2 {
+            grid-template-columns: repeat(3, 1fr) !important;
+        }
+    }
+    
+    @media (max-width: 768px) {
+        .months-grid-v2 {
+            grid-template-columns: repeat(3, 1fr) !important;
+            gap: 8px !important;
+        }
+    }
+    
+    @media (max-width: 480px) {
+        .months-grid-v2 {
+            grid-template-columns: repeat(2, 1fr) !important;
+            gap: 8px !important;
+        }
+    }
+    
+    /* --- Month Box Styling --- */
+    .month-box {
+        position: relative;
         background: white;
-        border: 2px solid transparent;
-        border-radius: 10px;
-        padding: 12px 8px;
+        border-radius: 14px;
+        padding: 16px 8px 10px;
         text-align: center;
         cursor: pointer;
+        transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+        border: 2px solid transparent;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+        overflow: hidden;
+    }
+    
+    .month-box::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 3px;
+        background: linear-gradient(90deg, #e9ecef, #dee2e6);
         transition: all 0.3s ease;
-        min-height: 70px;
+    }
+    
+    .month-box.available {
+        border-color: #e9ecef;
+    }
+    
+    .month-box.available::before {
+        background: linear-gradient(90deg, #28a745, #20c997);
+    }
+    
+    .month-box.available:hover {
+        border-color: #28a745;
+        transform: translateY(-4px) scale(1.02);
+        box-shadow: 0 12px 28px rgba(40, 167, 69, 0.2);
+    }
+    
+    .month-box.unavailable {
+        background: #f8f9fa;
+        cursor: not-allowed;
+        opacity: 0.7;
+    }
+    
+    .month-box.unavailable::before {
+        background: #dee2e6;
+    }
+    
+    .month-box.discounted {
+        border-color: #ffc107;
+        background: linear-gradient(145deg, #ffffff 0%, #fff9e6 100%);
+    }
+    
+    .month-box.discounted::before {
+        background: linear-gradient(90deg, #ffc107, #ff9800);
+    }
+    
+    .month-box.discounted:hover {
+        border-color: #ff9800;
+        transform: translateY(-4px) scale(1.02);
+        box-shadow: 0 12px 28px rgba(255, 193, 7, 0.25);
+    }
+    
+    .month-box.selected {
+        border-color: var(--tg-theme-primary, #560CE3);
+        background: linear-gradient(145deg, #f3f0ff 0%, #e8e0ff 100%);
+        transform: translateY(-2px);
+        box-shadow: 0 8px 24px rgba(86, 12, 227, 0.2);
+    }
+    
+    .month-box.selected::before {
+        background: linear-gradient(90deg, var(--tg-theme-primary, #560CE3), #7c3aed);
+        height: 4px;
+    }
+    
+    .month-box.selected::after {
+        content: '\f00c';
+        font-family: 'Font Awesome 6 Free';
+        font-weight: 900;
+        position: absolute;
+        top: 6px;
+        right: 6px;
+        width: 20px;
+        height: 20px;
+        background: var(--tg-theme-primary, #560CE3);
+        color: white;
+        border-radius: 50%;
+        font-size: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    /* --- Month Box Inner Content --- */
+    .month-box-inner {
         display: flex;
         flex-direction: column;
-        justify-content: center;
         align-items: center;
+        gap: 4px;
     }
     
-    .month-cell:hover:not(.unavailable) {
-        border-color: #28a745;
-        transform: translateY(-2px);
-        box-shadow: 0 4px 12px rgba(40, 167, 69, 0.15);
-    }
-    
-    .month-cell.selected {
-        border-color: #28a745;
-        background: #d4edda;
-    }
-    
-    .month-cell.available {
-        background: white;
-    }
-    
-    .month-cell.unavailable {
-        background: #f8f9fa;
-        opacity: 0.6;
-        cursor: not-allowed;
-    }
-    
-    .month-cell.discounted {
-        background: #fff3cd;
-        border-color: #ffc107;
-    }
-    
-    .month-cell.discounted:hover {
-        border-color: #e0a800;
-        box-shadow: 0 4px 12px rgba(255, 193, 7, 0.25);
-    }
-    
-    .month-name {
+    .month-short {
         font-size: 13px;
-        font-weight: 600;
+        font-weight: 700;
         color: #495057;
         text-transform: uppercase;
-        letter-spacing: 0.5px;
+        letter-spacing: 1px;
     }
     
-    .month-price {
-        font-size: 12px;
-        color: #6c757d;
-        margin-top: 4px;
-        font-weight: 500;
+    .month-number {
+        font-size: 22px;
+        font-weight: 800;
+        color: #2d3436;
+        line-height: 1;
     }
     
-    .month-price.price-discounted {
-        color: #dc3545;
-        font-weight: 700;
-    }
-    
-    .month-cell.unavailable .month-name {
+    .month-box.unavailable .month-short,
+    .month-box.unavailable .month-number {
         color: #adb5bd;
     }
     
-    .month-cell.unavailable .month-price {
-        color: #ced4da;
+    .month-box.selected .month-short {
+        color: var(--tg-theme-primary, #560CE3);
     }
     
-    .selected-month-info .alert {
-        border-radius: 8px;
-        border: none;
+    .month-box.selected .month-number {
+        color: #2d3436;
     }
     
-    /* Discount Badge */
-    .discount-badge {
-        display: inline-block;
-        background: #dc3545;
-        color: white;
+    /* --- Month Badge --- */
+    .month-badge {
         font-size: 10px;
         font-weight: 700;
-        padding: 2px 6px;
-        border-radius: 10px;
-        margin-top: 2px;
+        padding: 2px 8px;
+        border-radius: 12px;
+        margin-top: 4px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 32px;
     }
     
-    /* Period Details in Info Box */
+    .month-badge.available {
+        background: #d4edda;
+        color: #155724;
+    }
+    
+    .month-badge.discount {
+        background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+        color: white;
+        font-size: 9px;
+        padding: 3px 8px;
+    }
+    
+    .month-badge.unavailable {
+        background: #e9ecef;
+        color: #adb5bd;
+    }
+    
+    /* --- Month Price Tag --- */
+    .month-price-tag {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: linear-gradient(180deg, transparent 0%, rgba(0,0,0,0.03) 100%);
+        padding: 6px 4px;
+        font-size: 11px;
+        font-weight: 600;
+        color: #28a745;
+        border-top: 1px solid rgba(40, 167, 69, 0.1);
+    }
+    
+    .month-box.discounted .month-price-tag {
+        color: #dc3545;
+        border-top-color: rgba(220, 53, 69, 0.1);
+    }
+    
+    .month-box.unavailable .month-price-tag {
+        display: none;
+    }
+    
+    /* --- Selected Month Info Card --- */
+    .selected-month-info {
+        margin-top: 20px;
+    }
+    
+    .selected-month-card {
+        background: linear-gradient(145deg, #d4edda 0%, #c3e6cb 100%);
+        border-radius: 14px;
+        padding: 16px 18px;
+        border: 1px solid rgba(40, 167, 69, 0.2);
+        animation: slideUpFade 0.4s ease;
+    }
+    
+    @keyframes slideUpFade {
+        from {
+            opacity: 0;
+            transform: translateY(10px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    .selected-month-header {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 16px;
+        font-weight: 700;
+        color: #155724;
+        margin-bottom: 10px;
+    }
+    
+    .selected-month-header i {
+        font-size: 20px;
+        color: #28a745;
+    }
+    
+    .selected-month-body {
+        font-size: 14px;
+        color: #1e7e34;
+        line-height: 1.6;
+    }
+    
+    .selected-month-body strong {
+        color: #155724;
+    }
+    
+    /* --- Period Price Info --- */
     .period-price-info {
         display: flex;
         gap: 15px;
-        margin-top: 8px;
+        margin-top: 10px;
         flex-wrap: wrap;
+        align-items: center;
     }
     
     .period-price-info .price-item {
         display: flex;
         align-items: center;
-        gap: 5px;
-        font-size: 13px;
+        gap: 6px;
+        font-size: 14px;
+        background: rgba(255, 255, 255, 0.6);
+        padding: 6px 12px;
+        border-radius: 20px;
     }
     
     .period-price-info .price-item i {
@@ -193,11 +463,604 @@
     .period-price-info .price-item .original-price {
         text-decoration: line-through;
         color: #6c757d;
+        font-size: 13px;
     }
     
     .period-price-info .price-item .discounted-price {
         color: #dc3545;
         font-weight: 700;
+    }
+    
+    .period-price-info .badge {
+        font-size: 11px;
+        padding: 4px 10px;
+        border-radius: 12px;
+    }
+    
+    /* ============================================
+       SELECTED MONTH SECTION V2 - BOTTOM DISPLAY
+       ============================================ */
+    
+    .selected-month-section {
+        animation: slideUpFade 0.5s ease;
+    }
+    
+    .selected-month-card-v2 {
+        background: linear-gradient(145deg, #ffffff 0%, #f8f9fa 100%);
+        border-radius: 16px;
+        padding: 20px;
+        border: 2px solid var(--tg-theme-primary, #560CE3);
+        box-shadow: 0 8px 30px rgba(86, 12, 227, 0.15);
+    }
+    
+    .selected-month-header-v2 {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-size: 18px;
+        font-weight: 700;
+        color: var(--tg-theme-primary, #560CE3);
+        margin-bottom: 15px;
+        padding-bottom: 12px;
+        border-bottom: 1px dashed #dee2e6;
+    }
+    
+    .selected-month-header-v2 i {
+        font-size: 24px;
+        color: var(--tg-theme-primary, #560CE3);
+    }
+    
+    /* Period Info Summary */
+    .period-info-summary {
+        background: linear-gradient(145deg, #e3f2fd 0%, #bbdefb 100%);
+        border-radius: 12px;
+        padding: 12px 15px;
+        margin-bottom: 15px;
+        font-size: 13px;
+        color: #1565c0;
+    }
+    
+    .period-info-summary .info-row {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 6px;
+    }
+    
+    .period-info-summary .info-row:last-child {
+        margin-bottom: 0;
+    }
+    
+    .period-info-summary i {
+        color: #1976d2;
+        width: 16px;
+    }
+    
+    .period-info-summary strong {
+        color: #0d47a1;
+    }
+    
+    .period-info-summary .price-tag {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        background: white;
+        padding: 4px 12px;
+        border-radius: 20px;
+        font-weight: 600;
+        margin-top: 8px;
+    }
+    
+    .period-info-summary .original-price {
+        text-decoration: line-through;
+        color: #999;
+        font-size: 12px;
+    }
+    
+    .period-info-summary .discounted-price {
+        color: #dc3545;
+        font-size: 14px;
+    }
+    
+    /* Dates Calendar Section */
+    .dates-calendar-section {
+        margin-bottom: 15px;
+    }
+    
+    .dates-calendar-label {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 14px;
+        font-weight: 600;
+        color: #495057;
+        margin-bottom: 12px;
+    }
+    
+    .dates-calendar-label i {
+        color: var(--tg-theme-primary, #560CE3);
+    }
+    
+    .dates-calendar-grid {
+        display: grid;
+        grid-template-columns: repeat(7, 1fr);
+        gap: 6px;
+        max-height: 280px;
+        overflow-y: auto;
+        padding: 5px;
+    }
+    
+    @media (max-width: 576px) {
+        .dates-calendar-grid {
+            grid-template-columns: repeat(4, 1fr);
+        }
+    }
+    
+    .date-cell {
+        aspect-ratio: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        background: white;
+        border: 2px solid #e9ecef;
+        border-radius: 10px;
+        cursor: pointer;
+        transition: all 0.25s ease;
+        padding: 4px;
+    }
+    
+    .date-cell:hover {
+        border-color: var(--tg-theme-primary, #560CE3);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(86, 12, 227, 0.15);
+    }
+    
+    .date-cell.selected {
+        background: linear-gradient(135deg, var(--tg-theme-primary, #560CE3) 0%, #7c3aed 100%);
+        border-color: var(--tg-theme-primary, #560CE3);
+        color: white;
+        transform: scale(1.05);
+        box-shadow: 0 6px 20px rgba(86, 12, 227, 0.3);
+    }
+    
+    .date-cell .day-number {
+        font-size: 16px;
+        font-weight: 700;
+        line-height: 1;
+    }
+    
+    .date-cell .day-name {
+        font-size: 9px;
+        text-transform: uppercase;
+        opacity: 0.8;
+        margin-top: 2px;
+    }
+    
+    .date-cell.selected .day-number,
+    .date-cell.selected .day-name {
+        color: white;
+    }
+    
+    .date-cell.disabled {
+        background: #f8f9fa;
+        border-color: #e9ecef;
+        color: #adb5bd;
+        cursor: not-allowed;
+        opacity: 0.6;
+    }
+    
+    .date-cell.disabled:hover {
+        transform: none;
+        box-shadow: none;
+        border-color: #e9ecef;
+    }
+    
+    /* Selected Date Info */
+    .selected-date-info {
+        background: linear-gradient(145deg, #d4edda 0%, #c3e6cb 100%);
+        border-radius: 12px;
+        padding: 12px 15px;
+        animation: slideUpFade 0.3s ease;
+    }
+    
+    .selected-date-display {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 15px;
+        font-weight: 600;
+        color: #155724;
+    }
+    
+    .selected-date-display i {
+        font-size: 20px;
+        color: #28a745;
+    }
+    
+    /* Book Now Button States */
+    #book-now-btn:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+        background: #6c757d;
+    }
+    
+    #book-now-btn:not(:disabled) {
+        animation: pulseButton 2s infinite;
+    }
+    
+    @keyframes pulseButton {
+        0%, 100% { box-shadow: 0 0 0 0 rgba(86, 12, 227, 0.4); }
+        50% { box-shadow: 0 0 0 10px rgba(86, 12, 227, 0); }
+    }
+    
+    /* ============================================
+       AVAILABILITY SECTION - COMPACT & ELEGANT
+       ============================================ */
+    
+    .tg-tour-availability-section {
+        animation: slideUpFade 0.5s ease;
+        margin-top: 20px;
+    }
+    
+    .availability-section-card {
+        background: #ffffff;
+        border-radius: 12px;
+        padding: 16px 20px;
+        border: 1px solid #e9ecef;
+        box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+    }
+    
+    .availability-section-header {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 12px;
+        padding-bottom: 12px;
+        border-bottom: 1px solid #f0f0f0;
+    }
+    
+    .availability-section-header i {
+        font-size: 20px;
+        color: var(--tg-theme-primary, #560CE3);
+        background: rgba(86, 12, 227, 0.08);
+        width: 44px;
+        height: 44px;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .availability-title {
+        font-size: 16px;
+        font-weight: 700;
+        color: #2d3436;
+        margin: 0;
+    }
+    
+    .availability-subtitle {
+        font-size: 13px;
+        color: #6c757d;
+        margin: 2px 0 0;
+    }
+    
+    /* Selected Month Summary - Compact */
+    .selected-month-summary {
+        background: #f8f9fa;
+        border-radius: 8px;
+        padding: 12px 14px;
+        margin-bottom: 12px;
+    }
+    
+    .month-summary-header {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 14px;
+        font-weight: 600;
+        color: #495057;
+        margin-bottom: 8px;
+    }
+    
+    .month-summary-header i {
+        color: var(--tg-theme-primary, #560CE3);
+        font-size: 14px;
+    }
+    
+    .month-summary-details {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+    
+    .summary-item {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        background: white;
+        padding: 5px 10px;
+        border-radius: 16px;
+        font-size: 12px;
+        color: #495057;
+        border: 1px solid #e9ecef;
+    }
+    
+    .summary-item i {
+        color: var(--tg-theme-primary, #560CE3);
+        font-size: 11px;
+    }
+    
+    .summary-item.price {
+        background: #d4edda;
+        border-color: #c3e6cb;
+        color: #155724;
+        font-weight: 600;
+    }
+    
+    .summary-item.discount {
+        background: #fff3cd;
+        border-color: #ffecb3;
+        color: #856404;
+        font-weight: 600;
+    }
+    
+    /* Available Periods - Compact List */
+    .available-periods-container {
+        margin-bottom: 12px;
+    }
+    
+    .periods-label {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 13px;
+        font-weight: 600;
+        color: #495057;
+        margin-bottom: 10px;
+    }
+    
+    .periods-label i {
+        color: var(--tg-theme-primary, #560CE3);
+        font-size: 14px;
+    }
+    
+    .periods-list {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+    }
+    
+    .period-card {
+        background: white;
+        border: 1px solid #e9ecef;
+        border-radius: 8px;
+        padding: 12px 14px;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+    }
+    
+    .period-card:hover {
+        border-color: var(--tg-theme-primary, #560CE3);
+        box-shadow: 0 2px 8px rgba(86, 12, 227, 0.1);
+    }
+    
+    .period-card.selected {
+        border-color: var(--tg-theme-primary, #560CE3);
+        background: #f3f0ff;
+    }
+    
+    .period-card.selected::after {
+        content: '\f00c';
+        font-family: 'Font Awesome 6 Free';
+        font-weight: 900;
+        position: absolute;
+        top: 50%;
+        right: 12px;
+        transform: translateY(-50%);
+        width: 22px;
+        height: 22px;
+        background: var(--tg-theme-primary, #560CE3);
+        color: white;
+        border-radius: 50%;
+        font-size: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .period-card.selected {
+        padding-right: 40px;
+    }
+    
+    .period-info-left {
+        flex: 1;
+    }
+    
+    .period-dates-range {
+        font-size: 14px;
+        font-weight: 600;
+        color: #2d3436;
+        margin-bottom: 2px;
+    }
+    
+    .period-duration {
+        font-size: 11px;
+        color: #6c757d;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+    }
+    
+    .period-price-box {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        text-align: right;
+    }
+    
+    .period-original-price {
+        text-decoration: line-through;
+        color: #adb5bd;
+        font-size: 12px;
+    }
+    
+    .period-current-price {
+        font-size: 16px;
+        font-weight: 700;
+        color: var(--tg-theme-primary, #560CE3);
+    }
+    
+    .period-discount-badge {
+        background: #dc3545;
+        color: white;
+        font-size: 9px;
+        font-weight: 700;
+        padding: 2px 6px;
+        border-radius: 8px;
+    }
+    
+    /* Selected Period Final - Compact */
+    .selected-period-final {
+        background: #d4edda;
+        border-radius: 8px;
+        padding: 10px 14px;
+        margin-bottom: 12px;
+        animation: slideUpFade 0.3s ease;
+    }
+    
+    .selected-period-highlight {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+    
+    .selected-period-highlight i {
+        font-size: 18px;
+        color: #28a745;
+    }
+    
+    .period-label {
+        display: block;
+        font-size: 10px;
+        color: #155724;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin-bottom: 1px;
+    }
+    
+    .period-dates {
+        display: block;
+        font-size: 14px;
+        font-weight: 600;
+        color: #155724;
+    }
+    
+    /* Passengers Selection - Compact */
+    .passengers-selection {
+        background: #f8f9fa;
+        border-radius: 8px;
+        padding: 12px;
+        margin-bottom: 12px;
+    }
+    
+    .passenger-label {
+        display: block;
+        font-size: 12px;
+        font-weight: 600;
+        color: #495057;
+        margin-bottom: 6px;
+    }
+    
+    .passenger-label small {
+        color: #6c757d;
+        font-weight: 400;
+        margin-left: 3px;
+        font-size: 10px;
+    }
+    
+    .passenger-label i {
+        color: var(--tg-theme-primary, #560CE3);
+        margin-right: 4px;
+        font-size: 12px;
+    }
+    
+    .passenger-select {
+        width: 100%;
+        padding: 8px 10px;
+        border: 1px solid #dee2e6;
+        border-radius: 6px;
+        font-size: 14px;
+        background: white;
+        cursor: pointer;
+        transition: all 0.2s ease;
+    }
+    
+    .passenger-select:focus {
+        border-color: var(--tg-theme-primary, #560CE3);
+        outline: none;
+    }
+    
+    /* Total Cost Box - Compact */
+    .total-cost-box {
+        background: var(--tg-theme-primary, #560CE3);
+        border-radius: 8px;
+        padding: 12px 16px;
+        color: white;
+        margin-bottom: 12px;
+    }
+    
+    .total-label {
+        font-size: 13px;
+        font-weight: 500;
+        opacity: 0.9;
+    }
+    
+    .total-amount {
+        font-size: 20px;
+        font-weight: 700;
+    }
+    
+    /* Bottom Book Now Button - Compact */
+    #bottom-book-now-btn {
+        padding: 12px;
+        font-size: 15px;
+        font-weight: 600;
+    }
+    
+    #bottom-book-now-btn:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+        background: #6c757d;
+    }
+    
+    /* --- Scrollbar Styling for Dropdown ---
+    .year-dropdown-menu::-webkit-scrollbar {
+        width: 6px;
+    }
+    
+    .year-dropdown-menu::-webkit-scrollbar-track {
+        background: #f1f1f1;
+        border-radius: 3px;
+    }
+    
+    .year-dropdown-menu::-webkit-scrollbar-thumb {
+        background: #c1c1c1;
+        border-radius: 3px;
+    }
+    
+    .year-dropdown-menu::-webkit-scrollbar-thumb:hover {
+        background: #a1a1a1;
+    }
+    
+    /* --- Legacy Styles (kept for compatibility) --- */
+    .month-selector-container {
+        display: none;
     }
 </style>
 @endpush
@@ -770,6 +1633,101 @@
 
                             </div>
                         </div>
+                        
+                        <!-- Availability Section - Below Reviews -->
+                        @if ($service->availability_periods && $service->availability_periods->count() > 0)
+                        <div class="tg-tour-availability-section" id="availability-section" style="display: none;">
+                            <div class="tg-tour-about-border mb-40"></div>
+                            
+                            <div class="availability-section-card">
+                                <div class="availability-section-header">
+                                    <i class="fa-regular fa-calendar-check"></i>
+                                    <div>
+                                        <h4 class="availability-title">{{ __('translate.Availability & Booking') }}</h4>
+                                        <p class="availability-subtitle" id="availability-month-year"></p>
+                                    </div>
+                                </div>
+                                
+                                <!-- Selected Month Summary -->
+                                <div class="selected-month-summary" id="selected-month-summary"></div>
+                                
+                                <!-- Available Periods List -->
+                                <div class="available-periods-container">
+                                    <label class="periods-label">
+                                        <i class="fa-solid fa-list-check"></i>
+                                        {{ __('translate.Select your preferred period') }}
+                                    </label>
+                                    <div class="periods-list" id="periods-list">
+                                        <!-- Periods will be populated by JavaScript -->
+                                    </div>
+                                </div>
+                                
+                                <!-- Selected Period Info -->
+                                <div class="selected-period-final" id="selected-period-final" style="display: none;">
+                                    <div class="selected-period-highlight">
+                                        <i class="fa-solid fa-check-circle"></i>
+                                        <div>
+                                            <span class="period-label">{{ __('translate.Selected Period') }}</span>
+                                            <span class="period-dates" id="final-period-dates"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Booking Form for this section -->
+                                <form id="bottom-booking-form" action="{{ route('front.tourbooking.book.checkout.view') }}" method="GET" class="mt-4">
+                                    <input type="hidden" name="service_id" value="{{ $service->id }}">
+                                    <input type="hidden" name="availability_period_id" id="bottom-period-id">
+                                    <input type="hidden" name="check_in_date" id="bottom-check-in-date">
+                                    <input type="hidden" name="person" id="bottom-person" value="1">
+                                    <input type="hidden" name="children" id="bottom-children" value="0">
+                                    
+                                    <!-- Passengers selection -->
+                                    <div class="passengers-selection mb-4">
+                                        <div class="row">
+                                            <div class="col-md-6 mb-3">
+                                                <label class="passenger-label">
+                                                    <i class="fa-solid fa-user"></i>
+                                                    {{ __('translate.Adults') }}
+                                                    <small>(18+ years)</small>
+                                                </label>
+                                                <select name="person_display" class="form-select passenger-select" id="bottom-adults-select">
+                                                    @for($i = 1; $i <= 8; $i++)
+                                                        <option value="{{ $i }}">{{ $i }}</option>
+                                                    @endfor
+                                                </select>
+                                            </div>
+                                            <div class="col-md-6 mb-3">
+                                                <label class="passenger-label">
+                                                    <i class="fa-solid fa-child"></i>
+                                                    {{ __('translate.Children') }}
+                                                    <small>(13-17 years)</small>
+                                                </label>
+                                                <select name="children_display" class="form-select passenger-select" id="bottom-children-select">
+                                                    @for($i = 0; $i <= 8; $i++)
+                                                        <option value="{{ $i }}">{{ $i }}</option>
+                                                    @endfor
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Total Cost Display -->
+                                    <div class="total-cost-box mb-4">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <span class="total-label">{{ __('translate.Total Cost') }}</span>
+                                            <span class="total-amount" id="bottom-total-cost">{{ currency($service->adult_price) }}</span>
+                                        </div>
+                                    </div>
+                                    
+                                    <button type="submit" id="bottom-book-now-btn" class="tg-btn tg-btn-switch-animation w-100" disabled>
+                                        <i class="fa-solid fa-calendar-check mr-2"></i>
+                                        {{ __('translate.Book Now') }}
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                        @endif
+                        
                     </div>
                     <div class="col-xl-3 col-lg-4">
                         @php
@@ -942,24 +1900,35 @@
                                     <div class="tg-tour-about-time mb-10">
                                         <span class="time mb-10 d-block">{{ __('translate.Availability by Month') }}:</span>
                                         
-                                        <!-- Month Selector Component -->
-                                        <div class="month-selector-container">
-                                            <!-- Year Navigation -->
-                                            <div class="year-navigation d-flex justify-content-between align-items-center mb-3">
-                                                <button type="button" class="year-nav-btn prev-year" id="prevYearBtn">
-                                                    <i class="fa-solid fa-chevron-left"></i>
-                                                </button>
-                                                <span class="current-year" id="currentYearDisplay">{{ $years[0] ?? $currentYear }}</span>
-                                                <button type="button" class="year-nav-btn next-year" id="nextYearBtn">
-                                                    <i class="fa-solid fa-chevron-right"></i>
-                                                </button>
+                                        <!-- Month Selector Component V2 -->
+                                        <div class="month-selector-v2">
+                                            <!-- Year Selector Dropdown -->
+                                            <div class="year-selector-wrapper mb-3">
+                                                <label class="year-selector-label">{{ __('translate.Select Year') }}</label>
+                                                <div class="year-dropdown">
+                                                    <button type="button" class="year-dropdown-toggle" id="yearDropdownToggle">
+                                                        <span class="selected-year-text">{{ $years[0] ?? $currentYear }}</span>
+                                                        <i class="fa-solid fa-chevron-down"></i>
+                                                    </button>
+                                                    <div class="year-dropdown-menu" id="yearDropdownMenu">
+                                                        @foreach($years as $year)
+                                                            <div class="year-option {{ $loop->first ? 'active' : '' }}" data-year="{{ $year }}">
+                                                                <span class="year-text">{{ $year }}</span>
+                                                                @php
+                                                                    $availableMonthsCount = isset($periodsByMonth[$year]) ? count($periodsByMonth[$year]) : 0;
+                                                                @endphp
+                                                                <span class="year-badge">{{ $availableMonthsCount }} {{ __('translate.months') }}</span>
+                                                            </div>
+                                                        @endforeach
+                                                    </div>
+                                                </div>
                                             </div>
                                             
-                                            <!-- Months Grid -->
-                                            <div class="months-grid" id="monthsGrid">
+                                            <!-- Months Grid - 12 Beautiful Rectangles -->
+                                            <div class="months-container" id="monthsContainer">
                                                 @foreach($years as $year)
-                                                    <div class="year-block {{ $loop->first ? 'active' : '' }}" data-year="{{ $year }}" id="yearBlock{{ $year }}">
-                                                        <div class="months-row">
+                                                    <div class="year-months-block {{ $loop->first ? 'active' : '' }}" data-year="{{ $year }}" id="yearMonths{{ $year }}">
+                                                        <div class="months-grid-v2" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px;">
                                                             @for($month = 1; $month <= 12; $month++)
                                                                 @php
                                                                     $hasAvailability = isset($periodsByMonth[$year][$month]) && count($periodsByMonth[$year][$month]) > 0;
@@ -981,7 +1950,7 @@
                                                                     }
                                                                 @endphp
                                                                 
-                                                                <div class="month-cell {{ $hasAvailability ? 'available' : 'unavailable' }} {{ $isDiscounted ? 'discounted' : '' }}" 
+                                                                <div class="month-box {{ $hasAvailability ? 'available' : 'unavailable' }} {{ $isDiscounted ? 'discounted' : '' }}" 
                                                                      data-year="{{ $year }}" 
                                                                      data-month="{{ $month }}"
                                                                      data-month-name="{{ $monthNamesFull[$month] }}"
@@ -994,11 +1963,21 @@
                                                                          data-discount-percentage="{{ $period['discount_percentage'] }}"
                                                                      @endif
                                                                 >
-                                                                    <span class="month-name">{{ $monthNames[$month] }}</span>
+                                                                    <div class="month-box-inner">
+                                                                        <span class="month-short">{{ $monthNames[$month] }}</span>
+                                                                        <span class="month-number">{{ str_pad($month, 2, '0', STR_PAD_LEFT) }}</span>
+                                                                        @if($hasAvailability)
+                                                                            @if($isDiscounted)
+                                                                                <span class="month-badge discount">-{{ $period['discount_percentage'] }}%</span>
+                                                                            @else
+                                                                                <span class="month-badge available">✓</span>
+                                                                            @endif
+                                                                        @else
+                                                                            <span class="month-badge unavailable">—</span>
+                                                                        @endif
+                                                                    </div>
                                                                     @if($hasAvailability)
-                                                                        <span class="month-price {{ $isDiscounted ? 'price-discounted' : '' }}">{{ $priceDisplay }}</span>
-                                                                    @else
-                                                                        <span class="month-price">-</span>
+                                                                        <div class="month-price-tag">{{ $priceDisplay }}</div>
                                                                     @endif
                                                                 </div>
                                                             @endfor
@@ -1007,15 +1986,6 @@
                                                 @endforeach
                                             </div>
                                             
-                                            <!-- Selected Period Info -->
-                                            <input type="hidden" name="availability_period_id" id="selected-availability-period-id">
-                                            <input type="hidden" name="check_in_date" id="selected-check-in-date">
-                                            <div id="selected-month-info" class="selected-month-info mt-3" style="display: none;">
-                                                <div class="alert alert-success mb-0">
-                                                    <strong id="selected-month-name"></strong>
-                                                    <p class="mb-0 mt-1" id="selected-period-details"></p>
-                                                </div>
-                                            </div>
                                         </div>
                                     </div>
                                 @endif
@@ -1112,12 +2082,18 @@
                                 <div class="tg-tour-about-border-doted mb-15"></div>
                                 @endif
 
+                                <!-- Hidden inputs for form submission -->
+                                <input type="hidden" name="availability_period_id" id="sidebar-period-id">
+                                <input type="hidden" name="check_in_date" id="sidebar-check-in-date">
+
                                 <div class="tg-tour-about-coast d-flex align-items-center flex-wrap justify-content-between mb-20">
                                     <span class="tg-tour-about-sidebar-title d-inline-block">Total Cost:</span>
                                     <h5 class="total-price" x-text="totalCostFormatted"></h5>
                                 </div>
 
-                                <button type="submit" class="tg-btn tg-btn-switch-animation w-100">{{ __('translate.Book Now') }}</button>
+                                <button type="button" id="sidebar-book-btn" class="tg-btn tg-btn-switch-animation w-100" onclick="scrollToAvailability()">
+                                    {{ __('translate.Select Date & Book') }}
+                                </button>
                             </form>
                             </div>
                             
@@ -1167,125 +2143,405 @@
                     };
                 });
 
-                // Month Selector Functionality
-                const prevYearBtn = document.getElementById('prevYearBtn');
-                const nextYearBtn = document.getElementById('nextYearBtn');
-                const currentYearDisplay = document.getElementById('currentYearDisplay');
-                const yearBlocks = document.querySelectorAll('.year-block');
-                const monthCells = document.querySelectorAll('.month-cell');
+                // Month Selector V2 Functionality
+                const yearDropdownToggle = document.getElementById('yearDropdownToggle');
+                const yearDropdownMenu = document.getElementById('yearDropdownMenu');
+                const yearOptions = document.querySelectorAll('.year-option');
+                const yearMonthsBlocks = document.querySelectorAll('.year-months-block');
+                const monthBoxes = document.querySelectorAll('.month-box');
                 const periodInput = document.getElementById('selected-availability-period-id');
                 const checkInDateInput = document.getElementById('selected-check-in-date');
-                const selectedMonthInfo = document.getElementById('selected-month-info');
+                const selectedMonthSection = document.getElementById('selected-month-section');
                 const selectedMonthName = document.getElementById('selected-month-name');
-                const selectedPeriodDetails = document.getElementById('selected-period-details');
-                const bookBtn = document.querySelector('button[type="submit"]');
+                const periodInfoSummary = document.getElementById('period-info-summary');
+                const datesCalendarGrid = document.getElementById('dates-calendar-grid');
+                const selectedDateInfo = document.getElementById('selected-date-info');
+                const selectedDateText = document.getElementById('selected-date-text');
+                const bookBtn = document.getElementById('book-now-btn');
                 
-                let currentYearIndex = 0;
-                const years = Array.from(yearBlocks).map(block => parseInt(block.dataset.year));
+                let currentSelectedYear = null;
+                let currentSelectedPeriod = null;
+                const years = Array.from(yearMonthsBlocks).map(block => parseInt(block.dataset.year));
                 
-                // Update year navigation buttons
-                function updateYearNavButtons() {
-                    if (prevYearBtn) prevYearBtn.disabled = currentYearIndex === 0;
-                    if (nextYearBtn) nextYearBtn.disabled = currentYearIndex === years.length - 1;
+                // Day names for calendar
+                const dayNames = ['{{ __("translate.Sun") }}', '{{ __("translate.Mon") }}', '{{ __("translate.Tue") }}', '{{ __("translate.Wed") }}', '{{ __("translate.Thu") }}', '{{ __("translate.Fri") }}', '{{ __("translate.Sat") }}'];
+                
+                // Year Dropdown Toggle
+                if (yearDropdownToggle && yearDropdownMenu) {
+                    yearDropdownToggle.addEventListener('click', function(e) {
+                        e.stopPropagation();
+                        this.classList.toggle('active');
+                        yearDropdownMenu.classList.toggle('show');
+                    });
+                    
+                    // Close dropdown when clicking outside
+                    document.addEventListener('click', function(e) {
+                        if (!yearDropdownToggle.contains(e.target) && !yearDropdownMenu.contains(e.target)) {
+                            yearDropdownToggle.classList.remove('active');
+                            yearDropdownMenu.classList.remove('show');
+                        }
+                    });
                 }
                 
-                // Show year block
-                function showYear(index) {
-                    if (index < 0 || index >= years.length) return;
+                // Year Selection
+                yearOptions.forEach(option => {
+                    option.addEventListener('click', function() {
+                        const year = parseInt(this.dataset.year);
+                        
+                        // Update active state in dropdown
+                        yearOptions.forEach(opt => opt.classList.remove('active'));
+                        this.classList.add('active');
+                        
+                        // Update toggle text
+                        if (yearDropdownToggle) {
+                            yearDropdownToggle.querySelector('.selected-year-text').textContent = year;
+                        }
+                        
+                        // Close dropdown
+                        if (yearDropdownToggle) yearDropdownToggle.classList.remove('active');
+                        if (yearDropdownMenu) yearDropdownMenu.classList.remove('show');
+                        
+                        // Show corresponding months
+                        showYearMonths(year);
+                    });
+                });
+                
+                // Show year months block
+                function showYearMonths(year) {
+                    currentSelectedYear = year;
                     
-                    currentYearIndex = index;
-                    const year = years[index];
-                    
-                    yearBlocks.forEach(block => {
+                    yearMonthsBlocks.forEach(block => {
                         block.classList.remove('active');
                     });
                     
-                    const activeBlock = document.getElementById('yearBlock' + year);
-                    if (activeBlock) activeBlock.classList.add('active');
+                    const activeBlock = document.getElementById('yearMonths' + year);
+                    if (activeBlock) {
+                        activeBlock.classList.add('active');
+                    }
+                }
+                
+                // Generate calendar dates for the selected period
+                function generateDatesCalendar(startDate, endDate, selectedMonth, selectedYear) {
+                    if (!datesCalendarGrid) return;
                     
-                    if (currentYearDisplay) currentYearDisplay.textContent = year;
-                    updateYearNavButtons();
-                }
-                
-                // Year navigation event listeners
-                if (prevYearBtn) {
-                    prevYearBtn.addEventListener('click', () => showYear(currentYearIndex - 1));
-                }
-                
-                if (nextYearBtn) {
-                    nextYearBtn.addEventListener('click', () => showYear(currentYearIndex + 1));
-                }
-                
-                // Initialize year navigation
-                updateYearNavButtons();
-                
-                // Month cell click handler
-                monthCells.forEach(cell => {
-                    cell.addEventListener('click', function() {
-                        if (this.classList.contains('unavailable')) return;
+                    datesCalendarGrid.innerHTML = '';
+                    
+                    const start = new Date(startDate);
+                    const end = new Date(endDate);
+                    const today = new Date();
+                    today.setHours(0, 0, 0, 0);
+                    
+                    // Generate all dates in the range
+                    const currentDate = new Date(start);
+                    while (currentDate <= end) {
+                        const dateStr = currentDate.toISOString().split('T')[0];
+                        const dayNum = currentDate.getDate();
+                        const dayName = dayNames[currentDate.getDay()];
+                        const isPast = currentDate < today;
+                        const isInSelectedMonth = currentDate.getMonth() + 1 === parseInt(selectedMonth) && currentDate.getFullYear() === parseInt(selectedYear);
                         
-                        const periodId = this.dataset.periodId;
-                        const startDate = this.dataset.startDate;
-                        const endDate = this.dataset.endDate;
-                        const monthName = this.dataset.monthName;
-                        const year = this.dataset.year;
-                        const adultPrice = this.dataset.adultPrice;
-                        const discountedPrice = this.dataset.discountedPrice;
-                        const discountPercentage = this.dataset.discountPercentage;
+                        const dateCell = document.createElement('div');
+                        dateCell.className = `date-cell ${isPast ? 'disabled' : ''} ${!isInSelectedMonth ? 'disabled' : ''}`;
+                        dateCell.dataset.date = dateStr;
+                        
+                        if (!isPast && isInSelectedMonth) {
+                            dateCell.addEventListener('click', function() {
+                                selectDate(this, dateStr, dayNum, dayName, currentDate);
+                            });
+                        }
+                        
+                        dateCell.innerHTML = `
+                            <span class="day-number">${dayNum}</span>
+                            <span class="day-name">${dayName}</span>
+                        `;
+                        
+                        datesCalendarGrid.appendChild(dateCell);
+                        currentDate.setDate(currentDate.getDate() + 1);
+                    }
+                }
+                
+                // Handle date selection
+                function selectDate(dateCell, dateStr, dayNum, dayName, dateObj) {
+                    // Remove selected class from all dates
+                    document.querySelectorAll('.date-cell').forEach(cell => cell.classList.remove('selected'));
+                    
+                    // Add selected class to clicked date
+                    dateCell.classList.add('selected');
+                    
+                    // Update hidden input
+                    if (checkInDateInput) checkInDateInput.value = dateStr;
+                    
+                    // Show selected date info
+                    if (selectedDateText) {
+                        const formattedDate = dateObj.toLocaleDateString('{{ app()->getLocale() }}', {
+                            weekday: 'long',
+                            day: 'numeric',
+                            month: 'long',
+                            year: 'numeric'
+                        });
+                        selectedDateText.textContent = formattedDate;
+                    }
+                    if (selectedDateInfo) selectedDateInfo.style.display = 'block';
+                    
+                    // Enable book button
+                    if (bookBtn) bookBtn.disabled = false;
+                    
+                    // Smooth scroll to book button
+                    setTimeout(() => {
+                        bookBtn.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    }, 100);
+                }
+                
+                // Global function to scroll to availability section
+                window.scrollToAvailability = function() {
+                    const availabilitySection = document.getElementById('availability-section');
+                    if (availabilitySection) {
+                        availabilitySection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                };
+                
+                // Month box click handler - Shows availability section at bottom
+                monthBoxes.forEach(box => {
+                    box.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        
+                        if (this.classList.contains('unavailable')) {
+                            this.style.animation = 'shake 0.4s ease';
+                            setTimeout(() => {
+                                this.style.animation = '';
+                            }, 400);
+                            return;
+                        }
+                        
+                        // Get data attributes
+                        const periodId = this.getAttribute('data-period-id');
+                        const startDate = this.getAttribute('data-start-date');
+                        const endDate = this.getAttribute('data-end-date');
+                        const monthName = this.getAttribute('data-month-name');
+                        const year = this.getAttribute('data-year');
+                        const month = this.getAttribute('data-month');
+                        const adultPrice = this.getAttribute('data-adult-price');
+                        const discountedPrice = this.getAttribute('data-discounted-price');
+                        const discountPercentage = this.getAttribute('data-discount-percentage');
+                        
+                        console.log('Month clicked:', { periodId, startDate, endDate, monthName, year });
                         
                         // Update selected state
-                        monthCells.forEach(c => c.classList.remove('selected'));
+                        monthBoxes.forEach(b => b.classList.remove('selected'));
                         this.classList.add('selected');
                         
-                        // Set hidden inputs
-                        if (periodInput) periodInput.value = periodId;
-                        if (checkInDateInput) checkInDateInput.value = startDate;
-                        
-                        // Calculate duration
-                        const start = new Date(startDate);
-                        const end = new Date(endDate);
-                        const days = Math.ceil((end - start) / (1000 * 60 * 60 * 24)) + 1;
-                        
-                        // Build price info
-                        let priceInfo = '';
-                        if (discountedPrice && parseFloat(discountedPrice) < parseFloat(adultPrice)) {
-                            priceInfo = `<span class="original-price">${formatCurrency(adultPrice)}</span> <span class="discounted-price">${formatCurrency(discountedPrice)}</span>`;
+                        // Show availability section at bottom
+                        if (typeof showAvailabilitySection === 'function') {
+                            showAvailabilitySection(periodId, startDate, endDate, monthName, year, month, adultPrice, discountedPrice, discountPercentage);
                         } else {
-                            priceInfo = `<strong>${formatCurrency(adultPrice)}</strong>`;
+                            console.error('showAvailabilitySection function not found');
                         }
-                        
-                        // Show selected info
-                        if (selectedMonthName) selectedMonthName.textContent = `${monthName} ${year}`;
-                        if (selectedPeriodDetails) {
-                            let detailsHtml = '';
-                            detailsHtml += `<strong>{{ __('translate.From') }}</strong> ${start.toLocaleDateString('{{ app()->getLocale() }}', {day: 'numeric', month: 'long', year: 'numeric'})} `;
-                            detailsHtml += `<strong>{{ __('translate.to') }}</strong> ${end.toLocaleDateString('{{ app()->getLocale() }}', {day: 'numeric', month: 'long', year: 'numeric'})}<br>`;
-                            detailsHtml += `<div class="period-price-info">`;
-                            detailsHtml += `<span class="price-item"><i class="fa fa-user"></i> {{ __('translate.Adult') }}: ${priceInfo}</span>`;
-                            if (discountPercentage && parseFloat(discountPercentage) > 0) {
-                                detailsHtml += `<span class="badge bg-danger">-${discountPercentage}% OFF</span>`;
-                            }
-                            detailsHtml += `</div>`;
-                            selectedPeriodDetails.innerHTML = detailsHtml;
-                        }
-                        if (selectedMonthInfo) selectedMonthInfo.style.display = 'block';
-                        
-                        // Update booking prices based on selected period
-                        const finalAdultPrice = discountedPrice && parseFloat(discountedPrice) < parseFloat(adultPrice) 
-                            ? parseFloat(discountedPrice) 
-                            : parseFloat(adultPrice);
-                        const periodData = availabilityPeriodsMap[periodId];
-                        const finalChildPrice = periodData && periodData.child_price 
-                            ? (periodData.child_discount_percentage 
-                                ? periodData.child_price - (periodData.child_price * (periodData.child_discount_percentage / 100))
-                                : (periodData.child_price))
-                            : null;
-                        updateBookingPrices(finalAdultPrice, finalChildPrice);
-                        
-                        // Enable book button
-                        if (bookBtn) bookBtn.disabled = false;
                     });
                 });
+                
+                // Show availability section with periods
+                window.showAvailabilitySection = function(periodId, startDate, endDate, monthName, year, month, adultPrice, discountedPrice, discountPercentage) {
+                    console.log('showAvailabilitySection called with:', { periodId, startDate, endDate, monthName, year });
+                    
+                    const availabilitySection = document.getElementById('availability-section');
+                    
+                    if (!availabilitySection) {
+                        console.error('ERROR: availability-section element not found!');
+                        alert('Error: Availability section not found. Please refresh the page.');
+                        return;
+                    }
+                    
+                    // Calculate values
+                    const start = new Date(startDate);
+                    const end = new Date(endDate);
+                    const days = Math.ceil((end - start) / (1000 * 60 * 60 * 24)) + 1;
+                    const adultPriceNum = parseFloat(adultPrice) || 0;
+                    const discountedPriceNum = parseFloat(discountedPrice) || 0;
+                    const finalPrice = discountedPriceNum > 0 && discountedPriceNum < adultPriceNum ? discountedPriceNum : adultPriceNum;
+                    const discountNum = parseFloat(discountPercentage) || 0;
+                    const hasDiscount = discountNum > 0;
+                    
+                    // Update header
+                    const availabilityMonthYear = document.getElementById('availability-month-year');
+                    if (availabilityMonthYear) {
+                        availabilityMonthYear.textContent = monthName + ' ' + year;
+                    }
+                    
+                    // Update month summary
+                    const selectedMonthSummary = document.getElementById('selected-month-summary');
+                    if (selectedMonthSummary) {
+                        const startStr = start.toLocaleDateString('{{ app()->getLocale() }}', {day: 'numeric', month: 'short'});
+                        const endStr = end.toLocaleDateString('{{ app()->getLocale() }}', {day: 'numeric', month: 'short', year: 'numeric'});
+                        
+                        selectedMonthSummary.innerHTML = `
+                            <div class="month-summary-header">
+                                <i class="fa-regular fa-calendar-check"></i>
+                                <span>${monthName} ${year}</span>
+                            </div>
+                            <div class="month-summary-details">
+                                <div class="summary-item">
+                                    <i class="fa-regular fa-calendar"></i>
+                                    <span>${startStr} - ${endStr}</span>
+                                </div>
+                                <div class="summary-item">
+                                    <i class="fa-solid fa-clock"></i>
+                                    <span>${days}d</span>
+                                </div>
+                                <div class="summary-item price">
+                                    <i class="fa fa-user"></i>
+                                    <span>${formatCurrency(finalPrice)}</span>
+                                </div>
+                                ${hasDiscount ? `
+                                <div class="summary-item discount">
+                                    <i class="fa-solid fa-tag"></i>
+                                    <span>-${discountNum}%</span>
+                                </div>
+                                ` : ''}
+                            </div>
+                        `;
+                    }
+                    
+                    // Generate period card
+                    const periodsList = document.getElementById('periods-list');
+                    if (periodsList) {
+                        const displayPrice = hasDiscount ? discountedPriceNum : adultPriceNum;
+                        const startStr = start.toLocaleDateString('{{ app()->getLocale() }}', {day: 'numeric', month: 'short'});
+                        const endStr = end.toLocaleDateString('{{ app()->getLocale() }}', {day: 'numeric', month: 'short'});
+                        
+                        periodsList.innerHTML = `
+                            <div class="period-card" data-period-id="${periodId}" data-start-date="${startDate}" data-end-date="${endDate}">
+                                <div class="period-info-left">
+                                    <div class="period-dates-range">${startStr} - ${endStr}</div>
+                                    <div class="period-duration">
+                                        <i class="fa-solid fa-clock"></i>
+                                        <span>${days}d</span>
+                                    </div>
+                                </div>
+                                <div class="period-price-box">
+                                    ${hasDiscount ? `<span class="period-original-price">${formatCurrency(adultPriceNum)}</span>` : ''}
+                                    <span class="period-current-price">${formatCurrency(displayPrice)}</span>
+                                    ${hasDiscount ? `<span class="period-discount-badge">-${discountNum}%</span>` : ''}
+                                </div>
+                            </div>
+                        `;
+                        
+                        // Add click handler to period card
+                        const periodCard = periodsList.querySelector('.period-card');
+                        if (periodCard) {
+                            periodCard.addEventListener('click', function() {
+                                selectPeriod(this, periodId, startDate, endDate, start, end);
+                            });
+                        }
+                    }
+                    
+                    // Reset selected period display
+                    const selectedPeriodFinal = document.getElementById('selected-period-final');
+                    const bottomBookBtn = document.getElementById('bottom-book-now-btn');
+                    if (selectedPeriodFinal) selectedPeriodFinal.style.display = 'none';
+                    if (bottomBookBtn) bottomBookBtn.disabled = true;
+                    
+                    // Show section
+                    availabilitySection.style.display = 'block';
+                    console.log('Section is now visible');
+                    
+                    // Scroll to section
+                    setTimeout(() => {
+                        console.log('Scrolling...');
+                        availabilitySection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }, 300);
+                }
+                
+                // Select a period
+                function selectPeriod(card, periodId, startDate, endDate, startObj, endObj) {
+                    // Remove selected from all cards
+                    document.querySelectorAll('.period-card').forEach(c => c.classList.remove('selected'));
+                    
+                    // Add selected to clicked card
+                    card.classList.add('selected');
+                    
+                    // Update hidden inputs
+                    const bottomPeriodId = document.getElementById('bottom-period-id');
+                    const bottomCheckInDate = document.getElementById('bottom-check-in-date');
+                    if (bottomPeriodId) bottomPeriodId.value = periodId;
+                    if (bottomCheckInDate) bottomCheckInDate.value = startDate;
+                    
+                    // Show selected period info
+                    const selectedPeriodFinal = document.getElementById('selected-period-final');
+                    const finalPeriodDates = document.getElementById('final-period-dates');
+                    
+                    if (finalPeriodDates) {
+                        finalPeriodDates.textContent = `${startObj.toLocaleDateString('{{ app()->getLocale() }}', {day: 'numeric', month: 'long'})} - ${endObj.toLocaleDateString('{{ app()->getLocale() }}', {day: 'numeric', month: 'long', year: 'numeric'})}`;
+                    }
+                    
+                    if (selectedPeriodFinal) {
+                        selectedPeriodFinal.style.display = 'block';
+                        selectedPeriodFinal.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                    }
+                    
+                    // Enable book button
+                    const bottomBookBtn = document.getElementById('bottom-book-now-btn');
+                    if (bottomBookBtn) bottomBookBtn.disabled = false;
+                }
+                
+                // Update bottom total cost
+                function updateBottomTotal(adultPrice, childPrice) {
+                    const adultsSelect = document.getElementById('bottom-adults-select');
+                    const childrenSelect = document.getElementById('bottom-children-select');
+                    const totalDisplay = document.getElementById('bottom-total-cost');
+                    
+                    if (!adultsSelect || !childrenSelect || !totalDisplay) return;
+                    
+                    const adults = parseInt(adultsSelect.value) || 1;
+                    const children = parseInt(childrenSelect.value) || 0;
+                    
+                    const total = (adults * adultPrice) + (children * childPrice);
+                    totalDisplay.textContent = formatCurrency(total.toFixed(2));
+                    
+                    // Update hidden inputs
+                    const bottomPerson = document.getElementById('bottom-person');
+                    const bottomChildren = document.getElementById('bottom-children');
+                    if (bottomPerson) bottomPerson.value = adults;
+                    if (bottomChildren) bottomChildren.value = children;
+                }
+                
+                // Passenger select change handlers
+                const bottomAdultsSelect = document.getElementById('bottom-adults-select');
+                const bottomChildrenSelect = document.getElementById('bottom-children-select');
+                
+                if (bottomAdultsSelect) {
+                    bottomAdultsSelect.addEventListener('change', function() {
+                        const monthBox = document.querySelector('.month-box.selected');
+                        if (monthBox) {
+                            const adultPrice = parseFloat(monthBox.dataset.discountedPrice) || parseFloat(monthBox.dataset.adultPrice);
+                            const childPrice = 0; // Simplified - get from period data if needed
+                            updateBottomTotal(adultPrice, childPrice);
+                        }
+                    });
+                }
+                
+                if (bottomChildrenSelect) {
+                    bottomChildrenSelect.addEventListener('change', function() {
+                        const monthBox = document.querySelector('.month-box.selected');
+                        if (monthBox) {
+                            const adultPrice = parseFloat(monthBox.dataset.discountedPrice) || parseFloat(monthBox.dataset.adultPrice);
+                            const childPrice = 0;
+                            updateBottomTotal(adultPrice, childPrice);
+                        }
+                    });
+                }
+                
+                // Add shake animation keyframes dynamically
+                const shakeKeyframes = `
+                    @keyframes shake {
+                        0%, 100% { transform: translateX(0); }
+                        25% { transform: translateX(-3px); }
+                        75% { transform: translateX(3px); }
+                    }
+                `;
+                const styleSheet = document.createElement('style');
+                styleSheet.textContent = shakeKeyframes;
+                document.head.appendChild(styleSheet);
                 
                 // Hide the old date input (keep it for form submission)
                 const oldDateInput = document.querySelector('input[name="check_in_date"]');
