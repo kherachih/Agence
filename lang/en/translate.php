@@ -1969,5 +1969,9 @@ return array(
   'to' => 'to',
   'Please enter a valid adult price.' => 'Please enter a valid adult price.',
   'Adult Price is required' => 'Adult Price is required',
+  'Confirm Dates' => 'Confirm Dates',
+  'Price based on shared room' => 'Price based on shared room',
+  'Filling Fast' => 'Filling Fast',
+  'Instant Confirmation' => 'Instant Confirmation',
 );
 
