@@ -17,6 +17,8 @@ class QuoteRequest extends Model
         'phone',
         'adults',
         'children',
+        'date_depart',
+        'date_retour',
         'room_details',
         'status',
     ];

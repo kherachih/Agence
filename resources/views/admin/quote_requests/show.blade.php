@@ -60,6 +60,14 @@
                                             <td>{{ $quote->children }}</td>
                                         </tr>
                                         <tr>
+                                            <th>{{ __('translate.Date Depart') }}</th>
+                                            <td>{{ $quote->date_depart ? \Carbon\Carbon::parse($quote->date_depart)->format('d M Y') : 'N/A' }}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>{{ __('translate.Date Retour') }}</th>
+                                            <td>{{ $quote->date_retour ? \Carbon\Carbon::parse($quote->date_retour)->format('d M Y') : 'N/A' }}</td>
+                                        </tr>
+                                        <tr>
                                             <th>{{ __('translate.Room Details / Message') }}</th>
                                             <td>{{ $quote->room_details }}</td>
                                         </tr>

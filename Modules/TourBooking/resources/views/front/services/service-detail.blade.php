@@ -1277,6 +1277,157 @@
                     justify-content: flex-start;
                 }
             }
+
+            /* --- NEW YEAR & MONTH SELECTOR STYLES --- */
+            
+            /* Year Tabs */
+            .year-selector-label {
+                font-size: 14px;
+                font-weight: 600;
+                color: #212529;
+                text-transform: uppercase;
+                letter-spacing: 0.5px;
+            }
+
+            .year-tabs-list {
+                display: flex;
+                flex-wrap: nowrap;
+                overflow-x: auto;
+                gap: 10px;
+                padding-bottom: 5px; /* Space for scrollbar if needed */
+                -webkit-overflow-scrolling: touch;
+            }
+
+            .year-tabs-list::-webkit-scrollbar {
+                height: 4px;
+            }
+            .year-tabs-list::-webkit-scrollbar-thumb {
+                background: #ccc;
+                border-radius: 4px;
+            }
+
+            .year-tab {
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                padding: 10px 24px;
+                background: #fff;
+                border: 1px solid #e0e0e0;
+                border-radius: 50px; /* Pill shape */
+                cursor: pointer;
+                transition: all 0.2s ease;
+                white-space: nowrap;
+                font-weight: 600;
+                font-size: 15px;
+                color: #555;
+                user-select: none;
+            }
+
+            .year-tab:hover {
+                border-color: var(--tg-theme-primary);
+                color: var(--tg-theme-primary);
+                background: rgba(86, 12, 227, 0.05);
+            }
+
+            .year-tab.active {
+                background: var(--tg-theme-primary);
+                border-color: var(--tg-theme-primary);
+                color: white;
+                box-shadow: 0 4px 10px rgba(86, 12, 227, 0.3);
+            }
+
+            /* Responsive Horizontal Scroll Layout */
+            .months-grid-responsive {
+                display: flex;
+                flex-wrap: nowrap;
+                overflow-x: auto;
+                gap: 12px;
+                padding-bottom: 10px; /* Space for scrollbar */
+                -webkit-overflow-scrolling: touch; /* Smooth scroll on iOS */
+            }
+
+            .months-grid-responsive::-webkit-scrollbar {
+                height: 4px;
+            }
+            .months-grid-responsive::-webkit-scrollbar-track {
+                background: #f1f1f1;
+                border-radius: 4px;
+            }
+            .months-grid-responsive::-webkit-scrollbar-thumb {
+                background: #c1c1c1;
+                border-radius: 4px;
+            }
+
+            /* Updated Month Box Styling */
+            .month-box {
+                flex: 0 0 140px; /* Fixed width for horizontal items */
+                background: #fff;
+                border: 1px solid #eef0f3;
+                border-radius: 8px;
+                padding: 12px 10px;
+                text-align: center;
+                cursor: pointer;
+                transition: all 0.2s ease;
+                position: relative;
+                min-height: auto; 
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                gap: 5px;
+                box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+            }
+
+            .month-box:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+                border-color: var(--tg-theme-primary);
+            }
+
+            .month-box-inner {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+            }
+
+            /* Inner Elements */
+            .month-short {
+                display: block;
+                font-size: 16px;
+                font-weight: 700;
+                line-height: 1.2;
+                color: #333;
+            }
+
+            .month-price-tag {
+                margin-top: 4px;
+                font-size: 13px;
+                color: var(--tg-theme-primary);
+                font-weight: 600;
+                background: transparent;
+                padding: 0;
+            }
+
+            .month-price-tag::before {
+                content: '{{ __("translate.From") }} ';
+                font-size: 11px;
+                color: #888;
+                font-weight: 400;
+            }
+
+            /* Mobile Touch improvements */
+            @media (max-width: 575px) {
+                .month-box {
+                    min-height: 80px;
+                    padding: 10px;
+                }
+                .month-short {
+                    font-size: 14px;
+                }
+                .month-price-tag {
+                    font-size: 11px;
+                }
+            }
         </style>
     @endpush
 
@@ -1550,7 +1701,7 @@
             <div class="tg-tour-about-area tg-tour-about-border pt-40 pb-70">
                 <div class="container">
                     <div class="row">
-                        <div class="col-xl-9 col-lg-8">
+                        <div class="col-xl-9 col-lg-8 order-2 order-lg-1">
                             <div class="tg-tour-about-wrap mr-55">
                                 <div class="tg-tour-about-content">
                                     <div class="tg-tour-about-inner mb-25">
@@ -1966,7 +2117,7 @@
                             @endif
 
                         </div>
-                        <div class="col-xl-3 col-lg-4">
+                        <div class="col-xl-3 col-lg-4 order-1 order-lg-2">
                             @php
                                 $currencyCode = session('currency_code');
                                 $isDZD = in_array($currencyCode, ['DZD', 'DA']);
@@ -1999,8 +2150,13 @@
                                                 <input required class="form-control" name="phone" type="text" placeholder="{{ __('translate.Phone') }}" value="{{ auth()->user()->phone ?? '' }}">
                                             </div>
                                             <div class="mb-3">
-                                                 <label class="form-label">{{ __('translate.Check In Date') }}</label>
-                                                <input required class="form-control flatpickr" name="check_in_date" type="text" placeholder="{{ __('translate.Select Date') }}" value="{{ now()->format('Y-m-d') }}">
+                                                 <label class="form-label">{{ __('translate.Date Depart') }}</label>
+                                                <input required class="form-control flatpickr" name="date_depart" type="text" placeholder="{{ __('translate.Select Date') }}" value="{{ now()->format('Y-m-d') }}">
+                                            </div>
+
+                                            <div class="mb-3">
+                                                <label class="form-label">{{ __('translate.Date Retour') }}</label>
+                                                <input required class="form-control flatpickr" name="date_retour" type="text" placeholder="{{ __('translate.Select Date') }}" value="{{ now()->addDays(7)->format('Y-m-d') }}">
                                             </div>
 
                                             <div class="mb-3">
@@ -2038,12 +2194,9 @@
                                         <input type="hidden" name="service_id" value="{{ $service->id }}">
 
                                         <div class="tg-booking-form-parent-inner mb-10">
-                                            <div class="tg-tour-about-date p-relative">
-                                                <input required class="input" name="check_in_date" type="text"
+                                            <div class="tg-tour-about-date p-relative" style="display: none;">
+                                                <input required class="input" name="check_in_date" id="selected-check-in-date" type="text"
                                                     placeholder="{{ __('translate.Select Date') }}" value="{{ now()->format('Y-m-d') }}">
-                                                <span class="calender"></span>
-                                                <span class="angle"><i class="fa-sharp fa-solid fa-angle-down"></i></span>
-                                                <input type="hidden" name="availability_id" id="selected-availability-id">
                                             </div>
                                             <div id="availability-info" class="mt-2" style="display: none;"></div>
                                         </div>
@@ -2155,33 +2308,28 @@
 
                                                 <!-- Month Selector Component V2 -->
                                                 <div class="month-selector-v2">
-                                                    <!-- Year Selector Dropdown -->
-                                                    <div class="year-selector-wrapper mb-3">
-                                                        <label class="year-selector-label">{{ __('translate.Select Year') }}</label>
-                                                        <div class="year-dropdown">
-                                                            <button type="button" class="year-dropdown-toggle" id="yearDropdownToggle">
-                                                                <span class="selected-year-text">{{ $years[0] ?? $currentYear }}</span>
-                                                                <i class="fa-solid fa-chevron-down"></i>
-                                                            </button>
-                                                            <div class="year-dropdown-menu" id="yearDropdownMenu">
-                                                                @foreach($years as $year)
-                                                                    <div class="year-option {{ $loop->first ? 'active' : '' }}" data-year="{{ $year }}">
-                                                                        <span class="year-text">{{ $year }}</span>
-                                                                        @php
-                                                                            $availableMonthsCount = isset($periodsByMonth[$year]) ? count($periodsByMonth[$year]) : 0;
-                                                                        @endphp
-                                                                        <span class="year-badge">{{ $availableMonthsCount }} {{ __('translate.months') }}</span>
-                                                                    </div>
-                                                                @endforeach
-                                                            </div>
+                                                    <!-- Year Selector - Modern Horizontal Tabs -->
+                                                    <div class="year-tabs-wrapper mb-25">
+                                                        <span class="year-selector-label d-block mb-10">{{ __('translate.Select Year') }}</span>
+                                                        <div class="year-tabs-list">
+                                                            @foreach($years as $year)
+                                                                <div class="year-tab {{ $loop->first ? 'active' : '' }}" data-year="{{ $year }}">
+                                                                    <span class="year-text">{{ $year }}</span>
+                                                                    @php
+                                                                        $availableMonthsCount = isset($periodsByMonth[$year]) ? count($periodsByMonth[$year]) : 0;
+                                                                    @endphp
+                                                                    <!-- Optional: Show count if desired, or keep it clean -->
+                                                                    {{-- <span class="year-count">({{ $availableMonthsCount }})</span> --}}
+                                                                </div>
+                                                            @endforeach
                                                         </div>
                                                     </div>
 
-                                                    <!-- Months Grid - 12 Beautiful Rectangles -->
+                                                    <!-- Months Grid - Responsive -->
                                                     <div class="months-container" id="monthsContainer">
                                                         @foreach($years as $year)
                                                             <div class="year-months-block {{ $loop->first ? 'active' : '' }}" data-year="{{ $year }}" id="yearMonths{{ $year }}">
-                                                                <div class="months-grid-v2" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px;">
+                                                                <div class="months-grid-responsive">
                                                                     @for($month = 1; $month <= 12; $month++)
                                                                         @php
                                                                             $hasAvailability = isset($periodsByMonth[$year][$month]) && count($periodsByMonth[$year][$month]) > 0;
@@ -2378,6 +2526,16 @@
                     time_24hr: true
                 });
 
+                // Initialize flatpickr for date fields in quote form
+                $(".flatpickr").flatpickr({
+                    dateFormat: "Y-m-d",
+                    minDate: "today",
+                    allowInput: true,
+                    locale: {
+                        firstDayOfWeek: 1
+                    }
+                });
+
                 // Extract availability periods from PHP data
                 const availabilityPeriods = @json($service->availability_periods ?? []);
                 const availabilityPeriodsMap = {};
@@ -2419,40 +2577,15 @@
                 // Day names for calendar
                 const dayNames = ['{{ __("translate.Sun") }}', '{{ __("translate.Mon") }}', '{{ __("translate.Tue") }}', '{{ __("translate.Wed") }}', '{{ __("translate.Thu") }}', '{{ __("translate.Fri") }}', '{{ __("translate.Sat") }}'];
 
-                // Year Dropdown Toggle
-                if (yearDropdownToggle && yearDropdownMenu) {
-                    yearDropdownToggle.addEventListener('click', function(e) {
-                        e.stopPropagation();
-                        this.classList.toggle('active');
-                        yearDropdownMenu.classList.toggle('show');
-                    });
-
-                    // Close dropdown when clicking outside
-                    document.addEventListener('click', function(e) {
-                        if (!yearDropdownToggle.contains(e.target) && !yearDropdownMenu.contains(e.target)) {
-                            yearDropdownToggle.classList.remove('active');
-                            yearDropdownMenu.classList.remove('show');
-                        }
-                    });
-                }
-
-                // Year Selection
-                yearOptions.forEach(option => {
-                    option.addEventListener('click', function() {
+                // Year Selection (Tabs)
+                const yearTabs = document.querySelectorAll('.year-tab');
+                yearTabs.forEach(tab => {
+                    tab.addEventListener('click', function() {
                         const year = parseInt(this.dataset.year);
 
-                        // Update active state in dropdown
-                        yearOptions.forEach(opt => opt.classList.remove('active'));
+                        // Update active state
+                        yearTabs.forEach(t => t.classList.remove('active'));
                         this.classList.add('active');
-
-                        // Update toggle text
-                        if (yearDropdownToggle) {
-                            yearDropdownToggle.querySelector('.selected-year-text').textContent = year;
-                        }
-
-                        // Close dropdown
-                        if (yearDropdownToggle) yearDropdownToggle.classList.remove('active');
-                        if (yearDropdownMenu) yearDropdownMenu.classList.remove('show');
 
                         // Show corresponding months
                         showYearMonths(year);

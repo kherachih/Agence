@@ -58,6 +58,7 @@ Route::group(['middleware' => ['HtmlSpecialchars', 'MaintenanceMode']], function
     Route::get('/team/{slug}', [HomeController::class, 'teamPerson'])->name('teamPerson');
 
     // Quote Request
+    Route::get('/quote-request', [App\Http\Controllers\Front\QuoteRequestController::class, 'showForm'])->name('quote-request.form');
     Route::post('/quote-request', [App\Http\Controllers\Front\QuoteRequestController::class, 'store'])->name('quote-request.store');
 
     Auth::routes();
