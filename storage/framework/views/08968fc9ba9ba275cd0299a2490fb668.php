@@ -78,7 +78,28 @@
 
 <body class="td_theme_2">
 
-    <?php if($general_setting->preloader_status == 'enable'): ?>
+<?php if (isset($component)) { $__componentOriginal4df4f47ee1c2fb97262b5e263d21e7d3 = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal4df4f47ee1c2fb97262b5e263d21e7d3 = $attributes; } ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.promotion-bar','data' => []] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? (array) $attributes->getIterator() : [])); ?>
+<?php $component->withName('promotion-bar'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag && $constructor = (new ReflectionClass(Illuminate\View\AnonymousComponent::class))->getConstructor()): ?>
+<?php $attributes = $attributes->except(collect($constructor->getParameters())->map->getName()->all()); ?>
+<?php endif; ?>
+<?php $component->withAttributes([]); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal4df4f47ee1c2fb97262b5e263d21e7d3)): ?>
+<?php $attributes = $__attributesOriginal4df4f47ee1c2fb97262b5e263d21e7d3; ?>
+<?php unset($__attributesOriginal4df4f47ee1c2fb97262b5e263d21e7d3); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal4df4f47ee1c2fb97262b5e263d21e7d3)): ?>
+<?php $component = $__componentOriginal4df4f47ee1c2fb97262b5e263d21e7d3; ?>
+<?php unset($__componentOriginal4df4f47ee1c2fb97262b5e263d21e7d3); ?>
+<?php endif; ?>
+
+<?php if($general_setting->preloader_status == 'enable'): ?>
         <!-- Start Preloader -->
         <div id="loading">
             <div class="loader"></div>

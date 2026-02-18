@@ -214,6 +214,17 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin'], function () {
         // Quote Requests Management
         Route::post('quote-requests/{id}/send', [App\Http\Controllers\Admin\QuoteRequestController::class, 'sendQuote'])->name('quote-requests.send');
         Route::resource('quote-requests', App\Http\Controllers\Admin\QuoteRequestController::class);
+      
+        // Promotion Management
+        Route::controller(App\Http\Controllers\Admin\PromotionController::class)->prefix('promotions')->name('promotion.')->group(function () {
+            Route::get('/', 'index')->name('index');
+            Route::get('/create', 'create')->name('create');
+            Route::post('/', 'store')->name('store');
+            Route::get('/{promotion}/edit', 'edit')->name('edit');
+            Route::put('/{promotion}', 'update')->name('update');
+            Route::delete('/{promotion}', 'destroy')->name('destroy');
+            Route::post('/{promotion}/toggle', 'toggleStatus')->name('toggle');
+        });
 
         // Theme Management
         Route::controller(App\Http\Controllers\Admin\ThemeController::class)->group(function () {

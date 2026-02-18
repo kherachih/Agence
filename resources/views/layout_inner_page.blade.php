@@ -78,7 +78,9 @@
 
 <body class="td_theme_2">
 
-    @if ($general_setting->preloader_status == 'enable')
+<x-promotion-bar />
+
+@if ($general_setting->preloader_status == 'enable')
         <!-- Start Preloader -->
         <div id="loading">
             <div class="loader"></div>

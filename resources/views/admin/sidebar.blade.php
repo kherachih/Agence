@@ -630,12 +630,27 @@
                                             class="menu-bar__name">{{ __('translate.Partner') }}</span></span></a></li>
 
                         </ul>
-                    </div>
-                </li>
-            @endif
-
-
-            <h4 class="admin-menu__title pt-4">{{ __('translate.Setting & Configuration') }}</h4>
+                        </div>
+                        </li>
+                        @endif
+                      
+                        @if(\App\Models\MenuVisibilitySetting::isMenuEnabled('manage_content'))
+                        <li class="{{ Route::is('admin.promotion.*') ? 'active' : '' }}">
+                            <a class="collapsed" href="{{ route('admin.promotion.index') }}">
+                                <span class="menu-bar__text">
+                                    <span class="crancy-menu-icon crancy-svg-icon__v1">
+                                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M11 3L4 10L11 17M11 3V17M13 21H20" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                            <path d="M4 14V10L8 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                        </svg>
+                                    </span>
+                                    <span class="menu-bar__name">{{ __('translate.Promotions') }}</span>
+                                </span>
+                            </a>
+                        </li>
+                        @endif
+                      
+                        <h4 class="admin-menu__title pt-4">{{ __('translate.Setting & Configuration') }}</h4>
 
 
             @if(\App\Models\MenuVisibilitySetting::isMenuEnabled('general_setting'))
