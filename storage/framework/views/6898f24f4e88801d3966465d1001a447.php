@@ -23,7 +23,7 @@
         }
 
         .quote-form-header {
-            background: linear-gradient(135deg, var(--tg-theme-primary, #560CE3) 0%, #7c3aed 100%);
+            background: linear-gradient(135deg, var(--tg-theme-primary, #BE3144) 0%, #7c3aed 100%);
             padding: 40px;
             color: white;
             position: relative;
@@ -91,7 +91,7 @@
         .form-section-title {
             font-size: 18px;
             font-weight: 600;
-            color: var(--tg-theme-primary, #560CE3);
+            color: var(--tg-theme-primary, #BE3144);
             margin-bottom: 20px;
             padding-bottom: 10px;
             border-bottom: 2px solid #f0f0f0;
@@ -132,7 +132,7 @@
 
         .form-control:focus {
             outline: none;
-            border-color: var(--tg-theme-primary, #560CE3);
+            border-color: var(--tg-theme-primary, #BE3144);
             background: #fff;
             box-shadow: 0 0 0 4px rgba(86, 12, 227, 0.1);
         }
@@ -209,7 +209,7 @@
         }
 
         .ticket-type-option input[type="radio"]:checked + label {
-            border-color: var(--tg-theme-primary, #560CE3);
+            border-color: var(--tg-theme-primary, #BE3144);
             background: linear-gradient(135deg, rgba(86, 12, 227, 0.05) 0%, rgba(124, 58, 237, 0.1) 100%);
             box-shadow: 0 4px 15px rgba(86, 12, 227, 0.15);
         }
@@ -227,7 +227,7 @@
         }
 
         .ticket-type-option input[type="radio"]:checked + label .icon {
-            background: linear-gradient(135deg, var(--tg-theme-primary, #560CE3) 0%, #7c3aed 100%);
+            background: linear-gradient(135deg, var(--tg-theme-primary, #BE3144) 0%, #7c3aed 100%);
             color: white;
         }
 
@@ -294,7 +294,7 @@
         .submit-btn {
             width: 100%;
             padding: 18px 30px;
-            background: linear-gradient(135deg, var(--tg-theme-primary, #560CE3) 0%, #7c3aed 100%);
+            background: linear-gradient(135deg, var(--tg-theme-primary, #BE3144) 0%, #7c3aed 100%);
             color: white;
             border: none;
             border-radius: 12px;
@@ -352,7 +352,7 @@
         .info-card .icon {
             width: 60px;
             height: 60px;
-            background: linear-gradient(135deg, var(--tg-theme-primary, #560CE3) 0%, #7c3aed 100%);
+            background: linear-gradient(135deg, var(--tg-theme-primary, #BE3144) 0%, #7c3aed 100%);
             border-radius: 15px;
             display: flex;
             align-items: center;
@@ -433,7 +433,7 @@
         }
 
         .tg-breadcrumb-list-2 ul li span {
-            color: var(--tg-theme-primary, #560CE3);
+            color: var(--tg-theme-primary, #BE3144);
         }
     </style>
 

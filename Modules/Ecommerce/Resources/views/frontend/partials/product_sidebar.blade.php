@@ -11,7 +11,7 @@
                         <g clip-path="url(#clip0_497_1336)">
                             <path
                                 d="M17 17L13.5247 13.5247M15.681 8.3405C15.681 12.3945 12.3945 15.681 8.3405 15.681C4.28645 15.681 1 12.3945 1 8.3405C1 4.28645 4.28645 1 8.3405 1C12.3945 1 15.681 4.28645 15.681 8.3405Z"
-                                stroke="#560CE3" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
+                                stroke="#BE3144" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
                         </g>
                         <defs>
                             <clipPath id="clip0_497_1336">

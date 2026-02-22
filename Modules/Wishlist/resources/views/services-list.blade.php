@@ -41,7 +41,7 @@
             border-radius: 100px;
             padding: 1px 15px;
             display: inline-block;
-            background: #560ce3;
+            background: #BE3144;
             position: relative;
             position: absolute;
             bottom: 14px;

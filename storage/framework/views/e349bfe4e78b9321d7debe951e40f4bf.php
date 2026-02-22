@@ -58,12 +58,12 @@
     }
     
     .year-dropdown-toggle:hover {
-        border-color: var(--tg-theme-primary, #560CE3);
+        border-color: var(--tg-theme-primary, #BE3144);
         box-shadow: 0 4px 12px rgba(86, 12, 227, 0.12);
     }
     
     .year-dropdown-toggle.active {
-        border-color: var(--tg-theme-primary, #560CE3);
+        border-color: var(--tg-theme-primary, #BE3144);
         box-shadow: 0 4px 16px rgba(86, 12, 227, 0.18);
     }
     
@@ -74,7 +74,7 @@
     
     .year-dropdown-toggle.active i {
         transform: rotate(180deg);
-        color: var(--tg-theme-primary, #560CE3);
+        color: var(--tg-theme-primary, #BE3144);
     }
     
     .year-dropdown-menu {
@@ -121,7 +121,7 @@
     }
     
     .year-option.active {
-        background: linear-gradient(135deg, var(--tg-theme-primary, #560CE3) 0%, #7c3aed 100%);
+        background: linear-gradient(135deg, var(--tg-theme-primary, #BE3144) 0%, #7c3aed 100%);
         color: white;
     }
     
@@ -275,14 +275,14 @@
     }
     
     .month-box.selected {
-      border-color: var(--tg-theme-primary, #560CE3);
+      border-color: var(--tg-theme-primary, #BE3144);
       background: linear-gradient(145deg, #f3f0ff 0%, #e8e0ff 100%);
       transform: translateY(-2px);
       box-shadow: 0 8px 24px rgba(86, 12, 227, 0.2);
     }
     
     .month-box.selected::before {
-      background: linear-gradient(90deg, var(--tg-theme-primary, #560CE3), #7c3aed);
+      background: linear-gradient(90deg, var(--tg-theme-primary, #BE3144), #7c3aed);
       height: 4px;
     }
     
@@ -295,7 +295,7 @@
       right: 6px;
       width: 20px;
       height: 20px;
-      background: var(--tg-theme-primary, #560CE3);
+      background: var(--tg-theme-primary, #BE3144);
       color: white;
       border-radius: 50%;
       font-size: 10px;
@@ -334,7 +334,7 @@
     }
     
     .month-box.selected .month-short {
-      color: var(--tg-theme-primary, #560CE3);
+      color: var(--tg-theme-primary, #BE3144);
     }
     
     /* Price color based on discount status */
@@ -489,7 +489,7 @@
         background: linear-gradient(145deg, #ffffff 0%, #f8f9fa 100%);
         border-radius: 16px;
         padding: 20px;
-        border: 2px solid var(--tg-theme-primary, #560CE3);
+        border: 2px solid var(--tg-theme-primary, #BE3144);
         box-shadow: 0 8px 30px rgba(86, 12, 227, 0.15);
     }
     
@@ -499,7 +499,7 @@
         gap: 12px;
         font-size: 18px;
         font-weight: 700;
-        color: var(--tg-theme-primary, #560CE3);
+        color: var(--tg-theme-primary, #BE3144);
         margin-bottom: 15px;
         padding-bottom: 12px;
         border-bottom: 1px dashed #dee2e6;
@@ -507,7 +507,7 @@
     
     .selected-month-header-v2 i {
         font-size: 24px;
-        color: var(--tg-theme-primary, #560CE3);
+        color: var(--tg-theme-primary, #BE3144);
     }
     
     /* Period Info Summary */
@@ -578,7 +578,7 @@
     }
     
     .dates-calendar-label i {
-        color: var(--tg-theme-primary, #560CE3);
+        color: var(--tg-theme-primary, #BE3144);
     }
     
     .dates-calendar-grid {
@@ -611,14 +611,14 @@
     }
     
     .date-cell:hover {
-        border-color: var(--tg-theme-primary, #560CE3);
+        border-color: var(--tg-theme-primary, #BE3144);
         transform: translateY(-2px);
         box-shadow: 0 4px 12px rgba(86, 12, 227, 0.15);
     }
     
     .date-cell.selected {
-        background: linear-gradient(135deg, var(--tg-theme-primary, #560CE3) 0%, #7c3aed 100%);
-        border-color: var(--tg-theme-primary, #560CE3);
+        background: linear-gradient(135deg, var(--tg-theme-primary, #BE3144) 0%, #7c3aed 100%);
+        border-color: var(--tg-theme-primary, #BE3144);
         color: white;
         transform: scale(1.05);
         box-shadow: 0 6px 20px rgba(86, 12, 227, 0.3);
@@ -722,7 +722,7 @@
     
     .availability-section-header i {
         font-size: 20px;
-        color: var(--tg-theme-primary, #560CE3);
+        color: var(--tg-theme-primary, #BE3144);
         background: rgba(86, 12, 227, 0.08);
         width: 44px;
         height: 44px;
@@ -764,7 +764,7 @@
     }
     
     .month-summary-header i {
-        color: var(--tg-theme-primary, #560CE3);
+        color: var(--tg-theme-primary, #BE3144);
         font-size: 14px;
     }
     
@@ -787,7 +787,7 @@
     }
     
     .summary-item i {
-        color: var(--tg-theme-primary, #560CE3);
+        color: var(--tg-theme-primary, #BE3144);
         font-size: 11px;
     }
     
@@ -821,7 +821,7 @@
     }
     
     .periods-label i {
-        color: var(--tg-theme-primary, #560CE3);
+        color: var(--tg-theme-primary, #BE3144);
         font-size: 14px;
     }
     
@@ -846,12 +846,12 @@
     }
     
     .period-card:hover {
-        border-color: var(--tg-theme-primary, #560CE3);
+        border-color: var(--tg-theme-primary, #BE3144);
         box-shadow: 0 2px 8px rgba(86, 12, 227, 0.1);
     }
     
     .period-card.selected {
-        border-color: var(--tg-theme-primary, #560CE3);
+        border-color: var(--tg-theme-primary, #BE3144);
         background: #f3f0ff;
     }
     
@@ -865,7 +865,7 @@
         transform: translateY(-50%);
         width: 22px;
         height: 22px;
-        background: var(--tg-theme-primary, #560CE3);
+        background: var(--tg-theme-primary, #BE3144);
         color: white;
         border-radius: 50%;
         font-size: 10px;
@@ -913,7 +913,7 @@
     .period-current-price {
         font-size: 16px;
         font-weight: 700;
-        color: var(--tg-theme-primary, #560CE3);
+        color: var(--tg-theme-primary, #BE3144);
     }
     
     .period-discount-badge {
@@ -985,7 +985,7 @@
     }
     
     .passenger-label i {
-        color: var(--tg-theme-primary, #560CE3);
+        color: var(--tg-theme-primary, #BE3144);
         margin-right: 4px;
         font-size: 12px;
     }
@@ -1002,13 +1002,13 @@
     }
     
     .passenger-select:focus {
-        border-color: var(--tg-theme-primary, #560CE3);
+        border-color: var(--tg-theme-primary, #BE3144);
         outline: none;
     }
     
     /* Total Cost Box - Compact */
     .total-cost-box {
-        background: var(--tg-theme-primary, #560CE3);
+        background: var(--tg-theme-primary, #BE3144);
         border-radius: 8px;
         padding: 12px 16px;
         color: white;
@@ -2895,7 +2895,7 @@
 
         .custom-select:focus {
             outline: none;
-            border-color: #560CE3;
+            border-color: #BE3144;
         }
 
         .calender-active.open .flatpickr-innerContainer .flatpickr-days .flatpickr-day.today,

@@ -885,7 +885,7 @@
 
         .custom-select:focus {
             outline: none;
-            border-color: #560CE3;
+            border-color: #BE3144;
         }
 
         .calender-active.open .flatpickr-innerContainer .flatpickr-days .flatpickr-day.today,
