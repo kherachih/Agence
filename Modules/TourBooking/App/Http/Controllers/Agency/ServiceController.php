@@ -124,7 +124,7 @@ final class ServiceController extends Controller
      */
     public function show(Service $service): View
     {
-        $service->load(['translation', 'serviceType', 'media', 'extraCharges', 'availabilities', 'itineraries']);
+        $service->load(['translation', 'serviceType', 'destination', 'thumbnail', 'media', 'extraCharges', 'availabilities', 'itineraries']);
 
         return view('tourbooking::agency.services.show', compact('service'));
     }
