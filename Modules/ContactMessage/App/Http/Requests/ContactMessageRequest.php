@@ -16,6 +16,7 @@ class ContactMessageRequest extends FormRequest
             'instructor_id'=>'nullable',
             'name'=>'required',
             'email'=>'required',
+            'phone'=>'required',
             'subject'=>'required',
             'message'=>'required',
             'g-recaptcha-response'=>new Captcha()
@@ -39,6 +40,7 @@ class ContactMessageRequest extends FormRequest
         return [
             'name.required' => trans('translate.Name is required'),
             'email.required' => trans('translate.Email is required'),
+            'phone.required' => trans('translate.Phone is required'),
             'subject.required' => trans('translate.Subject is required'),
             'message.required' => trans('translate.Message is required')
         ];

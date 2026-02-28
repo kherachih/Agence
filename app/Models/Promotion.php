@@ -34,15 +34,7 @@ class Promotion extends Model
      */
     public function scopeActive($query)
     {
-        return $query->where('is_active', true)
-            ->where(function ($q) {
-                $q->whereNull('starts_at')
-                    ->orWhere('starts_at', '<=', Carbon::now());
-            })
-            ->where(function ($q) {
-                $q->whereNull('ends_at')
-                    ->orWhere('ends_at', '>=', Carbon::now());
-            });
+        return $query->where('is_active', true);
     }
 
     /**
@@ -58,20 +50,6 @@ class Promotion extends Model
      */
     public function isCurrentlyActive(): bool
     {
-        if (!$this->is_active) {
-            return false;
-        }
-
-        $now = Carbon::now();
-
-        if ($this->starts_at && $this->starts_at > $now) {
-            return false;
-        }
-
-        if ($this->ends_at && $this->ends_at < $now) {
-            return false;
-        }
-
-        return true;
+        return (bool) $this->is_active;
     }
 }

@@ -13,7 +13,12 @@ class ContactMessage extends Model
     /**
      * The attributes that are mass assignable.
      */
-    protected $fillable = [];
+    protected $fillable = ['name', 'email', 'phone', 'subject', 'message', 'service_id'];
+
+    public function service()
+    {
+        return $this->belongsTo(\Modules\TourBooking\App\Models\Service::class, 'service_id');
+    }
 
 
 }

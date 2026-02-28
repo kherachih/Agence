@@ -88,6 +88,8 @@ class AppServiceProvider extends ServiceProvider
                     $cartCount = Cart::with('product')->where('session_id', session()->getId())->count();
                 }
 
+                $active_promotion = \App\Models\Promotion::active()->ordered()->first();
+
                 $view->with('general_setting', $general_setting);
                 $view->with('language_list', $language_list);
                 $view->with('currency_list', $currency_list);
@@ -97,6 +99,7 @@ class AppServiceProvider extends ServiceProvider
                 $view->with('footer_blog_categories', $footer_blog_categories);
                 $view->with('wishlist_array', $wishlist_array);
                 $view->with('cartCount', $cartCount ?? 0);
+                $view->with('active_promotion', $active_promotion);
             });
 
             // Share theme data with all views

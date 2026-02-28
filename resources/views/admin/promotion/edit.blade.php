@@ -121,30 +121,6 @@
                                                 </div>
                                             </div>
 
-                                            <!-- Starts At -->
-                                            <div class="crancy-form__box mb-3">
-                                                <label class="crancy-form__label">{{ __('translate.Start Date') }}</label>
-                                                <div class="crancy-form__input">
-                                                    <input type="date" name="starts_at" class="crancy-form__control" value="{{ old('starts_at', $promotion->starts_at?->format('Y-m-d')) }}">
-                                                    <small class="text-muted">{{ __('translate.Leave empty for immediate start') }}</small>
-                                                </div>
-                                                @error('starts_at')
-                                                <span class="text-danger">{{ $message }}</span>
-                                                @enderror
-                                            </div>
-
-                                            <!-- Ends At -->
-                                            <div class="crancy-form__box mb-3">
-                                                <label class="crancy-form__label">{{ __('translate.End Date') }}</label>
-                                                <div class="crancy-form__input">
-                                                    <input type="date" name="ends_at" class="crancy-form__control" value="{{ old('ends_at', $promotion->ends_at?->format('Y-m-d')) }}">
-                                                    <small class="text-muted">{{ __('translate.Leave empty for no end date') }}</small>
-                                                </div>
-                                                @error('ends_at')
-                                                <span class="text-danger">{{ $message }}</span>
-                                                @enderror
-                                            </div>
-
                                             <!-- Submit Button -->
                                             <div class="crancy-form__box mt-4">
                                                 <button type="submit" class="crancy-btn crancy-btn__success w-100">

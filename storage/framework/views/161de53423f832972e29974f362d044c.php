@@ -1,13 +1,11 @@
-@extends('layout_inner_page')
+<?php $__env->startSection('title'); ?>
+    <title><?php echo e($seo_setting->seo_title); ?></title>
+    <meta name="title" content="<?php echo e($seo_setting->seo_title); ?>">
+    <meta name="description" content="<?php echo strip_tags(clean($seo_setting->seo_description)); ?>">
+<?php $__env->stopSection(); ?>
 
-@section('title')
-    <title>{{ $seo_setting->seo_title }}</title>
-    <meta name="title" content="{{ $seo_setting->seo_title }}">
-    <meta name="description" content="{!! strip_tags(clean($seo_setting->seo_description)) !!}">
-@endsection
-
-@section('front-content')
-    @include('breadcrumb')
+<?php $__env->startSection('front-content'); ?>
+    <?php echo $__env->make('breadcrumb', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
 
     <!-- tg-contact-area-start -->
     <div class="tg-contact-area pt-130 p-relative z-index-1 pb-100">
@@ -16,95 +14,96 @@
             <div class="row align-items-center">
                 <div class="col-lg-5">
                     <div class="tg-team-details-contant tg-contact-info-wrap mb-30">
-                        <h6 class="mb-15">{{ __('translate.Information') }}:</h6>
-                        <p class="mb-25">{{ __('translate.Brendan Fraser, renowned actor of the silver screen') }}</p>
+                        <h6 class="mb-15"><?php echo e(__('translate.Information')); ?>:</h6>
+                        <p class="mb-25"><?php echo e(__('translate.Brendan Fraser, renowned actor of the silver screen')); ?></p>
                         <div class="tg-team-details-contact-info mb-35">
                             <div class="tg-team-details-contact">
                                 <div class="item">
-                                    <span>{{ __('translate.Phone') }} :</span>
-                                    <a href="tel:{{ $contact_us->phone }}">{{ $contact_us->phone }}</a>
+                                    <span><?php echo e(__('translate.Phone')); ?> :</span>
+                                    <a href="tel:<?php echo e($contact_us->phone); ?>"><?php echo e($contact_us->phone); ?></a>
                                 </div>
                                 <div class="item">
-                                    <span>{{ __('translate.Website') }} : </span>
-                                    <a target="__blank" href="{{ getLink($contact_us->website) }}">{{ $contact_us->website }}</a>
+                                    <span><?php echo e(__('translate.Website')); ?> : </span>
+                                    <a target="__blank" href="<?php echo e(getLink($contact_us->website)); ?>"><?php echo e($contact_us->website); ?></a>
                                 </div>
                                 <div class="item">
-                                    <span>{{ __('translate.E-mail') }} : </span>
-                                    <a href="mailto:{{ $contact_us->email }}">{{ $contact_us->email }}</a>
+                                    <span><?php echo e(__('translate.E-mail')); ?> : </span>
+                                    <a href="mailto:<?php echo e($contact_us->email); ?>"><?php echo e($contact_us->email); ?></a>
                                 </div>
                                 <div class="item">
-                                    <span>{{ __('translate.Address') }} :</span>
-                                    <a href="#"> {{ $contact_us->address }} </a>
+                                    <span><?php echo e(__('translate.Address')); ?> :</span>
+                                    <a href="#"> <?php echo e($contact_us->address); ?> </a>
                                 </div>
                             </div>
                         </div>
                         <div class="tg-contact-map h-100">
-                            <iframe id="map" src="{{ html_decode($contact_us->map_code) }}"
+                            <iframe id="map" src="<?php echo e(html_decode($contact_us->map_code)); ?>"
                                 allowfullscreen=""></iframe>
                         </div>
                     </div>
                 </div>
                 <div class="col-lg-7">
                     <div class="tg-contact-content-wrap ml-40 mb-30">
-                        <h3 class="tg-contact-title mb-15">{{ __("translate.Let's connect and get to know") }} <br>
-                            {{ __('translate.each other') }}</h3>
+                        <h3 class="tg-contact-title mb-15"><?php echo e(__("translate.Let's connect and get to know")); ?> <br>
+                            <?php echo e(__('translate.each other')); ?></h3>
                         <p class="mb-30">
-                            {{ __('translate.Brendan Fraser, renowned actor of the silver screen, has taken on a new') }}
+                            <?php echo e(__('translate.Brendan Fraser, renowned actor of the silver screen, has taken on a new')); ?>
+
                         </p>
                         <div class="tg-contact-form tg-tour-about-review-form">
-                            @if(isset($service))
+                            <?php if(isset($service)): ?>
                                 <div class="alert alert-info">
-                                    {{ __('translate.You are contacting us regarding') }}: <strong>{{ $service->title }}</strong>
+                                    <?php echo e(__('translate.You are contacting us regarding')); ?>: <strong><?php echo e($service->title); ?></strong>
                                 </div>
-                            @endif
+                            <?php endif; ?>
                             <form id="contact-form" method="POST">
-                                @csrf
+                                <?php echo csrf_field(); ?>
                                 <input type="hidden" name="instructor_id" value="0">
-                                @if(isset($service))
-                                    <input type="hidden" name="service_id" value="{{ $service->id }}">
-                                @endif
+                                <?php if(isset($service)): ?>
+                                    <input type="hidden" name="service_id" value="<?php echo e($service->id); ?>">
+                                <?php endif; ?>
                                 <div class="row">
                                     <div class="col-lg-6 mb-25">
                                         <input class="input" type="text" name="name"
-                                            placeholder="{{ __('translate.Full Name') }} *"
-                                            value="{{ html_decode(old('name')) }}">
+                                            placeholder="<?php echo e(__('translate.Full Name')); ?> *"
+                                            value="<?php echo e(html_decode(old('name'))); ?>">
                                         <span class="text-danger error-name"></span>
                                     </div>
                                     <div class="col-lg-6 mb-25">
                                         <input class="input" type="email" name="email"
-                                            placeholder="{{ __('translate.Email') }}  *"
-                                            value="{{ html_decode(old('email')) }}">
+                                            placeholder="<?php echo e(__('translate.Email')); ?>  *"
+                                            value="<?php echo e(html_decode(old('email'))); ?>">
                                         <span class="text-danger error-email"></span>
                                     </div>
                                     <div class="col-lg-6 mb-25">
                                         <input class="input" type="text" name="phone"
-                                            placeholder="{{ __('translate.Phone') }} *"
-                                            value="{{ html_decode(old('phone')) }}">
+                                            placeholder="<?php echo e(__('translate.Phone')); ?> *"
+                                            value="<?php echo e(html_decode(old('phone'))); ?>">
                                         <span class="text-danger error-phone"></span>
                                     </div>
                                     <div class="col-lg-6 mb-25">
                                         <input class="input" type="text" name="subject"
-                                            placeholder="{{ __('translate.Subject') }} *"
-                                            value="{{ isset($service) ? __('translate.Tour Inquiry') . ': ' . $service->title : html_decode(old('subject')) }}">
+                                            placeholder="<?php echo e(__('translate.Subject')); ?> *"
+                                            value="<?php echo e(isset($service) ? __('translate.Tour Inquiry') . ': ' . $service->title : html_decode(old('subject'))); ?>">
                                         <span class="text-danger error-subject"></span>
                                     </div>
                                     <div class="col-lg-12">
-                                        <textarea class="textarea  mb-5" placeholder="{{ __('translate.Message') }} *" name="message">{{ html_decode(old('message')) }}</textarea>
+                                        <textarea class="textarea  mb-5" placeholder="<?php echo e(__('translate.Message')); ?> *" name="message"><?php echo e(html_decode(old('message'))); ?></textarea>
                                         <span class="text-danger error-message"></span>
                                         <div class="review-checkbox d-flex align-items-center mb-25">
                                             <input name="checkbox" class="tg-checkbox" type="checkbox" id="australia">
                                             <label for="australia"
-                                                class="tg-label">{{ __('translate.Save my name, email, and phone in this browser for the next time I comment.') }}</label>
+                                                class="tg-label"><?php echo e(__('translate.Save my name, email, and phone in this browser for the next time I comment.')); ?></label>
                                         </div>
-                                        @if ($general_setting->recaptcha_status == 1)
+                                        <?php if($general_setting->recaptcha_status == 1): ?>
                                             <div class="contact_modal_form_item">
                                                 <div class="g-recaptcha"
-                                                    data-sitekey="{{ $general_setting->recaptcha_site_key }}"></div>
+                                                    data-sitekey="<?php echo e($general_setting->recaptcha_site_key); ?>"></div>
                                             </div>
-                                        @endif
+                                        <?php endif; ?>
                                         <button type="submit" class="tg-btn">
-                                            <span class="loader-text d-none">{{ __('translate.Please wait') }}</span>
-                                            <span class="button-text">{{ __('translate.Send Message') }}</span>
+                                            <span class="loader-text d-none"><?php echo e(__('translate.Please wait')); ?></span>
+                                            <span class="button-text"><?php echo e(__('translate.Send Message')); ?></span>
                                         </button>
                                     </div>
                                 </div>
@@ -116,9 +115,9 @@
         </div>
     </div>
     <!-- tg-contact-area-end -->
-@endsection
+<?php $__env->stopSection(); ?>
 
-@push('js_section')
+<?php $__env->startPush('js_section'); ?>
     <script src="https://www.google.com/recaptcha/api.js" async defer></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
@@ -136,7 +135,7 @@
                 $('.tg-btn .button-text').addClass('d-none');
                 $('.tg-btn .loader-text').removeClass('d-none');
 
-                axios.post("{{ route('store-contact-message') }}", formData)
+                axios.post("<?php echo e(route('store-contact-message')); ?>", formData)
                     .then(function(response) {
                         if (response.data.alert_type == 'success') {
                             toastr.success(response.data.message);
@@ -162,4 +161,6 @@
             });
         });
     </script>
-@endpush
+<?php $__env->stopPush(); ?>
+
+<?php echo $__env->make('layout_inner_page', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH D:\xampp\htdocs\archive\archive\resources\views/contact_us.blade.php ENDPATH**/ ?>

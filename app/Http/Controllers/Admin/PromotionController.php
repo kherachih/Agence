@@ -40,8 +40,6 @@ class PromotionController extends Controller
             'text_color' => 'nullable|string|max:7',
             'is_active' => 'nullable|boolean',
             'sort_order' => 'nullable|integer',
-            'starts_at' => 'nullable|date',
-            'ends_at' => 'nullable|date|after_or_equal:starts_at',
         ]);
 
         $validated['is_active'] = $request->has('is_active');
@@ -85,8 +83,6 @@ class PromotionController extends Controller
             'text_color' => 'nullable|string|max:7',
             'is_active' => 'nullable|boolean',
             'sort_order' => 'nullable|integer',
-            'starts_at' => 'nullable|date',
-            'ends_at' => 'nullable|date|after_or_equal:starts_at',
         ]);
 
         $validated['is_active'] = $request->has('is_active');

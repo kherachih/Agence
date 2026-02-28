@@ -2126,10 +2126,10 @@
                                     <h5 class="total-price" x-text="totalCostFormatted"></h5>
                                 </div>
 
-                                <button type="button" id="sidebar-book-btn" class="tg-btn tg-btn-switch-animation w-100" onclick="scrollToAvailability()">
-                                    <?php echo e(__('translate.Select Date & Book')); ?>
+                                <a href="<?php echo e(route('contact-us', ['service_id' => $service->id])); ?>" class="tg-btn tg-btn-switch-animation w-100 text-center">
+                                    <?php echo e(__('translate.Contact Us')); ?>
 
-                                </button>
+                                </a>
                             </form>
                             </div>
                             

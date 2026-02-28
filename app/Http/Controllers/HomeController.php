@@ -234,7 +234,7 @@ class HomeController extends Controller
         return redirect()->back()->with($notify_message);
     }
 
-    public function contact_us()
+    public function contact_us(Request $request)
     {
         $contact_us = ContactUs::first();
 
@@ -242,10 +242,16 @@ class HomeController extends Controller
 
         $breadcrumb_title = trans('translate.Contact Us');
 
+        $service = null;
+        if($request->service_id){
+            $service = \Modules\TourBooking\App\Models\Service::find($request->service_id);
+        }
+
         return view('contact_us', [
             'contact_us' => $contact_us,
             'seo_setting' => $seo_setting,
             'breadcrumb_title' => $breadcrumb_title,
+            'service' => $service,
         ]);
     }
 

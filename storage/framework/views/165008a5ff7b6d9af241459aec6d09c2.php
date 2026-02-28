@@ -1,14 +1,13 @@
-@extends('admin.master_layout')
-@section('title')
-    <title>{{ __('translate.Contact Message') }}</title>
-@endsection
+<?php $__env->startSection('title'); ?>
+    <title><?php echo e(__('translate.Contact Message')); ?></title>
+<?php $__env->stopSection(); ?>
 
-@section('body-header')
-    <h3 class="crancy-header__title m-0">{{ __('translate.Contact Message') }}</h3>
-    <p class="crancy-header__text">{{ __('translate.Dashboard') }} >> {{ __('translate.Contact Message') }}</p>
-@endsection
+<?php $__env->startSection('body-header'); ?>
+    <h3 class="crancy-header__title m-0"><?php echo e(__('translate.Contact Message')); ?></h3>
+    <p class="crancy-header__text"><?php echo e(__('translate.Dashboard')); ?> >> <?php echo e(__('translate.Contact Message')); ?></p>
+<?php $__env->stopSection(); ?>
 
-@section('body-content')
+<?php $__env->startSection('body-content'); ?>
     <!-- crancy Dashboard -->
     <section class="crancy-adashboard crancy-show">
         <div class="container container__bscreen">
@@ -22,7 +21,7 @@
                                 <div class="crancy-customer-filter">
                                     <div class="crancy-customer-filter__single crancy-customer-filter__single--csearch">
                                         <div class="crancy-header__form crancy-header__form--customer">
-                                            <h4 class="crancy-product-card__title">{{ __('translate.Contact Message') }}</h4>
+                                            <h4 class="crancy-product-card__title"><?php echo e(__('translate.Contact Message')); ?></h4>
                                         </div>
                                     </div>
                                 </div>
@@ -38,12 +37,12 @@
                                                 <tr class="odd">
 
                                                     <td class="crancy-table__column-2 crancy-table__data-2">
-                                                        <h4 class="crancy-table__product-title">{{ __('translate.Name') }}</h4>
+                                                        <h4 class="crancy-table__product-title"><?php echo e(__('translate.Name')); ?></h4>
                                                     </td>
 
 
                                                     <td class="crancy-table__column-2 crancy-table__data-2">
-                                                        <h4 class="crancy-table__product-title">{{ html_decode($contact_message->name) }}</h4>
+                                                        <h4 class="crancy-table__product-title"><?php echo e(html_decode($contact_message->name)); ?></h4>
                                                     </td>
 
 
@@ -52,23 +51,11 @@
                                                 <tr class="odd">
 
                                                     <td class="crancy-table__column-2 crancy-table__data-2">
-                                                        <h4 class="crancy-table__product-title">{{ __('translate.Email') }}</h4>
+                                                        <h4 class="crancy-table__product-title"><?php echo e(__('translate.Email')); ?></h4>
                                                     </td>
 
                                                     <td class="crancy-table__column-2 crancy-table__data-2">
-                                                        <h4 class="crancy-table__product-title">{{ html_decode($contact_message->email) }}</h4>
-                                                    </td>
-
-                                                </tr>
-
-                                                <tr class="odd">
-
-                                                    <td class="crancy-table__column-2 crancy-table__data-2">
-                                                        <h4 class="crancy-table__product-title">{{ __('translate.Phone') }}</h4>
-                                                    </td>
-
-                                                    <td class="crancy-table__column-2 crancy-table__data-2">
-                                                        <h4 class="crancy-table__product-title">{{ html_decode($contact_message->phone) }}</h4>
+                                                        <h4 class="crancy-table__product-title"><?php echo e(html_decode($contact_message->email)); ?></h4>
                                                     </td>
 
                                                 </tr>
@@ -76,37 +63,11 @@
                                                 <tr class="odd">
 
                                                     <td class="crancy-table__column-2 crancy-table__data-2">
-                                                        <h4 class="crancy-table__product-title">{{ __('translate.Subject') }}</h4>
+                                                        <h4 class="crancy-table__product-title"><?php echo e(__('translate.Phone')); ?></h4>
                                                     </td>
 
                                                     <td class="crancy-table__column-2 crancy-table__data-2">
-                                                        <h4 class="crancy-table__product-title">{{ html_decode($contact_message->subject) }}</h4>
-                                                    </td>
-
-                                                </tr>
-
-                                                @if($contact_message->service_id)
-                                                <tr class="odd">
-
-                                                    <td class="crancy-table__column-2 crancy-table__data-2">
-                                                        <h4 class="crancy-table__product-title">{{ __('translate.Related Service') }}</h4>
-                                                    </td>
-
-                                                    <td class="crancy-table__column-2 crancy-table__data-2">
-                                                        <h4 class="crancy-table__product-title">{{ optional($contact_message->service)->title }}</h4>
-                                                    </td>
-
-                                                </tr>
-                                                @endif
-
-                                                <tr class="odd">
-
-                                                    <td class="crancy-table__column-2 crancy-table__data-2">
-                                                        <h4 class="crancy-table__product-title">{{ __('translate.Created') }}</h4>
-                                                    </td>
-
-                                                    <td class="crancy-table__column-2 crancy-table__data-2">
-                                                        <h4 class="crancy-table__product-title">{{ $contact_message->created_at->format('h:iA, d F Y') }}</h4>
+                                                        <h4 class="crancy-table__product-title"><?php echo e(html_decode($contact_message->phone)); ?></h4>
                                                     </td>
 
                                                 </tr>
@@ -114,11 +75,49 @@
                                                 <tr class="odd">
 
                                                     <td class="crancy-table__column-2 crancy-table__data-2">
-                                                        <h4 class="crancy-table__product-title">{{ __('translate.Message') }}</h4>
+                                                        <h4 class="crancy-table__product-title"><?php echo e(__('translate.Subject')); ?></h4>
                                                     </td>
 
                                                     <td class="crancy-table__column-2 crancy-table__data-2">
-                                                        <h4 class="crancy-table__product-title">{{ html_decode($contact_message->message) }}</h4>
+                                                        <h4 class="crancy-table__product-title"><?php echo e(html_decode($contact_message->subject)); ?></h4>
+                                                    </td>
+
+                                                </tr>
+
+                                                <?php if($contact_message->service_id): ?>
+                                                <tr class="odd">
+
+                                                    <td class="crancy-table__column-2 crancy-table__data-2">
+                                                        <h4 class="crancy-table__product-title"><?php echo e(__('translate.Related Service')); ?></h4>
+                                                    </td>
+
+                                                    <td class="crancy-table__column-2 crancy-table__data-2">
+                                                        <h4 class="crancy-table__product-title"><?php echo e(optional($contact_message->service)->title); ?></h4>
+                                                    </td>
+
+                                                </tr>
+                                                <?php endif; ?>
+
+                                                <tr class="odd">
+
+                                                    <td class="crancy-table__column-2 crancy-table__data-2">
+                                                        <h4 class="crancy-table__product-title"><?php echo e(__('translate.Created')); ?></h4>
+                                                    </td>
+
+                                                    <td class="crancy-table__column-2 crancy-table__data-2">
+                                                        <h4 class="crancy-table__product-title"><?php echo e($contact_message->created_at->format('h:iA, d F Y')); ?></h4>
+                                                    </td>
+
+                                                </tr>
+
+                                                <tr class="odd">
+
+                                                    <td class="crancy-table__column-2 crancy-table__data-2">
+                                                        <h4 class="crancy-table__product-title"><?php echo e(__('translate.Message')); ?></h4>
+                                                    </td>
+
+                                                    <td class="crancy-table__column-2 crancy-table__data-2">
+                                                        <h4 class="crancy-table__product-title"><?php echo e(html_decode($contact_message->message)); ?></h4>
                                                     </td>
 
                                                 </tr>
@@ -139,4 +138,6 @@
     </section>
     <!-- End crancy Dashboard -->
 
-@endsection
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('admin.master_layout', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH D:\xampp\htdocs\archive\archive\Modules/ContactMessage\resources/views/show_contact_message.blade.php ENDPATH**/ ?>

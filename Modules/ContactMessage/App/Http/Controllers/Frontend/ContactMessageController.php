@@ -33,6 +33,7 @@ class ContactMessageController extends Controller
         $contact_message->phone = $request->phone;
         $contact_message->subject = $request->subject;
         $contact_message->message = $request->message;
+        $contact_message->service_id = $request->service_id;
         $contact_message->save();
 
         EmailHelper::mail_setup();
@@ -45,7 +46,19 @@ class ContactMessageController extends Controller
             $message = str_replace('{{user_email}}',$request->email,$message);
             $message = str_replace('{{user_phone}}',$request->phone,$message);
             $message = str_replace('{{message_subject}}',$request->subject,$message);
-            $message = str_replace('{{message}}',$request->message,$message);
+            
+            if($request->service_id){
+                $service = \Modules\TourBooking\App\Models\Service::find($request->service_id);
+                if($service){
+                    $request_message = $request->message . "\n\n" . trans('translate.Related Service') . ": " . $service->title;
+                }else{
+                    $request_message = $request->message;
+                }
+            }else{
+                $request_message = $request->message;
+            }
+
+            $message = str_replace('{{message}}',$request_message,$message);
 
             if($request->instructor_id > 0){
                 $instructor = User::findOrFail($request->instructor_id);

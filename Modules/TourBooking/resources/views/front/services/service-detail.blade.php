@@ -2081,9 +2081,9 @@
                                     <h5 class="total-price" x-text="totalCostFormatted"></h5>
                                 </div>
 
-                                <button type="button" id="sidebar-book-btn" class="tg-btn tg-btn-switch-animation w-100" onclick="scrollToAvailability()">
-                                    {{ __('translate.Select Date & Book') }}
-                                </button>
+                                <a href="{{ route('contact-us', ['service_id' => $service->id]) }}" class="tg-btn tg-btn-switch-animation w-100 text-center">
+                                    {{ __('translate.Contact Us') }}
+                                </a>
                             </form>
                             </div>
                             

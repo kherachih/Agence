@@ -5,7 +5,7 @@
 <?php if($activePromotions->count() > 0): ?>
 
 
-<?php if (! $__env->hasRenderedOnce('4bff6306-df57-4baa-ab17-74d387e5ba64')): $__env->markAsRenderedOnce('4bff6306-df57-4baa-ab17-74d387e5ba64'); ?>
+<?php if (! $__env->hasRenderedOnce('48bee9cc-54e8-47b8-8b10-a104772d5f13')): $__env->markAsRenderedOnce('48bee9cc-54e8-47b8-8b10-a104772d5f13'); ?>
 <style>
 /* ═══════════════════════════════════════════════
    PROMOTION BAR — marquee + multi-promotion
@@ -14,8 +14,8 @@
 /* Bar collante au sommet de la page */
 .tg-promo-bar {
     width: 100%;
-    padding: 10px 0;
-    font-size: 14px;
+    padding: 6px 0;
+    font-size: 13px;
     font-weight: 500;
     display: flex;
     align-items: center;
@@ -23,9 +23,8 @@
     background-color: #dc3545;
     color: #ffffff;
     transition: background-color 0.6s ease, color 0.6s ease;
-    /* sticky : reste en haut,  z-index très élevé pour rester AU-DESSUS du header */
-    position: sticky;
-    top: 0;
+    /* On change de sticky à relative pour qu'elle soit AU-DESSUS du header flux */
+    position: relative;
     z-index: 10999;
 }
 
@@ -38,8 +37,66 @@
 }
 
 /* Pousse le header fixed juste en-dessous de la barre de promotion */
-#header-sticky {
-    top: var(--promo-bar-height, 0px) !important;
+#sticky-header, #header-sticky {
+    position: relative !important;
+    top: auto !important;
+}
+
+#sticky-header.sticky-menu, #header-sticky.sticky-menu {
+    position: fixed !important;
+    top: 0 !important;
+}
+
+/* Styles pour le header blanc quand la promotion est active */
+.tg-promo-active #sticky-header, 
+.tg-promo-active #header-sticky {
+    background: #ffffff !important;
+}
+
+/* Réduction de la hauteur du header blanc */
+.tg-promo-active .tg-header-height {
+    height: auto !important;
+}
+
+.tg-promo-active .tg-header__area {
+    padding: 10px 0 !important;
+}
+
+.tg-promo-active .tgmenu__navbar-wrap ul li a {
+    padding: 15px 12px !important;
+    color: #2d3436 !important;
+}
+
+/* Styles des boutons du header en rouge quand promotion active */
+.tg-promo-active .tg-btn-header {
+    background-color: #BE3144 !important;
+    color: #ffffff !important;
+    border-color: #BE3144 !important;
+}
+
+.tg-promo-active .tg-btn-header:hover {
+    background-color: #a32a3a !important;
+    border-color: #a32a3a !important;
+}
+
+/* Ajustement des icônes et autres éléments du header */
+.tg-promo-active .tg-header-contact-number a,
+.tg-promo-active .tg-header-contact-number span,
+.tg-promo-active .tg-header-contact-icon,
+.tg-promo-active .tgmenu__navbar-wrap ul li a,
+.tg-promo-active .tg-header-cart .cart-button i,
+.tg-promo-active .mobile-nav-toggler i {
+    color: #2d3436 !important;
+}
+
+.tg-promo-active .tg-header-contact-icon svg,
+.tg-promo-active .tg-header-cart .cart-button svg {
+    fill: #2d3436 !important;
+}
+
+.tg-promo-active .tg-header-contact-icon svg path,
+.tg-promo-active .tg-header-cart .cart-button svg path {
+    stroke: #2d3436 !important;
 }
 
 /* Wrapper qui clippe le texte défilant */
@@ -84,7 +141,8 @@
     display: inline-flex;
     align-items: center;
     gap: 6px;
-    background: rgba(255,255,255,0.2);
+    background: #BE3144;
+    color: #ffffff !important;
     padding: 2px 11px;
     border-radius: 20px;
     font-weight: 600;
@@ -93,7 +151,7 @@
     transition: background 0.3s;
 }
 .tg-promo-bar:hover .tg-promo-bar__cta {
-    background: rgba(255,255,255,0.35);
+    background: #a32a3a;
 }
 
 /* Points de navigation */
@@ -263,13 +321,7 @@
 
     /* ── Init ── */
     apply(0);
-
-    /* ── Pousse le header fixed sous la barre via une variable CSS ── */
-    function setBarHeight() {
-        document.documentElement.style.setProperty('--promo-bar-height', bar.offsetHeight + 'px');
-    }
-    setBarHeight();
-    window.addEventListener('resize', setBarHeight);
+    document.body.classList.add('tg-promo-active');
 
 })();
 </script>

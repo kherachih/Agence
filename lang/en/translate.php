@@ -2056,5 +2056,11 @@ return array(
   'Delete Promotion' => 'Delete Promotion',
   'Are you sure you want to delete this promotion? This action cannot be undone.' => 'Are you sure you want to delete this promotion? This action cannot be undone.',
   'Text Color' => 'Text Color',
+  'Related Service' => 'Related Service',
+  'You are contacting us regarding' => 'You are contacting us regarding',
+  'Tour Inquiry' => 'Tour Inquiry',
+  'N/A' => 'N/A',
+  'Phone is required' => 'Phone is required',
+  'Save my name, email, and phone in this browser for the next time I comment.' => 'Save my name, email, and phone in this browser for the next time I comment.',
 );
 

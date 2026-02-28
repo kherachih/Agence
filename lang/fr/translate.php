@@ -1,6 +1,6 @@
 <?php
 return array(
-  'Contact Us' => 'Contact Us',
+  'Contact Us' => 'Contactez-nous',
   'View All Program' => 'View All Program',
   'Get In Touch' => 'Get In Touch',
   'or' => 'or',
@@ -1939,4 +1939,10 @@ return array(
   'Thank You!' => 'Merci !',
   'Your quote request has been received successfully. We will contact you within 24 hours.' => 'Votre demande de devis a été reçue avec succès. Nous vous contacterons dans les 24 heures.',
   'Back to Home' => 'Retour à l\'accueil',
+  'Related Service' => 'Produit associé',
+  'You are contacting us regarding' => 'Vous nous contactez concernant',
+  'Tour Inquiry' => 'Demande de renseignement sur le circuit',
+  'N/A' => 'N/A',
+  'Phone is required' => 'Le numéro de téléphone est requis',
+  'Save my name, email, and phone in this browser for the next time I comment.' => 'Enregistrer mon nom, mon e-mail et mon téléphone dans ce navigateur pour mon prochain commentaire.',
 );
