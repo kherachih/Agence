@@ -95,134 +95,183 @@ class GlobalSettingController extends Controller
 
         $logo_setting = GlobalSetting::where('key', 'logo')->first();
 
-        if($request->logo){
+        if ($request->logo) {
             $old_logo = $logo_setting->value;
             $image = $request->logo;
             $ext = $image->getClientOriginalExtension();
-            $logo_name = 'logo-'.date('Y-m-d-h-i-s-').rand(999,9999).'.'.$ext;
-            $logo_name = 'uploads/website-images/'.$logo_name;
+            $logo_name = 'logo-' . date('Y-m-d-h-i-s-') . rand(999, 9999) . '.' . $ext;
+            $logo_name = 'uploads/website-images/' . $logo_name;
             $request->logo->move(public_path('uploads/website-images'), $logo_name);
             $logo_setting->value = $logo_name;
             $logo_setting->save();
 
-            if($old_logo){
-                if(File::exists(public_path().'/'.$old_logo))unlink(public_path().'/'.$old_logo);
+            if ($old_logo) {
+                if (File::exists(public_path() . '/' . $old_logo))
+                    unlink(public_path() . '/' . $old_logo);
             }
         }
 
         $footer_logo_setting = GlobalSetting::where('key', 'footer_logo')->first();
 
-        if($request->footer_logo){
+        if ($request->footer_logo) {
             $old_logo = $footer_logo_setting->value;
             $image = $request->footer_logo;
             $ext = $image->getClientOriginalExtension();
-            $logo_name = 'footer-logo-'.date('Y-m-d-h-i-s-').rand(999,9999).'.'.$ext;
-            $logo_name = 'uploads/website-images/'.$logo_name;
+            $logo_name = 'footer-logo-' . date('Y-m-d-h-i-s-') . rand(999, 9999) . '.' . $ext;
+            $logo_name = 'uploads/website-images/' . $logo_name;
             $request->footer_logo->move(public_path('uploads/website-images'), $logo_name);
             $footer_logo_setting->value = $logo_name;
             $footer_logo_setting->save();
-            if($old_logo){
-                if(File::exists(public_path().'/'.$old_logo))unlink(public_path().'/'.$old_logo);
+            if ($old_logo) {
+                if (File::exists(public_path() . '/' . $old_logo))
+                    unlink(public_path() . '/' . $old_logo);
             }
         }
 
 
         $secondary_logo_setting = GlobalSetting::where('key', 'secondary_logo')->first();
 
-        if($request->secondary_logo){
+        if ($request->secondary_logo) {
             $old_logo = $secondary_logo_setting->value;
             $image = $request->secondary_logo;
             $ext = $image->getClientOriginalExtension();
-            $logo_name = 'secondary-logo-'.date('Y-m-d-h-i-s-').rand(999,9999).'.'.$ext;
-            $logo_name = 'uploads/website-images/'.$logo_name;
+            $logo_name = 'secondary-logo-' . date('Y-m-d-h-i-s-') . rand(999, 9999) . '.' . $ext;
+            $logo_name = 'uploads/website-images/' . $logo_name;
             $request->secondary_logo->move(public_path('uploads/website-images'), $logo_name);
             $secondary_logo_setting->value = $logo_name;
             $secondary_logo_setting->save();
-            if($old_logo){
-                if(File::exists(public_path().'/'.$old_logo))unlink(public_path().'/'.$old_logo);
+            if ($old_logo) {
+                if (File::exists(public_path() . '/' . $old_logo))
+                    unlink(public_path() . '/' . $old_logo);
             }
         }
 
 
         $secondary_footer_logo_setting = GlobalSetting::where('key', 'secondary_footer_logo')->first();
 
-        if($request->secondary_footer_logo){
+        if ($request->secondary_footer_logo) {
             $old_logo = $secondary_footer_logo_setting->value;
             $image = $request->secondary_footer_logo;
             $ext = $image->getClientOriginalExtension();
-            $logo_name = 'secondary-footer-logo-'.date('Y-m-d-h-i-s-').rand(999,9999).'.'.$ext;
-            $logo_name = 'uploads/website-images/'.$logo_name;
+            $logo_name = 'secondary-footer-logo-' . date('Y-m-d-h-i-s-') . rand(999, 9999) . '.' . $ext;
+            $logo_name = 'uploads/website-images/' . $logo_name;
             $request->secondary_footer_logo->move(public_path('uploads/website-images'), $logo_name);
             $secondary_footer_logo_setting->value = $logo_name;
             $secondary_footer_logo_setting->save();
-            if($old_logo){
-                if(File::exists(public_path().'/'.$old_logo))unlink(public_path().'/'.$old_logo);
+            if ($old_logo) {
+                if (File::exists(public_path() . '/' . $old_logo))
+                    unlink(public_path() . '/' . $old_logo);
             }
         }
 
         $secondary_navmenu_logo_setting = GlobalSetting::where('key', 'secondary_navmenu_logo')->first();
 
-        if($request->secondary_navmenu_logo){
+        if ($request->secondary_navmenu_logo) {
             $old_logo = $secondary_navmenu_logo_setting->value;
             $image = $request->secondary_navmenu_logo;
             $ext = $image->getClientOriginalExtension();
-            $logo_name = 'secondary-menu-logo-'.date('Y-m-d-h-i-s-').rand(999,9999).'.'.$ext;
-            $logo_name = 'uploads/website-images/'.$logo_name;
+            $logo_name = 'secondary-menu-logo-' . date('Y-m-d-h-i-s-') . rand(999, 9999) . '.' . $ext;
+            $logo_name = 'uploads/website-images/' . $logo_name;
             $request->secondary_navmenu_logo->move(public_path('uploads/website-images'), $logo_name);
             $secondary_navmenu_logo_setting->value = $logo_name;
             $secondary_navmenu_logo_setting->save();
-            if($old_logo){
-                if(File::exists(public_path().'/'.$old_logo))unlink(public_path().'/'.$old_logo);
+            if ($old_logo) {
+                if (File::exists(public_path() . '/' . $old_logo))
+                    unlink(public_path() . '/' . $old_logo);
             }
         }
 
         $home3_logo_setting = GlobalSetting::where('key', 'home3_logo')->first();
 
-        if($request->home3_logo){
+        if ($request->home3_logo) {
             $old_logo = $home3_logo_setting->value;
             $image = $request->home3_logo;
             $ext = $image->getClientOriginalExtension();
-            $logo_name = 'secondary-menu-logo-'.date('Y-m-d-h-i-s-').rand(999,9999).'.'.$ext;
-            $logo_name = 'uploads/website-images/'.$logo_name;
+            $logo_name = 'secondary-menu-logo-' . date('Y-m-d-h-i-s-') . rand(999, 9999) . '.' . $ext;
+            $logo_name = 'uploads/website-images/' . $logo_name;
             $request->home3_logo->move(public_path('uploads/website-images'), $logo_name);
             $home3_logo_setting->value = $logo_name;
             $home3_logo_setting->save();
-            if($old_logo){
-                if(File::exists(public_path().'/'.$old_logo))unlink(public_path().'/'.$old_logo);
+            if ($old_logo) {
+                if (File::exists(public_path() . '/' . $old_logo))
+                    unlink(public_path() . '/' . $old_logo);
             }
         }
 
         $home3_footer_logo_setting = GlobalSetting::where('key', 'home3_footer_logo')->first();
 
-        if($request->home3_footer_logo){
+        if ($request->home3_footer_logo) {
             $old_logo = $home3_footer_logo_setting->value;
             $image = $request->home3_footer_logo;
             $ext = $image->getClientOriginalExtension();
-            $logo_name = 'secondary-menu-logo-'.date('Y-m-d-h-i-s-').rand(999,9999).'.'.$ext;
-            $logo_name = 'uploads/website-images/'.$logo_name;
+            $logo_name = 'secondary-menu-logo-' . date('Y-m-d-h-i-s-') . rand(999, 9999) . '.' . $ext;
+            $logo_name = 'uploads/website-images/' . $logo_name;
             $request->home3_footer_logo->move(public_path('uploads/website-images'), $logo_name);
             $home3_footer_logo_setting->value = $logo_name;
             $home3_footer_logo_setting->save();
-            if($old_logo){
-                if(File::exists(public_path().'/'.$old_logo))unlink(public_path().'/'.$old_logo);
+            if ($old_logo) {
+                if (File::exists(public_path() . '/' . $old_logo))
+                    unlink(public_path() . '/' . $old_logo);
+            }
+        }
+
+        $logo_red_setting = GlobalSetting::where('key', 'logo_red')->first();
+
+        if ($request->logo_red) {
+            $old_logo = $logo_red_setting ? $logo_red_setting->value : null;
+            $image = $request->logo_red;
+            $ext = $image->getClientOriginalExtension();
+            $logo_name = 'logo-red-' . date('Y-m-d-h-i-s-') . rand(999, 9999) . '.' . $ext;
+            $logo_name = 'uploads/website-images/' . $logo_name;
+            $request->logo_red->move(public_path('uploads/website-images'), $logo_name);
+            if (!$logo_red_setting) {
+                $logo_red_setting = new GlobalSetting();
+                $logo_red_setting->key = 'logo_red';
+            }
+            $logo_red_setting->value = $logo_name;
+            $logo_red_setting->save();
+            if ($old_logo) {
+                if (File::exists(public_path() . '/' . $old_logo))
+                    unlink(public_path() . '/' . $old_logo);
+            }
+        }
+
+        $logo_white_setting = GlobalSetting::where('key', 'logo_white')->first();
+
+        if ($request->logo_white) {
+            $old_logo = $logo_white_setting ? $logo_white_setting->value : null;
+            $image = $request->logo_white;
+            $ext = $image->getClientOriginalExtension();
+            $logo_name = 'logo-white-' . date('Y-m-d-h-i-s-') . rand(999, 9999) . '.' . $ext;
+            $logo_name = 'uploads/website-images/' . $logo_name;
+            $request->logo_white->move(public_path('uploads/website-images'), $logo_name);
+            if (!$logo_white_setting) {
+                $logo_white_setting = new GlobalSetting();
+                $logo_white_setting->key = 'logo_white';
+            }
+            $logo_white_setting->value = $logo_name;
+            $logo_white_setting->save();
+            if ($old_logo) {
+                if (File::exists(public_path() . '/' . $old_logo))
+                    unlink(public_path() . '/' . $old_logo);
             }
         }
 
 
-
         $logo_setting = GlobalSetting::where('key', 'favicon')->first();
 
-        if($request->favicon){
+        if ($request->favicon) {
             $old_favicon = $logo_setting->value;
             $favicon = $request->favicon;
             $ext = $favicon->getClientOriginalExtension();
-            $favicon_name = 'favicon-'.date('Y-m-d-h-i-s-').rand(999,9999).'.'.$ext;
-            $favicon_name = 'uploads/website-images/'.$favicon_name;
+            $favicon_name = 'favicon-' . date('Y-m-d-h-i-s-') . rand(999, 9999) . '.' . $ext;
+            $favicon_name = 'uploads/website-images/' . $favicon_name;
             $request->favicon->move(public_path('uploads/website-images'), $favicon_name);
             $logo_setting->value = $favicon_name;
             $logo_setting->save();
-            if($old_favicon){
-                if(File::exists(public_path().'/'.$old_favicon))unlink(public_path().'/'.$old_favicon);
+            if ($old_favicon) {
+                if (File::exists(public_path() . '/' . $old_favicon))
+                    unlink(public_path() . '/' . $old_favicon);
             }
         }
 
@@ -235,7 +284,8 @@ class GlobalSettingController extends Controller
 
     }
 
-    public function update_google_captcha(GoogleRecaptchaRequest $request){
+    public function update_google_captcha(GoogleRecaptchaRequest $request)
+    {
 
         GlobalSetting::where('key', 'recaptcha_site_key')->update(['value' => $request->site_key]);
         GlobalSetting::where('key', 'recaptcha_secret_key')->update(['value' => $request->secret_key]);
@@ -250,7 +300,8 @@ class GlobalSettingController extends Controller
 
     }
 
-    public function update_tawk_chat(TawkChatRequest $request){
+    public function update_tawk_chat(TawkChatRequest $request)
+    {
 
         GlobalSetting::where('key', 'tawk_chat_link')->update(['value' => $request->chat_link]);
         GlobalSetting::where('key', 'tawk_status')->update(['value' => $request->status ? 1 : 0]);
@@ -263,7 +314,8 @@ class GlobalSettingController extends Controller
 
     }
 
-    public function update_google_analytic(GoogleAnalyticRequest $request){
+    public function update_google_analytic(GoogleAnalyticRequest $request)
+    {
 
         GlobalSetting::where('key', 'google_analytic_id')->update(['value' => $request->analytic_id]);
         GlobalSetting::where('key', 'google_analytic_status')->update(['value' => $request->status ? 1 : 0]);
@@ -276,7 +328,8 @@ class GlobalSettingController extends Controller
 
     }
 
-    public function update_facebook_pixel(FacebookPixelRequest $request){
+    public function update_facebook_pixel(FacebookPixelRequest $request)
+    {
 
         GlobalSetting::where('key', 'pixel_app_id')->update(['value' => $request->app_id]);
         GlobalSetting::where('key', 'pixel_status')->update(['value' => $request->status ? 1 : 0]);
@@ -290,18 +343,19 @@ class GlobalSettingController extends Controller
     }
 
 
-    public function database_clear(){
+    public function database_clear()
+    {
 
         Blog::truncate();
         BlogCategory::truncate();
         BlogCategoryTranslation::truncate();
-        BlogComment::truncate();    
+        BlogComment::truncate();
         BlogTranslation::truncate();
         Category::truncate();
         CategoryTranslation::truncate();
         ContactMessage::truncate();
         Coupon::truncate();
-        CouponHistory::truncate();  
+        CouponHistory::truncate();
         CustomPage::truncate();
         CustomPageTranslation::truncate();
         Faq::truncate();
@@ -327,11 +381,12 @@ class GlobalSettingController extends Controller
         Language::where('id', '!=', 1)->delete();
 
         $admins = Admin::where('id', '!=', 1)->get();
-        foreach($admins as $admin){
+        foreach ($admins as $admin) {
             $admin_image = $admin->image;
             $admin->delete();
-            if($admin_image){
-                if(File::exists(public_path().'/'.$admin_image))unlink(public_path().'/'.$admin_image);
+            if ($admin_image) {
+                if (File::exists(public_path() . '/' . $admin_image))
+                    unlink(public_path() . '/' . $admin_image);
             }
         }
 
@@ -340,7 +395,7 @@ class GlobalSettingController extends Controller
         $response = File::deleteDirectory($folderPath);
 
         $path = public_path('uploads/custom-images');
-        if(!File::isDirectory($path)){
+        if (!File::isDirectory($path)) {
             File::makeDirectory($path, 0777, true, true);
         }
 
@@ -359,14 +414,16 @@ class GlobalSettingController extends Controller
     }
 
 
-    public function cookie_consent(){
+    public function cookie_consent()
+    {
 
         return view('globalsetting::cookie_consent');
 
     }
 
 
-    public function cookie_consent_update(CookieConsentRequest $request){
+    public function cookie_consent_update(CookieConsentRequest $request)
+    {
 
         GlobalSetting::where('key', 'cookie_consent_message')->update(['value' => $request->message]);
         GlobalSetting::where('key', 'cookie_consent_status')->update(['value' => $request->status ? 1 : 0]);
@@ -380,30 +437,33 @@ class GlobalSettingController extends Controller
     }
 
 
-    public function error_image(){
+    public function error_image()
+    {
 
         return view('globalsetting::error_image');
 
     }
 
 
-    public function error_image_update(Request $request){
+    public function error_image_update(Request $request)
+    {
 
         $setting = GlobalSetting::where('key', 'error_image')->first();
 
-        if($request->error_image){
+        if ($request->error_image) {
             $old_logo = $setting->value;
             $image = $request->error_image;
             $ext = $image->getClientOriginalExtension();
-            $logo_name = 'error-image-'.date('Y-m-d-h-i-s-').rand(999,9999).'.'.$ext;
-            $logo_name = 'uploads/website-images/'.$logo_name;
+            $logo_name = 'error-image-' . date('Y-m-d-h-i-s-') . rand(999, 9999) . '.' . $ext;
+            $logo_name = 'uploads/website-images/' . $logo_name;
             $logo = Image::make($image)
-                    ->save(public_path().'/'.$logo_name);
+                ->save(public_path() . '/' . $logo_name);
             $setting->value = $logo_name;
             $setting->save();
 
-            if($old_logo){
-                if(File::exists(public_path().'/'.$old_logo))unlink(public_path().'/'.$old_logo);
+            if ($old_logo) {
+                if (File::exists(public_path() . '/' . $old_logo))
+                    unlink(public_path() . '/' . $old_logo);
             }
         }
 
@@ -416,30 +476,33 @@ class GlobalSettingController extends Controller
     }
 
 
-    public function login_image(){
+    public function login_image()
+    {
 
         return view('globalsetting::login_image');
 
     }
 
 
-    public function login_image_update(Request $request){
+    public function login_image_update(Request $request)
+    {
 
         $setting = GlobalSetting::where('key', 'login_page_bg')->first();
 
-        if($request->login_page_bg){
+        if ($request->login_page_bg) {
             $old_logo = $setting->value;
             $image = $request->login_page_bg;
             $ext = $image->getClientOriginalExtension();
-            $logo_name = 'login-bg-image-'.date('Y-m-d-h-i-s-').rand(999,9999).'.'.$ext;
-            $logo_name = 'uploads/website-images/'.$logo_name;
+            $logo_name = 'login-bg-image-' . date('Y-m-d-h-i-s-') . rand(999, 9999) . '.' . $ext;
+            $logo_name = 'uploads/website-images/' . $logo_name;
             $logo = Image::make($image)
-                    ->save(public_path().'/'.$logo_name);
+                ->save(public_path() . '/' . $logo_name);
             $setting->value = $logo_name;
             $setting->save();
 
-            if($old_logo){
-                if(File::exists(public_path().'/'.$old_logo))unlink(public_path().'/'.$old_logo);
+            if ($old_logo) {
+                if (File::exists(public_path() . '/' . $old_logo))
+                    unlink(public_path() . '/' . $old_logo);
             }
 
         }
@@ -452,30 +515,33 @@ class GlobalSettingController extends Controller
 
     }
 
-    public function admin_login_image(){
+    public function admin_login_image()
+    {
 
         return view('globalsetting::admin_login_image');
 
     }
 
 
-    public function admin_login_image_update(Request $request){
+    public function admin_login_image_update(Request $request)
+    {
 
         $setting = GlobalSetting::where('key', 'admin_login')->first();
 
-        if($request->admin_login){
+        if ($request->admin_login) {
             $old_logo = $setting->value;
             $image = $request->admin_login;
             $ext = $image->getClientOriginalExtension();
-            $logo_name = 'admin-bg-image-'.date('Y-m-d-h-i-s-').rand(999,9999).'.'.$ext;
-            $logo_name = 'uploads/website-images/'.$logo_name;
+            $logo_name = 'admin-bg-image-' . date('Y-m-d-h-i-s-') . rand(999, 9999) . '.' . $ext;
+            $logo_name = 'uploads/website-images/' . $logo_name;
             $logo = Image::make($image)
-                    ->save(public_path().'/'.$logo_name);
+                ->save(public_path() . '/' . $logo_name);
             $setting->value = $logo_name;
             $setting->save();
 
-            if($old_logo){
-                if(File::exists(public_path().'/'.$old_logo))unlink(public_path().'/'.$old_logo);
+            if ($old_logo) {
+                if (File::exists(public_path() . '/' . $old_logo))
+                    unlink(public_path() . '/' . $old_logo);
             }
 
         }
@@ -489,30 +555,33 @@ class GlobalSettingController extends Controller
     }
 
 
-    public function breadcrumb(){
+    public function breadcrumb()
+    {
 
         return view('globalsetting::breadcrumb');
 
     }
 
 
-    public function breadcrumb_update(Request $request){
+    public function breadcrumb_update(Request $request)
+    {
 
         $setting = GlobalSetting::where('key', 'breadcrumb_image')->first();
 
-        if($request->breadcrumb_image){
+        if ($request->breadcrumb_image) {
             $old_logo = $setting->value;
             $image = $request->breadcrumb_image;
             $ext = $image->getClientOriginalExtension();
-            $logo_name = 'breadcrumb-image-'.date('Y-m-d-h-i-s-').rand(999,9999).'.'.$ext;
-            $logo_name = 'uploads/website-images/'.$logo_name;
+            $logo_name = 'breadcrumb-image-' . date('Y-m-d-h-i-s-') . rand(999, 9999) . '.' . $ext;
+            $logo_name = 'uploads/website-images/' . $logo_name;
             $logo = Image::make($image)
-                    ->save(public_path().'/'.$logo_name);
+                ->save(public_path() . '/' . $logo_name);
             $setting->value = $logo_name;
             $setting->save();
 
-            if($old_logo){
-                if(File::exists(public_path().'/'.$old_logo))unlink(public_path().'/'.$old_logo);
+            if ($old_logo) {
+                if (File::exists(public_path() . '/' . $old_logo))
+                    unlink(public_path() . '/' . $old_logo);
             }
 
         }
@@ -525,12 +594,14 @@ class GlobalSettingController extends Controller
 
     }
 
-    public function social_login(){
+    public function social_login()
+    {
 
         return view('globalsetting::social_login');
     }
 
-    public function social_login_update(SocialLoginRequest $request){
+    public function social_login_update(SocialLoginRequest $request)
+    {
 
         GlobalSetting::where('key', 'facebook_client_id')->update(['value' => $request->facebook_client_id]);
         GlobalSetting::where('key', 'facebook_secret_id')->update(['value' => $request->facebook_secret_id]);
@@ -553,30 +624,33 @@ class GlobalSettingController extends Controller
     }
 
 
-    public function default_avatar(){
+    public function default_avatar()
+    {
 
         return view('globalsetting::default_avatar');
 
     }
 
 
-    public function default_avatar_update(Request $request){
+    public function default_avatar_update(Request $request)
+    {
 
         $setting = GlobalSetting::where('key', 'default_avatar')->first();
 
-        if($request->default_avatar){
+        if ($request->default_avatar) {
             $old_logo = $setting->value;
             $image = $request->default_avatar;
             $ext = $image->getClientOriginalExtension();
-            $logo_name = 'avatar-image-'.date('Y-m-d-h-i-s-').rand(999,9999).'.'.$ext;
-            $logo_name = 'uploads/website-images/'.$logo_name;
+            $logo_name = 'avatar-image-' . date('Y-m-d-h-i-s-') . rand(999, 9999) . '.' . $ext;
+            $logo_name = 'uploads/website-images/' . $logo_name;
             $logo = Image::make($image)
-                    ->save(public_path().'/'.$logo_name);
+                ->save(public_path() . '/' . $logo_name);
             $setting->value = $logo_name;
             $setting->save();
 
-            if($old_logo){
-                if(File::exists(public_path().'/'.$old_logo))unlink(public_path().'/'.$old_logo);
+            if ($old_logo) {
+                if (File::exists(public_path() . '/' . $old_logo))
+                    unlink(public_path() . '/' . $old_logo);
             }
 
         }
@@ -589,30 +663,33 @@ class GlobalSettingController extends Controller
 
     }
 
-    public function maintenance_mode(){
+    public function maintenance_mode()
+    {
 
         return view('globalsetting::maintenance_mode');
 
     }
 
 
-    public function maintenance_mode_update(Request $request){
+    public function maintenance_mode_update(Request $request)
+    {
 
         $setting = GlobalSetting::where('key', 'maintenance_image')->first();
 
-        if($request->maintenance_image){
+        if ($request->maintenance_image) {
             $old_logo = $setting->value;
             $image = $request->maintenance_image;
             $ext = $image->getClientOriginalExtension();
-            $logo_name = 'maintenance-image-'.date('Y-m-d-h-i-s-').rand(999,9999).'.'.$ext;
-            $logo_name = 'uploads/website-images/'.$logo_name;
+            $logo_name = 'maintenance-image-' . date('Y-m-d-h-i-s-') . rand(999, 9999) . '.' . $ext;
+            $logo_name = 'uploads/website-images/' . $logo_name;
             $logo = Image::make($image)
-                    ->save(public_path().'/'.$logo_name);
+                ->save(public_path() . '/' . $logo_name);
             $setting->value = $logo_name;
             $setting->save();
 
-            if($old_logo){
-                if(File::exists(public_path().'/'.$old_logo))unlink(public_path().'/'.$old_logo);
+            if ($old_logo) {
+                if (File::exists(public_path() . '/' . $old_logo))
+                    unlink(public_path() . '/' . $old_logo);
             }
 
         }
@@ -629,7 +706,8 @@ class GlobalSettingController extends Controller
     }
 
 
-    public function cache_clear(){
+    public function cache_clear()
+    {
 
         Artisan::call('optimize:clear');
 
@@ -639,12 +717,13 @@ class GlobalSettingController extends Controller
     }
 
 
-    public function set_cache_setting(){
+    public function set_cache_setting()
+    {
         $setting_data = GlobalSetting::get();
 
         $setting = array();
 
-        foreach($setting_data as $data_item){
+        foreach ($setting_data as $data_item) {
             $setting[$data_item->key] = $data_item->value;
         }
 

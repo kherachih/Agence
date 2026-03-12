@@ -785,6 +785,8 @@ return array(
   'Home4 Footer Logo' => 'Home4 Footer Logo',
   'Home4 Menu Logo' => 'Home4 Menu Logo',
   'Website favicon' => 'Website favicon',
+  'Logo Red' => 'Logo Red',
+  'Logo White' => 'Logo White',
   'Captcha Site Key' => 'Captcha Site Key',
   'Captcha Secret Key' => 'Captcha Secret Key',
   'Tawk Chat Link' => 'Tawk Chat Link',
@@ -1975,7 +1977,7 @@ return array(
   'Instant Confirmation' => 'Instant Confirmation',
   'Date Depart' => 'Departure Date',
   'Date Retour' => 'Return Date',
-  
+
   // Quote Request Form Translations
   'Request a Quote' => 'Request a Quote',
   'Get a personalized quote for your dream vacation' => 'Get a personalized quote for your dream vacation',
@@ -2062,5 +2064,6 @@ return array(
   'N/A' => 'N/A',
   'Phone is required' => 'Phone is required',
   'Save my name, email, and phone in this browser for the next time I comment.' => 'Save my name, email, and phone in this browser for the next time I comment.',
+  'Have questions? Our team is here to help you plan your perfect tour!' => 'Have questions? Our team is here to help you plan your perfect tour!',
 );
 

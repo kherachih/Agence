@@ -823,13 +823,18 @@
 
             .calendar-day {
                 text-align: center;
-                padding: 12px;
-                border-radius: 8px;
+                padding: 8px 4px;
+                border-radius: 6px;
                 cursor: pointer;
                 transition: all 0.3s ease;
                 background: #f8f9fa;
                 color: #333;
                 font-weight: 500;
+                font-size: 14px;
+                min-height: 36px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
             }
 
             .calendar-day:hover:not(.disabled):not(.other-month) {
@@ -918,12 +923,6 @@
             @media (min-width: 768px) {
                 .mobile-booking-app {
                     display: none;
-                }
-            }
-
-            @media (max-width: 767px) {
-                .mobile-booking-app {
-                    display: block;
                 }
             }
         </style>

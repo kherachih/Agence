@@ -8,384 +8,561 @@
 
 @section('front-content')
 
-@push('style_section')
-<style>
-    /* ============================================
-       MONTH SELECTOR V2 - MODERN DESIGN
-       ============================================ */
-    
-    .month-selector-v2 {
-        background: linear-gradient(145deg, #ffffff 0%, #f8f9fa 100%);
-        border-radius: 16px;
-        padding: 20px;
-        border: 1px solid #e9ecef;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
-    }
-    
-    /* --- Year Selector Dropdown --- */
-    .year-selector-wrapper {
-        position: relative;
-    }
-    
-    .year-selector-label {
-        display: block;
-        font-size: 12px;
-        font-weight: 600;
-        color: #6c757d;
-        text-transform: uppercase;
-        letter-spacing: 0.8px;
-        margin-bottom: 8px;
-    }
-    
-    .year-dropdown {
-        position: relative;
-    }
-    
-    .year-dropdown-toggle {
-        width: 100%;
-        background: linear-gradient(145deg, #ffffff 0%, #f1f3f4 100%);
-        border: 2px solid #e9ecef;
-        border-radius: 12px;
-        padding: 14px 18px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        cursor: pointer;
-        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        font-size: 16px;
-        font-weight: 600;
-        color: #2d3436;
-    }
-    
-    .year-dropdown-toggle:hover {
-        border-color: var(--tg-theme-primary, #BE3144);
-        box-shadow: 0 4px 12px rgba(86, 12, 227, 0.12);
-    }
-    
-    .year-dropdown-toggle.active {
-        border-color: var(--tg-theme-primary, #BE3144);
-        box-shadow: 0 4px 16px rgba(86, 12, 227, 0.18);
-    }
-    
-    .year-dropdown-toggle i {
-        transition: transform 0.3s ease;
-        color: #6c757d;
-    }
-    
-    .year-dropdown-toggle.active i {
-        transform: rotate(180deg);
-        color: var(--tg-theme-primary, #BE3144);
-    }
-    
-    .year-dropdown-menu {
-        position: absolute;
-        top: calc(100% + 8px);
-        left: 0;
-        right: 0;
-        background: white;
-        border-radius: 12px;
-        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
-        z-index: 100;
-        opacity: 0;
-        visibility: hidden;
-        transform: translateY(-10px);
-        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        max-height: 250px;
-        overflow-y: auto;
-        padding: 8px;
-    }
-    
-    .year-dropdown-menu.show {
-        opacity: 1;
-        visibility: visible;
-        transform: translateY(0);
-    }
-    
-    .year-option {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 12px 16px;
-        border-radius: 8px;
-        cursor: pointer;
-        transition: all 0.2s ease;
-        margin-bottom: 4px;
-    }
-    
-    .year-option:last-child {
-        margin-bottom: 0;
-    }
-    
-    .year-option:hover {
-        background: #f8f9fa;
-    }
-    
-    .year-option.active {
-        background: linear-gradient(135deg, var(--tg-theme-primary, #BE3144) 0%, #7c3aed 100%);
-        color: white;
-    }
-    
-    .year-option.active .year-badge {
-        background: rgba(255, 255, 255, 0.25);
-        color: white;
-    }
-    
-    .year-text {
-        font-weight: 600;
-        font-size: 15px;
-    }
-    
-    .year-badge {
-        font-size: 11px;
-        font-weight: 500;
-        padding: 4px 10px;
-        border-radius: 20px;
-        background: #e9ecef;
-        color: #6c757d;
-    }
-    
-    /* --- Months Container --- */
-    .months-container {
-        position: relative;
-        min-height: 200px;
-    }
-    
-    .year-months-block {
-        display: none;
-        animation: fadeInMonths 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-    
-    .year-months-block.active {
-        display: block;
-    }
-    
-    @keyframes fadeInMonths {
-        from {
-            opacity: 0;
-            transform: translateY(15px) scale(0.98);
+    @push('style_section')
+    <style>
+        /* ============================================
+           NEW MONTH SELECTOR - ADVENTURE.COM STYLE
+           ============================================ */
+        
+        .ao-month-selector-wrapper {
+            background: #ffffff;
+            border-radius: 16px;
+            padding: 20px;
+            border: 1px solid #e8e8e8;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
         }
-        to {
-            opacity: 1;
-            transform: translateY(0) scale(1);
+        
+        /* --- Year Navigation --- */
+        .ao-month-selector__year-nav {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 20px;
         }
-    }
-    
-    /* --- Months Grid V2 - 12 Beautiful Rectangles --- */
-    .months-grid-v2 {
-        display: grid !important;
-        grid-template-columns: repeat(3, 1fr) !important;
-        gap: 10px !important;
-        width: 100% !important;
-    }
-    
-    /* Force grid on the container */
-    .year-months-block .months-grid-v2,
-    .months-container .months-grid-v2 {
-        display: grid !important;
-        grid-template-columns: repeat(3, 1fr) !important;
-    }
-    
-    @media (max-width: 1200px) {
-        .months-grid-v2 {
-            grid-template-columns: repeat(3, 1fr) !important;
+        
+        .ao-month-selector__year-btn {
+            width: 40px;
+            height: 40px;
+            border: 1px solid #e8e8e8;
+            border-radius: 50%;
+            background: #ffffff;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #666;
         }
-    }
-    
-    @media (max-width: 768px) {
-        .months-grid-v2 {
-            grid-template-columns: repeat(3, 1fr) !important;
-            gap: 8px !important;
+        
+        .ao-month-selector__year-btn:hover:not(:disabled) {
+            border-color: var(--tg-theme-primary, #BE3144);
+            color: var(--tg-theme-primary, #BE3144);
+            background: #fff5f5;
         }
-    }
-    
-    @media (max-width: 480px) {
-        .months-grid-v2 {
-            grid-template-columns: repeat(2, 1fr) !important;
-            gap: 8px !important;
+        
+        .ao-month-selector__year-btn:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
         }
-    }
+        
+        .ao-month-selector__year-btn i {
+            font-size: 14px;
+        }
+        
+        .ao-month-selector__year-display {
+            min-width: 100px;
+            text-align: center;
+        }
+        
+        .ao-month-selector__current-year {
+            font-size: 20px;
+            font-weight: 700;
+            color: #1a1a1a;
+        }
+        
+        /* --- Year Indicators (Dots) --- */
+        .ao-month-selector__year-indicators {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+        
+        .ao-month-selector__year-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #d1d5db;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .ao-month-selector__year-dot.active {
+            background: var(--tg-theme-primary, #BE3144);
+            width: 24px;
+            border-radius: 4px;
+        }
+        
+        .ao-month-selector__year-dot:hover:not(.active) {
+            background: #9ca3af;
+        }
+        
+        /* --- Months Grid Container --- */
+        .ao-month-selector__grid-container {
+            overflow-x: auto;
+            scroll-behavior: smooth;
+            padding: 10px 5px;
+            margin: 0 -5px;
+            -webkit-overflow-scrolling: touch;
+        }
+        
+        .ao-month-selector__grid-container::-webkit-scrollbar {
+            height: 6px;
+        }
+        
+        .ao-month-selector__grid-container::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 3px;
+        }
+        
+        .ao-month-selector__grid-container::-webkit-scrollbar-thumb {
+            background: #c1c1c1;
+            border-radius: 3px;
+        }
+        
+        /* --- Year Grids --- */
+        .ao-month-selector__year-grid {
+            display: none;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+            padding: 5px;
+        }
+        
+        .ao-month-selector__year-grid.active {
+            display: grid;
+            animation: fadeInMonths 0.3s ease;
+        }
+        
+        @keyframes fadeInMonths {
+            from { opacity: 0; transform: translateX(20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        
+        /* --- Month Card (New Design) --- */
+        .ao-month-selector__month-card {
+            position: relative;
+            background: #ffffff;
+            border: 2px solid #e8e8e8;
+            border-radius: 12px;
+            padding: 16px 12px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            min-height: 80px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+        
+        .ao-month-selector__month-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: #e8e8e8;
+            transition: all 0.3s ease;
+        }
+        
+        /* Available State */
+        .ao-month-selector__month-card.available {
+            border-color: #e8e8e8;
+            background: #ffffff;
+        }
+        
+        .ao-month-selector__month-card.available::before {
+            background: linear-gradient(90deg, #10b981, #3b82f6);
+        }
+        
+        .ao-month-selector__month-card.available:hover {
+            border-color: #10b981;
+            transform: translateY(-4px);
+            box-shadow: 0 8px 20px rgba(16, 185, 129, 0.15);
+        }
+        
+        /* Unavailable State */
+        .ao-month-selector__month-card.unavailable {
+            background: #f8f9fa;
+            border-color: #f0f0f0;
+            cursor: not-allowed;
+            opacity: 0.5;
+        }
+        
+        .ao-month-selector__month-card.unavailable::before {
+            background: #d1d5db;
+        }
+        
+        .ao-month-selector__month-card.unavailable:hover {
+            transform: none;
+            box-shadow: none;
+        }
+        
+        /* Discounted State */
+        .ao-month-selector__month-card.discounted {
+            border-color: #f59e0b;
+            background: linear-gradient(145deg, #ffffff 0%, #fffbeb 100%);
+        }
+        
+        .ao-month-selector__month-card.discounted::before {
+            background: linear-gradient(90deg, #f59e0b, #ef4444);
+        }
+        
+        .ao-month-selector__month-card.discounted:hover {
+            border-color: #ef4444;
+            transform: translateY(-4px);
+            box-shadow: 0 8px 20px rgba(245, 158, 11, 0.2);
+        }
+        
+        /* Selected State */
+        .ao-month-selector__month-card.selected {
+            border-color: var(--tg-theme-primary, #BE3144);
+            background: linear-gradient(145deg, #fff5f5 0%, #ffe5e5 100%);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(190, 49, 68, 0.2);
+        }
+        
+        .ao-month-selector__month-card.selected::before {
+            background: linear-gradient(90deg, var(--tg-theme-primary, #BE3144), #c0262c);
+            height: 4px;
+        }
+        
+        .ao-month-selector__month-card.selected::after {
+            content: '\f00c';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            width: 22px;
+            height: 22px;
+            background: var(--tg-theme-primary, #BE3144);
+            color: white;
+            border-radius: 50%;
+            font-size: 11px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 3px 10px rgba(190, 49, 68, 0.3);
+        }
+        
+        /* Month Card Content */
+        .ao-month-selector__month-name {
+            font-size: 13px;
+            font-weight: 700;
+            color: #1a1a1a;
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+            margin: 0;
+        }
+        
+        .ao-month-selector__month-card.selected .ao-month-selector__month-name {
+            color: var(--tg-theme-primary, #BE3144);
+        }
+        
+        .ao-month-selector__month-card.unavailable .ao-month-selector__month-name {
+            color: #9ca3af;
+        }
+        
+        .ao-month-selector__month-price {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2px;
+        }
+        
+        .ao-month-selector__price-original {
+            font-size: 10px;
+            font-weight: 500;
+            color: #999;
+            text-decoration: line-through;
+        }
+        
+        .ao-month-selector__price-current {
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--tg-theme-primary, #BE3144);
+        }
+        
+        .ao-month-selector__price-current.discounted {
+            color: #ef4444;
+        }
+        
+        .ao-month-selector__month-card.unavailable .ao-month-selector__month-price {
+            display: none;
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 992px) {
+            .ao-month-selector__year-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .ao-month-selector__month-card {
+                min-width: 70px;
+                padding: 14px 10px;
+            }
+            
+            .ao-month-selector__month-name {
+                font-size: 12px;
+            }
+            
+            .ao-month-selector__price-current {
+                font-size: 11px;
+            }
+            
+            .ao-month-selector__price-original {
+                font-size: 9px;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .ao-month-selector__year-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .ao-month-selector__month-card {
+                min-width: 65px;
+                padding: 12px 8px;
+            }
+            
+            .ao-month-selector__current-year {
+                font-size: 18px;
+            }
+            
+            .ao-month-selector__year-nav {
+                gap: 15px;
+                margin-bottom: 15px;
+            }
+            
+            .ao-month-selector__year-btn {
+                width: 36px;
+                height: 36px;
+            }
+        }
     
-    /* --- Month Box Styling --- */
-    .month-box {
-      position: relative;
-      background: #f5f5f5;
-      border-radius: 12px;
-      padding: 10px 8px 8px;
-      text-align: center;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      border: 1px solid #e0e0e0;
-      box-shadow: none;
-      overflow: hidden;
-      min-height: 50px;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-    }
+        /* --- Month Card - Clean Design --- */
+        .month-card {
+            position: relative;
+            background: #ffffff;
+            border: 2px solid #e8e8e8;
+            border-radius: 16px;
+            padding: 25px 15px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            min-height: 100px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+        
+        .month-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: #e8e8e8;
+            transition: all 0.3s ease;
+        }
+        
+        /* Available State */
+        .month-card.available {
+            border-color: #e8e8e8;
+            background: #ffffff;
+        }
+        
+        .month-card.available::before {
+            background: linear-gradient(90deg, #10b981, #3b82f6);
+        }
+        
+        .month-card.available:hover {
+            border-color: #10b981;
+            transform: translateY(-6px);
+            box-shadow: 0 12px 28px rgba(16, 185, 129, 0.15);
+        }
+        
+        /* Unavailable State */
+        .month-card.unavailable {
+            background: #f8f9fa;
+            border-color: #f0f0f0;
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+        
+        .month-card.unavailable::before {
+            background: #d1d5db;
+        }
+        
+        .month-card.unavailable:hover {
+            transform: none;
+            box-shadow: none;
+        }
+        
+        /* Discounted State */
+        .month-card.discounted {
+            border-color: #f59e0b;
+            background: linear-gradient(145deg, #ffffff 0%, #fffbeb 100%);
+        }
+        
+        .month-card.discounted::before {
+            background: linear-gradient(90deg, #f59e0b, #ef4444);
+        }
+        
+        .month-card.discounted:hover {
+            border-color: #ef4444;
+            transform: translateY(-6px);
+            box-shadow: 0 12px 28px rgba(245, 158, 11, 0.2);
+        }
+        
+        /* Selected State */
+        .month-card.selected {
+            border-color: var(--tg-theme-primary, #BE3144);
+            background: linear-gradient(145deg, #fff5f5 0%, #ffe5e5 100%);
+            transform: translateY(-4px);
+            box-shadow: 0 16px 32px rgba(190, 49, 68, 0.2);
+        }
+        
+        .month-card.selected::before {
+            background: linear-gradient(90deg, var(--tg-theme-primary, #BE3144), #c0262c);
+            height: 5px;
+        }
+        
+        .month-card.selected::after {
+            content: '\f00c';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            width: 26px;
+            height: 26px;
+            background: var(--tg-theme-primary, #BE3144);
+            color: white;
+            border-radius: 50%;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 12px rgba(190, 49, 68, 0.3);
+        }
     
-    .month-box::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 3px;
-      background: linear-gradient(90deg, #e9ecef, #dee2e6);
-      transition: all 0.3s ease;
-    }
-    
-    .month-box.available {
-      border-color: #e9ecef;
-    }
-    
-    .month-box.available::before {
-      background: linear-gradient(90deg, #28a745, #20c997);
-    }
-    
-    .month-box.available:hover {
-      border-color: #28a745;
-      transform: translateY(-4px) scale(1.02);
-      box-shadow: 0 12px 28px rgba(40, 167, 69, 0.2);
-    }
-    
-    .month-box.unavailable {
-      background: #f8f9fa;
-      cursor: not-allowed;
-      opacity: 0.7;
-    }
-    
-    .month-box.unavailable::before {
-      background: #dee2e6;
-    }
-    
-    .month-box.discounted {
-      border-color: #ffc107;
-      background: linear-gradient(145deg, #ffffff 0%, #fff9e6 100%);
-    }
-    
-    .month-box.discounted::before {
-      background: linear-gradient(90deg, #ffc107, #ff9800);
-    }
-    
-    .month-box.discounted:hover {
-      border-color: #ff9800;
-      transform: translateY(-4px) scale(1.02);
-      box-shadow: 0 12px 28px rgba(255, 193, 7, 0.25);
-    }
-    
-    .month-box.selected {
-      border-color: var(--tg-theme-primary, #BE3144);
-      background: linear-gradient(145deg, #f3f0ff 0%, #e8e0ff 100%);
-      transform: translateY(-2px);
-      box-shadow: 0 8px 24px rgba(86, 12, 227, 0.2);
-    }
-    
-    .month-box.selected::before {
-      background: linear-gradient(90deg, var(--tg-theme-primary, #BE3144), #7c3aed);
-      height: 4px;
-    }
-    
-    .month-box.selected::after {
-      content: '\f00c';
-      font-family: 'Font Awesome 6 Free';
-      font-weight: 900;
-      position: absolute;
-      top: 6px;
-      right: 6px;
-      width: 20px;
-      height: 20px;
-      background: var(--tg-theme-primary, #BE3144);
-      color: white;
-      border-radius: 50%;
-      font-size: 10px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    
-    /* --- Month Box Inner Content --- */
-    .month-box-inner {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 2px;
-      width: 100%;
-    }
-    
-    .month-short {
-      font-size: 13px;
-      font-weight: 600;
-      color: #2d3436;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-    }
-    .month-box.selected .month-short {
-      color: #fff;
-    }
-    
-    .month-number {
-      display: none;
-    }
-    
-    .month-box.unavailable .month-short {
-      color: #adb5bd;
-    }
-    
-    .month-box.selected .month-short {
-      color: var(--tg-theme-primary, #BE3144);
-    }
-    
-    /* Price color based on discount status */
-    .month-price-tag {
-      font-size: 11px;
-      font-weight: 700;
-      margin-top: 4px;
-      display: block;
-    }
-    
-    .month-box.discounted .month-price-tag {
-      color: #dc3545 !important;
-    }
-    
-    .month-box.available .month-price-tag {
-      color: #2d3436 !important;
-    }
-    
-    .month-box.unavailable .month-price-tag {
-      display: none;
-    }
-    
-    /* --- Month Badge --- */
-    .month-badge {
-        font-size: 10px;
-        font-weight: 700;
-        padding: 2px 8px;
-        border-radius: 12px;
-        margin-top: 4px;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        min-width: 32px;
-    }
-    
-    .month-badge.available {
-        background: #d4edda;
-        color: #155724;
-    }
-    
-    .month-badge.discount {
-        background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
-        color: white;
-        font-size: 9px;
-        padding: 3px 8px;
-    }
-    
-    .month-badge.unavailable {
-        background: #e9ecef;
-        color: #adb5bd;
-    }
+        /* --- Month Card Content --- */
+        .month-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            width: 100%;
+        }
+        
+        .month-name {
+            font-size: 15px;
+            font-weight: 700;
+            color: #1a1a1a;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            margin: 0;
+        }
+        
+        .month-card.selected .month-name {
+            color: var(--tg-theme-primary, #BE3144);
+        }
+        
+        .month-card.unavailable .month-name {
+            color: #9ca3af;
+        }
+        
+        .month-price {
+            font-size: 13px;
+            font-weight: 600;
+            color: #6b7280;
+            margin: 0;
+        }
+        
+        .month-card.selected .month-price {
+            color: var(--tg-theme-primary, #BE3144);
+            font-weight: 700;
+        }
+        
+        .month-card.discounted .month-price {
+            color: #ef4444;
+        }
+        
+        .month-card.unavailable .month-price {
+            display: none;
+        }
+        
+        /* Discount Badge */
+        .discount-badge {
+            font-size: 10px;
+            font-weight: 700;
+            padding: 4px 10px;
+            border-radius: 12px;
+            margin-top: 4px;
+            display: inline-block;
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+            color: white;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .month-card.unavailable .discount-badge {
+            display: none;
+        }
+        
+        /* Scrollbar Styling */
+        .year-dropdown-menu::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        .year-dropdown-menu::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 4px;
+        }
+        
+        .year-dropdown-menu::-webkit-scrollbar-thumb {
+            background: #c1c1c1;
+            border-radius: 4px;
+        }
+        
+        .year-dropdown-menu::-webkit-scrollbar-thumb:hover {
+            background: #a1a1a1;
+        }
+        
+        /* Smooth transitions for all interactive elements */
+        .month-card,
+        .year-dropdown-toggle {
+            will-change: transform, box-shadow;
+        }
+        
+        /* Focus states for accessibility */
+        .year-dropdown-toggle:focus {
+            outline: none;
+            border-color: var(--tg-theme-primary, #BE3144);
+            box-shadow: 0 0 0 4px rgba(190, 49, 68, 0.1);
+        }
+        
+        .month-card:focus {
+            outline: none;
+            border-color: var(--tg-theme-primary, #BE3144);
+        }
+        
+        .month-card:focus-visible {
+            outline: 2px solid var(--tg-theme-primary, #BE3144);
+            outline-offset: 2px;
+        }
     
     
     /* --- Selected Month Info Card --- */
@@ -1892,165 +2069,85 @@
                                     <div class="tg-tour-about-time mb-10">
                                         <span class="time mb-10 d-block">{{ __('translate.Availability by Month') }}:</span>
                                         
-                                        <!-- Month Selector Component V2 -->
-                                        <div class="month-selector-v2">
-                                            <!-- Year Selector Dropdown -->
-                                            <div class="year-selector-wrapper mb-3">
-                                                <label class="year-selector-label">{{ __('translate.Select Year') }}</label>
-                                                <div class="year-dropdown">
-                                                    <button type="button" class="year-dropdown-toggle" id="yearDropdownToggle">
-                                                        <span class="selected-year-text">{{ $years[0] ?? $currentYear }}</span>
-                                                        <i class="fa-solid fa-chevron-down"></i>
-                                                    </button>
-                                                    <div class="year-dropdown-menu" id="yearDropdownMenu">
-                                                        @foreach($years as $year)
-                                                            <div class="year-option {{ $loop->first ? 'active' : '' }}" data-year="{{ $year }}">
-                                                                <span class="year-text">{{ $year }}</span>
-                                                                @php
-                                                                    $availableMonthsCount = isset($periodsByMonth[$year]) ? count($periodsByMonth[$year]) : 0;
-                                                                @endphp
-                                                                <span class="year-badge">{{ $availableMonthsCount }} {{ __('translate.months') }}</span>
-                                                            </div>
-                                                        @endforeach
-                                                    </div>
+                                        <!-- New Month Selector Design -->
+                                        <div class="ao-month-selector-wrapper">
+                                            <!-- Year Navigation -->
+                                            <div class="ao-month-selector__year-nav">
+                                                <button type="button" class="ao-month-selector__year-btn ao-month-selector__year-btn--prev" id="yearPrevBtn">
+                                                    <i class="fa-solid fa-chevron-left"></i>
+                                                </button>
+                                                <div class="ao-month-selector__year-display">
+                                                    <span class="ao-month-selector__current-year" id="currentYear">{{ $years[0] ?? $currentYear }}</span>
                                                 </div>
+                                                <button type="button" class="ao-month-selector__year-btn ao-month-selector__year-btn--next" id="yearNextBtn">
+                                                    <i class="fa-solid fa-chevron-right"></i>
+                                                </button>
                                             </div>
                                             
-                                            <!-- Months Grid - 12 Beautiful Rectangles -->
-                                            <div class="months-container" id="monthsContainer">
+                                            <!-- Months Grid -->
+                                            <div class="ao-month-selector__grid-container" id="monthsScrollContainer">
                                                 @foreach($years as $year)
-                                                    <div class="year-months-block {{ $loop->first ? 'active' : '' }}" data-year="{{ $year }}" id="yearMonths{{ $year }}">
-                                                        <div class="months-grid-v2" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;">
-                                                            @for($month = 1; $month <= 12; $month++)
-                                                                @php
-                                                                    $hasAvailability = isset($periodsByMonth[$year][$month]) && count($periodsByMonth[$year][$month]) > 0;
-                                                                    $period = $hasAvailability ? $periodsByMonth[$year][$month][0] : null;
-                                                                    $priceDisplay = '';
-                                                                    $isDiscounted = false;
-                                                                    
-                                                                    if ($hasAvailability && $period) {
-                                                                        $adultPrice = $period['adult_price'];
-                                                                        $discountedPrice = $period['discounted_price'];
-                                                                        $discountPercentage = $period['discount_percentage'];
-                                                                        
-                                                                        if ($discountPercentage > 0 || $discountedPrice < $adultPrice) {
-                                                                            $isDiscounted = true;
-                                                                        }
-                                                                        
-                                                                        $displayPrice = $discountedPrice ?? $adultPrice;
-                                                                        $priceDisplay = currency($displayPrice);
-                                                                    }
-                                                                @endphp
+                                                    <div class="ao-month-selector__year-grid {{ $loop->first ? 'active' : '' }}" data-year="{{ $year }}" id="yearMonths{{ $year }}">
+                                                        @for($month = 1; $month <= 12; $month++)
+                                                            @php
+                                                                $hasAvailability = isset($periodsByMonth[$year][$month]) && count($periodsByMonth[$year][$month]) > 0;
+                                                                $period = $hasAvailability ? $periodsByMonth[$year][$month][0] : null;
+                                                                $priceDisplay = '';
+                                                                $isDiscounted = false;
                                                                 
-                                                                <div class="month-box {{ $hasAvailability ? 'available' : 'unavailable' }} {{ $isDiscounted ? 'discounted' : '' }}" 
-                                                                     data-year="{{ $year }}" 
-                                                                     data-month="{{ $month }}"
-                                                                     data-month-name="{{ $monthNamesFull[$month] }}"
-                                                                     @if($hasAvailability && $period)
-                                                                         data-period-id="{{ $period['id'] }}"
-                                                                         data-start-date="{{ $period['start_date'] }}"
-                                                                         data-end-date="{{ $period['end_date'] }}"
-                                                                         data-adult-price="{{ $period['adult_price'] }}"
-                                                                         data-discounted-price="{{ $period['discounted_price'] }}"
-                                                                         data-discount-percentage="{{ $period['discount_percentage'] }}"
-                                                                     @endif
-                                                                >
-                                                                    <div class="month-box-inner">
-                                                                        <span class="month-short">{{ $monthNames[$month] }}</span>
-                                                                        <span class="month-number">{{ str_pad($month, 2, '0', STR_PAD_LEFT) }}</span>
-                                                                        @if($hasAvailability)
-                                                                            @if($isDiscounted)
-                                                                                <span class="month-badge discount">-{{ $period['discount_percentage'] }}%</span>
-                                                                            @endif
-                                                                        @else
-                                                                            <span class="month-badge unavailable">—</span>
+                                                                if ($hasAvailability && $period) {
+                                                                    $adultPrice = $period['adult_price'];
+                                                                    $discountedPrice = $period['discounted_price'];
+                                                                    $discountPercentage = $period['discount_percentage'];
+                                                                    
+                                                                    if ($discountPercentage > 0 || $discountedPrice < $adultPrice) {
+                                                                        $isDiscounted = true;
+                                                                    }
+                                                                    
+                                                                    $displayPrice = $discountedPrice ?? $adultPrice;
+                                                                    $priceDisplay = currency($displayPrice);
+                                                                }
+                                                            @endphp
+                                                            
+                                                            <div class="ao-month-selector__month-card {{ $hasAvailability ? 'available' : 'unavailable' }} {{ $isDiscounted ? 'discounted' : '' }}" 
+                                                                 data-year="{{ $year }}" 
+                                                                 data-month="{{ $month }}"
+                                                                 data-month-name="{{ $monthNamesFull[$month] }}"
+                                                                 @if($hasAvailability && $period)
+                                                                     data-period-id="{{ $period['id'] }}"
+                                                                     data-start-date="{{ $period['start_date'] }}"
+                                                                     data-end-date="{{ $period['end_date'] }}"
+                                                                     data-adult-price="{{ $period['adult_price'] }}"
+                                                                     data-discounted-price="{{ $period['discounted_price'] }}"
+                                                                     data-discount-percentage="{{ $period['discount_percentage'] }}"
+                                                                 @endif
+                                                            >
+                                                                <div class="ao-month-selector__month-name">{{ $monthNames[$month] }}</div>
+                                                                @if($hasAvailability)
+                                                                    <div class="ao-month-selector__month-price">
+                                                                        @if($isDiscounted)
+                                                                            <span class="ao-month-selector__price-original">{{ currency($adultPrice) }}</span>
                                                                         @endif
+                                                                        <span class="ao-month-selector__price-current {{ $isDiscounted ? 'discounted' : '' }}">{{ $priceDisplay }}</span>
                                                                     </div>
-                                                                    @if($hasAvailability)
-                                                                        <div class="month-price-tag">{{ $priceDisplay }}</div>
-                                                                    @endif
-                                                                </div>
-                                                            @endfor
-                                                        </div>
+                                                                @endif
+                                                            </div>
+                                                        @endfor
                                                     </div>
                                                 @endforeach
                                             </div>
                                             
-                                        </div>
-                                    </div>
-                                @endif
-
-                                <div class="tg-tour-about-border-doted mb-15"></div>
-
-                                <div class="tg-tour-about-tickets-wrap mb-15">
-                                    <span class="tg-tour-about-sidebar-title">Tickets:</span>
-
-                                    <div class="tg-tour-about-tickets mb-10">
-                                        <div class="tg-tour-about-tickets-adult">
-                                            <span>Adult</span>
-                                            <p class="mb-0">
-                                                (18+ years)
-                                                <span x-html="formatCurrency(pricePerAdult)">
-                                                    {!! $service->adult_price_display !!}
-                                                </span>
-                                            </p>
-                                            <div id="adult-discount-badge" class="discount-badge-below-price" style="display: none;">
-                                                <span class="badge bg-danger"></span>
-                                            </div>
-                                        </div>
-                                        <div class="tg-tour-about-tickets-quantity">
-                                            <select name="person" class="item-first custom-select" x-model.number="tickets.person">
-                                                <template x-for="i in 8" :key="i">
-                                                    <option :value="i" x-text="i"></option>
-                                                </template>
-                                            </select>
-                                        </div>
-                                    </div>
-     
-                                    <div class="tg-tour-about-tickets mb-10">
-                                        <div class="tg-tour-about-tickets-adult">
-                                            <span>Children </span>
-                                            <p class="mb-0">
-                                                (13-17 years)
-                                                <span x-html="formatCurrency(pricePerChild)">
-                                                    {!! $service->child_price_display !!}
-                                                </span>
-                                            </p>
-                                            <div id="child-discount-badge" class="discount-badge-below-price" style="display: none;">
-                                                <span class="badge bg-danger"></span>
-                                            </div>
-                                        </div>
-                                        <div class="tg-tour-about-tickets-quantity">
-                                            <select name="children" class="item-first custom-select" x-model.number="tickets.children">
-                                                <template x-for="i in 8" :key="i">
-                                                    <option :value="i - 1" x-text="i - 1"></option>
-                                                </template>
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="tg-tour-about-border-doted mb-15"></div>
-
-                                @if ($service->extraCharges->count() > 0)
-                                    <div class="tg-tour-about-extra mb-10">
-                                        <span class="tg-tour-about-sidebar-title mb-10 d-inline-block">Add Extra:</span>
-                                        <div class="tg-filter-list">
-                                            <ul>
-                                                @foreach ($service->extraCharges as $key => $extra)
-                                                    <li>
-                                                        <div class="checkbox d-flex">
-                                                            <input name="extras[]" value="{{ $extra->id }}" class="tg-checkbox" type="checkbox" x-model="extras.charge_{{ $key }}" id="charge_{{ $key }}">
-                                                            <label for="charge_{{ $key }}" class="tg-label">{{ $extra->name }}</label>
-                                                        </div>
-                                                        <span class="quantity">{{ currency($extra->price) }}</span>
-                                                    </li>
+                                            <!-- Year Indicator Dots -->
+                                            <div class="ao-month-selector__year-indicators" id="yearIndicators">
+                                                @foreach($years as $index => $year)
+                                                    <span class="ao-month-selector__year-dot {{ $loop->first ? 'active' : '' }}" data-year="{{ $year }}"></span>
                                                 @endforeach
-                                            </ul>
+                                            </div>
                                         </div>
                                     </div>
-                                    <div class="tg-tour-about-border-doted mb-15"></div>
                                 @endif
+
+                                <div class="tg-tour-about-border-doted mb-15"></div>
 
                                 {{-- Flight Ticket Option - Only show for DZD/DA currencies --}}
                                 @if($isDZD)
@@ -2075,12 +2172,13 @@
                                 <!-- Hidden inputs for form submission -->
                                 <input type="hidden" name="availability_period_id" id="sidebar-period-id">
                                 <input type="hidden" name="check_in_date" id="sidebar-check-in-date">
-
-                                <div class="tg-tour-about-coast d-flex align-items-center flex-wrap justify-content-between mb-20">
-                                    <span class="tg-tour-about-sidebar-title d-inline-block">Total Cost:</span>
-                                    <h5 class="total-price" x-text="totalCostFormatted"></h5>
+                                
+                                <!-- Contact Us Prompt -->
+                                <div class="contact-us-prompt mb-3 p-3 bg-light rounded" style="font-size: 14px; color: #6c757d;">
+                                    <i class="fa-regular fa-circle-question mr-2" style="color: var(--tg-theme-primary, #BE3144);"></i>
+                                    {{ __('translate.Have questions? Our team is here to help you plan your perfect tour!') }}
                                 </div>
-
+                                
                                 <a href="{{ route('contact-us', ['service_id' => $service->id]) }}" class="tg-btn tg-btn-switch-animation w-100 text-center">
                                     {{ __('translate.Contact Us') }}
                                 </a>
@@ -2133,73 +2231,80 @@
                     };
                 });
 
-                // Month Selector V2 Functionality
-                const yearDropdownToggle = document.getElementById('yearDropdownToggle');
-                const yearDropdownMenu = document.getElementById('yearDropdownMenu');
-                const yearOptions = document.querySelectorAll('.year-option');
-                const yearMonthsBlocks = document.querySelectorAll('.year-months-block');
-                const monthBoxes = document.querySelectorAll('.month-box');
-                const periodInput = document.getElementById('selected-availability-period-id');
-                const checkInDateInput = document.getElementById('selected-check-in-date');
-                const selectedMonthSection = document.getElementById('selected-month-section');
-                const selectedMonthName = document.getElementById('selected-month-name');
-                const periodInfoSummary = document.getElementById('period-info-summary');
-                const datesCalendarGrid = document.getElementById('dates-calendar-grid');
-                const selectedDateInfo = document.getElementById('selected-date-info');
-                const selectedDateText = document.getElementById('selected-date-text');
-                const bookBtn = document.getElementById('book-now-btn');
+                // Simple Month Selector Functionality
+                const yearPrevBtn = document.getElementById('yearPrevBtn');
+                const yearNextBtn = document.getElementById('yearNextBtn');
+                const currentYearEl = document.getElementById('currentYear');
+                const yearMonthsBlocks = document.querySelectorAll('.ao-month-selector__year-grid');
+                const monthItems = document.querySelectorAll('.ao-month-selector__month-card');
+                const yearDots = document.querySelectorAll('.ao-month-selector__year-dot');
+                const monthsScrollContainer = document.getElementById('monthsScrollContainer');
                 
-                let currentSelectedYear = null;
-                let currentSelectedPeriod = null;
+                let currentYearIndex = 0;
                 const years = Array.from(yearMonthsBlocks).map(block => parseInt(block.dataset.year));
                 
-                // Day names for calendar
-                const dayNames = ['{{ __("translate.Sun") }}', '{{ __("translate.Mon") }}', '{{ __("translate.Tue") }}', '{{ __("translate.Wed") }}', '{{ __("translate.Thu") }}', '{{ __("translate.Fri") }}', '{{ __("translate.Sat") }}'];
-                
-                // Year Dropdown Toggle
-                if (yearDropdownToggle && yearDropdownMenu) {
-                    yearDropdownToggle.addEventListener('click', function(e) {
-                        e.stopPropagation();
-                        this.classList.toggle('active');
-                        yearDropdownMenu.classList.toggle('show');
-                    });
+                // Initialize
+                function initMonthSelector() {
+                    updateYearNavigation();
+                    showYearMonths(years[0] || new Date().getFullYear());
                     
-                    // Close dropdown when clicking outside
-                    document.addEventListener('click', function(e) {
-                        if (!yearDropdownToggle.contains(e.target) && !yearDropdownMenu.contains(e.target)) {
-                            yearDropdownToggle.classList.remove('active');
-                            yearDropdownMenu.classList.remove('show');
+                    // Scroll to selected month if any
+                    const selectedMonth = monthItems.querySelector('.selected');
+                    if (selectedMonth) {
+                        selectedMonth.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+                    }
+                }
+                
+                // Year Navigation
+                function updateYearNavigation() {
+                    if (yearPrevBtn) {
+                        yearPrevBtn.disabled = currentYearIndex <= 0;
+                    }
+                    if (yearNextBtn) {
+                        yearNextBtn.disabled = currentYearIndex >= years.length - 1;
+                    }
+                    
+                    if (currentYearEl) {
+                        currentYearEl.textContent = years[currentYearIndex] || new Date().getFullYear();
+                    }
+                    
+                    // Update dots
+                    yearDots.forEach((dot, index) => {
+                        dot.classList.toggle('active', index === currentYearIndex);
+                    });
+                }
+                
+                if (yearPrevBtn) {
+                    yearPrevBtn.addEventListener('click', function() {
+                        if (currentYearIndex > 0) {
+                            currentYearIndex--;
+                            updateYearNavigation();
+                            showYearMonths(years[currentYearIndex]);
                         }
                     });
                 }
                 
-                // Year Selection
-                yearOptions.forEach(option => {
-                    option.addEventListener('click', function() {
-                        const year = parseInt(this.dataset.year);
-                        
-                        // Update active state in dropdown
-                        yearOptions.forEach(opt => opt.classList.remove('active'));
-                        this.classList.add('active');
-                        
-                        // Update toggle text
-                        if (yearDropdownToggle) {
-                            yearDropdownToggle.querySelector('.selected-year-text').textContent = year;
+                if (yearNextBtn) {
+                    yearNextBtn.addEventListener('click', function() {
+                        if (currentYearIndex < years.length - 1) {
+                            currentYearIndex++;
+                            updateYearNavigation();
+                            showYearMonths(years[currentYearIndex]);
                         }
-                        
-                        // Close dropdown
-                        if (yearDropdownToggle) yearDropdownToggle.classList.remove('active');
-                        if (yearDropdownMenu) yearDropdownMenu.classList.remove('show');
-                        
-                        // Show corresponding months
-                        showYearMonths(year);
+                    });
+                }
+                
+                // Year dot click
+                yearDots.forEach((dot, index) => {
+                    dot.addEventListener('click', function() {
+                        currentYearIndex = index;
+                        updateYearNavigation();
+                        showYearMonths(years[currentYearIndex]);
                     });
                 });
                 
-                // Show year months block
+                // Show year months
                 function showYearMonths(year) {
-                    currentSelectedYear = year;
-                    
                     yearMonthsBlocks.forEach(block => {
                         block.classList.remove('active');
                     });
@@ -2207,6 +2312,12 @@
                     const activeBlock = document.getElementById('yearMonths' + year);
                     if (activeBlock) {
                         activeBlock.classList.add('active');
+                        // Scroll to show months nicely
+                        setTimeout(() => {
+                            if (monthsScrollContainer) {
+                                monthsScrollContainer.scrollLeft = 0;
+                            }
+                        }, 100);
                     }
                 }
                 
@@ -2290,9 +2401,9 @@
                     }
                 };
                 
-                // Month box click handler - Shows availability section at bottom
-                monthBoxes.forEach(box => {
-                    box.addEventListener('click', function(e) {
+                // Month item click handler
+                monthItems.forEach(item => {
+                    item.addEventListener('click', function(e) {
                         e.preventDefault();
                         e.stopPropagation();
                         
@@ -2315,11 +2426,12 @@
                         const discountedPrice = this.getAttribute('data-discounted-price');
                         const discountPercentage = this.getAttribute('data-discount-percentage');
                         
-                        console.log('Month clicked:', { periodId, startDate, endDate, monthName, year });
-                        
                         // Update selected state
-                        monthBoxes.forEach(b => b.classList.remove('selected'));
+                        monthItems.forEach(m => m.classList.remove('selected'));
                         this.classList.add('selected');
+                        
+                        // Scroll the selected month into view
+                        this.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
                         
                         // Show availability section at bottom
                         if (typeof showAvailabilitySection === 'function') {
@@ -2435,6 +2547,9 @@
                     availabilitySection.style.display = 'block';
                     console.log('Section is now visible');
                     
+                    // Update bottom total cost initially with the selected month's period price
+                    updateBottomTotal(finalPrice, 0);
+                    
                     // Scroll to section
                     setTimeout(() => {
                         console.log('Scrolling...');
@@ -2501,10 +2616,10 @@
                 
                 if (bottomAdultsSelect) {
                     bottomAdultsSelect.addEventListener('change', function() {
-                        const monthBox = document.querySelector('.month-box.selected');
-                        if (monthBox) {
-                            const adultPrice = parseFloat(monthBox.dataset.discountedPrice) || parseFloat(monthBox.dataset.adultPrice);
-                            const childPrice = 0; // Simplified - get from period data if needed
+                        const selectedMonth = document.querySelector('.ao-month-selector__month-card.selected');
+                        if (selectedMonth) {
+                            const adultPrice = parseFloat(selectedMonth.dataset.discountedPrice) || parseFloat(selectedMonth.dataset.adultPrice);
+                            const childPrice = 0;
                             updateBottomTotal(adultPrice, childPrice);
                         }
                     });
@@ -2512,9 +2627,9 @@
                 
                 if (bottomChildrenSelect) {
                     bottomChildrenSelect.addEventListener('change', function() {
-                        const monthBox = document.querySelector('.month-box.selected');
-                        if (monthBox) {
-                            const adultPrice = parseFloat(monthBox.dataset.discountedPrice) || parseFloat(monthBox.dataset.adultPrice);
+                        const selectedMonth = document.querySelector('.ao-month-selector__month-card.selected');
+                        if (selectedMonth) {
+                            const adultPrice = parseFloat(selectedMonth.dataset.discountedPrice) || parseFloat(selectedMonth.dataset.adultPrice);
                             const childPrice = 0;
                             updateBottomTotal(adultPrice, childPrice);
                         }

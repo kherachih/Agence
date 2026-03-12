@@ -785,6 +785,8 @@ return array(
   'Home4 Footer Logo' => 'Home4 Footer Logo',
   'Home4 Menu Logo' => 'Home4 Menu Logo',
   'Website favicon' => 'Website favicon',
+  'Logo Red' => 'Logo Rouge',
+  'Logo White' => 'Logo Blanc',
   'Captcha Site Key' => 'Captcha Site Key',
   'Captcha Secret Key' => 'Captcha Secret Key',
   'Tawk Chat Link' => 'Tawk Chat Link',
@@ -1879,7 +1881,7 @@ return array(
   'December' => 'Décembre',
   'Date Depart' => 'Date de départ',
   'Date Retour' => 'Date de retour',
-  
+
   // Quote Request Form Translations
   'Request a Quote' => 'Demander un devis',
   'Get a personalized quote for your dream vacation' => 'Obtenez un devis personnalisé pour vos vacances de rêve',

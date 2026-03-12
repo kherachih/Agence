@@ -1,14 +1,14 @@
-@extends('layout_inner_page')
 
-@section('title')
-    <title>{{ __('translate.Destinations') }} | {{ $general_setting->app_name }}</title>
-@endsection
 
-@section('front-content')
-    @php
+<?php $__env->startSection('title'); ?>
+    <title><?php echo e(__('translate.Destinations')); ?> | <?php echo e($general_setting->app_name); ?></title>
+<?php $__env->stopSection(); ?>
+
+<?php $__env->startSection('front-content'); ?>
+    <?php
         $breadcrumb_title = __('translate.Destinations');
-    @endphp
-    @include('breadcrumb')
+    ?>
+    <?php echo $__env->make('breadcrumb', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
 
     <!-- tg-destinations-area-start -->
     <div class="tg-destinations-area pt-120 pb-90">
@@ -16,9 +16,9 @@
             <div class="row">
                 <div class="col-12">
                     <div class="tg-section-title text-center mb-50">
-                        <span class="tg-section-subtitle">{{ __('translate.Explore the World') }}</span>
+                        <span class="tg-section-subtitle"><?php echo e(__('translate.Explore the World')); ?></span>
                         <h2 class="tg-section-title">
-                            {{ __('translate.Discover amazing destinations across all continents') }}</h2>
+                            <?php echo e(__('translate.Discover amazing destinations across all continents')); ?></h2>
                     </div>
                 </div>
             </div>
@@ -26,22 +26,23 @@
             <div class="row">
                 <div class="col-12">
                     <div class="tg-continents-accordion">
-                        @forelse($continents as $continent)
-                            <div class="tg-continent-item {{ $loop->first ? 'active' : '' }}"
-                                data-continent="{{ $continent->slug }}">
+                        <?php $__empty_1 = true; $__currentLoopData = $continents; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $continent): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
+                            <div class="tg-continent-item <?php echo e($loop->first ? 'active' : ''); ?>"
+                                data-continent="<?php echo e($continent->slug); ?>">
                                 <!-- Continent Header -->
                                 <div class="tg-continent-header">
                                     <div class="tg-continent-icon">
-                                        @if($continent->icon)
-                                            <i class="{{ $continent->icon }}"></i>
-                                        @else
+                                        <?php if($continent->icon): ?>
+                                            <i class="<?php echo e($continent->icon); ?>"></i>
+                                        <?php else: ?>
                                             <i class="fas fa-globe"></i>
-                                        @endif
+                                        <?php endif; ?>
                                     </div>
                                     <div class="tg-continent-info">
-                                        <h3 class="tg-continent-name">{{ $continent->name }}</h3>
+                                        <h3 class="tg-continent-name"><?php echo e($continent->name); ?></h3>
                                         <span class="tg-continent-count">
-                                            {{ $continent->destinationsWithTours->count() }} {{ __('translate.destinations') }}
+                                            <?php echo e($continent->destinationsWithTours->count()); ?> <?php echo e(__('translate.destinations')); ?>
+
                                         </span>
                                     </div>
                                     <div class="tg-continent-toggle">
@@ -51,63 +52,65 @@
 
                                 <!-- Destinations Grid -->
                                 <div class="tg-continent-content"
-                                    style="{{ $loop->first ? 'display: block;' : 'display: none;' }}">
+                                    style="<?php echo e($loop->first ? 'display: block;' : 'display: none;'); ?>">
                                     <div class="tg-destinations-grid">
-                                        @forelse($continent->destinationsWithTours as $destination)
+                                        <?php $__empty_2 = true; $__currentLoopData = $continent->destinationsWithTours; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $destination): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_2 = false; ?>
                                             <div class="tg-destination-card">
-                                                <a href="{{ route('front.tourbooking.destinations.show', $destination->slug) }}">
+                                                <a href="<?php echo e(route('front.tourbooking.destinations.show', $destination->slug)); ?>">
                                                     <div class="tg-destination-thumb">
-                                                        @if($destination->image)
-                                                            <img src="{{ asset('storage/' . $destination->image) }}"
-                                                                alt="{{ $destination->name }}" loading="lazy">
-                                                        @else
-                                                            <img src="{{ asset($general_setting->placeholder_image) }}"
-                                                                alt="{{ $destination->name }}">
-                                                        @endif
+                                                        <?php if($destination->image): ?>
+                                                            <img src="<?php echo e(asset('storage/' . $destination->image)); ?>"
+                                                                alt="<?php echo e($destination->name); ?>" loading="lazy">
+                                                        <?php else: ?>
+                                                            <img src="<?php echo e(asset($general_setting->placeholder_image)); ?>"
+                                                                alt="<?php echo e($destination->name); ?>">
+                                                        <?php endif; ?>
                                                         <div class="tg-destination-overlay">
                                                             <span class="tg-destination-tours">
                                                                 <i class="fas fa-map-marked-alt"></i>
-                                                                {{ $destination->services_count }} {{ __('translate.Tours') }}
+                                                                <?php echo e($destination->services_count); ?> <?php echo e(__('translate.Tours')); ?>
+
                                                             </span>
                                                         </div>
                                                     </div>
                                                     <div class="tg-destination-info">
-                                                        <h4 class="tg-destination-name">{{ $destination->name }}</h4>
+                                                        <h4 class="tg-destination-name"><?php echo e($destination->name); ?></h4>
                                                         <p class="tg-destination-country">
-                                                            <i class="fas fa-flag"></i> {{ $destination->country }}
+                                                            <i class="fas fa-flag"></i> <?php echo e($destination->country); ?>
+
                                                         </p>
                                                     </div>
                                                 </a>
                                             </div>
-                                        @empty
+                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_2): ?>
                                             <div class="col-12 text-center">
                                                 <div class="tg-no-destinations">
                                                     <i class="fas fa-map-marker-alt fa-3x mb-3"></i>
-                                                    <p>{{ __('translate.No destinations available yet') }}</p>
+                                                    <p><?php echo e(__('translate.No destinations available yet')); ?></p>
                                                 </div>
                                             </div>
-                                        @endforelse
+                                        <?php endif; ?>
                                     </div>
                                 </div>
                             </div>
-                        @empty
+                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
                             <div class="col-12 text-center">
                                 <div class="tg-empty-state">
                                     <i class="fas fa-globe-americas fa-3x mb-3"></i>
-                                    <h3>{{ __('translate.No Continents Found') }}</h3>
-                                    <p>{{ __('translate.We are working on adding more destinations. Stay tuned!') }}</p>
+                                    <h3><?php echo e(__('translate.No Continents Found')); ?></h3>
+                                    <p><?php echo e(__('translate.We are working on adding more destinations. Stay tuned!')); ?></p>
                                 </div>
                             </div>
-                        @endforelse
+                        <?php endif; ?>
                     </div>
                 </div>
             </div>
         </div>
     </div>
     <!-- tg-destinations-area-end -->
-@endsection
+<?php $__env->stopSection(); ?>
 
-@push('style_section')
+<?php $__env->startPush('style_section'); ?>
     <style>
         /* Continents Accordion */
         .tg-continents-accordion {
@@ -349,9 +352,9 @@
             }
         }
     </style>
-@endpush
+<?php $__env->stopPush(); ?>
 
-@push('js_section')
+<?php $__env->startPush('js_section'); ?>
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             const continentItems = document.querySelectorAll('.tg-continent-item');
@@ -407,4 +410,5 @@
             });
         });
     </script>
-@endpush
+<?php $__env->stopPush(); ?>
+<?php echo $__env->make('layout_inner_page', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH D:\xampp\htdocs\archive\archive\Modules/TourBooking\resources/views/front/destinations.blade.php ENDPATH**/ ?>
