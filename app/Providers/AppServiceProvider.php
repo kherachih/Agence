@@ -110,8 +110,10 @@ class AppServiceProvider extends ServiceProvider
                 view()->share('currentTheme', $currentTheme);
                 view()->share('themeInfo', $theme->loadThemeInfo($currentTheme));
 
-                // Also share theme assets
+                // Also share theme assets and register namespace globally
                 if ($currentTheme && $theme->exists($currentTheme)) {
+                    View::addNamespace('theme', $theme->getThemePath($currentTheme) . '/views');
+                    
                     $themeAssets = $theme->getAssets();
                     view()->share('themeAssets', $themeAssets);
                 }

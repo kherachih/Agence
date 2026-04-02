@@ -121,7 +121,7 @@
                                         <div class="tg-tour-about-tickets mb-10">
                                             <div class="tg-tour-about-tickets-adult">
                                                 <span>Adult</span>
-                                                <p class="mb-0">(18+ years)</p>
+                                                <p class="mb-0"></p>
                                             </div>
                                             <div class="tg-tour-about-tickets-quantity">
                                                 {{ $data['personCount'] }} x {{ currency($service->discount_adult_price ?? $service->adult_price) }} =
@@ -132,7 +132,7 @@
                                         <div class="tg-tour-about-tickets mb-10">
                                             <div class="tg-tour-about-tickets-adult">
                                                 <span>Children </span>
-                                                <p class="mb-0">(13-17 years)</p>
+                                                <p class="mb-0">(-12 years)</p>
                                             </div>
                                             <div class="tg-tour-about-tickets-quantity">
                                                 {{ $data['childCount'] }} x {{ currency($service->discount_child_price ?? $service->child_price) }} =

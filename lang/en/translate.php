@@ -2065,5 +2065,7 @@ return array(
   'Phone is required' => 'Phone is required',
   'Save my name, email, and phone in this browser for the next time I comment.' => 'Save my name, email, and phone in this browser for the next time I comment.',
   'Have questions? Our team is here to help you plan your perfect tour!' => 'Have questions? Our team is here to help you plan your perfect tour!',
+  'Menu' => 'Menu',
+  'Book Now' => 'Book Now',
 );
 

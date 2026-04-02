@@ -29,61 +29,7 @@
                         </li>
                     @endforeach
 
-                    <!-- Currency Selector -->
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle currency-selector" href="#" role="button"
-                            data-bs-toggle="dropdown">
-                            <i class="fas fa-money-bill-wave me-1"></i>
-                            <span class="currency-code">{{ session('currency_code', 'USD') }}</span>
-                        </a>
-                        <ul class="dropdown-menu dropdown-menu-end currency-dropdown">
-                            @if(isset($currency_list))
-                                @foreach($currency_list as $currency)
-                                    <li>
-                                        <a class="dropdown-item currency-item {{ session('currency_code') == $currency->currency_code ? 'active' : '' }}"
-                                            href="#" onclick="changeCurrency('{{ $currency->currency_code }}')">
-                                            <i class="fas fa-coins me-2"></i>
-                                            {{ $currency->currency_name }} ({{ $currency->currency_icon }})
-                                        </a>
-                                    </li>
-                                @endforeach
-                            @else
-                                <li><a class="dropdown-item" href="#" onclick="changeCurrency('USD')"><i
-                                            class="fas fa-dollar-sign me-2"></i> USD</a></li>
-                                <li><a class="dropdown-item" href="#" onclick="changeCurrency('EUR')"><i
-                                            class="fas fa-euro-sign me-2"></i> EUR</a></li>
-                                <li><a class="dropdown-item" href="#" onclick="changeCurrency('GBP')"><i
-                                            class="fas fa-pound-sign me-2"></i> GBP</a></li>
-                            @endif
-                        </ul>
-                    </li>
-
-                    <!-- Language Selector -->
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle language-selector" href="#" role="button"
-                            data-bs-toggle="dropdown">
-                            <i class="fas fa-globe me-1"></i>
-                            <span class="lang-code">{{ strtoupper(session('front_lang', app()->getLocale())) }}</span>
-                        </a>
-                        <ul class="dropdown-menu dropdown-menu-end language-dropdown">
-                            @if(isset($language_list))
-                                @foreach($language_list as $lang)
-                                    <li>
-                                        <a class="dropdown-item language-item {{ session('front_lang') == $lang->lang_code ? 'active' : '' }}"
-                                            href="{{ route('language-switcher', ['lang_code' => $lang->lang_code]) }}">
-                                            <i class="fas fa-language me-2"></i>
-                                            {{ $lang->lang_name }}
-                                        </a>
-                                    </li>
-                                @endforeach
-                            @else
-                                <li><a class="dropdown-item" href="{{ route('language.switch', 'en') }}"><i
-                                            class="fas fa-flag-usa me-2"></i> English</a></li>
-                                <li><a class="dropdown-item" href="{{ route('language.switch', 'fr') }}"><i
-                                            class="fas fa-flag me-2"></i> Français</a></li>
-                            @endif
-                        </ul>
-                    </li>
+ 
 
                     <!-- Authentication Links -->
                     @guest
@@ -136,10 +82,83 @@
                             @csrf
                         </form>
                     @endguest
+
+                    <!-- Offcanvas Menu Toggle -->
+                    <li class="nav-item ms-3 d-flex align-items-center">
+                        <button class="btn btn-sm btn-white-red" data-bs-toggle="offcanvas" data-bs-target="#offcanvasLeftMenu">
+                            <i class="fas fa-bars me-1"></i> {{ __('translate.Menu') ?? 'Menu' }}
+                        </button>
+                    </li>
                 </ul>
             </div>
         </div>
     </nav>
+    
+    <!-- Offcanvas for left menu -->
+    <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasLeftMenu" aria-labelledby="offcanvasLeftMenuLabel" style="background-color: #be3144; color: #ffffff;">
+      <div class="offcanvas-header">
+        <h5 class="offcanvas-title" id="offcanvasLeftMenuLabel" style="color: #ffffff;">Menu</h5>
+        <button type="button" class="btn-close btn-close-white text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+      </div>
+      <div class="offcanvas-body">
+        <!-- Phone Section -->
+        <div class="mb-4">
+            <h6 style="color: #ffffff;"><i class="fas fa-phone me-2"></i> {{ __('translate.Phone') ?? 'Phone' }}</h6>
+            <p class="mb-0"><a href="tel:{{ $contact_setting->phone1 ?? '' }}" style="color: #ffffff; text-decoration: none; font-size: 1.1rem; font-weight: 500;">{{ $contact_setting->phone1 ?? '+1 234 567 890' }}</a></p>
+        </div>
+        
+        <!-- Currency Selector -->
+        <div class="mb-4">
+            <div class="dropdown">
+                <button class="btn btn-sm dropdown-toggle w-100 text-start d-flex justify-content-between align-items-center" type="button" data-bs-toggle="dropdown" style="background-color: #ffffff; color: #be3144; padding: 10px 15px; border-radius: 8px; font-weight: bold;">
+                    <span><i class="fas fa-money-bill-wave me-2"></i> <span class="currency-code">{{ session('currency_code', 'USD') }}</span></span>
+                </button>
+                <ul class="dropdown-menu w-100 currency-dropdown shadow border-0" style="border-radius: 8px; margin-top: 5px;">
+                    @if(isset($currency_list))
+                        @foreach($currency_list as $currency)
+                            <li>
+                                <a class="dropdown-item currency-item {{ session('currency_code') == $currency->currency_code ? 'active' : '' }}"
+                                    href="#" onclick="changeCurrency('{{ $currency->currency_code }}')">
+                                    <i class="fas fa-coins me-2"></i>
+                                    {{ $currency->currency_name }} ({{ $currency->currency_icon }})
+                                </a>
+                            </li>
+                        @endforeach
+                    @else
+                        <li><a class="dropdown-item" href="#" onclick="changeCurrency('USD')"><i class="fas fa-dollar-sign me-2"></i> USD</a></li>
+                        <li><a class="dropdown-item" href="#" onclick="changeCurrency('EUR')"><i class="fas fa-euro-sign me-2"></i> EUR</a></li>
+                        <li><a class="dropdown-item" href="#" onclick="changeCurrency('GBP')"><i class="fas fa-pound-sign me-2"></i> GBP</a></li>
+                    @endif
+                </ul>
+            </div>
+        </div>
+        
+        <!-- Language Selector -->
+        <div class="mb-4">
+            <div class="dropdown">
+                <button class="btn btn-sm dropdown-toggle w-100 text-start d-flex justify-content-between align-items-center" type="button" data-bs-toggle="dropdown" style="background-color: #ffffff; color: #be3144; padding: 10px 15px; border-radius: 8px; font-weight: bold;">
+                    <span><i class="fas fa-globe me-2"></i> <span class="lang-code">{{ strtoupper(session('front_lang', app()->getLocale())) }}</span></span>
+                </button>
+                <ul class="dropdown-menu w-100 language-dropdown shadow border-0" style="border-radius: 8px; margin-top: 5px;">
+                    @if(isset($language_list))
+                        @foreach($language_list as $lang)
+                            <li>
+                                <a class="dropdown-item language-item {{ session('front_lang') == $lang->lang_code ? 'active' : '' }}"
+                                    href="{{ route('language-switcher', ['lang_code' => $lang->lang_code]) }}">
+                                    <i class="fas fa-language me-2"></i>
+                                    {{ $lang->lang_name }}
+                                </a>
+                            </li>
+                        @endforeach
+                    @else
+                        <li><a class="dropdown-item" href="{{ route('language.switch', 'en') }}"><i class="fas fa-flag-usa me-2"></i> English</a></li>
+                        <li><a class="dropdown-item" href="{{ route('language.switch', 'fr') }}"><i class="fas fa-flag me-2"></i> Français</a></li>
+                    @endif
+                </ul>
+            </div>
+        </div>
+      </div>
+    </div>
 </header>
 
 {{-- <header class="site-header">
@@ -223,7 +242,7 @@
     <style>
         /* Site Header Styles */
         .site-header {
-            background: #ffffff;
+            background: #be3144;
             box-shadow: 0 2px 20px rgba(0, 0, 0, 0.08);
             position: sticky;
             top: 0;
@@ -239,7 +258,7 @@
         .navbar-brand {
             font-size: 1.5rem;
             font-weight: 700;
-            color: #2c3e50;
+            color: #ffffff;
             display: flex;
             align-items: center;
         }
@@ -255,16 +274,13 @@
         }
 
         .brand-text {
-            background: linear-gradient(135deg, #BE3144 0%, #8B2332 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+            color: #ffffff;
         }
 
         /* Navigation Links */
         .nav-item .nav-link {
             padding: 0.75rem 1.25rem;
-            color: #2c3e50;
+            color: #ffffff;
             font-weight: 500;
             transition: all 0.3s ease;
             position: relative;
@@ -277,7 +293,7 @@
             left: 50%;
             width: 0;
             height: 2px;
-            background: linear-gradient(135deg, #BE3144 0%, #8B2332 100%);
+            background: #ffffff;
             transition: all 0.3s ease;
             transform: translateX(-50%);
         }
@@ -289,7 +305,7 @@
 
         .nav-item .nav-link:hover,
         .nav-item .nav-link.active {
-            color: #BE3144;
+            color: rgba(255, 255, 255, 0.8);
         }
 
         /* Currency Selector - Modern Glassmorphism Design */
@@ -589,8 +605,8 @@
 
         /* Buttons */
         .btn-outline-primary {
-            border: 2px solid #BE3144;
-            color: #BE3144;
+            border: 2px solid #ffffff;
+            color: #ffffff;
             font-weight: 600;
             padding: 0.5rem 1.5rem;
             border-radius: 25px;
@@ -598,41 +614,67 @@
         }
 
         .btn-outline-primary:hover {
-            background: #BE3144;
-            color: #ffffff;
+            background: #ffffff;
+            color: #be3144;
             transform: translateY(-2px);
-            box-shadow: 0 4px 15px rgba(190, 49, 68, 0.3);
+            box-shadow: 0 4px 15px rgba(255, 255, 255, 0.3);
         }
 
         .btn-primary {
-            background: linear-gradient(135deg, #BE3144 0%, #8B2332 100%);
-            border: none;
+            background: #ffffff;
+            border: 2px solid #ffffff;
+            color: #be3144;
             font-weight: 600;
             padding: 0.5rem 1.5rem;
             border-radius: 25px;
             transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(190, 49, 68, 0.3);
+            box-shadow: 0 4px 15px rgba(255, 255, 255, 0.3);
         }
 
         .btn-primary:hover {
+            background: rgba(255,255,255,0.9);
+            color: #be3144;
             transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(190, 49, 68, 0.4);
+            box-shadow: 0 6px 20px rgba(255, 255, 255, 0.4);
+        }
+
+        .btn-white-red {
+            background: #ffffff;
+            color: #be3144;
+            border: none;
+            font-weight: 600;
+            padding: 0.35rem 1rem;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+        }
+        
+        .btn-white-red:hover {
+            background: #f8f9fa;
+            color: #8B2332;
+            transform: translateY(-2px);
         }
 
         /* Navbar Toggler */
         .navbar-toggler {
-            border: 2px solid #BE3144;
+            border: 2px solid #ffffff;
             padding: 0.5rem;
             border-radius: 8px;
             transition: all 0.3s ease;
         }
 
         .navbar-toggler:hover {
-            background: #BE3144;
+            background: rgba(255, 255, 255, 0.1);
         }
 
         .navbar-toggler:focus {
-            box-shadow: 0 0 0 0.2rem rgba(190, 49, 68, 0.25);
+            box-shadow: 0 0 0 0.2rem rgba(255, 255, 255, 0.25);
+        }
+
+        .navbar-toggler-icon {
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%28255, 255, 255, 1%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e") !important;
         }
 
         /* Responsive Styles */

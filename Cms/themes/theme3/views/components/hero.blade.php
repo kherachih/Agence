@@ -40,7 +40,7 @@
                             <form x-data="bookingForm()" @submit.prevent="submitForm">
                                 <div class="tg-booking-form-input-group d-flex align-items-end justify-content-between">
                                     <div class="tg-booking-form-parent-inner tg-hero-quantity p-relative mr-15 mb-10">
-                                        <span class="tg-booking-form-title">{{ __('translate.Location:') }}</span>
+                                        <span class="tg-booking-form-title">{{ __('translate.Destinations') }}</span>
                                         <div class="tg-booking-add-input-field tg-booking-quantity-toggle">
                                             <span class="location">
                                                 <svg width="13" height="16" viewBox="0 0 13 16" fill="none"
@@ -77,7 +77,7 @@
                                             <ul class="scrool-bar scrool-height pr-5">
                                                 @foreach ($theme3_destinations as $key => $destination)
                                                     <li
-                                                        @click="selectDestination(`{{ $destination->id }}`, `{{ $destination->name }}`)">
+                                                        @click="selectDestination(`{{ $destination->id }}`, `{{ $destination->name }}`, $event)">
                                                         <i class="fa-regular fa-location-dot"></i>
                                                         <span>{{ $destination->name }}</span>
                                                     </li>
@@ -117,51 +117,51 @@
                                         </div>
                                         <div class="tg-booking-form-location-list tg-quantity tg-booking-quantity-active month-dropdown">
                                             <ul class="month-list">
-                                                <li @click="selectMonth('January', '01')">
+                                                <li @click="selectMonth('January', '01', $event)">
                                                     <i class="fas fa-calendar-alt"></i>
                                                     <span>January</span>
                                                 </li>
-                                                <li @click="selectMonth('February', '02')">
+                                                <li @click="selectMonth('February', '02', $event)">
                                                     <i class="fas fa-calendar-alt"></i>
                                                     <span>February</span>
                                                 </li>
-                                                <li @click="selectMonth('March', '03')">
+                                                <li @click="selectMonth('March', '03', $event)">
                                                     <i class="fas fa-calendar-alt"></i>
                                                     <span>March</span>
                                                 </li>
-                                                <li @click="selectMonth('April', '04')">
+                                                <li @click="selectMonth('April', '04', $event)">
                                                     <i class="fas fa-calendar-alt"></i>
                                                     <span>April</span>
                                                 </li>
-                                                <li @click="selectMonth('May', '05')">
+                                                <li @click="selectMonth('May', '05', $event)">
                                                     <i class="fas fa-calendar-alt"></i>
                                                     <span>May</span>
                                                 </li>
-                                                <li @click="selectMonth('June', '06')">
+                                                <li @click="selectMonth('June', '06', $event)">
                                                     <i class="fas fa-calendar-alt"></i>
                                                     <span>June</span>
                                                 </li>
-                                                <li @click="selectMonth('July', '07')">
+                                                <li @click="selectMonth('July', '07', $event)">
                                                     <i class="fas fa-calendar-alt"></i>
                                                     <span>July</span>
                                                 </li>
-                                                <li @click="selectMonth('August', '08')">
+                                                <li @click="selectMonth('August', '08', $event)">
                                                     <i class="fas fa-calendar-alt"></i>
                                                     <span>August</span>
                                                 </li>
-                                                <li @click="selectMonth('September', '09')">
+                                                <li @click="selectMonth('September', '09', $event)">
                                                     <i class="fas fa-calendar-alt"></i>
                                                     <span>September</span>
                                                 </li>
-                                                <li @click="selectMonth('October', '10')">
+                                                <li @click="selectMonth('October', '10', $event)">
                                                     <i class="fas fa-calendar-alt"></i>
                                                     <span>October</span>
                                                 </li>
-                                                <li @click="selectMonth('November', '11')">
+                                                <li @click="selectMonth('November', '11', $event)">
                                                     <i class="fas fa-calendar-alt"></i>
                                                     <span>November</span>
                                                 </li>
-                                                <li @click="selectMonth('December', '12')">
+                                                <li @click="selectMonth('December', '12', $event)">
                                                     <i class="fas fa-calendar-alt"></i>
                                                     <span>December</span>
                                                 </li>
@@ -272,6 +272,10 @@
                                                     </div>
                                                 </li>
                                             </ul>
+                                            <!-- Bouton 'Done' ou clique à l'extérieur pour fermer -->
+                                            <div class="text-right pb-10 pr-15" style="border-top: 1px solid #efefef; margin-top:10px;">
+                                                <span @click="closeDropdown($event)" style="color: #be3144; font-weight: 600; cursor: pointer; padding: 5px 10px; display: inline-block;">{{ __('translate.Done') }}</span>
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="tg-booking-form-search-btn mb-10">
@@ -400,14 +404,25 @@
                     adults: '',
                     children: '',
 
-                    selectDestination(destinationId, destinationName) {
-                        this.destination_id = destinationId;
-                        this.destination = destinationName;
+                    closeDropdown(event) {
+                        // Using jQuery because the dropdown toggle logic is handled by main.js in theme
+                        $(event.target).closest('.tg-booking-quantity-active').slideUp();
                     },
 
-                    selectMonth(monthName, monthValue) {
+                    selectDestination(destinationId, destinationName, event) {
+                        this.destination_id = destinationId;
+                        this.destination = destinationName;
+                        if(event) {
+                            $(event.target).closest('.tg-booking-quantity-active').slideUp();
+                        }
+                    },
+
+                    selectMonth(monthName, monthValue, event) {
                         this.selected_month = monthName;
                         this.selected_month_value = monthValue;
+                        if(event) {
+                            $(event.target).closest('.tg-booking-quantity-active').slideUp();
+                        }
                     },
 
                     incrementAdults() {

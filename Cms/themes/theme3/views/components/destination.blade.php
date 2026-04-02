@@ -4,7 +4,7 @@
 @endphp
 
 <!-- tg-location-area-start -->
-<div class="tg-location-area p-relative z-index-1 pb-65 pt-120">
+<div class="tg-location-area p-relative z-index-1 pb-120 pt-120">
     <div class="tg-location-su-bg">
         <img src="{{ asset('frontend/assets/img/shape/map-bg.png') }}" alt="">
     </div>

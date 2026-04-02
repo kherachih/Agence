@@ -8,14 +8,14 @@
     {{-- hero section --}}
     @include('theme::components.hero')
 
-    {{-- destination section --}}
-    @include('theme::components.destination')
+    {{-- package section --}}
+    @include('theme::components.package')
 
     {{-- about section --}}
     @include('theme::components.about')
 
-    {{-- package section --}}
-    @include('theme::components.package')
+    {{-- destination section --}}
+    @include('theme::components.destination')
 
     {{-- ads section --}}
     @include('theme::components.ads')
@@ -29,6 +29,4 @@
     {{-- blog section --}}
     @include('theme::components.blog')
 
-    {{-- cta section --}}
-    @include('theme::components.cta')
 @endsection

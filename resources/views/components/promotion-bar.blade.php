@@ -8,8 +8,8 @@
     @once
         <style>
             /* ═══════════════════════════════════════════════
-           PROMOTION BAR — marquee + multi-promotion
-           ═══════════════════════════════════════════════ */
+                   PROMOTION BAR — marquee + multi-promotion
+                   ═══════════════════════════════════════════════ */
 
             /* Bar collante au sommet de la page */
             .tg-promo-bar {
@@ -91,8 +91,8 @@
             }
 
             .tg-promo-active .tg-btn-header:hover {
-                background-color: #a32a3a !important;
-                border-color: #a32a3a !important;
+                background-color: #be3144 !important;
+                border-color: #be3144 !important;
             }
 
             /* Ajustement des icônes et autres éléments du header */
@@ -173,7 +173,7 @@
             }
 
             .tg-promo-bar:hover .tg-promo-bar__cta {
-                background: #a32a3a;
+                background: #be3144;
             }
 
             /* Points de navigation */

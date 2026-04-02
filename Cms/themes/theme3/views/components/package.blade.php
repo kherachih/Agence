@@ -127,14 +127,9 @@
                                         </span>
                                     </div>
                                     <div>
-                                        <span class="tg-listing-rating-icon">
-                                            <i
-                                                class="fa-sharp fa-solid fa-star {{ $service?->active_reviews_avg_rating > 0 ? 'active' : '' }}"></i>
-                                        </span>
-                                        <span class="tg-listing-rating-percent">
-                                            ({{ __($service?->active_reviews_count ?? 0) }}
-                                            {{ __($service?->active_reviews_count > 1 ? __('translate.Reviews') : __('translate.Review')) }})
-                                        </span>
+                                        <a href="{{ route('front.tourbooking.services.show', ['slug' => $service?->slug]) }}" style="background-color: #be3144; color: white; padding: 6px 16px; border-radius: 6px; font-weight: 600; font-size: 14px; display: inline-block; transition: all 0.3s;">
+                                            {{ __('translate.Book Now') }}
+                                        </a>
                                     </div>
                                 </div>
                             </div>

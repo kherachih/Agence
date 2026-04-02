@@ -507,7 +507,7 @@
                                     <div class="tg-tour-about-tickets mb-10">
                                         <div class="tg-tour-about-tickets-adult">
                                             <span>Adult</span>
-                                            <p class="mb-0">(18+ years) <span>{{ currency($service->discount_adult_price ?? $service->adult_price) }}</span>
+                                            <p class="mb-0"><span>{{ currency($service->discount_adult_price ?? $service->adult_price) }}</span>
                                             </p>
                                         </div>
                                         <div class="tg-tour-about-tickets-quantity">
@@ -523,7 +523,7 @@
                                     <div class="tg-tour-about-tickets mb-10">
                                         <div class="tg-tour-about-tickets-adult">
                                             <span>Children </span>
-                                            <p class="mb-0">(13-17 years) <span>{{ currency($service->discount_child_price ?? $service->child_price) }}</span></p>
+                                            <p class="mb-0">(-12 years) <span>{{ currency($service->discount_child_price ?? $service->child_price) }}</span></p>
                                         </div>
                                         <div class="tg-tour-about-tickets-quantity">
                                             <select name="children" class="item-first custom-select"

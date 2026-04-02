@@ -1,6 +1,31 @@
 <!-- header-area -->
-<header class="tg-header-height">
-    <div class="tg-header__area tg-header-tu-menu tg-header-lg-space z-index-999 tg-transparent" id="header-sticky">
+<?php
+    try {
+        $megaContinents = \Modules\TourBooking\App\Models\Continent::with(['activeDestinations' => function($q) { 
+            $q->orderBy('name'); 
+        }])->active()->ordered()->get();
+    } catch (\Exception $e) {
+        $megaContinents = collect();
+    }
+?>
+<header class="tg-header-height" style="background-color: #be3144 !important;">
+    <div class="tg-header__area tg-header-tu-menu tg-header-lg-space z-index-999" id="header-sticky" style="background-color: #be3144 !important;">
+        <style>
+            .tg-header-height { background-color: #be3144 !important; }
+            .tg-header__area { background-color: #be3144 !important; }
+            #header-sticky { background-color: #be3144 !important; }
+            .sticky-active { background-color: #be3144 !important; }
+            .tgmenu__main-menu ul.navigation > li > a { color: #ffffff !important; }
+            .tgmenu__main-menu > ul > li > a { color: #ffffff !important; }
+            .tg-header-btn .tg-btn-header { border-color: #ffffff !important; color: #ffffff !important; }
+            .tg-header-btn .tg-btn-header svg path { fill: #ffffff !important; }
+            .tg-header-btn .tg-btn-header:hover { background-color: #ffffff !important; color: #be3144 !important; }
+            .tg-header-btn .tg-btn-header:hover svg path { fill: #be3144 !important; }
+            .tgmenu-offcanvas-open-btn-custom { background-color: #ffffff; color: #be3144; border: none; padding: 10px 25px; border-radius: 30px; font-weight: bold; font-size: 15px; margin-left: 15px; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(0,0,0,0.1); display: inline-flex; align-items: center; }
+            .tgmenu-offcanvas-open-btn-custom:hover { background-color: #f8f9fa; transform: translateY(-2px); }
+            .tgmenu-offcanvas-open-btn-custom i { margin-right: 8px; }
+            .mobile-nav-toggler span { background-color: #ffffff !important; }
+        </style>
         <div class="container-fluid">
             <div class="row align-items-center">
                 <div class="col-xxl-7 col-xl-6 col-lg-6 col-6">
@@ -15,11 +40,7 @@
                                         src="<?php echo e(asset($general_setting->logo_red)); ?>" alt="Logo"></a>
                             <?php endif; ?>
                         </div>
-                        <button class="tgmenu-offcanvas-open-btn menu-tigger d-none d-xl-block">
-                            <span></span>
-                            <span></span>
-                            <span></span>
-                        </button>
+ 
                         <nav class="tgmenu__nav tgmenu-1-space ml-150">
                             <div class="tgmenu__navbar-wrap tgmenu__main-menu d-none d-xl-flex">
                                 <?php echo $__env->make('components.common_navitems', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
@@ -29,125 +50,8 @@
                 </div>
                 <div class="col-xxl-5 col-xl-6 col-lg-6 col-6">
                     <div class="tg-menu-right-action d-flex align-items-center justify-content-end">
-                        <div class="tg-header-contact-info d-flex align-items-center">
-                            <span class="tg-header-contact-icon mr-8 d-none d-xl-block">
-                                <svg width="18" height="18" viewBox="0 0 21 21" fill="none"
-                                    xmlns="http://www.w3.org/2000/svg">
-                                    <path fill-rule="evenodd" clip-rule="evenodd"
-                                        d="M17.5747 15.8619L15.8138 17.6228C15.7656 17.6732 15.7236 17.7026 15.6627 17.7362C13.1757 19.0753 8.40326 16.5734 6.21009 14.2626C6.18698 14.2374 6.16809 14.2185 6.14502 14.1954C3.83427 12.0021 1.33257 7.22927 2.67157 4.7421C2.70515 4.68124 2.73453 4.64134 2.78491 4.5931L4.54573 2.83006C4.67586 2.69992 4.82067 2.64116 5.00114 2.64116H5.01583C5.20471 2.64327 5.35163 2.71044 5.47965 2.84895L7.75047 5.30044C7.98973 5.55651 7.98131 5.95109 7.73368 6.19877L6.26666 7.66589C5.85321 8.08148 5.67271 8.62926 5.75877 9.20856C5.94134 10.428 6.55419 11.574 7.63293 12.7095C7.65603 12.7326 7.67489 12.7536 7.69799 12.7746C8.83342 13.8534 9.97723 14.4663 11.1966 14.6488C11.7779 14.7349 12.3257 14.5544 12.7412 14.1388L14.2062 12.6738C14.4538 12.4261 14.8484 12.4177 15.1065 12.6549L17.5578 14.9259C17.6963 15.0539 17.7614 15.2008 17.7656 15.3897C17.7698 15.5785 17.709 15.7276 17.5747 15.8619ZM18.3428 14.0779L15.8914 11.8069C15.1779 11.1457 14.0781 11.1667 13.3897 11.8552L11.9227 13.3223C11.7695 13.4755 11.5827 13.5364 11.3687 13.5049C10.3907 13.358 9.45254 12.8459 8.49341 11.9349C8.485 11.9287 8.47872 11.9202 8.47031 11.9118C7.56155 10.9547 7.04946 10.0144 6.90257 9.03849C6.87109 8.82439 6.93195 8.6376 7.08518 8.48229L8.5522 7.01728C9.2406 6.32883 9.2616 5.22902 8.59837 4.51331L6.32966 2.06182C5.98758 1.69451 5.54055 1.49304 5.03893 1.48462C4.53735 1.47624 4.08401 1.65672 3.72725 2.01354L1.96638 3.77452C1.83836 3.90256 1.73971 4.0348 1.65368 4.19431C1.24444 4.95199 1.08073 5.8776 1.16679 6.93962C1.24023 7.85682 1.49628 8.86008 1.92863 9.91793C2.70726 11.8279 3.9854 13.742 5.34746 15.035C5.35794 15.0434 5.36425 15.0497 5.37263 15.0581C6.66546 16.4202 8.57737 17.7006 10.4872 18.4792C11.5471 18.9095 12.5482 19.1656 13.4653 19.2411C13.6479 19.2558 13.8263 19.2621 14.0005 19.2621C14.8421 19.2621 15.5829 19.0921 16.2105 18.7542C16.37 18.6681 16.5043 18.5695 16.6323 18.4415L18.3931 16.6784C18.7478 16.3237 18.9304 15.8704 18.922 15.3687C18.9115 14.8649 18.7122 14.42 18.3428 14.0779Z"
-                                        fill="currentColor" />
-                                </svg>
-                            </span>
-                            <div class="tg-header-contact-number d-none d-xl-block">
-                                <span class="d-none d-lg-inline"><?php echo e(__('translate.Call Us')); ?>:</span>
-                                <a href="tel:<?php echo e($footer->phone); ?>"><?php echo e($footer->phone); ?></a>
-                            </div>
-                        </div>
-                        <div class="tg-header-currency ml-15 d-none d-xl-block">
-                            <div class="custom-select-wrapper">
-                                <select class="currency_code modern-select" name="currency_code">
-                                    <?php $__currentLoopData = $currency_list; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $currency): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                        <option value="<?php echo e($currency->currency_code); ?>" <?php echo e(session('currency_code') == $currency->currency_code ? 'selected' : ''); ?>>
-                                            <?php echo e($currency->currency_name); ?> (<?php echo e($currency->currency_icon); ?>)
-                                        </option>
-                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="tg-header-language ml-15 d-none d-xl-block">
-                            <div class="custom-select-wrapper">
-                                <select class="language_code modern-select" name="language_code">
-                                    <?php $__currentLoopData = $language_list; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $lang): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                        <option value="<?php echo e($lang->lang_code); ?>" <?php echo e(session('front_lang') == $lang->lang_code ? 'selected' : ''); ?>>
-                                            <?php echo e($lang->lang_name); ?>
-
-                                        </option>
-                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-                                </select>
-                            </div>
-                        </div>
-                        <style>
-                            .custom-select-wrapper {
-                                position: relative;
-                                display: inline-block;
-                            }
-
-                            .modern-select {
-                                appearance: none;
-                                -webkit-appearance: none;
-                                -moz-appearance: none;
-                                padding: 8px 32px 8px 12px;
-                                border: 2px solid #e8ecf4;
-                                border-radius: 10px;
-                                background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
-                                font-size: 13px;
-                                font-weight: 500;
-                                color: #2d3436;
-                                cursor: pointer;
-                                min-width: 100px;
-                                max-width: 120px;
-                                transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-                                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
-                                font-family: inherit;
-                            }
-
-                            .modern-select:hover {
-                                border-color: #4a90e2;
-                                box-shadow: 0 4px 12px rgba(74, 144, 226, 0.15);
-                                transform: translateY(-1px);
-                            }
-
-                            .modern-select:focus {
-                                outline: none;
-                                border-color: #4a90e2;
-                                box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.1), 0 4px 12px rgba(74, 144, 226, 0.15);
-                            }
-
-                            .custom-select-wrapper::after {
-                                content: '';
-                                position: absolute;
-                                top: 50%;
-                                right: 14px;
-                                transform: translateY(-50%);
-                                width: 0;
-                                height: 0;
-                                border-left: 5px solid transparent;
-                                border-right: 5px solid transparent;
-                                border-top: 6px solid #4a90e2;
-                                pointer-events: none;
-                                transition: transform 0.3s ease;
-                            }
-
-                            .custom-select-wrapper:hover::after {
-                                transform: translateY(-50%) rotate(180deg);
-                            }
-
-                            .modern-select option {
-                                padding: 12px 16px;
-                                background: #ffffff;
-                                color: #2d3436;
-                                font-weight: 500;
-                            }
-
-                            .modern-select option:hover {
-                                background: #f0f7ff;
-                            }
-
-                            .modern-select option:checked {
-                                background: linear-gradient(135deg, #4a90e2 0%, #357abd 100%);
-                                color: #ffffff;
-                            }
-
-                            @media (max-width: 1399px) {
-                                .modern-select {
-                                    padding: 7px 28px 7px 10px;
-                                    font-size: 12px;
-                                    min-width: 90px;
-                                    max-width: 105px;
-                                }
-                            }
-                        </style>
-                        <div class="tg-header-btn ml-15 d-none d-sm-block">
+ 
+                        <div class="tg-header-btn ml-15 d-none d-sm-flex align-items-center">
                             <?php if(auth()->guard('web')->guest()): ?>
                                 <a class="tg-btn-header" href="<?php echo e(route('user.login')); ?>">
                                     <span>
@@ -174,6 +78,12 @@
                                     </span>
                                 </a>
                             <?php endif; ?>
+                            
+                            <!-- The Menu Offcanvas Button -->
+                            <button class="tgmenu-offcanvas-open-btn-custom menu-tigger d-none d-xl-block">
+                                <i class="fas fa-bars"></i> <?php echo e(__('translate.Menu') ?? 'Menu'); ?>
+
+                            </button>
                         </div>
                         <div class="tg-header-menu-bar p-relative">
                             <button class="tgmenu-offcanvas-open-btn mobile-nav-toggler d-block d-xl-none ml-10">
@@ -192,6 +102,65 @@
     <?php echo $__env->make('components.common_mobile_menu', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
     <!-- End Mobile Menu -->
 
+    <!-- Destinations Mega Menu -->
+    <div class="destinations-mega-menu shadow" style="display: none; position: absolute; top: 100%; left: 0; width: 100%; background: #ffffff; padding: 30px 0; border-radius: 0 0 10px 10px; z-index: 1050; border-top: 3px solid #be3144; box-shadow: 0 15px 30px rgba(0,0,0,0.1);">
+        <div class="container-fluid" style="padding: 0 50px;">
+            <div class="row">
+                <?php $__currentLoopData = $megaContinents; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $continent): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                <div class="col-lg-2 col-md-3 col-sm-4 mb-4">
+                    <h5 class="mega-menu-title" style="color: #be3144; font-weight: 700; border-bottom: 2px solid #f8f9fa; padding-bottom: 8px; margin-bottom: 12px; font-size: 15px; text-transform: uppercase;">
+                        <?php echo e($continent->name); ?>
+
+                    </h5>
+                    <ul class="mega-menu-list" style="list-style: none; padding: 0; margin: 0;">
+                        <?php $__currentLoopData = $continent->activeDestinations; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $destination): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                        <li style="margin-bottom: 5px;">
+                            <a href="<?php echo e(route('front.tourbooking.destinations.show', $destination->slug ?? '')); ?>" style="color: #2d3436; font-size: 14px; text-decoration: none; display: block; transition: all 0.3s; font-weight: 500;" onmouseover="this.style.color='#be3144'; this.style.paddingLeft='5px';" onmouseout="this.style.color='#2d3436'; this.style.paddingLeft='0';">
+                                <?php echo e($destination->name); ?>
+
+                            </a>
+                        </li>
+                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                    </ul>
+                </div>
+                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+            </div>
+        </div>
+    </div>
+    <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const navLinks = document.querySelectorAll('.tgmenu__main-menu ul.navigation > li > a');
+        let destLi = null;
+        
+        navLinks.forEach(link => {
+            if(link.innerText.toLowerCase().includes('destination')) {
+                destLi = link.parentElement;
+            }
+        });
+
+        if(destLi) {
+            const megaMenu = document.querySelector('.destinations-mega-menu');
+            if(megaMenu) {
+                destLi.appendChild(megaMenu);
+                destLi.style.position = 'static';
+                
+                // Also set the parent nav wrap to static so it spans full width of the header area 
+                const navMain = document.querySelector('.tgmenu__main-menu');
+                if(navMain) navMain.style.position = 'static';
+                
+                const navContainer = document.querySelector('.tgmenu__nav');
+                if(navContainer) navContainer.style.position = 'static';
+
+                destLi.addEventListener('mouseenter', function() {
+                    megaMenu.style.display = 'block';
+                });
+                destLi.addEventListener('mouseleave', function() {
+                    megaMenu.style.display = 'none';
+                });
+            }
+        }
+    });
+    </script>
     <!-- offCanvas-menu -->
     <?php echo $__env->make('components.common_offcanvas', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
     <!-- offCanvas-menu-end -->

@@ -16,8 +16,8 @@
         
         .ao-month-selector-wrapper {
             background: #ffffff;
-            border-radius: 16px;
-            padding: 20px;
+            border-radius: 14px;
+            padding: 14px;
             border: 1px solid #e8e8e8;
             box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
@@ -28,13 +28,13 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 20px;
-            margin-bottom: 20px;
+            gap: 14px;
+            margin-bottom: 12px;
         }
         
         .ao-month-selector__year-btn {
-            width: 40px;
-            height: 40px;
+            width: 32px;
+            height: 32px;
             border: 1px solid #e8e8e8;
             border-radius: 50%;
             background: #ffffff;
@@ -44,6 +44,7 @@
             align-items: center;
             justify-content: center;
             color: #666;
+            flex-shrink: 0;
         }
         
         .ao-month-selector__year-btn:hover:not(:disabled) {
@@ -58,7 +59,7 @@
         }
         
         .ao-month-selector__year-btn i {
-            font-size: 14px;
+            font-size: 12px;
         }
         
         .ao-month-selector__year-display {
@@ -67,7 +68,7 @@
         }
         
         .ao-month-selector__current-year {
-            font-size: 20px;
+            font-size: 17px;
             font-weight: 700;
             color: #1a1a1a;
         }
@@ -76,8 +77,8 @@
         .ao-month-selector__year-indicators {
             display: flex;
             justify-content: center;
-            gap: 8px;
-            margin-bottom: 20px;
+            gap: 6px;
+            margin-bottom: 10px;
         }
         
         .ao-month-selector__year-dot {
@@ -101,33 +102,17 @@
         
         /* --- Months Grid Container --- */
         .ao-month-selector__grid-container {
-            overflow-x: auto;
-            scroll-behavior: smooth;
-            padding: 10px 5px;
-            margin: 0 -5px;
-            -webkit-overflow-scrolling: touch;
-        }
-        
-        .ao-month-selector__grid-container::-webkit-scrollbar {
-            height: 6px;
-        }
-        
-        .ao-month-selector__grid-container::-webkit-scrollbar-track {
-            background: #f1f1f1;
-            border-radius: 3px;
-        }
-        
-        .ao-month-selector__grid-container::-webkit-scrollbar-thumb {
-            background: #c1c1c1;
-            border-radius: 3px;
+            overflow: visible;
+            padding: 4px 2px;
+            margin: 0;
         }
         
         /* --- Year Grids --- */
         .ao-month-selector__year-grid {
             display: none;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 12px;
-            padding: 5px;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            padding: 2px;
         }
         
         .ao-month-selector__year-grid.active {
@@ -144,18 +129,18 @@
         .ao-month-selector__month-card {
             position: relative;
             background: #ffffff;
-            border: 2px solid #e8e8e8;
-            border-radius: 12px;
-            padding: 16px 12px;
+            border: 1.5px solid #e8e8e8;
+            border-radius: 10px;
+            padding: 10px 6px;
             text-align: center;
             cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            min-height: 80px;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            min-height: 56px;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            gap: 6px;
+            gap: 3px;
         }
         
         .ao-month-selector__month-card::before {
@@ -164,9 +149,10 @@
             top: 0;
             left: 0;
             right: 0;
-            height: 3px;
+            height: 2.5px;
+            border-radius: 10px 10px 0 0;
             background: #e8e8e8;
-            transition: all 0.3s ease;
+            transition: all 0.25s ease;
         }
         
         /* Available State */
@@ -181,8 +167,8 @@
         
         .ao-month-selector__month-card.available:hover {
             border-color: #10b981;
-            transform: translateY(-4px);
-            box-shadow: 0 8px 20px rgba(16, 185, 129, 0.15);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 16px rgba(16, 185, 129, 0.15);
         }
         
         /* Unavailable State */
@@ -214,21 +200,21 @@
         
         .ao-month-selector__month-card.discounted:hover {
             border-color: #ef4444;
-            transform: translateY(-4px);
-            box-shadow: 0 8px 20px rgba(245, 158, 11, 0.2);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 16px rgba(245, 158, 11, 0.2);
         }
         
         /* Selected State */
         .ao-month-selector__month-card.selected {
             border-color: var(--tg-theme-primary, #BE3144);
             background: linear-gradient(145deg, #fff5f5 0%, #ffe5e5 100%);
-            transform: translateY(-3px);
-            box-shadow: 0 10px 25px rgba(190, 49, 68, 0.2);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 18px rgba(190, 49, 68, 0.2);
         }
         
         .ao-month-selector__month-card.selected::before {
             background: linear-gradient(90deg, var(--tg-theme-primary, #BE3144), #c0262c);
-            height: 4px;
+            height: 3px;
         }
         
         .ao-month-selector__month-card.selected::after {
@@ -236,28 +222,29 @@
             font-family: 'Font Awesome 6 Free';
             font-weight: 900;
             position: absolute;
-            top: 8px;
-            right: 8px;
-            width: 22px;
-            height: 22px;
+            top: 4px;
+            right: 4px;
+            width: 16px;
+            height: 16px;
             background: var(--tg-theme-primary, #BE3144);
             color: white;
             border-radius: 50%;
-            font-size: 11px;
+            font-size: 8px;
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 3px 10px rgba(190, 49, 68, 0.3);
+            box-shadow: 0 2px 6px rgba(190, 49, 68, 0.3);
         }
         
         /* Month Card Content */
         .ao-month-selector__month-name {
-            font-size: 13px;
+            font-size: 11px;
             font-weight: 700;
             color: #1a1a1a;
             text-transform: uppercase;
-            letter-spacing: 0.6px;
+            letter-spacing: 0.5px;
             margin: 0;
+            line-height: 1.2;
         }
         
         .ao-month-selector__month-card.selected .ao-month-selector__month-name {
@@ -276,14 +263,14 @@
         }
         
         .ao-month-selector__price-original {
-            font-size: 10px;
+            font-size: 9px;
             font-weight: 500;
             color: #999;
             text-decoration: line-through;
         }
         
         .ao-month-selector__price-current {
-            font-size: 12px;
+            font-size: 10px;
             font-weight: 700;
             color: var(--tg-theme-primary, #BE3144);
         }
@@ -299,51 +286,54 @@
         /* Responsive adjustments */
         @media (max-width: 992px) {
             .ao-month-selector__year-grid {
-                grid-template-columns: repeat(3, 1fr);
+                grid-template-columns: repeat(4, 1fr);
             }
         }
         
         @media (max-width: 768px) {
+            .ao-month-selector__year-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+            
             .ao-month-selector__month-card {
-                min-width: 70px;
-                padding: 14px 10px;
+                padding: 10px 6px;
             }
             
             .ao-month-selector__month-name {
-                font-size: 12px;
-            }
-            
-            .ao-month-selector__price-current {
                 font-size: 11px;
             }
             
+            .ao-month-selector__price-current {
+                font-size: 10px;
+            }
+            
             .ao-month-selector__price-original {
-                font-size: 9px;
+                font-size: 8px;
             }
         }
         
         @media (max-width: 576px) {
             .ao-month-selector__year-grid {
-                grid-template-columns: repeat(2, 1fr);
+                grid-template-columns: repeat(3, 1fr);
             }
             
             .ao-month-selector__month-card {
-                min-width: 65px;
-                padding: 12px 8px;
+                padding: 8px 4px;
+                min-height: 48px;
             }
             
             .ao-month-selector__current-year {
-                font-size: 18px;
+                font-size: 15px;
             }
             
             .ao-month-selector__year-nav {
-                gap: 15px;
-                margin-bottom: 15px;
+                gap: 12px;
+                margin-bottom: 10px;
             }
             
             .ao-month-selector__year-btn {
-                width: 36px;
-                height: 36px;
+                width: 28px;
+                height: 28px;
             }
         }
     
@@ -1532,11 +1522,11 @@
                                 @endif
 
                                 @if ($service?->included || $service?->excluded)
-                                    <div class="tg-tour-about-inner mb-40">
-                                        <h4 class="tg-tour-about-title mb-20">Included/Exclude</h4>
+                                <div class="tg-tour-about-inner mb-40">
                                         <div class="row">
                                             @if ($service?->included)
-                                                <div class="col-lg-5">
+                                                <div class="col-lg-6">
+                                                    <h4 class="tg-tour-about-title mb-20">{{ __('translate.Included') }}</h4>
                                                     <div class="tg-tour-about-list  tg-tour-about-list-2">
                                                         <ul>
                                                             @foreach (json_decode($service?->included) as $key => $item)
@@ -1552,7 +1542,8 @@
                                             @endif
 
                                             @if ($service?->excluded)
-                                                <div class="col-lg-7">
+                                                <div class="col-lg-6">
+                                                    <h4 class="tg-tour-about-title mb-20">{{ __('translate.Excluded') }}</h4>
                                                     <div class="tg-tour-about-list tg-tour-about-list-2 disable">
                                                         <ul>
                                                             @foreach (json_decode($service?->excluded) as $key => $item)
@@ -1865,7 +1856,7 @@
                                                 <label class="passenger-label">
                                                     <i class="fa-solid fa-user"></i>
                                                     {{ __('translate.Adults') }}
-                                                    <small>(18+ years)</small>
+                                                    <small></small>
                                                 </label>
                                                 <select name="person_display" class="form-select passenger-select" id="bottom-adults-select">
                                                     @for($i = 1; $i <= 8; $i++)
@@ -1877,7 +1868,7 @@
                                                 <label class="passenger-label">
                                                     <i class="fa-solid fa-child"></i>
                                                     {{ __('translate.Children') }}
-                                                    <small>(13-17 years)</small>
+                                                    <small>(-12 years)</small>
                                                 </label>
                                                 <select name="children_display" class="form-select passenger-select" id="bottom-children-select">
                                                     @for($i = 0; $i <= 8; $i++)

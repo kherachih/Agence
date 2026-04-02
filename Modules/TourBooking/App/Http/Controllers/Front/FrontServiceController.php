@@ -601,19 +601,16 @@ final class FrontServiceController extends Controller
     /**
      * Display a specific destination with related services.
      */
-    public function destinationDetail(string $slug): View
+    public function destinationDetail(string $slug): \Illuminate\Http\RedirectResponse
     {
         $destination = Destination::where('slug', $slug)
             ->where('status', true)
-            ->with('thumbnail')
             ->firstOrFail();
 
-        $services = Service::where('status', true)
-            ->where('location', 'like', "%{$destination->name}%")
-            ->with(['thumbnail', 'serviceType', 'reviews'])
-            ->paginate(12);
-
-        return view('tourbooking::front.destination-detail', compact('destination', 'services'));
+        return redirect()->route('front.tourbooking.services', [
+            'destination_id' => $destination->id,
+            'destination' => $destination->name
+        ]);
     }
 
     /**
