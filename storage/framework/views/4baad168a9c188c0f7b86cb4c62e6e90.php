@@ -25,6 +25,43 @@
             .tgmenu-offcanvas-open-btn-custom:hover { background-color: #f8f9fa; transform: translateY(-2px); }
             .tgmenu-offcanvas-open-btn-custom i { margin-right: 8px; }
             .mobile-nav-toggler span { background-color: #ffffff !important; }
+
+            /* ===== Logo container - s'adapte automatiquement ===== */
+            .logo {
+                display: flex;
+                align-items: center;
+                max-width: 250px;  /* largeur max du logo */
+                height: 55px;      /* hauteur du conteneur */
+                flex-shrink: 0;
+            }
+            .logo a {
+                display: flex;
+                align-items: center;
+                height: 100%;
+            }
+            .logo a img {
+                display: block;
+                width: auto;
+                height: auto;
+                max-width: 100%;
+                max-height: 100%;
+                object-fit: contain;
+                image-rendering: -webkit-optimize-contrast;
+            }
+
+            /* Responsive logo */
+            @media (max-width: 991px) {
+                .logo {
+                    max-width: 200px;
+                    height: 45px;
+                }
+            }
+            @media (max-width: 575px) {
+                .logo {
+                    max-width: 160px;
+                    height: 38px;
+                }
+            }
         </style>
         <div class="container-fluid">
             <div class="row align-items-center">

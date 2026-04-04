@@ -5,7 +5,8 @@
             <a class="navbar-brand" href="/">
                 @if(isset($header_content->logo))
                     <div class="logo-container">
-                        <img src="{{ asset($header_content->logo) }}" alt="{{ $seo_setting->site_name ?? 'TourEx' }}" class="header-logo">
+                        <img src="{{ asset($header_content->logo) }}" alt="{{ $seo_setting->site_name ?? 'TourEx' }}"
+                            class="header-logo">
                     </div>
                 @else
                     <span class="brand-text">{{ $seo_setting->site_name ?? 'TourEx' }}</span>
@@ -30,7 +31,7 @@
                         </li>
                     @endforeach
 
- 
+
 
                     <!-- Authentication Links -->
                     @guest
@@ -86,7 +87,8 @@
 
                     <!-- Offcanvas Menu Toggle -->
                     <li class="nav-item ms-3 d-flex align-items-center">
-                        <button class="btn btn-sm btn-white-red" data-bs-toggle="offcanvas" data-bs-target="#offcanvasLeftMenu">
+                        <button class="btn btn-sm btn-white-red" data-bs-toggle="offcanvas"
+                            data-bs-target="#offcanvasLeftMenu">
                             <i class="fas fa-bars me-1"></i> {{ __('translate.Menu') ?? 'Menu' }}
                         </button>
                     </li>
@@ -94,71 +96,91 @@
             </div>
         </div>
     </nav>
-    
+
     <!-- Offcanvas for left menu -->
-    <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasLeftMenu" aria-labelledby="offcanvasLeftMenuLabel" style="background-color: #be3144; color: #ffffff;">
-      <div class="offcanvas-header">
-        <h5 class="offcanvas-title" id="offcanvasLeftMenuLabel" style="color: #ffffff;">Menu</h5>
-        <button type="button" class="btn-close btn-close-white text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-      </div>
-      <div class="offcanvas-body">
-        <!-- Phone Section -->
-        <div class="mb-4">
-            <h6 style="color: #ffffff;"><i class="fas fa-phone me-2"></i> {{ __('translate.Phone') ?? 'Phone' }}</h6>
-            <p class="mb-0"><a href="tel:{{ $contact_setting->phone1 ?? '' }}" style="color: #ffffff; text-decoration: none; font-size: 1.1rem; font-weight: 500;">{{ $contact_setting->phone1 ?? '+1 234 567 890' }}</a></p>
+    <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasLeftMenu" aria-labelledby="offcanvasLeftMenuLabel"
+        style="background-color: #be3144; color: #ffffff;">
+        <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="offcanvasLeftMenuLabel" style="color: #ffffff;">Menu</h5>
+            <button type="button" class="btn-close btn-close-white text-reset" data-bs-dismiss="offcanvas"
+                aria-label="Close"></button>
         </div>
-        
-        <!-- Currency Selector -->
-        <div class="mb-4">
-            <div class="dropdown">
-                <button class="btn btn-sm dropdown-toggle w-100 text-start d-flex justify-content-between align-items-center" type="button" data-bs-toggle="dropdown" style="background-color: #ffffff; color: #be3144; padding: 10px 15px; border-radius: 8px; font-weight: bold;">
-                    <span><i class="fas fa-money-bill-wave me-2"></i> <span class="currency-code">{{ session('currency_code', 'USD') }}</span></span>
-                </button>
-                <ul class="dropdown-menu w-100 currency-dropdown shadow border-0" style="border-radius: 8px; margin-top: 5px;">
-                    @if(isset($currency_list))
-                        @foreach($currency_list as $currency)
-                            <li>
-                                <a class="dropdown-item currency-item {{ session('currency_code') == $currency->currency_code ? 'active' : '' }}"
-                                    href="#" onclick="changeCurrency('{{ $currency->currency_code }}')">
-                                    <i class="fas fa-coins me-2"></i>
-                                    {{ $currency->currency_name }} ({{ $currency->currency_icon }})
-                                </a>
-                            </li>
-                        @endforeach
-                    @else
-                        <li><a class="dropdown-item" href="#" onclick="changeCurrency('USD')"><i class="fas fa-dollar-sign me-2"></i> USD</a></li>
-                        <li><a class="dropdown-item" href="#" onclick="changeCurrency('EUR')"><i class="fas fa-euro-sign me-2"></i> EUR</a></li>
-                        <li><a class="dropdown-item" href="#" onclick="changeCurrency('GBP')"><i class="fas fa-pound-sign me-2"></i> GBP</a></li>
-                    @endif
-                </ul>
+        <div class="offcanvas-body">
+            <!-- Phone Section -->
+            <div class="mb-4">
+                <h6 style="color: #ffffff;"><i class="fas fa-phone me-2"></i> {{ __('translate.Phone') ?? 'Phone' }}
+                </h6>
+                <p class="mb-0"><a href="tel:{{ $contact_setting->phone1 ?? '' }}"
+                        style="color: #ffffff; text-decoration: none; font-size: 1.1rem; font-weight: 500;">{{ $contact_setting->phone1 ?? '+1 234 567 890' }}</a>
+                </p>
+            </div>
+
+            <!-- Currency Selector -->
+            <div class="mb-4">
+                <div class="dropdown">
+                    <button
+                        class="btn btn-sm dropdown-toggle w-100 text-start d-flex justify-content-between align-items-center"
+                        type="button" data-bs-toggle="dropdown"
+                        style="background-color: #ffffff; color: #be3144; padding: 10px 15px; border-radius: 8px; font-weight: bold;">
+                        <span><i class="fas fa-money-bill-wave me-2"></i> <span
+                                class="currency-code">{{ session('currency_code', 'USD') }}</span></span>
+                    </button>
+                    <ul class="dropdown-menu w-100 currency-dropdown shadow border-0"
+                        style="border-radius: 8px; margin-top: 5px;">
+                        @if(isset($currency_list))
+                            @foreach($currency_list as $currency)
+                                <li>
+                                    <a class="dropdown-item currency-item {{ session('currency_code') == $currency->currency_code ? 'active' : '' }}"
+                                        href="#" onclick="changeCurrency('{{ $currency->currency_code }}')">
+                                        <i class="fas fa-coins me-2"></i>
+                                        {{ $currency->currency_name }} ({{ $currency->currency_icon }})
+                                    </a>
+                                </li>
+                            @endforeach
+                        @else
+                            <li><a class="dropdown-item" href="#" onclick="changeCurrency('USD')"><i
+                                        class="fas fa-dollar-sign me-2"></i> USD</a></li>
+                            <li><a class="dropdown-item" href="#" onclick="changeCurrency('EUR')"><i
+                                        class="fas fa-euro-sign me-2"></i> EUR</a></li>
+                            <li><a class="dropdown-item" href="#" onclick="changeCurrency('GBP')"><i
+                                        class="fas fa-pound-sign me-2"></i> GBP</a></li>
+                        @endif
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Language Selector -->
+            <div class="mb-4">
+                <div class="dropdown">
+                    <button
+                        class="btn btn-sm dropdown-toggle w-100 text-start d-flex justify-content-between align-items-center"
+                        type="button" data-bs-toggle="dropdown"
+                        style="background-color: #ffffff; color: #be3144; padding: 10px 15px; border-radius: 8px; font-weight: bold;">
+                        <span><i class="fas fa-globe me-2"></i> <span
+                                class="lang-code">{{ strtoupper(session('front_lang', app()->getLocale())) }}</span></span>
+                    </button>
+                    <ul class="dropdown-menu w-100 language-dropdown shadow border-0"
+                        style="border-radius: 8px; margin-top: 5px;">
+                        @if(isset($language_list))
+                            @foreach($language_list as $lang)
+                                <li>
+                                    <a class="dropdown-item language-item {{ session('front_lang') == $lang->lang_code ? 'active' : '' }}"
+                                        href="{{ route('language-switcher', ['lang_code' => $lang->lang_code]) }}">
+                                        <i class="fas fa-language me-2"></i>
+                                        {{ $lang->lang_name }}
+                                    </a>
+                                </li>
+                            @endforeach
+                        @else
+                            <li><a class="dropdown-item" href="{{ route('language.switch', 'en') }}"><i
+                                        class="fas fa-flag-usa me-2"></i> English</a></li>
+                            <li><a class="dropdown-item" href="{{ route('language.switch', 'fr') }}"><i
+                                        class="fas fa-flag me-2"></i> Français</a></li>
+                        @endif
+                    </ul>
+                </div>
             </div>
         </div>
-        
-        <!-- Language Selector -->
-        <div class="mb-4">
-            <div class="dropdown">
-                <button class="btn btn-sm dropdown-toggle w-100 text-start d-flex justify-content-between align-items-center" type="button" data-bs-toggle="dropdown" style="background-color: #ffffff; color: #be3144; padding: 10px 15px; border-radius: 8px; font-weight: bold;">
-                    <span><i class="fas fa-globe me-2"></i> <span class="lang-code">{{ strtoupper(session('front_lang', app()->getLocale())) }}</span></span>
-                </button>
-                <ul class="dropdown-menu w-100 language-dropdown shadow border-0" style="border-radius: 8px; margin-top: 5px;">
-                    @if(isset($language_list))
-                        @foreach($language_list as $lang)
-                            <li>
-                                <a class="dropdown-item language-item {{ session('front_lang') == $lang->lang_code ? 'active' : '' }}"
-                                    href="{{ route('language-switcher', ['lang_code' => $lang->lang_code]) }}">
-                                    <i class="fas fa-language me-2"></i>
-                                    {{ $lang->lang_name }}
-                                </a>
-                            </li>
-                        @endforeach
-                    @else
-                        <li><a class="dropdown-item" href="{{ route('language.switch', 'en') }}"><i class="fas fa-flag-usa me-2"></i> English</a></li>
-                        <li><a class="dropdown-item" href="{{ route('language.switch', 'fr') }}"><i class="fas fa-flag me-2"></i> Français</a></li>
-                    @endif
-                </ul>
-            </div>
-        </div>
-      </div>
     </div>
 </header>
 
@@ -268,10 +290,13 @@
         .logo-container {
             display: flex;
             align-items: center;
-            justify-content: center;
-            max-width: 180px;  /* largeur max du logo */
-            max-height: 60px;  /* hauteur max du logo */
+            justify-content: flex-start;
+            max-width: 280px;
+            /* largeur max du logo sur desktop */
+            height: 50px;
+            /* hauteur fixe du conteneur */
             overflow: hidden;
+            flex-shrink: 0;
         }
 
         /* The logo image adapts automatically to the container */
@@ -279,12 +304,31 @@
             display: block;
             width: auto;
             height: auto;
-            max-width: 100%;
-            max-height: 60px;
-            object-fit: contain; /* garde les proportions sans déformer */
-            image-rendering: -webkit-optimize-contrast; /* anti-flou sur webkit */
-            image-rendering: crisp-edges; /* rendu net */
+            max-width: 50%;
+            max-height: 50%;
+            /* s'adapte à la hauteur du conteneur */
+            object-fit: contain;
+            /* garde les proportions sans déformer */
+            image-rendering: -webkit-optimize-contrast;
+            /* anti-flou sur webkit */
+            image-rendering: crisp-edges;
+            /* rendu net */
             transition: transform 0.3s ease;
+        }
+
+        /* Responsive logo - plus petit sur tablette et mobile */
+        @media (max-width: 991px) {
+            .logo-container {
+                max-width: 200px;
+                height: 40px;
+            }
+        }
+
+        @media (max-width: 575px) {
+            .logo-container {
+                max-width: 160px;
+                height: 36px;
+            }
         }
 
         .navbar-brand:hover .header-logo {
@@ -650,7 +694,7 @@
         }
 
         .btn-primary:hover {
-            background: rgba(255,255,255,0.9);
+            background: rgba(255, 255, 255, 0.9);
             color: #be3144;
             transform: translateY(-2px);
             box-shadow: 0 6px 20px rgba(255, 255, 255, 0.4);
@@ -668,7 +712,7 @@
             display: flex;
             align-items: center;
         }
-        
+
         .btn-white-red:hover {
             background: #f8f9fa;
             color: #8B2332;
