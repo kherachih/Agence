@@ -4,8 +4,9 @@
             <!-- Logo -->
             <a class="navbar-brand" href="/">
                 @if(isset($header_content->logo))
-                    <img src="{{ asset($header_content->logo) }}" alt="{{ $seo_setting->site_name ?? 'TourEx' }}"
-                        height="45">
+                    <div class="logo-container">
+                        <img src="{{ asset($header_content->logo) }}" alt="{{ $seo_setting->site_name ?? 'TourEx' }}" class="header-logo">
+                    </div>
                 @else
                     <span class="brand-text">{{ $seo_setting->site_name ?? 'TourEx' }}</span>
                 @endif
@@ -263,13 +264,30 @@
             align-items: center;
         }
 
-        .navbar-brand img {
-            max-height: 45px;
+        /* Logo container - defines the maximum area for the logo */
+        .logo-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            max-width: 180px;  /* largeur max du logo */
+            max-height: 60px;  /* hauteur max du logo */
+            overflow: hidden;
+        }
+
+        /* The logo image adapts automatically to the container */
+        .header-logo {
+            display: block;
             width: auto;
+            height: auto;
+            max-width: 100%;
+            max-height: 60px;
+            object-fit: contain; /* garde les proportions sans déformer */
+            image-rendering: -webkit-optimize-contrast; /* anti-flou sur webkit */
+            image-rendering: crisp-edges; /* rendu net */
             transition: transform 0.3s ease;
         }
 
-        .navbar-brand:hover img {
+        .navbar-brand:hover .header-logo {
             transform: scale(1.05);
         }
 
