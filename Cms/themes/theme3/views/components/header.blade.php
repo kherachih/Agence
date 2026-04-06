@@ -67,7 +67,6 @@
                 margin-right: 20px !important;
             }
             .logo a {
-                display: flex !important;
                 align-items: center !important;
                 height: 100% !important;
             }
