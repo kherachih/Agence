@@ -11,63 +11,161 @@
 <header class="tg-header-height" style="background-color: #be3144 !important;">
     <div class="tg-header__area tg-header-tu-menu tg-header-lg-space z-index-999" id="header-sticky" style="background-color: #be3144 !important;">
         <style>
+            /* ===== Background colors ===== */
             .tg-header-height { background-color: #be3144 !important; }
             .tg-header__area { background-color: #be3144 !important; }
             #header-sticky { background-color: #be3144 !important; }
             .sticky-active { background-color: #be3144 !important; }
+
+            /* ===== Menu text colors ===== */
             .tgmenu__main-menu ul.navigation > li > a { color: #ffffff !important; }
             .tgmenu__main-menu > ul > li > a { color: #ffffff !important; }
+
+            /* ===== Header buttons ===== */
             .tg-header-btn .tg-btn-header { border-color: #ffffff !important; color: #ffffff !important; }
             .tg-header-btn .tg-btn-header svg path { fill: #ffffff !important; }
             .tg-header-btn .tg-btn-header:hover { background-color: #ffffff !important; color: #be3144 !important; }
             .tg-header-btn .tg-btn-header:hover svg path { fill: #be3144 !important; }
-            .tgmenu-offcanvas-open-btn-custom { background-color: #ffffff; color: #be3144; border: none; padding: 10px 25px; border-radius: 30px; font-weight: bold; font-size: 15px; margin-left: 15px; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(0,0,0,0.1); display: inline-flex; align-items: center; }
+            .tgmenu-offcanvas-open-btn-custom { background-color: #ffffff; color: #be3144; border: none; padding: 8px 18px; border-radius: 30px; font-weight: bold; font-size: 14px; margin-left: 10px; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(0,0,0,0.1); display: inline-flex; align-items: center; }
             .tgmenu-offcanvas-open-btn-custom:hover { background-color: #f8f9fa; transform: translateY(-2px); }
-            .tgmenu-offcanvas-open-btn-custom i { margin-right: 8px; }
+            .tgmenu-offcanvas-open-btn-custom i { margin-right: 6px; }
             .mobile-nav-toggler span { background-color: #ffffff !important; }
 
-            /* ===== Logo container - s'adapte automatiquement ===== */
+            /* ===== HEADER LAYOUT FIX - Flexbox au lieu du grid Bootstrap ===== */
+            .tg-header-flex-row {
+                display: flex !important;
+                align-items: center !important;
+                justify-content: space-between !important;
+                width: 100% !important;
+                padding: 0 15px !important;
+            }
+
+            /* Zone gauche : logo + menu */
+            .tg-header-left {
+                display: flex !important;
+                align-items: center !important;
+                flex: 1 1 auto !important;
+                min-width: 0 !important;
+                overflow: hidden !important;
+            }
+
+            /* Zone droite : boutons */
+            .tg-header-right {
+                display: flex !important;
+                align-items: center !important;
+                flex: 0 0 auto !important;
+                white-space: nowrap !important;
+            }
+
+            /* ===== Logo - taille réduite et FORCÉE ===== */
             .logo {
-                display: flex;
-                align-items: center;
-                max-width: 250px;  /* largeur max du logo */
-                height: 55px;      /* hauteur du conteneur */
-                flex-shrink: 0;
+                display: flex !important;
+                align-items: center !important;
+                max-width: 180px !important;
+                height: 45px !important;
+                flex-shrink: 0 !important;
+                margin-right: 20px !important;
             }
             .logo a {
-                display: flex;
-                align-items: center;
-                height: 100%;
+                display: flex !important;
+                align-items: center !important;
+                height: 100% !important;
             }
             .logo a img {
-                display: block;
-                width: auto;
-                height: auto;
-                max-width: 100%;
-                max-height: 100%;
-                object-fit: contain;
+                display: block !important;
+                width: auto !important;
+                height: auto !important;
+                max-width: 180px !important;
+                max-height: 45px !important;
+                object-fit: contain !important;
                 image-rendering: -webkit-optimize-contrast;
             }
 
-            /* Responsive logo */
-            @media (max-width: 991px) {
+            /* ===== Navigation - plus compact ===== */
+            .tgmenu__nav.tg-header-nav {
+                margin-left: 0 !important;
+                flex: 1 1 auto !important;
+                min-width: 0 !important;
+            }
+            .tgmenu__main-menu ul.navigation {
+                flex-wrap: nowrap !important;
+                white-space: nowrap !important;
+                gap: 0 !important;
+            }
+            .tgmenu__main-menu ul.navigation > li > a {
+                padding: 15px 10px !important;
+                font-size: 14px !important;
+                white-space: nowrap !important;
+            }
+
+            /* ===== Responsive : écrans XXL (1400px+) ===== */
+            @media (min-width: 1400px) {
                 .logo {
-                    max-width: 200px;
-                    height: 45px;
+                    max-width: 200px !important;
+                    height: 50px !important;
+                }
+                .logo a img {
+                    max-width: 200px !important;
+                    max-height: 50px !important;
+                }
+                .tgmenu__main-menu ul.navigation > li > a {
+                    padding: 18px 14px !important;
+                    font-size: 15px !important;
+                }
+            }
+
+            /* ===== Responsive : écrans XL (1200-1399px) ===== */
+            @media (min-width: 1200px) and (max-width: 1399px) {
+                .logo {
+                    max-width: 160px !important;
+                    height: 42px !important;
+                    margin-right: 15px !important;
+                }
+                .logo a img {
+                    max-width: 160px !important;
+                    max-height: 42px !important;
+                }
+                .tgmenu__main-menu ul.navigation > li > a {
+                    padding: 15px 8px !important;
+                    font-size: 13px !important;
+                }
+                .tgmenu-offcanvas-open-btn-custom {
+                    padding: 7px 14px !important;
+                    font-size: 13px !important;
+                }
+            }
+
+            /* ===== Responsive : tablette / mobile ===== */
+            @media (max-width: 1199px) {
+                .tg-header-flex-row {
+                    padding: 0 10px !important;
+                }
+                .logo {
+                    max-width: 150px !important;
+                    height: 40px !important;
+                    margin-right: 10px !important;
+                }
+                .logo a img {
+                    max-width: 150px !important;
+                    max-height: 40px !important;
                 }
             }
             @media (max-width: 575px) {
                 .logo {
-                    max-width: 160px;
-                    height: 38px;
+                    max-width: 120px !important;
+                    height: 35px !important;
+                }
+                .logo a img {
+                    max-width: 120px !important;
+                    max-height: 35px !important;
                 }
             }
         </style>
         <div class="container-fluid">
-            <div class="row align-items-center">
-                <div class="col-xxl-7 col-xl-6 col-lg-6 col-6">
-                    <div class="tgmenu__wrap d-flex align-items-center">
-                        <div class="logo mr-25">
+            <div class="tg-header-flex-row">
+                <div class="tg-header-left">
+                    <div class="tgmenu__wrap d-flex align-items-center" style="width:100%;">
+                        <div class="logo">
                             <a class="logo-1" href="<?php echo e(route('home')); ?>"><img src="<?php echo e(asset($general_setting->logo)); ?>"
                                     alt="Logo"></a>
                             <a class="logo-2 d-none" href="<?php echo e(route('home')); ?>"><img
@@ -78,14 +176,14 @@
                             <?php endif; ?>
                         </div>
  
-                        <nav class="tgmenu__nav tgmenu-1-space ml-150">
+                        <nav class="tgmenu__nav tg-header-nav">
                             <div class="tgmenu__navbar-wrap tgmenu__main-menu d-none d-xl-flex">
                                 <?php echo $__env->make('components.common_navitems', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
                             </div>
                         </nav>
                     </div>
                 </div>
-                <div class="col-xxl-5 col-xl-6 col-lg-6 col-6">
+                <div class="tg-header-right">
                     <div class="tg-menu-right-action d-flex align-items-center justify-content-end">
  
                         <div class="tg-header-btn ml-15 d-none d-sm-flex align-items-center">
