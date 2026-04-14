@@ -5,7 +5,7 @@
         <div class="container">
             <div class="tg-footer-top mb-40">
                 <div class="row">
-                    <div class="col-xl-3 col-lg-3 col-md-6 col-sm-6">
+                    <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6">
                         <div class="tg-footer-widget mb-40">
                             <div class="tg-footer-logo mb-20">
                                 <a href="{{ route('home') }}"><img src="{{ asset($general_setting->footer_logo) }}" alt=""></a>
@@ -45,7 +45,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-xl-3 col-lg-3 col-md-6 col-sm-6">
+                    <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6">
                         <div class="tg-footer-widget tg-footer-link ml-80 mb-40">
                             <h3 class="tg-footer-widget-title mb-25">{{ __('translate.Quick Links') }}</h3>
                                 {!! wp_nav_menu([
@@ -56,7 +56,7 @@
                                 ]) !!}
                         </div>
                     </div>
-                    <div class="col-xl-3 col-lg-3 col-md-6 col-sm-6">
+                    <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6">
                         <div class="tg-footer-widget tg-footer-info mb-40">
                             <h3 class="tg-footer-widget-title mb-25">{{ __('translate.Information') }}</h3>
                             <ul>
@@ -107,17 +107,6 @@
                                 </li>
                                 @endif
                             </ul>
-                        </div>
-                    </div>
-                    <div class="col-xl-3 col-lg-3 col-md-6 col-sm-6">
-                        <div class="tg-footer-widget tg-footer-link mb-40">
-                            <h3 class="tg-footer-widget-title mb-25">{{ __('translate.Utility Pages') }}</h3>
-                                {!! wp_nav_menu([
-                                    'theme_location' => 'footer_menu_2',
-                                    'menu_id' => 'main-nav',
-                                    'items_wrap' => '<ul id="%1$s" class="%2$s">%3$s</ul>',
-                                    'container' => false,
-                                ]) !!}
                         </div>
                     </div>
                 </div>

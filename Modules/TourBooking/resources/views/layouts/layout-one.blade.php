@@ -280,10 +280,11 @@
             <div class="container">
                 <div class="tg-footer-top pb-40">
                     <div class="row">
-                        <div class="col-xl-3 col-lg-3 col-md-6 col-sm-6">
+                        <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6">
                             <div class="tg-footer-widget mb-40">
                                 <div class="tg-footer-logo mb-20">
-                                    <a href="index.html"><img src="assets/img/logo/logo-white.png"
+                                    <a href="{{ route('home') }}"><img
+                                            src="{{ asset(!empty($general_setting->logo_white) ? $general_setting->logo_white : (!empty($general_setting->footer_logo) ? $general_setting->footer_logo : $general_setting->logo)) }}"
                                             alt=""></a>
                                 </div>
                                 <p class="mb-20">Pharetra maecenas felis vestibulum convallis mollis nullam congue
@@ -311,7 +312,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-xl-3 col-lg-3 col-md-6 col-sm-6">
+                        <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6">
                             <div class="tg-footer-widget tg-footer-link ml-80 mb-40">
                                 <h3 class="tg-footer-widget-title mb-25">Quick Links</h3>
                                 <ul>
@@ -323,7 +324,7 @@
                                 </ul>
                             </div>
                         </div>
-                        <div class="col-xl-3 col-lg-3 col-md-6 col-sm-6">
+                        <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6">
                             <div class="tg-footer-widget tg-footer-info mb-40">
                                 <h3 class="tg-footer-widget-title mb-25">Information</h3>
                                 <ul>
@@ -369,18 +370,6 @@
                                             Sunday: <span class="text-white d-inline-block">CLOSED</span>
                                         </p>
                                     </li>
-                                </ul>
-                            </div>
-                        </div>
-                        <div class="col-xl-3 col-lg-3 col-md-6 col-sm-6">
-                            <div class="tg-footer-widget tg-footer-link mb-40">
-                                <h3 class="tg-footer-widget-title mb-25">Utility Pages</h3>
-                                <ul>
-                                    <li><a href="#">Style Guide</a></li>
-                                    <li><a href="#">Password Protected</a></li>
-                                    <li><a href="#">404 Error</a></li>
-                                    <li><a href="#">Changelog</a></li>
-                                    <li><a href="#">License</a></li>
                                 </ul>
                             </div>
                         </div>

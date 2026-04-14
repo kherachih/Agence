@@ -296,7 +296,7 @@
     });
     </script>
     <!-- offCanvas-menu -->
-    <?php echo $__env->make('components.common_offcanvas', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+    <?php echo $__env->make('theme::components.common_offcanvas', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
     <!-- offCanvas-menu-end -->
 
 </header>

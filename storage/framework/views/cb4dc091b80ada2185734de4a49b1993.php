@@ -4,7 +4,7 @@
         <button><i class="fa-sharp fa-regular fa-xmark"></i></button>
     </div>
     <div class="offCanvas__logo mb-30">
-        <a href="<?php echo e(route('home')); ?>"><img src="<?php echo e(asset($general_setting?->secondary_logo)); ?>" alt="Logo"></a>
+        <a href="<?php echo e(route('home')); ?>"><img src="<?php echo e(asset('uploads/website-images/logo-red-text-theme3.png')); ?>" alt="Logo"></a>
     </div>
     <div class="offCanvas__side-info mb-30">
         <div class="contact-list mb-30">
@@ -102,4 +102,5 @@
     }
 </style>
 <div class="offCanvas__overly"></div>
-<!-- offCanvas-menu-end --><?php /**PATH D:\xampp\htdocs\archive\archive\resources\views/components/common_offcanvas.blade.php ENDPATH**/ ?>
+<!-- offCanvas-menu-end -->
+<?php /**PATH D:\xampp\htdocs\archive\archive\Cms/themes/theme3/views/components/common_offcanvas.blade.php ENDPATH**/ ?>

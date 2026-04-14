@@ -292,7 +292,7 @@
     });
     </script>
     <!-- offCanvas-menu -->
-    @include('components.common_offcanvas')
+    @include('theme::components.common_offcanvas')
     <!-- offCanvas-menu-end -->
 
 </header>
