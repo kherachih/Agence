@@ -1797,4 +1797,12 @@ return array(
   'Save my name, email, and phone in this browser for the next time I comment.' => 'Enregistrer mon nom, mon e-mail et mon téléphone dans ce navigateur pour mon prochain commentaire.',
   'Become an Agency Partner' => 'Devenir un partenaire d\'agence',
   'Done' => 'Terminé',
+  'Mega Sale' => 'Promo',
+  'Month:' => 'Mois :',
+  'Select Month' => 'Sélectionner le mois',
+  'Who is travelling?' => 'Qui voyage ?',
+  'Adult' => 'Adulte',
+  'Child' => 'Enfant',
+  'Where to ?' => 'Où allez-vous ?',
+  '+ Add Guests' => '+ Ajouter des invités',
 );

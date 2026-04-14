@@ -306,9 +306,12 @@ class FrontEndManagementController extends Controller
             // Make a copy of processed data for the translation
             $translatedData = $processedData;
 
-            // Images should only be managed in English
-            if (isset($frontend->data_values['images'])) {
-                $translatedData['images'] = $frontend->data_values['images'];
+            // Images should only be managed in English, preserve them and any other non-translatable fields
+            foreach ($frontend->data_values as $key => $val) {
+                // If it's an image field or not in the translation, preserve it from English
+                if (strpos($key, 'image') !== false || strpos($key, 'icon') !== false || !isset($translatedData[$key])) {
+                    $translatedData[$key] = $val;
+                }
             }
 
             foreach ($translations as $key => $translation) {

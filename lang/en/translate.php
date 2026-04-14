@@ -2036,5 +2036,6 @@ return array(
   'Menu' => 'Menu',
   'Book Now' => 'Book Now',
   'Done' => 'Done',
+  'Mega Sale' => 'Mega Sale',
+  'Who is travelling?' => 'Who is travelling?',
 );
-

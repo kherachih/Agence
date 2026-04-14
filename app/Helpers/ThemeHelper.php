@@ -255,7 +255,12 @@ if (!function_exists('render_menu_item')) {
             }
         }
         
-        $title = $args['link_before'] . $item->title . $args['link_after'];
+        $translated_title = __('translate.' . $item->title);
+        if ($translated_title === 'translate.' . $item->title) {
+            $translated_title = $item->title;
+        }
+        
+        $title = $args['link_before'] . $translated_title . $args['link_after'];
         $item_output .= $args['before'] . '<a' . $attributes . '>';
         
         // Add icon if exists

@@ -74,12 +74,25 @@
                                     <input type="hidden" name="type" value="{{ $contentType }}">
                                     <input type="hidden" name="lang_code" value="{{ request()->get('lang_code') }}">
 
-                                    <div class="row">
-                                        @php
-                                            $hasImages = isset($content['images']) && is_array($content['images']) && count($content['images']) > 0;
-                                            $isDefaultLanguage = $lang_code === 'en';
-                                        @endphp
+                                    @php
+                                        $isDefaultLanguage = $lang_code === 'en';
+                                        $hasImages = isset($content['images']) && is_array($content['images']) && count($content['images']) > 0;
+                                        $edited_language = $language_list->where('lang_code', request()->get('lang_code'))->first();
+                                    @endphp
 
+                                    @if(!$isDefaultLanguage)
+                                        <div class="alert alert-info shadow-none" role="alert">
+                                            <div class="d-flex align-items-center">
+                                                <i class="fas fa-info-circle me-3 fa-2x"></i>
+                                                <div>
+                                                    <h5 class="alert-heading mb-1">{{ __('translate.Translation mode') }}: <strong>{{ $edited_language->lang_name }}</strong></h5>
+                                                    <p class="mb-0">{{ __('translate.You are editing the French version of this section. Images and layout settings are inherited from the English version.') }}</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    @endif
+
+                                    <div class="row">
                                         @if($isDefaultLanguage && $hasImages)
                                             <div class="col-md-3 pr-md-4">
                                                 @foreach($content['images'] as $imageKey => $imageDetails)

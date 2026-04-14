@@ -124,59 +124,59 @@
                                         </div>
                                         <div class="tg-booking-form-location-list tg-quantity tg-booking-quantity-active month-dropdown">
                                             <ul class="month-list">
-                                                <li @click="selectMonth('January', '01', $event)">
+                                                <li @click="selectMonth('<?php echo e(__('translate.January')); ?>', '01', $event)">
                                                     <i class="fas fa-calendar-alt"></i>
-                                                    <span>January</span>
+                                                    <span><?php echo e(__('translate.January')); ?></span>
                                                 </li>
-                                                <li @click="selectMonth('February', '02', $event)">
+                                                <li @click="selectMonth('<?php echo e(__('translate.February')); ?>', '02', $event)">
                                                     <i class="fas fa-calendar-alt"></i>
-                                                    <span>February</span>
+                                                    <span><?php echo e(__('translate.February')); ?></span>
                                                 </li>
-                                                <li @click="selectMonth('March', '03', $event)">
+                                                <li @click="selectMonth('<?php echo e(__('translate.March')); ?>', '03', $event)">
                                                     <i class="fas fa-calendar-alt"></i>
-                                                    <span>March</span>
+                                                    <span><?php echo e(__('translate.March')); ?></span>
                                                 </li>
-                                                <li @click="selectMonth('April', '04', $event)">
+                                                <li @click="selectMonth('<?php echo e(__('translate.April')); ?>', '04', $event)">
                                                     <i class="fas fa-calendar-alt"></i>
-                                                    <span>April</span>
+                                                    <span><?php echo e(__('translate.April')); ?></span>
                                                 </li>
-                                                <li @click="selectMonth('May', '05', $event)">
+                                                <li @click="selectMonth('<?php echo e(__('translate.May')); ?>', '05', $event)">
                                                     <i class="fas fa-calendar-alt"></i>
-                                                    <span>May</span>
+                                                    <span><?php echo e(__('translate.May')); ?></span>
                                                 </li>
-                                                <li @click="selectMonth('June', '06', $event)">
+                                                <li @click="selectMonth('<?php echo e(__('translate.June')); ?>', '06', $event)">
                                                     <i class="fas fa-calendar-alt"></i>
-                                                    <span>June</span>
+                                                    <span><?php echo e(__('translate.June')); ?></span>
                                                 </li>
-                                                <li @click="selectMonth('July', '07', $event)">
+                                                <li @click="selectMonth('<?php echo e(__('translate.July')); ?>', '07', $event)">
                                                     <i class="fas fa-calendar-alt"></i>
-                                                    <span>July</span>
+                                                    <span><?php echo e(__('translate.July')); ?></span>
                                                 </li>
-                                                <li @click="selectMonth('August', '08', $event)">
+                                                <li @click="selectMonth('<?php echo e(__('translate.August')); ?>', '08', $event)">
                                                     <i class="fas fa-calendar-alt"></i>
-                                                    <span>August</span>
+                                                    <span><?php echo e(__('translate.August')); ?></span>
                                                 </li>
-                                                <li @click="selectMonth('September', '09', $event)">
+                                                <li @click="selectMonth('<?php echo e(__('translate.September')); ?>', '09', $event)">
                                                     <i class="fas fa-calendar-alt"></i>
-                                                    <span>September</span>
+                                                    <span><?php echo e(__('translate.September')); ?></span>
                                                 </li>
-                                                <li @click="selectMonth('October', '10', $event)">
+                                                <li @click="selectMonth('<?php echo e(__('translate.October')); ?>', '10', $event)">
                                                     <i class="fas fa-calendar-alt"></i>
-                                                    <span>October</span>
+                                                    <span><?php echo e(__('translate.October')); ?></span>
                                                 </li>
-                                                <li @click="selectMonth('November', '11', $event)">
+                                                <li @click="selectMonth('<?php echo e(__('translate.November')); ?>', '11', $event)">
                                                     <i class="fas fa-calendar-alt"></i>
-                                                    <span>November</span>
+                                                    <span><?php echo e(__('translate.November')); ?></span>
                                                 </li>
-                                                <li @click="selectMonth('December', '12', $event)">
+                                                <li @click="selectMonth('<?php echo e(__('translate.December')); ?>', '12', $event)">
                                                     <i class="fas fa-calendar-alt"></i>
-                                                    <span>December</span>
+                                                    <span><?php echo e(__('translate.December')); ?></span>
                                                 </li>
                                             </ul>
                                         </div>
                                     </div>
                                     <div class="tg-booking-form-parent-inner tg-hero-quantity p-relative mr-15 mb-10">
-                                        <span class="tg-booking-form-title">Who is travelling?</span>
+                                        <span class="tg-booking-form-title"><?php echo e(__('translate.Who is travelling?')); ?></span>
                                         <div class="tg-booking-add-input-field tg-booking-quantity-toggle">
                                             <span class="location">
                                                 <svg width="16" height="16" viewBox="0 0 16 16"
@@ -207,10 +207,10 @@
                                                 <span x-show="adults || children"
                                                     class="tg-booking-title-value">
                                                     <template x-if="adults">
-                                                        <span class="tg-booking-title-value m-0" x-text="', ' + adults + ' Adult'"></span>
+                                                        <span class="tg-booking-title-value m-0" x-text="', ' + adults + ' ' + '<?php echo e(__('translate.Adult')); ?>'"></span>
                                                     </template>
                                                     <template x-if="children">
-                                                        <span class="tg-booking-title-value m-0" x-text="', ' + children + ' Child'"></span>
+                                                        <span class="tg-booking-title-value m-0" x-text="', ' + children + ' ' + '<?php echo e(__('translate.Child')); ?>'"></span>
                                                     </template>
                                                 </span>
                                             </div>
@@ -287,7 +287,8 @@
                                         </div>
                                     </div>
                                     <div class="tg-booking-form-search-btn mb-10">
-                                        <button class="bk-search-button" type="submit">Search
+                                        <button class="bk-search-button" type="submit"><?php echo e(__('translate.Search')); ?>
+
                                             <span class="ml-5">
                                                 <svg width="14" height="14" viewBox="0 0 14 14"
                                                     fill="none" xmlns="http://www.w3.org/2000/svg">
