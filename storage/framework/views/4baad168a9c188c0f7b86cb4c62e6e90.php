@@ -186,6 +186,7 @@
                     <div class="tg-menu-right-action d-flex align-items-center justify-content-end">
  
                         <div class="tg-header-btn ml-15 d-none d-sm-flex align-items-center">
+                            <?php echo $__env->make('components.language_selector', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
                             <?php if(auth()->guard('web')->guest()): ?>
                                 <a class="tg-btn-header" href="<?php echo e(route('user.login')); ?>">
                                     <span>
@@ -285,11 +286,26 @@
                 const navContainer = document.querySelector('.tgmenu__nav');
                 if(navContainer) navContainer.style.position = 'static';
 
+                let menuTimeout;
+
                 destLi.addEventListener('mouseenter', function() {
+                    clearTimeout(menuTimeout);
                     megaMenu.style.display = 'block';
                 });
                 destLi.addEventListener('mouseleave', function() {
-                    megaMenu.style.display = 'none';
+                    menuTimeout = setTimeout(function() {
+                        megaMenu.style.display = 'none';
+                    }, 300); // 300ms delay before closing
+                });
+
+                // Also keep menu open if mouse enters the mega menu itself
+                megaMenu.addEventListener('mouseenter', function() {
+                    clearTimeout(menuTimeout);
+                });
+                megaMenu.addEventListener('mouseleave', function() {
+                    menuTimeout = setTimeout(function() {
+                        megaMenu.style.display = 'none';
+                    }, 300);
                 });
             }
         }

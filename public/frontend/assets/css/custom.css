@@ -578,3 +578,123 @@ ul.tourex-tabs-menu li {
         margin-left: 0;
     }
 }
+
+/* Good to Know Section Styling */
+.tg-good-to-know-section {
+    background: #ffffff;
+    border-radius: 20px;
+    padding: 35px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+}
+
+.good-to-know-tabs-wrap {
+    margin-bottom: 25px;
+}
+
+.good-to-know-nav {
+    border: none !important;
+    gap: 15px;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    padding-bottom: 10px;
+}
+
+.good-to-know-nav::-webkit-scrollbar {
+    height: 4px;
+}
+
+.good-to-know-nav::-webkit-scrollbar-thumb {
+    background: #eee;
+    border-radius: 10px;
+}
+
+.good-to-know-nav .nav-item {
+    flex: 1;
+    min-width: 140px;
+}
+
+.good-to-know-nav .nav-link {
+    width: 100%;
+    border: 1px solid #f0f0f0 !important;
+    border-radius: 15px !important;
+    padding: 20px 15px !important;
+    background: #fdfdfd !important;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    color: #666 !important;
+}
+
+.good-to-know-nav .nav-link.active {
+    background: linear-gradient(135deg, var(--tg-theme-primary) 0%, #ff8c00 100%) !important;
+    color: #fff !important;
+    border-color: transparent !important;
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(255, 140, 0, 0.2);
+}
+
+.gk-tab-icon {
+    font-size: 24px;
+    height: 50px;
+    width: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0,0,0,0.03);
+    border-radius: 12px;
+    transition: all 0.3s ease;
+}
+
+.nav-link.active .gk-tab-icon {
+    background: rgba(255,255,255,0.2);
+}
+
+.good-to-know-nav .nav-link span {
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.gk-tab-content {
+    background: #f9f9fb;
+    border-radius: 15px;
+    min-height: 200px;
+}
+
+.gk-info-card {
+    background: #fff;
+    border-radius: 12px;
+    padding: 20px;
+    height: 100%;
+    border-left: 4px solid var(--tg-theme-primary);
+    transition: transform 0.3s ease;
+}
+
+.gk-info-card:hover {
+    transform: translateX(5px);
+}
+
+.gk-country-badge {
+    display: inline-block;
+    background: rgba(var(--tg-theme-primary-rgb), 0.1);
+    color: var(--tg-theme-primary);
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 700;
+    margin-bottom: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.gk-info-text {
+    font-size: 15px;
+    color: #444;
+    line-height: 1.6;
+    font-weight: 500;
+}
+
+.tg-tour-about-border {
+    border-bottom: 1px solid #ebebeb;
+}

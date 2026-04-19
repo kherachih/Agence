@@ -211,6 +211,45 @@
                                                 <div class="col-lg-4 col-md-6 col-12">
                                                     <div class="crancy__item-form--group mg-top-form-20">
                                                         <label
+                                                            class="crancy__item-label">{{ __('translate.Age range') }}</label>
+                                                        <input class="crancy__item-input" type="text" name="age_range"
+                                                            value="{{ old('age_range') }}"
+                                                            placeholder="e.g. 18-99">
+                                                        @error('age_range')
+                                                            <span class="text-danger">{{ $message }}</span>
+                                                        @enderror
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-lg-4 col-md-6 col-12">
+                                                    <div class="crancy__item-form--group mg-top-form-20">
+                                                        <label
+                                                            class="crancy__item-label">{{ __('translate.Country') }}</label>
+                                                        <input class="crancy__item-input" type="text" name="country"
+                                                            value="{{ old('country') }}"
+                                                            placeholder="e.g. France">
+                                                        @error('country')
+                                                            <span class="text-danger">{{ $message }}</span>
+                                                        @enderror
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-lg-4 col-md-6 col-12">
+                                                    <div class="crancy__item-form--group mg-top-form-20">
+                                                        <label
+                                                            class="crancy__item-label">{{ __('translate.Region') }}</label>
+                                                        <input class="crancy__item-input" type="text" name="region"
+                                                            value="{{ old('region') }}"
+                                                            placeholder="e.g. Provence">
+                                                        @error('region')
+                                                            <span class="text-danger">{{ $message }}</span>
+                                                        @enderror
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-lg-4 col-md-6 col-12">
+                                                    <div class="crancy__item-form--group mg-top-form-20">
+                                                        <label
                                                             class="crancy__item-label">{{ __('translate.Room Count') }}</label>
                                                         <input class="crancy__item-input" type="number" name="room_count"
                                                             value="{{ old('room_count', 1) }}" placeholder="1">

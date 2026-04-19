@@ -67,6 +67,7 @@ Route::group(['middleware' => ['HtmlSpecialchars', 'MaintenanceMode']], function
         Route::controller(UserLoginController::class)->group(function () {
 
             Route::get('/login', 'custom_login_page')->name('login');
+            Route::get('/partner-login', 'partner_login_page')->name('partner-login');
             Route::post('/store-login', 'store_login')->name('store-login');
             Route::get('/logout', 'student_logout')->name('logout');
 

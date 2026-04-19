@@ -50,6 +50,9 @@ final class Service extends Model
         'excluded',
         'duration',
         'group_size',
+        'age_range',
+        'country',
+        'region',
         'languages',
         'check_in_time',
         'check_out_time',
@@ -78,6 +81,7 @@ final class Service extends Model
         'tour_plan_sub_title',
         'google_map_sub_title',
         'google_map_url',
+        'good_to_know',
     ];
 
     /**
@@ -113,6 +117,7 @@ final class Service extends Model
         'show_on_homepage' => 'boolean',
         'status' => 'boolean',
         'is_new' => 'boolean',
+        'good_to_know' => 'json',
     ];
 
     /**

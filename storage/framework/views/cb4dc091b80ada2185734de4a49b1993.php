@@ -48,12 +48,30 @@
         </div>
     </div>
     <div class="offCanvas__agency-btn mb-30">
-        <a class="tg-btn-partner-offcanvas" href="<?php echo e(route('agency.registration')); ?>"
-            style="display: inline-flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 14px 28px; border-radius: 8px; font-size: 15px; font-weight: 600; white-space: nowrap; width: 100%; text-decoration: none; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);">
-            <i class="fa-solid fa-briefcase" style="margin-right: 8px;"></i>
-            <?php echo e(__('translate.Become an Agency Partner')); ?>
+        <?php if(auth()->guard('web')->guest()): ?>
+            <a class="tg-btn-partner-offcanvas" href="<?php echo e(route('user.partner-login')); ?>"
+                style="display: inline-flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 14px 28px; border-radius: 8px; font-size: 15px; font-weight: 600; white-space: nowrap; width: 100%; text-decoration: none; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);">
+                <i class="fa-solid fa-briefcase" style="margin-right: 8px;"></i>
+                <?php echo e(__('translate.Dashboard Partner')); ?>
 
-        </a>
+            </a>
+        <?php else: ?>
+            <?php if(Auth::guard('web')->user()->is_seller == 1): ?>
+                <a class="tg-btn-partner-offcanvas" href="<?php echo e(route('agency.dashboard')); ?>"
+                    style="display: inline-flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 14px 28px; border-radius: 8px; font-size: 15px; font-weight: 600; white-space: nowrap; width: 100%; text-decoration: none; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);">
+                    <i class="fa-solid fa-briefcase" style="margin-right: 8px;"></i>
+                    <?php echo e(__('translate.Dashboard Partner')); ?>
+
+                </a>
+            <?php else: ?>
+                <a class="tg-btn-partner-offcanvas" href="<?php echo e(route('agency.registration')); ?>"
+                    style="display: inline-flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 14px 28px; border-radius: 8px; font-size: 15px; font-weight: 600; white-space: nowrap; width: 100%; text-decoration: none; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);">
+                    <i class="fa-solid fa-briefcase" style="margin-right: 8px;"></i>
+                    <?php echo e(__('translate.Become Partner')); ?>
+
+                </a>
+            <?php endif; ?>
+        <?php endif; ?>
     </div>
     <div class="offCanvas__social-icon mt-30">
         <?php if($footer->facebook): ?>

@@ -298,6 +298,45 @@
                                                 <div class="col-lg-4 col-md-6 col-12">
                                                     <div class="crancy__item-form--group mg-top-form-20">
                                                         <label
+                                                            class="crancy__item-label">{{ __('translate.Age range') }}</label>
+                                                        <input class="crancy__item-input" type="text" name="age_range"
+                                                            value="{{ old('age_range', $service->age_range) }}"
+                                                            placeholder="e.g. 18-99">
+                                                        @error('age_range')
+                                                            <span class="text-danger">{{ $message }}</span>
+                                                        @enderror
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-lg-4 col-md-6 col-12">
+                                                    <div class="crancy__item-form--group mg-top-form-20">
+                                                        <label
+                                                            class="crancy__item-label">{{ __('translate.Country') }}</label>
+                                                        <input class="crancy__item-input" type="text" name="country"
+                                                            value="{{ old('country', $service->country) }}"
+                                                            placeholder="e.g. France">
+                                                        @error('country')
+                                                            <span class="text-danger">{{ $message }}</span>
+                                                        @enderror
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-lg-4 col-md-6 col-12">
+                                                    <div class="crancy__item-form--group mg-top-form-20">
+                                                        <label
+                                                            class="crancy__item-label">{{ __('translate.Region') }}</label>
+                                                        <input class="crancy__item-input" type="text" name="region"
+                                                            value="{{ old('region', $service->region) }}"
+                                                            placeholder="e.g. Provence">
+                                                        @error('region')
+                                                            <span class="text-danger">{{ $message }}</span>
+                                                        @enderror
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-lg-4 col-md-6 col-12">
+                                                    <div class="crancy__item-form--group mg-top-form-20">
+                                                        <label
                                                             class="crancy__item-label">{{ __('translate.Room Count') }}</label>
                                                         <input class="crancy__item-input" type="number"
                                                             name="room_count"
@@ -713,6 +752,85 @@
 
                                     <div class="col-12 mg-top-30">
                                         <div class="crancy-product-card">
+                                            <h4 class="crancy-product-card__title">
+                                                {{ __('translate.Good to know') }}
+                                            </h4>
+
+                                            <div class="row mg-top-30">
+                                                <div class="col-12">
+                                                    <div class="alert alert-info mb-20">
+                                                        <i class="fa fa-info-circle"></i>
+                                                        {{ __('translate.Add country-specific information such as currency, plugs, and vaccines.') }}
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-12" id="good-to-know-container">
+                                                    @php
+                                                        $good_to_know = is_array($translation->good_to_know ?? $service->good_to_know) 
+                                                            ? ($translation->good_to_know ?? $service->good_to_know) 
+                                                            : json_decode($translation->good_to_know ?? $service->good_to_know ?? '[]', true);
+                                                        
+                                                        if (empty($good_to_know)) {
+                                                            $good_to_know = [['country' => '', 'currency' => '', 'plugs' => '', 'vaccines' => '', 'payment' => '']];
+                                                        }
+                                                    @endphp
+
+                                                    @foreach($good_to_know as $index => $item)
+                                                        <div class="country-info-item mb-4 pb-4 border-bottom" data-index="{{ $index }}">
+                                                            <div class="row">
+                                                                <div class="col-lg-6 col-12">
+                                                                    <div class="crancy__item-form--group mg-top-form-20">
+                                                                        <label class="crancy__item-label">{{ __('translate.Country Name') }}</label>
+                                                                        <input class="crancy__item-input" type="text" name="good_to_know[{{ $index }}][country]" value="{{ $item['country'] ?? '' }}" placeholder="e.g. France">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-lg-6 col-12">
+                                                                    <div class="crancy__item-form--group mg-top-form-20">
+                                                                        <label class="crancy__item-label">{{ __('translate.Currency') }}</label>
+                                                                        <input class="crancy__item-input" type="text" name="good_to_know[{{ $index }}][currency]" value="{{ $item['currency'] ?? '' }}" placeholder="e.g. Euro">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-lg-4 col-12">
+                                                                    <div class="crancy__item-form--group mg-top-form-20">
+                                                                        <label class="crancy__item-label">{{ __('translate.Prises et adaptateurs') }}</label>
+                                                                        <input class="crancy__item-input" type="text" name="good_to_know[{{ $index }}][plugs]" value="{{ $item['plugs'] ?? '' }}" placeholder="e.g. Type C, E">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-lg-4 col-12">
+                                                                    <div class="crancy__item-form--group mg-top-form-20">
+                                                                        <label class="crancy__item-label">{{ __('translate.Vaccines') }}</label>
+                                                                        <input class="crancy__item-input" type="text" name="good_to_know[{{ $index }}][vaccines]" value="{{ $item['vaccines'] ?? '' }}" placeholder="e.g. Hepatite A">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-lg-4 col-12">
+                                                                    <div class="crancy__item-form--group mg-top-form-20">
+                                                                        <label class="crancy__item-label">{{ __('translate.Payment Information') }}</label>
+                                                                        <input class="crancy__item-input" type="text" name="good_to_know[{{ $index }}][payment]" value="{{ $item['payment'] ?? '' }}" placeholder="e.g. Cards accepted">
+                                                                    </div>
+                                                                </div>
+                                                                @if($index > 0)
+                                                                    <div class="col-12 mg-top-20">
+                                                                        <button type="button" class="crancy-btn btn-danger remove-country-info" style="background-color: #dc3545;">
+                                                                            <i class="fa fa-trash"></i> {{ __('translate.Remove') }}
+                                                                        </button>
+                                                                    </div>
+                                                                @endif
+                                                            </div>
+                                                        </div>
+                                                    @endforeach
+                                                </div>
+
+                                                <div class="col-12 mg-top-20">
+                                                    <button type="button" class="crancy-btn" id="add-country-info">
+                                                        <i class="fa fa-plus"></i> {{ __('translate.Add Country Info') }}
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-12 mg-top-30">
+                                        <div class="crancy-product-card">
                                             <h4 class="crancy-product-card__title">{{ __('translate.Room Types') }}
                                             </h4>
 
@@ -930,6 +1048,65 @@
                         } else {
                             alert('At least one room type is required.');
                         }
+                    }
+                });
+
+                // Good to know country management
+                const goodToKnowContainer = document.getElementById('good-to-know-container');
+                let countryIndex = goodToKnowContainer.querySelectorAll('.country-info-item').length;
+
+                document.getElementById('add-country-info').addEventListener('click', function() {
+                    const newCountry = document.createElement('div');
+                    newCountry.className = 'country-info-item mb-4 pb-4 border-bottom';
+                    newCountry.dataset.index = countryIndex;
+                    newCountry.innerHTML = `
+                        <div class="row">
+                            <div class="col-lg-6 col-12">
+                                <div class="crancy__item-form--group mg-top-form-20">
+                                    <label class="crancy__item-label">{{ __('translate.Country Name') }}</label>
+                                    <input class="crancy__item-input" type="text" name="good_to_know[${countryIndex}][country]" placeholder="e.g. France">
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-12">
+                                <div class="crancy__item-form--group mg-top-form-20">
+                                    <label class="crancy__item-label">{{ __('translate.Currency') }}</label>
+                                    <input class="crancy__item-input" type="text" name="good_to_know[${countryIndex}][currency]" placeholder="e.g. Euro">
+                                </div>
+                            </div>
+                            <div class="col-lg-4 col-12">
+                                <div class="crancy__item-form--group mg-top-form-20">
+                                    <label class="crancy__item-label">{{ __('translate.Prises et adaptateurs') }}</label>
+                                    <input class="crancy__item-input" type="text" name="good_to_know[${countryIndex}][plugs]" placeholder="e.g. Type C, E">
+                                </div>
+                            </div>
+                            <div class="col-lg-4 col-12">
+                                <div class="crancy__item-form--group mg-top-form-20">
+                                    <label class="crancy__item-label">{{ __('translate.Vaccines') }}</label>
+                                    <input class="crancy__item-input" type="text" name="good_to_know[${countryIndex}][vaccines]" placeholder="e.g. Hepatite A">
+                                </div>
+                            </div>
+                            <div class="col-lg-4 col-12">
+                                <div class="crancy__item-form--group mg-top-form-20">
+                                    <label class="crancy__item-label">{{ __('translate.Payment Information') }}</label>
+                                    <input class="crancy__item-input" type="text" name="good_to_know[${countryIndex}][payment]" placeholder="e.g. Cards accepted">
+                                </div>
+                            </div>
+                            <div class="col-12 mg-top-20">
+                                <button type="button" class="crancy-btn btn-danger remove-country-info" style="background-color: #dc3545;">
+                                    <i class="fa fa-trash"></i> {{ __('translate.Remove') }}
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                    goodToKnowContainer.appendChild(newCountry);
+                    countryIndex++;
+                });
+
+                // Event delegation for remove buttons
+                goodToKnowContainer.addEventListener('click', function(e) {
+                    if (e.target.closest('.remove-country-info')) {
+                        const countryItem = e.target.closest('.country-info-item');
+                        countryItem.remove();
                     }
                 });
             });

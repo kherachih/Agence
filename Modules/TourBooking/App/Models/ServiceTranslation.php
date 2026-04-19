@@ -33,6 +33,7 @@ final class ServiceTranslation extends Model
         'rules',
         'safety',
         'cancellation_policy',
+        'good_to_know',
     ];
 
     /**
@@ -48,6 +49,7 @@ final class ServiceTranslation extends Model
         'rules' => 'json',
         'safety' => 'json',
         'cancellation_policy' => 'json',
+        'good_to_know' => 'json',
     ];
 
     /**

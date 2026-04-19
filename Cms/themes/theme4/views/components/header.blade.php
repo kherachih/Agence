@@ -111,6 +111,7 @@
                             </div>
                         </div>
                         <div class="tg-header-btn ml-30 d-none d-sm-block">
+                            @include('components.language_selector')
                             @guest('web')
                                 <a class="tg-btn-header" href="{{ route('user.login') }}">
                                     <span>

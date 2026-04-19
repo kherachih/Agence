@@ -57,6 +57,15 @@ class LoginController extends Controller
         ]);
     }
 
+    public function partner_login_page(){
+
+        $breadcrumb_title = trans('translate.Partner Login');
+
+        return view('auth.partner_login', [
+            'breadcrumb_title' => $breadcrumb_title,
+        ]);
+    }
+
     public function store_login(Request $request){
 
         $rules = [

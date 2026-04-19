@@ -1475,6 +1475,53 @@
                                             </div>
                                         </li>
                                     @endif
+
+                                    @if ($service?->age_range)
+                                        <li>
+                                            <span class="icon">
+                                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                    <path d="M12 12C14.2091 12 16 10.2091 16 8C16 5.79086 14.2091 4 12 4C9.79086 4 8 5.79086 8 8C8 10.2091 9.79086 12 12 12Z" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+                                                    <path d="M6 20C6 17.2386 8.68629 15 12 15C15.3137 15 18 17.2386 18 20" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+                                                </svg>
+                                            </span>
+                                            <div>
+                                                <span class="title">{{ __('translate.Age range') }}</span>
+                                                <span class="duration">{{ $service?->age_range }}</span>
+                                            </div>
+                                        </li>
+                                    @endif
+
+                                    @if ($service?->country)
+                                        <li>
+                                            <span class="icon">
+                                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                    <path d="M12 21C16.9706 21 21 16.9706 21 12C21 7.02944 16.9706 3 12 3C7.02944 3 3 7.02944 3 12C3 16.9706 7.02944 21 12 21Z" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+                                                    <path d="M3.6001 9H20.4001" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+                                                    <path d="M3.6001 15H20.4001" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+                                                    <path d="M12 3C14.5013 5.43825 15.9228 8.63056 16.0001 12C15.9228 15.3694 14.5013 18.5618 12 21C9.49881 18.5618 8.07725 15.3694 8.0001 12C8.07725 8.63056 9.49881 5.43825 12 3Z" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+                                                </svg>
+                                            </span>
+                                            <div>
+                                                <span class="title">{{ __('translate.Country') }}</span>
+                                                <span class="duration">{{ $service?->country }}</span>
+                                            </div>
+                                        </li>
+                                    @endif
+
+                                    @if ($service?->region)
+                                        <li>
+                                            <span class="icon">
+                                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                    <path d="M21 10C21 17 12 23 12 23C12 23 3 17 3 10C3 7.61305 3.94821 5.32387 5.63604 3.63604C7.32387 1.94821 9.61305 1 12 1C14.3869 1 16.6761 1.94821 18.364 3.63604C20.0518 5.32387 21 7.61305 21 10Z" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+                                                    <path d="M12 13C13.6569 13 15 11.6569 15 10C15 8.34315 13.6569 7 12 7C10.3431 7 9 8.34315 9 10C9 11.6569 10.3431 13 12 13Z" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+                                                </svg>
+                                            </span>
+                                            <div>
+                                                <span class="title">{{ __('translate.Region') }}</span>
+                                                <span class="duration">{{ $service?->region }}</span>
+                                            </div>
+                                        </li>
+                                    @endif
                                 </ul>
                             </div>
                         </div>
@@ -1522,57 +1569,50 @@
                                 @endif
 
                                 @if ($service?->included || $service?->excluded)
-                                <div class="tg-tour-about-inner mb-40">
-                                        <div class="row">
-                                            @if ($service?->included)
-                                                <div class="col-lg-6">
-                                                    <h4 class="tg-tour-about-title mb-20">{{ __('translate.Included') }}</h4>
-                                                    <div class="tg-tour-about-list  tg-tour-about-list-2">
-                                                        <ul>
-                                                            @foreach (json_decode($service?->included) as $key => $item)
-                                                                <li>
-                                                                    <span class="icon mr-10"><i
-                                                                            class="fa-sharp fa-solid fa-check fa-fw"></i></span>
-                                                                    <span class="text">{{ $item }}</span>
-                                                                </li>
-                                                            @endforeach
-                                                        </ul>
-                                                    </div>
+                                    <div class="tg-tour-about-inner mb-40">
+                                        @if ($service?->included)
+                                            <div class="mb-30">
+                                                <h4 class="tg-tour-about-title mb-20">{{ __('translate.Included') }}</h4>
+                                                <div class="tg-tour-about-list tg-tour-about-list-2">
+                                                    <ul>
+                                                        @foreach (json_decode($service?->included) as $key => $item)
+                                                            <li>
+                                                                <span class="icon mr-10" style="background: transparent; border: 1px solid #28a745; color: #28a745;"><i
+                                                                        class="fa-sharp fa-solid fa-check fa-fw"></i></span>
+                                                                <span class="text">{{ $item }}</span>
+                                                            </li>
+                                                        @endforeach
+                                                    </ul>
                                                 </div>
-                                            @endif
+                                            </div>
+                                        @endif
 
-                                            @if ($service?->excluded)
-                                                <div class="col-lg-6">
-                                                    <h4 class="tg-tour-about-title mb-20">{{ __('translate.Excluded') }}</h4>
-                                                    <div class="tg-tour-about-list tg-tour-about-list-2 disable">
-                                                        <ul>
-                                                            @foreach (json_decode($service?->excluded) as $key => $item)
-                                                                <li>
-                                                                    <span class="icon mr-10"><i
-                                                                            class="fa-sharp fa-solid fa-xmark"></i></span>
-                                                                    <span class="text">
-                                                                        {{ $item }}
-                                                                    </span>
-                                                                </li>
-                                                            @endforeach
-                                                        </ul>
-                                                    </div>
+                                        @if ($service?->excluded)
+                                            <div>
+                                                <h4 class="tg-tour-about-title mb-20">{{ __('translate.Excluded') }}</h4>
+                                                <div class="tg-tour-about-list tg-tour-about-list-2">
+                                                    <ul>
+                                                        @foreach (json_decode($service?->excluded) as $key => $item)
+                                                            <li>
+                                                                <span class="icon mr-10" style="background: transparent; border: 1px solid #dc3545; color: #dc3545;"><i
+                                                                        class="fa-sharp fa-solid fa-xmark"></i></span>
+                                                                <span class="text">
+                                                                    {{ $item }}
+                                                                </span>
+                                                            </li>
+                                                        @endforeach
+                                                    </ul>
                                                 </div>
-                                            @endif
-                                        </div>
+                                            </div>
+                                        @endif
                                     </div>
                                     <div class="tg-tour-about-border mb-40"></div>
                                 @endif
 
                                 <div class="tg-tour-faq-wrap mb-70">
                                     <div class="d-flex align-items-center mb-15">
-                                        @if ($service?->itineraries->count() > 0)
-                                            <a href="{{ route('front.tourbooking.services.download-tour-plan', $service->slug) }}" class="tg-btn tg-btn-switch-animation mr-30">
-                                                <i class="fa-solid fa-file-pdf mr-10"></i> {{ __('translate.Download PDF') }}
-                                            </a>
-                                        @endif
                                         <h4 class="tg-tour-about-title mb-0">
-                                            {{ __('translate.Tour Plan') }}
+                                            {{ __('translate.Description') }}
                                         </h4>
                                     </div>
 
@@ -1581,6 +1621,11 @@
                                             {{ $service?->tour_plan_sub_title }}
                                         </p>
                                     @endif
+
+                                    <h4 class="tg-tour-about-title mb-20">
+                                        {{ __('translate.Itinerary') }}
+                                    </h4>
+
                                     <div class="tg-tour-about-faq-inner">
                                         <div class="tg-tour-about-faq" id="accordionExample">
                                             @foreach ($service?->itineraries as $itinerary)
@@ -1895,6 +1940,108 @@
                             </div>
                         </div>
                         @endif
+
+                        @php
+                            $good_to_know = is_array($service->translation?->good_to_know ?? $service->good_to_know) 
+                                ? ($service->translation?->good_to_know ?? $service->good_to_know) 
+                                : json_decode($service->translation?->good_to_know ?? $service->good_to_know ?? '[]', true);
+                            
+                            // Filter out empty items
+                            if (is_array($good_to_know)) {
+                                $good_to_know = array_filter($good_to_know, function($item) {
+                                    return !empty($item['country']);
+                                });
+                            } else {
+                                $good_to_know = [];
+                            }
+                        @endphp
+
+                        @if(!empty($good_to_know))
+                            <div class="tg-tour-about-border mb-40"></div>
+                            <div class="tg-good-to-know-section mb-50">
+                                <h4 class="tg-tour-about-title mb-25">{{ __('translate.Good to know') }}</h4>
+                                <div class="good-to-know-container">
+                                    <div class="good-to-know-tabs-wrap">
+                                        <ul class="nav nav-tabs good-to-know-nav" id="gkTab" role="tablist">
+                                            <li class="nav-item" role="presentation">
+                                                <button class="nav-link active" id="currency-tab" data-bs-toggle="tab" data-bs-target="#currency-pane" type="button" role="tab" aria-controls="currency-pane" aria-selected="true">
+                                                    <div class="gk-tab-icon"><i class="fa-solid fa-money-bill-transfer"></i></div>
+                                                    <span>{{ __('translate.Currency') }}</span>
+                                                </button>
+                                            </li>
+                                            <li class="nav-item" role="presentation">
+                                                <button class="nav-link" id="plugs-tab" data-bs-toggle="tab" data-bs-target="#plugs-pane" type="button" role="tab" aria-controls="plugs-pane" aria-selected="false">
+                                                    <div class="gk-tab-icon"><i class="fa-solid fa-plug-circle-bolt"></i></div>
+                                                    <span>{{ __('translate.Prises et adaptateurs') }}</span>
+                                                </button>
+                                            </li>
+                                            <li class="nav-item" role="presentation">
+                                                <button class="nav-link" id="vaccines-tab" data-bs-toggle="tab" data-bs-target="#vaccines-pane" type="button" role="tab" aria-controls="vaccines-pane" aria-selected="false">
+                                                    <div class="gk-tab-icon"><i class="fa-solid fa-syringe"></i></div>
+                                                    <span>{{ __('translate.Vaccines') }}</span>
+                                                </button>
+                                            </li>
+                                            <li class="nav-item" role="presentation">
+                                                <button class="nav-link" id="payment-tab" data-bs-toggle="tab" data-bs-target="#payment-pane" type="button" role="tab" aria-controls="payment-pane" aria-selected="false">
+                                                    <div class="gk-tab-icon"><i class="fa-solid fa-credit-card"></i></div>
+                                                    <span>{{ __('translate.Payment Information') }}</span>
+                                                </button>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="tab-content gk-tab-content p-4" id="gkTabContent">
+                                        <div class="tab-pane fade show active" id="currency-pane" role="tabpanel" aria-labelledby="currency-tab" tabindex="0">
+                                            <div class="row g-4">
+                                                @foreach($good_to_know as $item)
+                                                    <div class="col-md-6">
+                                                        <div class="gk-info-card">
+                                                            <div class="gk-country-badge">{{ $item['country'] }}</div>
+                                                            <div class="gk-info-text">{{ $item['currency'] ?: __('translate.N/A') }}</div>
+                                                        </div>
+                                                    </div>
+                                                @endforeach
+                                            </div>
+                                        </div>
+                                        <div class="tab-pane fade" id="plugs-pane" role="tabpanel" aria-labelledby="plugs-tab" tabindex="0">
+                                            <div class="row g-4">
+                                                @foreach($good_to_know as $item)
+                                                    <div class="col-md-6">
+                                                        <div class="gk-info-card">
+                                                            <div class="gk-country-badge">{{ $item['country'] }}</div>
+                                                            <div class="gk-info-text">{{ $item['plugs'] ?: __('translate.N/A') }}</div>
+                                                        </div>
+                                                    </div>
+                                                @endforeach
+                                            </div>
+                                        </div>
+                                        <div class="tab-pane fade" id="vaccines-pane" role="tabpanel" aria-labelledby="vaccines-tab" tabindex="0">
+                                            <div class="row g-4">
+                                                @foreach($good_to_know as $item)
+                                                    <div class="col-md-6">
+                                                        <div class="gk-info-card">
+                                                            <div class="gk-country-badge">{{ $item['country'] }}</div>
+                                                            <div class="gk-info-text">{{ $item['vaccines'] ?: __('translate.N/A') }}</div>
+                                                        </div>
+                                                    </div>
+                                                @endforeach
+                                            </div>
+                                        </div>
+                                        <div class="tab-pane fade" id="payment-pane" role="tabpanel" aria-labelledby="payment-tab" tabindex="0">
+                                            <div class="row g-4">
+                                                @foreach($good_to_know as $item)
+                                                    <div class="col-md-6">
+                                                        <div class="gk-info-card">
+                                                            <div class="gk-country-badge">{{ $item['country'] }}</div>
+                                                            <div class="gk-info-text">{{ $item['payment'] ?: __('translate.N/A') }}</div>
+                                                        </div>
+                                                    </div>
+                                                @endforeach
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        @endif
                         
                     </div>
                     <div class="col-xl-3 col-lg-4 order-xl-2 order-1">
@@ -2173,6 +2320,11 @@
                                 <a href="{{ route('contact-us', ['service_id' => $service->id]) }}" class="tg-btn tg-btn-switch-animation w-100 text-center">
                                     {{ __('translate.Contact Us') }}
                                 </a>
+                                @if ($service?->itineraries->count() > 0)
+                                    <a href="{{ route('front.tourbooking.services.download-tour-plan', $service->slug) }}" class="tg-btn tg-btn-switch-animation w-100 text-center mt-3" style="background: #111;">
+                                        <i class="fa-solid fa-file-pdf mr-10"></i> {{ __('translate.Download PDF') }}
+                                    </a>
+                                @endif
                             </form>
                             </div>
                             

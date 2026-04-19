@@ -83,7 +83,7 @@ final class ServiceController extends Controller
         $data = $request->validated();
 
         // Handle JSON fields
-        $jsonFields = ['included', 'excluded', 'facilities', 'rules', 'safety', 'social_links'];
+        $jsonFields = ['included', 'excluded', 'facilities', 'rules', 'safety', 'social_links', 'good_to_know'];
         foreach ($jsonFields as $field) {
             if (isset($data[$field]) && is_array($data[$field])) {
                 $data[$field] = json_encode($data[$field]);
@@ -145,6 +145,7 @@ final class ServiceController extends Controller
                 'rules' => $data['rules'] ?? null,
                 'safety' => $data['safety'] ?? null,
                 'cancellation_policy' => $data['cancellation_policy'] ?? null,
+                'good_to_know' => $data['good_to_know'] ?? null,
             ]
         );
 
@@ -253,7 +254,7 @@ final class ServiceController extends Controller
         // Handle main service update only if we're editing in admin language
         if ($lang_code === admin_lang()) {
             // Handle JSON fields - convert newline-separated strings to arrays
-            $jsonFields = ['included', 'excluded', 'facilities', 'rules', 'safety', 'social_links'];
+            $jsonFields = ['included', 'excluded', 'facilities', 'rules', 'safety', 'social_links', 'good_to_know'];
             foreach ($jsonFields as $field) {
                 if (isset($data[$field])) {
                     if (is_string($data[$field])) {
@@ -322,7 +323,7 @@ final class ServiceController extends Controller
         ];
 
         // Add JSON fields to translation if they exist in request
-        $translationJsonFields = ['included', 'excluded', 'facilities', 'rules', 'safety', 'cancellation_policy'];
+        $translationJsonFields = ['included', 'excluded', 'facilities', 'rules', 'safety', 'cancellation_policy', 'good_to_know'];
         foreach ($translationJsonFields as $field) {
             if (isset($data[$field])) {
                 if (is_string($data[$field])) {

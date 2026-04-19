@@ -5,7 +5,7 @@
 <?php if($activePromotions->count() > 0): ?>
 
     
-    <?php if (! $__env->hasRenderedOnce('1fc3029e-b884-4a44-b62a-e4852a074c5e')): $__env->markAsRenderedOnce('1fc3029e-b884-4a44-b62a-e4852a074c5e'); ?>
+    <?php if (! $__env->hasRenderedOnce('fbb66057-853d-42b9-998f-0504bf5fa4d7')): $__env->markAsRenderedOnce('fbb66057-853d-42b9-998f-0504bf5fa4d7'); ?>
         <style>
             /* ═══════════════════════════════════════════════
                    PROMOTION BAR — marquee + multi-promotion
@@ -14,14 +14,14 @@
             /* Bar collante au sommet de la page */
             .tg-promo-bar {
                 width: 100%;
-                padding: 6px 0;
+                padding: 10px 0 !important;
                 font-size: 13px;
                 font-weight: 500;
                 display: flex;
                 align-items: center;
                 overflow: hidden;
-                background-color: #dc3545;
-                color: #ffffff;
+                background-color: #F8C6C6 !important;
+                color: #2d3436 !important;
                 transition: background-color 0.6s ease, color 0.6s ease;
                 /* On change de sticky à relative pour qu'elle soit AU-DESSUS du header flux */
                 position: relative;
@@ -120,7 +120,7 @@
                 flex: 1;
                 overflow: hidden;
                 position: relative;
-                height: 1.6em;
+                height: 2.2em;
             }
 
             /* Bande scrollante (une seule copie du texte) */
@@ -162,7 +162,7 @@
                 display: inline-flex;
                 align-items: center;
                 gap: 6px;
-                background: #BE3144;
+                background: #2d3436;
                 color: #ffffff !important;
                 padding: 2px 11px;
                 border-radius: 20px;
@@ -173,7 +173,7 @@
             }
 
             .tg-promo-bar:hover .tg-promo-bar__cta {
-                background: #be3144;
+                background: #2d3436;
             }
 
             /* Points de navigation */
@@ -197,7 +197,7 @@
             }
 
             .tg-promo-bar__dot.active {
-                background: #fff;
+                background: #2d3436;
                 transform: scale(1.35);
             }
 
@@ -229,8 +229,8 @@
             'message' => $p->message,
             'link_text' => $p->link_text ?? '',
             'link_url' => $p->link_url ?? '',
-            'bg' => $p->background_color ?? '#dc3545',
-            'color' => $p->text_color ?? '#ffffff',
+            'bg' => $p->background_color ?? '#F8C6C6',
+            'color' => $p->text_color ?? '#2d3436',
         ])->toJson()); ?>">
         
         <a class="tg-promo-bar__link" id="tg-promo-link" href="#" tabindex="-1" aria-hidden="true"></a>

@@ -87,6 +87,9 @@ class ServiceRequest extends FormRequest
             'excluded.*' => 'string|max:255', // Validate each item in the array
             'duration' => 'nullable|string|max:100',
             'group_size' => 'nullable|string|max:100',
+            'age_range' => 'nullable|string|max:100',
+            'country' => 'nullable|string|max:100',
+            'region' => 'nullable|string|max:100',
             'languages' => 'nullable|array',
             'check_in_time' => 'nullable|string|max:50',
             'check_out_time' => 'nullable|string|max:50',
@@ -118,6 +121,7 @@ class ServiceRequest extends FormRequest
             'tour_plan_sub_title' => 'nullable|max:255',
             'google_map_sub_title' => 'nullable|max:255',
             'google_map_url' => 'nullable',
+            'good_to_know' => 'nullable|array',
         ];
 
         if ($this->isMethod('POST')) {
