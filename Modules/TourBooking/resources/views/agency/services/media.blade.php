@@ -156,9 +156,10 @@
                                                                                 <div
                                                                                     class="crancy-product-card__upload crancy-product-card__upload--border">
                                                                                     <input type="file" class="btn-check"
-                                                                                        name="file" id="input-media"
+                                                                                        name="files[]" id="input-media"
                                                                                         autocomplete="off"
                                                                                         onchange="previewMedia(event)"
+                                                                                        multiple
                                                                                         required>
                                                                                     <label
                                                                                         class="crancy-image-video-upload__label"
@@ -376,8 +377,9 @@
             var uploadTitle = document.querySelector('.crancy-image-video-upload__title');
 
             if (files.length > 1) {
-                output.src = "{{ asset('admin/img/multiple-files-placeholder.jpg') }}";
-                uploadTitle.innerHTML = files.length + " {{ __('translate.files selected') }}";
+                // Show a generic multiple files icon or first file
+                output.src = "{{ asset('admin/img/img-placeholder.jpg') }}"; // Fallback to placeholder
+                uploadTitle.innerHTML = "<span class='crancy-primary-color'>" + files.length + "</span> {{ __('translate.files selected') }}";
             } else if (files.length === 1) {
                 var reader = new FileReader();
                 reader.onload = function() {
