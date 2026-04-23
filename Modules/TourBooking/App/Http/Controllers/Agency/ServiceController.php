@@ -320,7 +320,7 @@ final class ServiceController extends Controller
     /**
      * Upload and store media for a service.
      */
-    public function storeMedia(Request $request, Service $service): RedirectResponse
+    public function storeMedia(Request $request, Service $service): RedirectResponse|JsonResponse
     {
         if ($service->user_id !== auth()->user()->id) {
             abort(404);
@@ -331,29 +331,58 @@ final class ServiceController extends Controller
             'caption' => 'nullable|string|max:255',
         ]);
 
-        $file = $request->file('file');
-        $fileType = explode('/', $file->getMimeType())[0] === 'video' ? 'video' : 'image';
-        $fileName = $file->getClientOriginalName();
-        $filePath = $file->store('services/' . $service->id, 'public');
+        try {
+            $file = $request->file('file');
+            $fileType = explode('/', $file->getMimeType())[0] === 'video' ? 'video' : 'image';
+            $fileName = $file->getClientOriginalName();
+            
+            // Ensure directory exists with correct permissions
+            $path = 'services/' . $service->id;
+            if (!Storage::disk('public')->exists($path)) {
+                Storage::disk('public')->makeDirectory($path, 0755, true);
+            }
 
-        // Check if this is the first media item, set it as thumbnail if so
-        $isThumbnail = $service->media()->count() === 0;
+            $filePath = $file->store($path, 'public');
 
-        ServiceMedia::create([
-            'service_id' => $service->id,
-            'file_path' => $filePath,
-            'file_type' => $fileType,
-            'file_name' => $fileName,
-            'caption' => $request->caption,
-            'is_featured' => $isThumbnail,
-            'is_thumbnail' => $isThumbnail,
-            'display_order' => $service->media()->count() + 1,
-        ]);
+            // Check if this is the first media item, set it as thumbnail if so
+            $isThumbnail = $service->media()->count() === 0;
 
-        $notify_message = trans('translate.Media uploaded successfully');
-        $notify_message = array('message' => $notify_message, 'alert-type' => 'success');
+            ServiceMedia::create([
+                'service_id' => $service->id,
+                'file_path' => $filePath,
+                'file_type' => $fileType,
+                'file_name' => $fileName,
+                'caption' => $request->caption,
+                'is_featured' => $isThumbnail,
+                'is_thumbnail' => $isThumbnail,
+                'display_order' => $service->media()->count() + 1,
+            ]);
 
-        return back()->with($notify_message);
+            $notify_message = trans('translate.Media uploaded successfully');
+            
+            if ($request->ajax()) {
+                return response()->json([
+                    'success' => true,
+                    'message' => $notify_message,
+                    'alert-type' => 'success'
+                ]);
+            }
+
+            $notify_message = array('message' => $notify_message, 'alert-type' => 'success');
+            return back()->with($notify_message);
+
+        } catch (\Exception $e) {
+            if ($request->ajax()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => $e->getMessage(),
+                    'alert-type' => 'error'
+                ], 500);
+            }
+            
+            $notify_message = array('message' => $e->getMessage(), 'alert-type' => 'error');
+            return back()->with($notify_message);
+        }
     }
 
     /**

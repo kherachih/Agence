@@ -176,6 +176,14 @@
                                                                                 </div>
                                                                                 <small
                                                                                     class="form-text text-muted">{{ __('translate.Supported files: jpg, jpeg, png, gif, webp, mp4, avi, mov (Max: 10MB)') }}</small>
+                                                                                
+                                                                                <div id="upload-progress-container" class="mt-3" style="display:none;">
+                                                                                    <div class="progress" style="height: 20px;">
+                                                                                        <div id="upload-progress-bar" class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">0%</div>
+                                                                                    </div>
+                                                                                    <small id="upload-status" class="text-muted mt-1 d-block"></small>
+                                                                                </div>
+
                                                                                 @error('file')
                                                                                     <span
                                                                                         class="text-danger">{{ $message }}</span>
@@ -189,7 +197,7 @@
                                                                                 <label
                                                                                     class="crancy__item-label">{{ __('translate.Caption') }}</label>
                                                                                 <input class="crancy__item-input"
-                                                                                    type="text" name="caption"
+                                                                                    type="text" name="caption" id="media-caption"
                                                                                     value="{{ old('caption') }}">
                                                                                 @error('caption')
                                                                                     <span
@@ -197,7 +205,7 @@
                                                                                 @enderror
 
                                                                                 <div class="mg-top-30">
-                                                                                    <button type="submit"
+                                                                                    <button type="button" id="upload-btn"
                                                                                         class="crancy-btn">{{ __('translate.Upload Media') }}</button>
                                                                                 </div>
                                                                             </div>
@@ -210,6 +218,17 @@
                                                 </div>
                                             </div>
                                         </div>
+
+                                        @php
+                                            $storageLinkExists = file_exists(public_path('storage'));
+                                        @endphp
+                                        
+                                        @if(!$storageLinkExists)
+                                            <div class="alert alert-danger mg-top-30">
+                                                <i class="fa fa-exclamation-triangle"></i>
+                                                {{ __('translate.Storage link is missing. Images might not display correctly. Please run "php artisan storage:link" or contact support.') }}
+                                            </div>
+                                        @endif
 
                                         <div class="row mg-top-30">
                                             <div class="col-12">
@@ -225,15 +244,29 @@
                                                                         class="thumbnail-badge">{{ __('translate.Thumbnail') }}</span>
                                                                 @endif
 
+                                                                @php
+                                                                    $filePath = 'storage/' . $media->file_path;
+                                                                    $fileExists = file_exists(public_path($filePath));
+                                                                @endphp
+
                                                                 @if ($media->file_type == 'image')
-                                                                    <img src="{{ asset('storage/' . $media->file_path) }}"
-                                                                        alt="{{ $media->caption ?? $media->file_name }}">
+                                                                    @if($fileExists)
+                                                                        <img src="{{ asset($filePath) }}"
+                                                                            alt="{{ $media->caption ?? $media->file_name }}">
+                                                                    @else
+                                                                        <div class="bg-light d-flex align-items-center justify-content-center" style="height: 180px;">
+                                                                            <div class="text-center">
+                                                                                <i class="fa fa-image-slash fa-3x text-muted"></i>
+                                                                                <p class="small text-muted mt-2">{{ __('translate.File not found') }}</p>
+                                                                            </div>
+                                                                        </div>
+                                                                    @endif
                                                                     <span
                                                                         class="media-type-badge image">{{ __('translate.Image') }}</span>
                                                                 @else
                                                                     <video controls muted>
                                                                         <source
-                                                                            src="{{ asset('storage/' . $media->file_path) }}"
+                                                                            src="{{ asset($filePath) }}"
                                                                             type="video/mp4">
                                                                         {{ __('translate.Your browser does not support the video tag.') }}
                                                                     </video>
@@ -346,12 +379,76 @@
                 output.src = reader.result;
             }
 
-            if (file.type.includes('image/')) {
+            if (file && file.type.includes('image/')) {
                 reader.readAsDataURL(file);
-            } else if (file.type.includes('video/')) {
+            } else if (file && file.type.includes('video/')) {
                 // For video, we'll show a placeholder or video thumbnail
                 output.src = "{{ asset('admin/img/video-placeholder.jpg') }}";
             }
         };
+
+        document.getElementById('upload-btn').addEventListener('click', function() {
+            var fileInput = document.getElementById('input-media');
+            var captionInput = document.getElementById('media-caption');
+            var file = fileInput.files[0];
+            
+            if (!file) {
+                toastr.error("{{ __('translate.Please select a file') }}");
+                return;
+            }
+
+            var formData = new FormData();
+            formData.append('file', file);
+            formData.append('caption', captionInput.value);
+            formData.append('_token', '{{ csrf_token() }}');
+
+            var xhr = new XMLHttpRequest();
+            var progressBar = document.getElementById('upload-progress-bar');
+            var progressContainer = document.getElementById('upload-progress-container');
+            var statusText = document.getElementById('upload-status');
+            var uploadBtn = document.getElementById('upload-btn');
+
+            progressContainer.style.display = 'block';
+            uploadBtn.disabled = true;
+
+            xhr.upload.addEventListener('progress', function(e) {
+                if (e.lengthComputable) {
+                    var percentComplete = Math.round((e.loaded / e.total) * 100);
+                    progressBar.style.width = percentComplete + '%';
+                    progressBar.setAttribute('aria-valuenow', percentComplete);
+                    progressBar.innerHTML = percentComplete + '%';
+                    statusText.innerHTML = "{{ __('translate.Uploading...') }} " + percentComplete + '%';
+                }
+            });
+
+            xhr.addEventListener('load', function() {
+                if (xhr.status == 200 || xhr.status == 302) {
+                    statusText.innerHTML = "{{ __('translate.Success! Refreshing...') }}";
+                    toastr.success("{{ __('translate.Media uploaded successfully') }}");
+                    setTimeout(function() {
+                        window.location.reload();
+                    }, 1000);
+                } else {
+                    var errorMsg = "{{ __('translate.Upload failed') }}";
+                    try {
+                        var response = JSON.parse(xhr.responseText);
+                        if (response.message) errorMsg = response.message;
+                    } catch (e) {}
+                    
+                    toastr.error(errorMsg);
+                    statusText.innerHTML = errorMsg;
+                    uploadBtn.disabled = false;
+                }
+            });
+
+            xhr.addEventListener('error', function() {
+                toastr.error("{{ __('translate.Upload failed due to a network error') }}");
+                uploadBtn.disabled = false;
+            });
+
+            xhr.open('POST', "{{ route('agency.tourbooking.services.media.store', $service->id) }}", true);
+            xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+            xhr.send(formData);
+        });
     </script>
 @endpush

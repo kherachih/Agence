@@ -1,8 +1,8 @@
-<div class="tg-header-lang-wrapper ml-15 d-none d-sm-flex align-items-center">
+<div class="tg-header-lang-wrapper ml-15 mr-15 d-none d-sm-flex align-items-center">
     <div class="header-lang-icon" style="color: inherit; opacity: 0.9; font-size: 16px;">
         <i class="fas fa-globe"></i>
     </div>
-    <select class="language_code select header-lang-select" name="language_code">
+    <select class="language_code select header-lang-select" name="language_code" onchange="window.location.href = '<?php echo e(route('language-switcher')); ?>' + '?lang_code=' + this.value">
         <?php $__currentLoopData = $language_list ?? []; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $lang): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
             <option value="<?php echo e($lang->lang_code); ?>" <?php echo e(session('front_lang') == $lang->lang_code ? 'selected' : ''); ?>>
                 <?php echo e(strtoupper($lang->lang_code)); ?>
@@ -66,6 +66,7 @@
         left: 50% !important;
         transform: translateX(-50%) !important;
         overflow: hidden;
+        z-index: 9999 !important;
     }
     .header-lang-select.nice-select .option {
         padding: 10px 15px !important;
