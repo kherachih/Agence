@@ -371,34 +371,41 @@
 @push('js_section')
     <script>
         function previewMedia(event) {
-            var file = event.target.files[0];
-            var reader = new FileReader();
+            var files = event.target.files;
             var output = document.getElementById('view_media');
+            var uploadTitle = document.querySelector('.crancy-image-video-upload__title');
 
-            reader.onload = function() {
-                output.src = reader.result;
-            }
-
-            if (file && file.type.includes('image/')) {
-                reader.readAsDataURL(file);
-            } else if (file && file.type.includes('video/')) {
-                // For video, we'll show a placeholder or video thumbnail
-                output.src = "{{ asset('admin/img/video-placeholder.jpg') }}";
+            if (files.length > 1) {
+                output.src = "{{ asset('admin/img/multiple-files-placeholder.jpg') }}";
+                uploadTitle.innerHTML = files.length + " {{ __('translate.files selected') }}";
+            } else if (files.length === 1) {
+                var reader = new FileReader();
+                reader.onload = function() {
+                    output.src = reader.result;
+                }
+                if (files[0].type.includes('image/')) {
+                    reader.readAsDataURL(files[0]);
+                } else {
+                    output.src = "{{ asset('admin/img/video-placeholder.jpg') }}";
+                }
+                uploadTitle.innerHTML = "{{ __('translate.Click here to') }} <span class='crancy-primary-color'>{{ __('translate.Choose File') }}</span> {{ __('translate.and upload') }}";
             }
         };
 
         document.getElementById('upload-btn').addEventListener('click', function() {
             var fileInput = document.getElementById('input-media');
             var captionInput = document.getElementById('media-caption');
-            var file = fileInput.files[0];
+            var files = fileInput.files;
             
-            if (!file) {
-                toastr.error("{{ __('translate.Please select a file') }}");
+            if (files.length === 0) {
+                toastr.error("{{ __('translate.Please select at least one file') }}");
                 return;
             }
 
             var formData = new FormData();
-            formData.append('file', file);
+            for (var i = 0; i < files.length; i++) {
+                formData.append('files[]', files[i]);
+            }
             formData.append('caption', captionInput.value);
             formData.append('_token', '{{ csrf_token() }}');
 

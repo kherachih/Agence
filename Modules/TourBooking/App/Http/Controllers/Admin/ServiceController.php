@@ -387,40 +387,47 @@ final class ServiceController extends Controller
     public function storeMedia(Request $request, Service $service): RedirectResponse|JsonResponse
     {
         $request->validate([
-            'file' => 'required|file|mimes:jpeg,png,jpg,gif,webp,mp4,avi,mov|max:10240',
+            'files' => 'required|array',
+            'files.*' => 'required|file|mimes:jpeg,png,jpg,gif,webp,mp4,avi,mov|max:10240',
             'caption' => 'nullable|string|max:255',
         ]);
 
         try {
-            $file = $request->file('file');
-            $fileType = explode('/', $file->getMimeType())[0] === 'video' ? 'video' : 'image';
-            $fileName = $file->getClientOriginalName();
-            
-            // Ensure directory exists in public/storage/services
-            $path = 'services/' . $service->id;
-            $uploadPath = public_path('storage/' . $path);
-            
-            if (!file_exists($uploadPath)) {
-                mkdir($uploadPath, 0755, true);
+            $files = $request->file('files');
+            $uploadedCount = 0;
+
+            foreach ($files as $file) {
+                $fileType = explode('/', $file->getMimeType())[0] === 'video' ? 'video' : 'image';
+                $fileName = $file->getClientOriginalName();
+                
+                // Ensure directory exists in public/storage/services
+                $path = 'services/' . $service->id;
+                $uploadPath = public_path('storage/' . $path);
+                
+                if (!file_exists($uploadPath)) {
+                    mkdir($uploadPath, 0755, true);
+                }
+
+                $hashedName = $file->hashName();
+                $file->move($uploadPath, $hashedName);
+                $filePath = $path . '/' . $hashedName;
+
+                // Check if this is first media item, set it as thumbnail if so
+                $isThumbnail = ($service->media()->count() === 0 && $uploadedCount === 0);
+
+                ServiceMedia::create([
+                    'service_id' => $service->id,
+                    'file_path' => $filePath,
+                    'file_type' => $fileType,
+                    'file_name' => $fileName,
+                    'caption' => $request->caption,
+                    'is_featured' => $isThumbnail,
+                    'is_thumbnail' => $isThumbnail,
+                    'display_order' => $service->media()->count() + 1,
+                ]);
+
+                $uploadedCount++;
             }
-
-            $hashedName = $file->hashName();
-            $file->move($uploadPath, $hashedName);
-            $filePath = $path . '/' . $hashedName;
-
-            // Check if this is first media item, set it as thumbnail if so
-            $isThumbnail = $service->media()->count() === 0;
-
-            ServiceMedia::create([
-                'service_id' => $service->id,
-                'file_path' => $filePath,
-                'file_type' => $fileType,
-                'file_name' => $fileName,
-                'caption' => $request->caption,
-                'is_featured' => $isThumbnail,
-                'is_thumbnail' => $isThumbnail,
-                'display_order' => $service->media()->count() + 1,
-            ]);
 
             $notify_message = trans('translate.Media uploaded successfully');
             
