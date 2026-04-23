@@ -244,15 +244,15 @@
                                                                         class="thumbnail-badge">{{ __('translate.Thumbnail') }}</span>
                                                                 @endif
 
-                                                                @php
-                                                                    $filePath = 'storage/' . $media->file_path;
-                                                                    $fileExists = file_exists(public_path($filePath));
-                                                                @endphp
-
                                                                 @if ($media->file_type == 'image')
-                                                                    @if($fileExists)
-                                                                        <img src="{{ asset($filePath) }}"
+                                                                    @if($media->file_exists)
+                                                                        <img src="{{ $media->url }}"
                                                                             alt="{{ $media->caption ?? $media->file_name }}">
+                                                                        @if($media->is_link_broken)
+                                                                            <div class="alert alert-warning p-1 small mt-1">
+                                                                                <i class="fa fa-link-slash"></i> {{ __('translate.File exists but public link is broken') }}
+                                                                            </div>
+                                                                        @endif
                                                                     @else
                                                                         <div class="bg-light d-flex align-items-center justify-content-center" style="height: 180px;">
                                                                             <div class="text-center">
@@ -266,7 +266,7 @@
                                                                 @else
                                                                     <video controls muted>
                                                                         <source
-                                                                            src="{{ asset($filePath) }}"
+                                                                            src="{{ $media->url }}"
                                                                             type="video/mp4">
                                                                         {{ __('translate.Your browser does not support the video tag.') }}
                                                                     </video>

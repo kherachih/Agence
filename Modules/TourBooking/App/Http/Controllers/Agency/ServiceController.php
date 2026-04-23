@@ -336,13 +336,17 @@ final class ServiceController extends Controller
             $fileType = explode('/', $file->getMimeType())[0] === 'video' ? 'video' : 'image';
             $fileName = $file->getClientOriginalName();
             
-            // Ensure directory exists with correct permissions
+            // Ensure directory exists in public/storage/services
             $path = 'services/' . $service->id;
-            if (!Storage::disk('public')->exists($path)) {
-                Storage::disk('public')->makeDirectory($path, 0755, true);
+            $uploadPath = public_path('storage/' . $path);
+            
+            if (!file_exists($uploadPath)) {
+                mkdir($uploadPath, 0755, true);
             }
 
-            $filePath = $file->store($path, 'public');
+            $hashedName = $file->hashName();
+            $file->move($uploadPath, $hashedName);
+            $filePath = $path . '/' . $hashedName;
 
             // Check if this is the first media item, set it as thumbnail if so
             $isThumbnail = $service->media()->count() === 0;

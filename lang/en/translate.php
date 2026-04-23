@@ -2051,4 +2051,5 @@ return array(
   'Prises et adaptateurs' => 'Plugs & Adapters',
   'Vaccines' => 'Vaccines',
   'Add Country Info' => 'Add Country Info',
+  'File not found' => 'File not found',
 );

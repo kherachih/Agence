@@ -78,4 +78,43 @@ final class ServiceMedia extends Model
     {
         return $query->where('is_thumbnail', true);
     }
-} 
+
+    /**
+     * Get the full URL of the media file.
+     */
+    public function getUrlAttribute(): string
+    {
+        if ($this->file_path && file_exists(public_path('uploads/' . $this->file_path))) {
+            return asset('uploads/' . $this->file_path);
+        }
+        
+        return asset('storage/' . $this->file_path);
+    }
+
+    /**
+     * Check if the file exists on disk (in any common location).
+     */
+    public function getFileExistsAttribute(): bool
+    {
+        if (!$this->file_path) return false;
+        
+        return file_exists(public_path('uploads/' . $this->file_path)) || 
+               file_exists(public_path('storage/' . $this->file_path)) ||
+               file_exists(storage_path('app/public/' . $this->file_path));
+    }
+
+    /**
+     * Check if the file exists in storage but is missing the public link.
+     */
+    public function getIsLinkBrokenAttribute(): bool
+    {
+        if (!$this->file_path) return false;
+
+        $existsInStorage = file_exists(storage_path('app/public/' . $this->file_path));
+        $existsInPublic = file_exists(public_path('storage/' . $this->file_path));
+        $existsInUploads = file_exists(public_path('uploads/' . $this->file_path));
+
+        return $existsInStorage && !$existsInPublic && !$existsInUploads;
+    }
+}
+ 
