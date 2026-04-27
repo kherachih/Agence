@@ -51,6 +51,7 @@ Route::group(['as' => 'admin.tourbooking.', 'prefix' => 'admin/tourbooking', 'mi
 
     // Service Media
     Route::post('services/{service}/media', [ServiceController::class, 'storeMedia'])->name('services.media.store');
+    Route::delete('services/media/bulk-destroy', [ServiceController::class, 'bulkDeleteMedia'])->name('services.media.bulk-destroy');
     Route::delete('services/media/{media}', [ServiceController::class, 'deleteMedia'])->name('services.media.destroy');
     Route::post('services/media/{media}/set-thumbnail', [ServiceController::class, 'setThumbnail'])->name('services.media.set-thumbnail');
     Route::get('services/{service}/media', [ServiceController::class, 'showMedia'])->name('services.media');
@@ -134,6 +135,7 @@ Route::group(['as' => 'agency.tourbooking.', 'prefix' => 'agency/tourbooking', '
 
     // Service Media
     Route::post('services/{service}/media', [AgencyServiceController::class, 'storeMedia'])->name('services.media.store');
+    Route::delete('services/media/bulk-destroy', [AgencyServiceController::class, 'bulkDeleteMedia'])->name('services.media.bulk-destroy');
     Route::delete('services/media/{media}', [AgencyServiceController::class, 'deleteMedia'])->name('services.media.destroy');
     Route::post('services/media/{media}/set-thumbnail', [AgencyServiceController::class, 'setThumbnail'])->name('services.media.set-thumbnail');
     Route::get('services/{service}/media', [AgencyServiceController::class, 'showMedia'])->name('services.media');

@@ -81,7 +81,9 @@ final class Service extends Model
         'tour_plan_sub_title',
         'google_map_sub_title',
         'google_map_url',
+        'map_image',
         'good_to_know',
+        'guaranteed_departure',
     ];
 
     /**
@@ -118,6 +120,7 @@ final class Service extends Model
         'status' => 'boolean',
         'is_new' => 'boolean',
         'good_to_know' => 'json',
+        'guaranteed_departure' => 'boolean',
     ];
 
     /**
@@ -229,6 +232,14 @@ final class Service extends Model
     public function hotels()
     {
         return $this->belongsToMany(Service::class, 'tour_hotels', 'tour_id', 'hotel_id');
+    }
+
+    /**
+     * Get destinations for this service.
+     */
+    public function destinations()
+    {
+        return $this->belongsToMany(Destination::class, 'service_destinations', 'service_id', 'destination_id');
     }
 
     /**

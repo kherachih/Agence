@@ -52,9 +52,9 @@ final class RoomType extends Model
     {
         return match($this->type) {
             'single' => 'Single Room',
-            'double' => 'Double Room',
+            'double' => 'Double Room / Twin',
             'triple' => 'Triple Room',
-            'double_shared' => 'Double Room (Shared)',
+            'double_shared' => 'Double Room / Twin (Shared)',
             default => ucfirst($this->type),
         };
     }

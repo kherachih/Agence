@@ -35,6 +35,14 @@
                                     </span>
                                 @endif
 
+                                @if ($service?->guaranteed_departure == 1)
+                                    <span class="tg-listing-item-price-discount shape-4"
+                                        style="position: absolute; top: 10px; left: 10px; z-index: 5; background-color: #28a745; color: white; padding: 2px 10px; border-radius: 4px; font-size: 11px; display: flex; align-items: center; gap: 5px;">
+                                        <i class="fa fa-check-circle"></i>
+                                        {{ __('translate.Guaranteed Departure') }}
+                                    </span>
+                                @endif
+
                             </a>
                         </div>
                         <div class="tg-listing-card-content mb-15 p-relative">

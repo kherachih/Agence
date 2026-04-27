@@ -257,5 +257,9 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin'], function () {
                 Route::get('/logout', 'logout')->name('logout');
             });
         });
+
+        // Admin Management
+        Route::resource('admin-management', App\Http\Controllers\Admin\AdminController::class);
+
     });
 });

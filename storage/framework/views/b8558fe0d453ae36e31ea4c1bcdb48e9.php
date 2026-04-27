@@ -54,7 +54,7 @@
                 </a>
             </li>
 
-            <?php if(\App\Models\MenuVisibilitySetting::isMenuEnabled('manage_withdraw')): ?>
+            <?php if(\App\Models\MenuVisibilitySetting::isMenuEnabled('manage_withdraw') && auth('admin')->user()->admin_type == 'super_admin'): ?>
                 <li
                     class="<?php echo e(Route::is('admin.withdraw-methods.*') || Route::is('admin.withdraw-list.*') ? 'active' : ''); ?>">
                     <a href="#!" class="collapsed" data-bs-toggle="collapse"
@@ -383,6 +383,24 @@
 
             <h4 class="admin-menu__title pt-2"><?php echo e(__('translate.Team & Users')); ?></h4>
 
+            <?php if(auth('admin')->user()->admin_type == 'super_admin'): ?>
+                <li class="<?php echo e(Route::is('admin.admin-management.*') ? 'active' : ''); ?>">
+                    <a class="collapsed" href="<?php echo e(route('admin.admin-management.index')); ?>">
+                        <span class="menu-bar__text">
+                            <span class="crancy-menu-icon crancy-svg-icon__v1">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M16 21V19C16 17.9391 15.5786 17.0217 14.8284 16.2716C14.0783 15.5214 13.1609 15.1 12.1 15.1H7.9C6.83913 15.1 5.92172 15.5214 5.17157 16.2716C4.42143 17.0217 4 17.9391 4 19V21" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M10 11C12.2091 11 14 9.20914 14 7C14 4.79086 12.2091 3 10 3C7.79086 3 6 4.79086 6 7C6 9.20914 7.79086 11 10 11Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M18 8V14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M21 11H15" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </span>
+                            <span class="menu-bar__name"><?php echo e(__('translate.Manage Admin')); ?></span>
+                        </span>
+                    </a>
+                </li>
+            <?php endif; ?>
+
             <?php if(\App\Models\MenuVisibilitySetting::isMenuEnabled('manage_team')): ?>
                 <li class="<?php echo e(Route::is('admin.team.*') ? 'active' : ''); ?>">
                     <a class="collapsed" href="<?php echo e(route('admin.team.index')); ?>">
@@ -650,9 +668,12 @@
                         </li>
                         <?php endif; ?>
                       
+                        <?php if(auth('admin')->user()->admin_type === 'super_admin'): ?>
                         <h4 class="admin-menu__title pt-4"><?php echo e(__('translate.Setting & Configuration')); ?></h4>
+                        <?php endif; ?>
 
 
+            <?php if(auth('admin')->user()->admin_type === 'super_admin'): ?>
             <?php if(\App\Models\MenuVisibilitySetting::isMenuEnabled('general_setting')): ?>
                 <li class="<?php echo e(Route::is('admin.general-setting') ? 'active' : ''); ?>"><a class="collapsed"
                         href="<?php echo e(route('admin.general-setting')); ?>"><span class="menu-bar__text">
@@ -907,7 +928,7 @@
                     </a>
                 </li>
             <?php endif; ?>
-
+            <?php endif; ?>
         </ul>
     </div>
     <!-- End Nav Menu -->
@@ -915,10 +936,13 @@
 
 
 <div class="crancy-sidebar-padding pd-btm-40 pb-btm2">
+    <?php if(auth('admin')->user()->admin_type === 'super_admin'): ?>
     <h4 class="admin-menu__title"><?php echo e(__('translate.Others')); ?></h4>
+    <?php endif; ?>
     <!-- Nav Menu -->
     <div class="menu-bar">
         <ul class="menu-bar__one crancy-dashboard-menu" id="CrancyMenu">
+            <?php if(auth('admin')->user()->admin_type === 'super_admin'): ?>
             <?php if(\App\Models\MenuVisibilitySetting::isMenuEnabled('newsletter')): ?>
                 <li class="<?php echo e(Route::is('admin.newsletter-list') || Route::is('admin.newsletter-email') ? 'active' : ''); ?>">
                     <a href="#!" class="collapsed" data-bs-toggle="collapse"
@@ -984,6 +1008,7 @@
                         </span>
                         <span class="menu-bar__name"><?php echo e(__('translate.Development')); ?></span></span></a>
             </li>
+            <?php endif; ?>
 
             <li><a href="javascript:;" onclick="event.preventDefault();
                 document.getElementById('admin-sidebar-logout').submit();" class="collapsed"><span

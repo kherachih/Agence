@@ -29,6 +29,14 @@
                                     </span>
                                 @endif
 
+                                @if ($service?->guaranteed_departure == 1)
+                                    <span class="tg-listing-item-price-discount shape-4"
+                                        style="position: absolute; top: 10px; left: 10px; z-index: 5; background-color: #28a745; color: white; padding: 2px 10px; border-radius: 4px; font-size: 11px; display: flex; align-items: center; gap: 5px;">
+                                        <i class="fa fa-check-circle"></i>
+                                        {{ __('translate.Guaranteed Departure') }}
+                                    </span>
+                                @endif
+
                                 @if ($service?->adult_discount_percentage > 0)
                                     <span class="badge bg-danger position-absolute top-0 end-0 m-3"
                                         style="z-index: 10; font-size: 14px; padding: 8px 12px;">

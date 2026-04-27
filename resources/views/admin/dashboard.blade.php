@@ -19,6 +19,7 @@
                         <!-- Dashboard Inner -->
                         <div class="crancy-dsinner">
                             <div class="row">
+                                @if(auth('admin')->user()->admin_type == 'super_admin')
                                 <div class="col-xxl-3 col-md-6 col-12 mg-top-30">
                                     <div class="crancy-ecom-card crancy-ecom-card__v2">
                                         <div class="flex-main">
@@ -101,6 +102,7 @@
                                         </div>
                                     </div>
                                 </div>
+                                @endif
 
                                 <div class="col-xxl-3 col-md-6 col-12 mg-top-30">
                                     <div class="crancy-ecom-card crancy-ecom-card__v2">
@@ -130,6 +132,7 @@
 
                             </div>
 
+                            @if(auth('admin')->user()->admin_type == 'super_admin')
                             <div class="row crancy-gap-30">
                                 <div class="col-12">
                                     <!-- Charts One -->
@@ -154,6 +157,7 @@
                                     <!-- End Charts One -->
                                 </div>
                             </div>
+                            @endif
 
                             <div class="crancy-table crancy-table--v3 mg-top-30">
 
@@ -277,95 +281,98 @@
         date_lable = JSON.parse(date_lable);
 
         // Chart Three
-        const ctx_myChart_recent_statics = document.getElementById('myChart_recent_statics').getContext('2d');
-        const gradientBgs = ctx_myChart_recent_statics.createLinearGradient(400, 100, 100, 400);
+        const chartElement = document.getElementById('myChart_recent_statics');
+        if (chartElement) {
+            const ctx_myChart_recent_statics = chartElement.getContext('2d');
+            const gradientBgs = ctx_myChart_recent_statics.createLinearGradient(400, 100, 100, 400);
 
-        gradientBgs.addColorStop(0, 'rgba(100, 64, 251, 0.1');
-        gradientBgs.addColorStop(1, 'rgba(100, 64, 251, 0.5)');
+            gradientBgs.addColorStop(0, 'rgba(100, 64, 251, 0.1');
+            gradientBgs.addColorStop(1, 'rgba(100, 64, 251, 0.5)');
 
-        const myChart_recent_statics = new Chart(ctx_myChart_recent_statics, {
-            type: 'line',
+            const myChart_recent_statics = new Chart(ctx_myChart_recent_statics, {
+                type: 'line',
 
-            data: {
+                data: {
 
-                labels: date_lable,
-                datasets: [{
-                    label: 'Sells',
-                    data: purchase_data,
-                    backgroundColor: gradientBgs,
-                    borderColor: '#6440FBFF',
-                    borderWidth: 3,
-                    fill: true,
-                    tension: 0.4,
-                    fillColor: '#fff',
-                    fill: 'start',
-                    pointRadius: 2,
-                }]
-            },
-
-            options: {
-                maintainAspectRatio: false,
-                responsive: true,
-                scales: {
-                    x: {
-                        ticks: {
-                            color: '#6440FBFF',
-                        },
-                        grid: {
-                            display: false,
-                            drawBorder: false,
-                            color: '#E6F3FF',
-                        },
-                        suggestedMax: 100,
-                        suggestedMin: 50,
-
-                    },
-                    y: {
-                        ticks: {
-                            color: '#6440FBFF',
-                            callback: function(value, index, values) {
-                                return (value / 10) * 10 + '$';
-                            }
-                        },
-                        grid: {
-                            drawBorder: false,
-                            color: '#D7DCE7',
-                            borderDash: [5, 5]
-                        },
-                    },
+                    labels: date_lable,
+                    datasets: [{
+                        label: 'Sells',
+                        data: purchase_data,
+                        backgroundColor: gradientBgs,
+                        borderColor: '#6440FBFF',
+                        borderWidth: 3,
+                        fill: true,
+                        tension: 0.4,
+                        fillColor: '#fff',
+                        fill: 'start',
+                        pointRadius: 2,
+                    }]
                 },
-                plugins: {
-                    tooltip: {
-                        padding: 10,
-                        displayColors: true,
-                        yAlign: 'bottom',
-                        backgroundColor: '#fff',
-                        titleColor: '#000',
-                        titleFont: {
-                            weight: 'normal'
+
+                options: {
+                    maintainAspectRatio: false,
+                    responsive: true,
+                    scales: {
+                        x: {
+                            ticks: {
+                                color: '#6440FBFF',
+                            },
+                            grid: {
+                                display: false,
+                                drawBorder: false,
+                                color: '#E6F3FF',
+                            },
+                            suggestedMax: 100,
+                            suggestedMin: 50,
+
                         },
-                        bodyColor: '#2F3032',
-                        cornerRadius: 12,
-                        boxPadding: 3,
-                        usePointStyle: true,
-                        borderWidth: 0,
-                        font: {
-                            size: 14
+                        y: {
+                            ticks: {
+                                color: '#6440FBFF',
+                                callback: function(value, index, values) {
+                                    return (value / 10) * 10 + '$';
+                                }
+                            },
+                            grid: {
+                                drawBorder: false,
+                                color: '#D7DCE7',
+                                borderDash: [5, 5]
+                            },
                         },
-                        caretSize: 9,
-                        bodySpacing: 100,
                     },
-                    legend: {
-                        position: 'bottom',
-                        display: false,
-                    },
-                    title: {
-                        display: false,
-                        text: "{{ __('translate.Purchase History') }}"
+                    plugins: {
+                        tooltip: {
+                            padding: 10,
+                            displayColors: true,
+                            yAlign: 'bottom',
+                            backgroundColor: '#fff',
+                            titleColor: '#000',
+                            titleFont: {
+                                weight: 'normal'
+                            },
+                            bodyColor: '#2F3032',
+                            cornerRadius: 12,
+                            boxPadding: 3,
+                            usePointStyle: true,
+                            borderWidth: 0,
+                            font: {
+                                size: 14
+                            },
+                            caretSize: 9,
+                            bodySpacing: 100,
+                        },
+                        legend: {
+                            position: 'bottom',
+                            display: false,
+                        },
+                        title: {
+                            display: false,
+                            text: "{{ __('translate.Purchase History') }}"
+                        }
                     }
                 }
-            }
-        });
+            });
+        }
 
         function itemDeleteConfrimation(id) {
             $("#item_delect_confirmation").attr("action", '{{ url('admin/course-enrollment-delete/') }}' + "/" + id)

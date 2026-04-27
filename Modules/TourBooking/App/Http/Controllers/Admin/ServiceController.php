@@ -91,7 +91,7 @@ final class ServiceController extends Controller
         }
 
         // Convert checkbox values
-        $booleanFields = ['deposit_required', 'is_featured', 'is_popular', 'show_on_homepage', 'status', 'is_new'];
+        $booleanFields = ['deposit_required', 'is_featured', 'is_popular', 'show_on_homepage', 'status', 'is_new', 'guaranteed_departure'];
         foreach ($booleanFields as $field) {
             $data[$field] = isset($data[$field]) ? true : false;
         }
@@ -106,6 +106,19 @@ final class ServiceController extends Controller
             $meta = $data['meta'] ?? [];
             $meta['daily_itinerary'] = $request->input('daily_itinerary');
             $data['meta'] = $meta;
+        }
+
+        // Handle map image upload
+        if ($request->hasFile('map_image')) {
+            $file = $request->file('map_image');
+            $path = 'services/maps';
+            $uploadPath = public_path('storage/' . $path);
+            if (!file_exists($uploadPath)) {
+                mkdir($uploadPath, 0755, true);
+            }
+            $fileName = time() . '_' . $file->getClientOriginalName();
+            $file->move($uploadPath, $fileName);
+            $data['map_image'] = $path . '/' . $fileName;
         }
 
         // Save service
@@ -153,6 +166,10 @@ final class ServiceController extends Controller
             $service->hotels()->sync($request->hotels);
         }
 
+        if ($request->has('destination_ids')) {
+            $service->destinations()->sync($request->destination_ids);
+        }
+
         $notify_message = trans('translate.Created successfully');
         $notify_message = array('message' => $notify_message, 'alert-type' => 'success');
 
@@ -164,7 +181,7 @@ final class ServiceController extends Controller
      */
     public function show(Service $service): View
     {
-        $service->load(['translation', 'serviceType', 'destination', 'thumbnail', 'media', 'extraCharges', 'availabilities', 'itineraries']);
+        $service->load(['translation', 'serviceType', 'destination', 'destinations', 'thumbnail', 'media', 'extraCharges', 'availabilities', 'itineraries']);
 
         return view('tourbooking::admin.services.show', compact('service'));
     }
@@ -186,7 +203,8 @@ final class ServiceController extends Controller
             'itineraries' => function ($query) {
                 $query->orderBy('day_number');
             },
-            'hotels'
+            'hotels',
+            'destinations'
         ]);
 
         $translation = ServiceTranslation::where([
@@ -195,7 +213,7 @@ final class ServiceController extends Controller
         ])->first();
 
         // Convert JSON fields back to newline-separated strings for textarea display
-        $jsonFields = ['included', 'excluded', 'facilities', 'rules', 'safety'];
+        $jsonFields = ['facilities', 'rules', 'safety'];
 
         foreach ($jsonFields as $field) {
             // Check translation first, then service
@@ -278,12 +296,30 @@ final class ServiceController extends Controller
             }
 
             // Convert checkbox values
-            $booleanFields = ['deposit_required', 'is_featured', 'is_popular', 'show_on_homepage', 'status', 'is_new'];
+            $booleanFields = ['deposit_required', 'is_featured', 'is_popular', 'show_on_homepage', 'status', 'is_new', 'guaranteed_departure'];
             foreach ($booleanFields as $field) {
                 $data[$field] = isset($data[$field]) ? true : false;
             }
 
             $data['languages'] = $request->languages ?? [];
+
+            // Handle map image upload
+            if ($request->hasFile('map_image')) {
+                // Delete old image if exists
+                if ($service->map_image && file_exists(public_path('storage/' . $service->map_image))) {
+                    unlink(public_path('storage/' . $service->map_image));
+                }
+
+                $file = $request->file('map_image');
+                $path = 'services/maps';
+                $uploadPath = public_path('storage/' . $path);
+                if (!file_exists($uploadPath)) {
+                    mkdir($uploadPath, 0755, true);
+                }
+                $fileName = time() . '_' . $file->getClientOriginalName();
+                $file->move($uploadPath, $fileName);
+                $data['map_image'] = $path . '/' . $fileName;
+            }
 
             // Update service
             $this->serviceRepository->update($service, $data);
@@ -355,6 +391,10 @@ final class ServiceController extends Controller
 
         if ($lang_code === admin_lang() && $request->has('hotels')) {
             $service->hotels()->sync($request->hotels);
+        }
+
+        if ($lang_code === admin_lang() && $request->has('destination_ids')) {
+            $service->destinations()->sync($request->destination_ids);
         }
 
         $notify_message = trans('translate.Updated successfully');
@@ -482,6 +522,50 @@ final class ServiceController extends Controller
         $media->delete();
 
         $notify_message = trans('translate.Media deleted successfully');
+        $notify_message = array('message' => $notify_message, 'alert-type' => 'success');
+
+        return back()->with($notify_message);
+    }
+
+    /**
+     * Bulk delete media items.
+     */
+    public function bulkDeleteMedia(Request $request): RedirectResponse
+    {
+        $ids = $request->ids;
+        if (!$ids || !is_array($ids)) {
+            $notify_message = trans('translate.No media items selected');
+            $notify_message = array('message' => $notify_message, 'alert-type' => 'error');
+            return back()->with($notify_message);
+        }
+
+        $mediaItems = ServiceMedia::whereIn('id', $ids)->get();
+        $deletedCount = 0;
+
+        foreach ($mediaItems as $media) {
+            $serviceId = $media->service_id;
+
+            // Check if this is thumbnail, reassign if needed
+            if ($media->is_thumbnail) {
+                $newThumbnail = ServiceMedia::where('service_id', $serviceId)
+                    ->whereNotIn('id', $ids)
+                    ->where('file_type', 'image')
+                    ->first();
+
+                if ($newThumbnail) {
+                    $newThumbnail->update(['is_thumbnail' => true]);
+                }
+            }
+
+            // Delete file from storage
+            Storage::delete($media->file_path);
+
+            // Delete record
+            $media->delete();
+            $deletedCount++;
+        }
+
+        $notify_message = trans('translate.:count media items deleted successfully', ['count' => $deletedCount]);
         $notify_message = array('message' => $notify_message, 'alert-type' => 'success');
 
         return back()->with($notify_message);

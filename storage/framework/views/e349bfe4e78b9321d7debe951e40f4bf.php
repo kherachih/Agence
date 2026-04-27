@@ -1273,6 +1273,13 @@
                             <h2 class="tg-tour-details-video-title mb-15">
                                 <?php echo e($service?->translation?->title); ?>
 
+                                <?php if($service?->guaranteed_departure == 1): ?>
+                                    <span class="badge bg-success"
+                                        style="font-size: 14px; padding: 5px 12px; vertical-align: middle; margin-left: 10px; border-radius: 20px;">
+                                        <i class="fa fa-check-circle"></i> <?php echo e(__('translate.Guaranteed Departure')); ?>
+
+                                    </span>
+                                <?php endif; ?>
                             </h2>
                             <div class="tg-tour-details-video-location d-flex flex-wrap">
 
@@ -1497,7 +1504,27 @@
                                         </li>
                                     <?php endif; ?>
 
-                                    <?php if($service?->country): ?>
+                                    <?php if($service?->destinations->count() > 0): ?>
+                                        <li>
+                                            <span class="icon">
+                                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                    <path d="M12 21C16.9706 21 21 16.9706 21 12C21 7.02944 16.9706 3 12 3C7.02944 3 3 7.02944 3 12C3 16.9706 7.02944 21 12 21Z" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+                                                    <path d="M3.6001 9H20.4001" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+                                                    <path d="M3.6001 15H20.4001" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+                                                    <path d="M12 3C14.5013 5.43825 15.9228 8.63056 16.0001 12C15.9228 15.3694 14.5013 18.5618 12 21C9.49881 18.5618 8.07725 15.3694 8.0001 12C8.07725 8.63056 9.49881 5.43825 12 3Z" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+                                                </svg>
+                                            </span>
+                                            <div>
+                                                <span class="title"><?php echo e(__('translate.Destinations')); ?></span>
+                                                <span class="duration">
+                                                    <?php $__currentLoopData = $service->destinations; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $dest): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                                        <?php echo e($dest->name); ?><?php echo e(!$loop->last ? ', ' : ''); ?>
+
+                                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                                </span>
+                                            </div>
+                                        </li>
+                                    <?php elseif($service?->country): ?>
                                         <li>
                                             <span class="icon">
                                                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -1580,47 +1607,6 @@
                                     <div class="tg-tour-about-border mb-40"></div>
                                 <?php endif; ?>
 
-                                <?php if($service?->included || $service?->excluded): ?>
-                                    <div class="tg-tour-about-inner mb-40">
-                                        <?php if($service?->included): ?>
-                                            <div class="mb-30">
-                                                <h4 class="tg-tour-about-title mb-20"><?php echo e(__('translate.Included')); ?></h4>
-                                                <div class="tg-tour-about-list tg-tour-about-list-2">
-                                                    <ul>
-                                                        <?php $__currentLoopData = json_decode($service?->included); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                                            <li>
-                                                                <span class="icon mr-10" style="background: transparent; border: 1px solid #28a745; color: #28a745;"><i
-                                                                        class="fa-sharp fa-solid fa-check fa-fw"></i></span>
-                                                                <span class="text"><?php echo e($item); ?></span>
-                                                            </li>
-                                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                        <?php endif; ?>
-
-                                        <?php if($service?->excluded): ?>
-                                            <div>
-                                                <h4 class="tg-tour-about-title mb-20"><?php echo e(__('translate.Excluded')); ?></h4>
-                                                <div class="tg-tour-about-list tg-tour-about-list-2">
-                                                    <ul>
-                                                        <?php $__currentLoopData = json_decode($service?->excluded); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                                            <li>
-                                                                <span class="icon mr-10" style="background: transparent; border: 1px solid #dc3545; color: #dc3545;"><i
-                                                                        class="fa-sharp fa-solid fa-xmark"></i></span>
-                                                                <span class="text">
-                                                                    <?php echo e($item); ?>
-
-                                                                </span>
-                                                            </li>
-                                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                        <?php endif; ?>
-                                    </div>
-                                    <div class="tg-tour-about-border mb-40"></div>
-                                <?php endif; ?>
 
                                 <div class="tg-tour-faq-wrap mb-70">
                                     <div class="d-flex align-items-center mb-15">
@@ -1635,6 +1621,19 @@
                                             <?php echo e($service?->tour_plan_sub_title); ?>
 
                                         </p>
+                                    <?php endif; ?>
+
+                                    <?php if($service?->map_image): ?>
+                                        <div class="tg-tour-about-map mb-40">
+                                            <h4 class="tg-tour-about-title mb-15">
+                                                <?php echo e(__('translate.Location')); ?>
+
+                                            </h4>
+                                            <div class="tg-tour-about-map-image mb-20">
+                                                <img src="<?php echo e(asset('storage/' . $service->map_image)); ?>" alt="Map" class="img-fluid w-100" style="border-radius: 10px; max-height: 450px; object-fit: cover;">
+                                            </div>
+                                        </div>
+                                        <div class="tg-tour-about-border mb-40"></div>
                                     <?php endif; ?>
 
                                     <h4 class="tg-tour-about-title mb-20">
@@ -1715,28 +1714,102 @@
                                         </div>
                                     </div>
                                 </div>
+
                                 <div class="tg-tour-about-border mb-45"></div>
-                                <div class="tg-tour-about-map mb-40">
-                                    <h4 class="tg-tour-about-title mb-15">
-                                        <?php echo e(__('translate.Location')); ?>
 
-                                    </h4>
-                                    <?php if($service?->google_map_sub_title): ?>
-                                        <p class="text-capitalize lh-28">
-                                            <?php echo e($service?->google_map_sub_title); ?>
+                                <?php if($service?->included || $service?->excluded): ?>
+                                    <?php
+                                        $included = json_decode($service?->included, true) ?? [];
+                                        $excluded = json_decode($service?->excluded, true) ?? [];
+                                        
+                                        $category_icons = [
+                                            'accommodation' => 'fa-bed',
+                                            'meals' => 'fa-utensils',
+                                            'guide' => 'fa-user-tie',
+                                            'transport' => 'fa-bus',
+                                            'others' => 'fa-check'
+                                        ];
+                                    ?>
+                                    <div class="tg-tour-about-inner mb-40">
+                                        <div class="tour-radar-accordion">
+                                            
+                                            <div class="accordion" id="inclusionsAccordion">
+                                                
+                                                <h4 class="tg-tour-about-title mb-20"><?php echo e(__('translate.Included')); ?></h4>
+                                                <?php $__currentLoopData = $included; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                                    <?php
+                                                        $is_structured = is_array($item) && isset($item['category']);
+                                                        $category = $is_structured ? $item['category'] : 'others';
+                                                        $title = $is_structured ? $item['title'] : $item;
+                                                        $details = $is_structured ? ($item['details'] ?? '') : '';
+                                                        $icon = $category_icons[$category] ?? $category_icons['others'];
+                                                    ?>
+                                                    <div class="accordion-item">
+                                                        <h2 class="accordion-header" id="headingIncl<?php echo e($index); ?>">
+                                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseIncl<?php echo e($index); ?>">
+                                                                <div class="category-icon included">
+                                                                    <i class="fa-solid <?php echo e($icon); ?>"></i>
+                                                                </div>
+                                                                <span class="item-title"><?php echo e($title); ?></span>
+                                                                <?php if($is_structured && $category == 'meals' && !empty($item['dietary'])): ?>
+                                                                    <div class="dietary-badges d-none d-md-flex">
+                                                                        <?php $__currentLoopData = $item['dietary']; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $diet): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                                                            <span class="badge"><?php echo e($diet); ?></span>
+                                                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                                                    </div>
+                                                                <?php endif; ?>
+                                                                <i class="fa-solid fa-chevron-down accordion-arrow"></i>
+                                                            </button>
+                                                        </h2>
+                                                        <div id="collapseIncl<?php echo e($index); ?>" class="accordion-collapse collapse" data-bs-parent="#inclusionsAccordion">
+                                                            <div class="accordion-body">
+                                                                <?php echo nl2br(e($details)); ?>
 
-                                        </p>
-                                    <?php endif; ?>
+                                                                <?php if($is_structured && $category == 'meals' && !empty($item['dietary'])): ?>
+                                                                    <div class="dietary-badges d-flex d-md-none mt-10">
+                                                                        <?php $__currentLoopData = $item['dietary']; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $diet): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                                                            <span class="badge"><?php echo e($diet); ?></span>
+                                                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                                                    </div>
+                                                                <?php endif; ?>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
 
-                                    <?php if($service?->google_map_url): ?>
-                                        <div class="tg-tour-about-map h-100">
-                                            <?php echo $service?->google_map_url; ?>
+                                                
+                                                <h4 class="tg-tour-about-title mt-30 mb-20"><?php echo e(__('translate.Excluded')); ?></h4>
+                                                <?php $__currentLoopData = $excluded; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                                    <?php
+                                                        $is_structured = is_array($item) && isset($item['category']);
+                                                        $category = $is_structured ? $item['category'] : 'others';
+                                                        $title = $is_structured ? $item['title'] : $item;
+                                                        $details = $is_structured ? ($item['details'] ?? '') : '';
+                                                        $icon = $category_icons[$category] ?? $category_icons['others'];
+                                                    ?>
+                                                    <div class="accordion-item">
+                                                        <h2 class="accordion-header" id="headingExcl<?php echo e($index); ?>">
+                                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExcl<?php echo e($index); ?>">
+                                                                <div class="category-icon excluded">
+                                                                    <i class="fa-solid fa-xmark"></i>
+                                                                </div>
+                                                                <span class="item-title"><?php echo e($title); ?></span>
+                                                                <i class="fa-solid fa-chevron-down accordion-arrow"></i>
+                                                            </button>
+                                                        </h2>
+                                                        <div id="collapseExcl<?php echo e($index); ?>" class="accordion-collapse collapse" data-bs-parent="#inclusionsAccordion">
+                                                            <div class="accordion-body">
+                                                                <?php echo nl2br(e($details)); ?>
 
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                            </div>
                                         </div>
-                                    <?php endif; ?>
-                                </div>
-
-                                <div class="tg-tour-about-border mb-45"></div>
+                                    </div>
+                                    <div class="tg-tour-about-border mb-40"></div>
+                                <?php endif; ?>
                                 <div class="tg-tour-about-review-wrap mb-45">
                                     <h4 class="tg-tour-about-title mb-15">
                                         <?php echo e(__('translate.Customer Reviews')); ?>
@@ -2841,8 +2914,9 @@
                 const oldDateInput = document.querySelector('input[name="check_in_date"]');
                 if (oldDateInput) {
                     oldDateInput.closest('.tg-booking-form-parent-inner').style.display = 'none';
-                }
-
+                // Toggle all accordion items
+                const toggleAllBtn = document.getElementById('toggle-all-accordion');
+                const inclusionsAccordion = document.getElementById('inclusionsAccordion');
             });
         })(jQuery);
     </script>
@@ -3374,6 +3448,144 @@
             background-color: rgba(255, 193, 7, 0.1);
             border-color: rgba(255, 193, 7, 0.2);
             color: #ffc107;
+        }
+        /* TourRadar Style Accordion */
+        .tour-radar-accordion {
+            font-family: 'Inter', sans-serif;
+            border-top: 1px solid #eee;
+        }
+
+        .tour-radar-accordion .accordion-item {
+            border: none;
+            border-bottom: 1px solid #eee;
+            background: transparent;
+        }
+
+        .tour-radar-accordion .accordion-header {
+            margin-bottom: 0;
+        }
+
+        .tour-radar-accordion .accordion-button {
+            padding: 18px 0;
+            background-color: transparent !important;
+            border: none !important;
+            box-shadow: none !important;
+            display: flex;
+            align-items: center;
+            width: 100%;
+            text-align: left;
+            font-size: 16px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .tour-radar-accordion .accordion-button:not(.collapsed) {
+            color: var(--tg-theme-primary);
+        }
+
+        .tour-radar-accordion .accordion-button::after {
+            display: none;
+        }
+
+        .tour-radar-accordion .accordion-arrow {
+            margin-left: auto;
+            font-size: 12px;
+            color: #999;
+            transition: transform 0.2s ease;
+        }
+
+        .tour-radar-accordion .accordion-button:not(.collapsed) .accordion-arrow {
+            transform: rotate(-180deg);
+        }
+
+        .tour-radar-accordion .category-icon {
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: #f8f9fa;
+            color: #666;
+            margin-right: 15px;
+            font-size: 14px;
+            flex-shrink: 0;
+        }
+
+        .tour-radar-accordion .category-icon.included {
+            background: #e8f5e9;
+            color: #28a745;
+        }
+
+        .tour-radar-accordion .category-icon.excluded {
+            background: #ffebee;
+            color: #dc3545;
+        }
+
+        .tour-radar-accordion .dietary-badges {
+            display: flex;
+            gap: 5px;
+            margin-left: 15px;
+        }
+
+        .tour-radar-accordion .dietary-badges .badge {
+            background: #e9ecef;
+            color: #495057;
+            font-weight: 500;
+            font-size: 11px;
+            padding: 4px 8px;
+            border-radius: 4px;
+        }
+
+        .tour-radar-accordion .accordion-body {
+            padding: 0 0 18px 51px;
+            color: #666;
+            font-size: 15px;
+            line-height: 1.6;
+        }
+
+        .tour-radar-accordion .controls-row {
+            display: flex;
+            justify-content: flex-end;
+            padding-top: 10px;
+        }
+
+        .tour-radar-accordion .btn-toggle-all {
+            background: none;
+            border: none;
+            color: var(--tg-theme-primary);
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            padding: 0;
+        }
+
+        .tour-radar-accordion .btn-toggle-all:hover {
+            text-decoration: underline;
+        }
+
+        .tour-radar-accordion .tg-tour-about-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #1a1a1a;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 10px;
+            margin-top: 10px;
+        }
+
+        @media (max-width: 768px) {
+            .tour-radar-accordion .accordion-button {
+                font-size: 14px;
+            }
+            .tour-radar-accordion .category-icon {
+                width: 30px;
+                height: 30px;
+                margin-right: 10px;
+            }
+            .tour-radar-accordion .accordion-body {
+                padding-left: 40px;
+                font-size: 14px;
+            }
         }
     </style>
 <?php $__env->stopPush(); ?>

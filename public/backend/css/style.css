@@ -14290,3 +14290,49 @@ div.ck.ck-editor__main .ck-content p {
         justify-content: center;
     }
 }
+
+/* Fix flatpickr month display issues caused by global select styles */
+.flatpickr-calendar select {
+    width: auto !important;
+    min-height: auto !important;
+    background: transparent !important;
+    padding: 0 10px !important;
+    display: inline-block !important;
+    border-radius: 0 !important;
+    font-size: 14px !important;
+    font-weight: 500 !important;
+    border: none !important;
+    margin: 0 !important;
+    appearance: auto !important;
+    -webkit-appearance: auto !important;
+}
+
+.flatpickr-current-month {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 5px !important;
+    padding: 0 !important;
+    height: auto !important;
+}
+
+.flatpickr-current-month .numInputWrapper {
+    width: 70px !important;
+    display: inline-block !important;
+}
+
+.flatpickr-current-month .numInputWrapper input {
+    width: 100% !important;
+    background: transparent !important;
+    border: none !important;
+    padding: 0 !important;
+    min-height: auto !important;
+}
+
+.flatpickr-calendar .flatpickr-months .flatpickr-month {
+    height: 40px !important;
+}
+
+.flatpickr-calendar .flatpickr-months {
+    align-items: center !important;
+}

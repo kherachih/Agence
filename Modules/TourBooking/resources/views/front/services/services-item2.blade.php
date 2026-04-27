@@ -23,6 +23,12 @@
                                         <i class="fa-solid fa-star"></i> Featured
                                     </span>
                                 @endif
+
+                                @if ($service?->guaranteed_departure == 1)
+                                    <span class="tour-card__badge tour-card__badge--guaranteed">
+                                        <i class="fa-solid fa-check-circle"></i> {{ __('translate.Guaranteed') }}
+                                    </span>
+                                @endif
                             </a>
                             
                             {{-- Wishlist Button --}}
@@ -189,6 +195,19 @@
         }
         
         .tour-card__badge--featured i {
+            font-size: 10px;
+            margin-right: 3px;
+        }
+
+        .tour-card__badge--guaranteed {
+            bottom: 12px;
+            left: 12px;
+            background: #28a745;
+            color: white;
+            z-index: 5;
+        }
+
+        .tour-card__badge--guaranteed i {
             font-size: 10px;
             margin-right: 3px;
         }

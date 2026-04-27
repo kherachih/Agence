@@ -649,6 +649,23 @@
                                                         </div>
                                                     </div>
                                                 </div>
+
+                                                <div class="col-lg-3 col-md-4 col-12">
+                                                    <div class="crancy__item-form--group mg-top-form-20">
+                                                        <label
+                                                            class="crancy__item-label">{{ __('translate.Guaranteed Departure') }}</label>
+                                                        <div
+                                                            class="crancy-ptabs__notify-switch crancy-ptabs__notify-switch--two">
+                                                            <label class="crancy__item-switch">
+                                                                <input name="guaranteed_departure" type="checkbox"
+                                                                    value="1"
+                                                                    {{ old('guaranteed_departure', $service->guaranteed_departure) ? 'checked' : '' }}>
+                                                                <span
+                                                                    class="crancy__item-switch--slide crancy__item-switch--round"></span>
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>

@@ -102,6 +102,33 @@
             background-color: #dc3545;
             color: white;
         }
+
+        .media-selection-checkbox {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            width: 22px;
+            height: 22px;
+            z-index: 10;
+            cursor: pointer;
+            accent-color: #007bff;
+        }
+
+        .select-all-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 20px;
+            padding: 10px;
+            background: #f8f9fa;
+            border-radius: 5px;
+            border: 1px solid #eee;
+        }
+
+        .bulk-actions {
+            display: none;
+            margin-left: auto;
+        }
     </style>
 @endpush
 
@@ -233,16 +260,33 @@
 
                                         <div class="row mg-top-30">
                                             <div class="col-12">
-                                                <h4 class="crancy-product-card__title">{{ __('translate.Existing Media') }}
-                                                </h4>
+                                                <div class="d-flex align-items-center justify-content-between">
+                                                    <h4 class="crancy-product-card__title">{{ __('translate.Existing Media') }}</h4>
+                                                    @if ($service->media->count() > 0)
+                                                        <div class="select-all-container w-100 mt-2">
+                                                            <div class="form-check">
+                                                                <input class="form-check-input" type="checkbox" id="selectAllMedia">
+                                                                <label class="form-check-label" for="selectAllMedia">
+                                                                    {{ __('translate.Select All') }}
+                                                                </label>
+                                                            </div>
+                                                            <div class="bulk-actions" id="bulkActions">
+                                                                <button type="button" class="btn btn-danger btn-sm" id="btnBulkDelete">
+                                                                    <i class="fa fa-trash"></i> {{ __('translate.Delete Selected') }} (<span id="selectedCount">0</span>)
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    @endif
+                                                </div>
 
                                                 @if ($service->media->count() > 0)
                                                     <div class="media-gallery">
                                                         @foreach ($service->media as $media)
-                                                            <div class="media-item">
+                                                            <div class="media-item" data-id="{{ $media->id }}">
+                                                                <input type="checkbox" class="media-selection-checkbox item-checkbox" value="{{ $media->id }}">
                                                                 @if ($media->is_thumbnail)
                                                                     <span
-                                                                        class="thumbnail-badge">{{ __('translate.Thumbnail') }}</span>
+                                                                        class="thumbnail-badge" style="left: 40px;">{{ __('translate.Thumbnail') }}</span>
                                                                 @endif
 
                                                                 @if ($media->file_type == 'image')
@@ -459,5 +503,74 @@
             xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
             xhr.send(formData);
         });
+
+        // Bulk Delete Logic
+        const selectAllCheckbox = document.getElementById('selectAllMedia');
+        const itemCheckboxes = document.querySelectorAll('.item-checkbox');
+        const bulkActions = document.getElementById('bulkActions');
+        const selectedCountSpan = document.getElementById('selectedCount');
+        const btnBulkDelete = document.getElementById('btnBulkDelete');
+
+        function updateBulkActions() {
+            const selectedCount = document.querySelectorAll('.item-checkbox:checked').length;
+            selectedCountSpan.textContent = selectedCount;
+            if (selectedCount > 0) {
+                bulkActions.style.display = 'block';
+            } else {
+                bulkActions.style.display = 'none';
+            }
+            
+            selectAllCheckbox.checked = selectedCount === itemCheckboxes.length && itemCheckboxes.length > 0;
+        }
+
+        if (selectAllCheckbox) {
+            selectAllCheckbox.addEventListener('change', function() {
+                itemCheckboxes.forEach(cb => {
+                    cb.checked = this.checked;
+                });
+                updateBulkActions();
+            });
+        }
+
+        itemCheckboxes.forEach(cb => {
+            cb.addEventListener('change', updateBulkActions);
+        });
+
+        if (btnBulkDelete) {
+            btnBulkDelete.addEventListener('click', function() {
+                const selectedIds = Array.from(document.querySelectorAll('.item-checkbox:checked')).map(cb => cb.value);
+                
+                if (selectedIds.length === 0) return;
+
+                if (confirm("{{ __('translate.Are you sure you want to delete the selected media items?') }}")) {
+                    const form = document.createElement('form');
+                    form.method = 'POST';
+                    form.action = "{{ route('agency.tourbooking.services.media.bulk-destroy') }}";
+                    
+                    const csrfToken = document.createElement('input');
+                    csrfToken.type = 'hidden';
+                    csrfToken.name = '_token';
+                    csrfToken.value = '{{ csrf_token() }}';
+                    form.appendChild(csrfToken);
+
+                    const methodField = document.createElement('input');
+                    methodField.type = 'hidden';
+                    methodField.name = '_method';
+                    methodField.value = 'DELETE';
+                    form.appendChild(methodField);
+
+                    selectedIds.forEach(id => {
+                        const idInput = document.createElement('input');
+                        idInput.type = 'hidden';
+                        idInput.name = 'ids[]';
+                        idInput.value = id;
+                        form.appendChild(idInput);
+                    });
+
+                    document.body.appendChild(form);
+                    form.submit();
+                }
+            });
+        }
     </script>
 @endpush

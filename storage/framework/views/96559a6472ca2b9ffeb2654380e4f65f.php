@@ -174,33 +174,30 @@ unset($__errorArgs, $__bag); ?>
                                                 </div>
 
                                                 <div class="col-lg-4 col-md-6 col-12">
-                                                    <div class="crancy__item-form--group mg-top-form-20">
-                                                        <label
-                                                            class="crancy__item-label"><?php echo e(__('translate.Select Destination')); ?></label>
-                                                        <select class="crancy__item-input" name="destination_id" required>
-                                                            <option value=""><?php echo e(__('translate.Select Type')); ?>
+                                                     <div class="crancy__item-form--group mg-top-form-20">
+                                                         <label
+                                                             class="crancy__item-label"><?php echo e(__('translate.Select Destinations')); ?></label>
+                                                         <select class="crancy__item-input select2" name="destination_ids[]" multiple required>
+                                                             <?php $__currentLoopData = $destinations; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $destination): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                                                 <option value="<?php echo e($destination->id); ?>"
+                                                                     <?php echo e((is_array(old('destination_ids')) && in_array($destination->id, old('destination_ids'))) ? 'selected' : ''); ?>>
+                                                                     <?php echo e($destination->name); ?>
 
-                                                            </option>
-                                                            <?php $__currentLoopData = $destinations; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $destination): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                                                <option value="<?php echo e($destination->id); ?>"
-                                                                    <?php echo e(old('destination_id') == $destination->id ? 'selected' : ''); ?>>
-                                                                    <?php echo e($destination->name); ?>
-
-                                                                </option>
-                                                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-                                                        </select>
-                                                        <?php $__errorArgs = ['destination_id'];
+                                                                 </option>
+                                                             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                                         </select>
+                                                         <?php $__errorArgs = ['destination_ids'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
 $message = $__bag->first($__errorArgs[0]); ?>
-                                                            <span class="text-danger"><?php echo e($message); ?></span>
-                                                        <?php unset($message);
+                                                             <span class="text-danger"><?php echo e($message); ?></span>
+                                                         <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
 unset($__errorArgs, $__bag); ?>
-                                                    </div>
-                                                </div>
+                                                     </div>
+                                                 </div>
 
                                                 <div class="col-lg-4 col-md-6 col-12">
                                                     <div class="crancy__item-form--group mg-top-form-20">
@@ -281,103 +278,6 @@ unset($__errorArgs, $__bag); ?>
                                                     </div>
                                                 </div>
 
-                                                <div class="col-lg-4 col-md-6 col-12">
-                                                    <div class="crancy__item-form--group mg-top-form-20">
-                                                        <label
-                                                            class="crancy__item-label"><?php echo e(__('translate.Country')); ?></label>
-                                                        <input class="crancy__item-input" type="text" name="country"
-                                                            value="<?php echo e(old('country')); ?>"
-                                                            placeholder="e.g. France">
-                                                        <?php $__errorArgs = ['country'];
-$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
-if ($__bag->has($__errorArgs[0])) :
-if (isset($message)) { $__messageOriginal = $message; }
-$message = $__bag->first($__errorArgs[0]); ?>
-                                                            <span class="text-danger"><?php echo e($message); ?></span>
-                                                        <?php unset($message);
-if (isset($__messageOriginal)) { $message = $__messageOriginal; }
-endif;
-unset($__errorArgs, $__bag); ?>
-                                                    </div>
-                                                </div>
-
-                                                <div class="col-lg-4 col-md-6 col-12">
-                                                    <div class="crancy__item-form--group mg-top-form-20">
-                                                        <label
-                                                            class="crancy__item-label"><?php echo e(__('translate.Region')); ?></label>
-                                                        <input class="crancy__item-input" type="text" name="region"
-                                                            value="<?php echo e(old('region')); ?>"
-                                                            placeholder="e.g. Provence">
-                                                        <?php $__errorArgs = ['region'];
-$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
-if ($__bag->has($__errorArgs[0])) :
-if (isset($message)) { $__messageOriginal = $message; }
-$message = $__bag->first($__errorArgs[0]); ?>
-                                                            <span class="text-danger"><?php echo e($message); ?></span>
-                                                        <?php unset($message);
-if (isset($__messageOriginal)) { $message = $__messageOriginal; }
-endif;
-unset($__errorArgs, $__bag); ?>
-                                                    </div>
-                                                </div>
-
-                                                <div class="col-lg-4 col-md-6 col-12">
-                                                    <div class="crancy__item-form--group mg-top-form-20">
-                                                        <label
-                                                            class="crancy__item-label"><?php echo e(__('translate.Room Count')); ?></label>
-                                                        <input class="crancy__item-input" type="number" name="room_count"
-                                                            value="<?php echo e(old('room_count', 1)); ?>" placeholder="1">
-                                                        <?php $__errorArgs = ['room_count'];
-$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
-if ($__bag->has($__errorArgs[0])) :
-if (isset($message)) { $__messageOriginal = $message; }
-$message = $__bag->first($__errorArgs[0]); ?>
-                                                            <span class="text-danger"><?php echo e($message); ?></span>
-                                                        <?php unset($message);
-if (isset($__messageOriginal)) { $message = $__messageOriginal; }
-endif;
-unset($__errorArgs, $__bag); ?>
-                                                    </div>
-                                                </div>
-
-                                                <div class="col-lg-4 col-md-6 col-12">
-                                                    <div class="crancy__item-form--group mg-top-form-20">
-                                                        <label
-                                                            class="crancy__item-label"><?php echo e(__('translate.Adult Count')); ?></label>
-                                                        <input class="crancy__item-input" type="number" name="adult_count"
-                                                            value="<?php echo e(old('adult_count', 1)); ?>" placeholder="1">
-                                                        <?php $__errorArgs = ['adult_count'];
-$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
-if ($__bag->has($__errorArgs[0])) :
-if (isset($message)) { $__messageOriginal = $message; }
-$message = $__bag->first($__errorArgs[0]); ?>
-                                                            <span class="text-danger"><?php echo e($message); ?></span>
-                                                        <?php unset($message);
-if (isset($__messageOriginal)) { $message = $__messageOriginal; }
-endif;
-unset($__errorArgs, $__bag); ?>
-                                                    </div>
-                                                </div>
-
-                                                <div class="col-lg-4 col-md-6 col-12">
-                                                    <div class="crancy__item-form--group mg-top-form-20">
-                                                        <label
-                                                            class="crancy__item-label"><?php echo e(__('translate.Children Count')); ?></label>
-                                                        <input class="crancy__item-input" type="number"
-                                                            name="children_count" value="<?php echo e(old('children_count', 0)); ?>"
-                                                            placeholder="0">
-                                                        <?php $__errorArgs = ['children_count'];
-$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
-if ($__bag->has($__errorArgs[0])) :
-if (isset($message)) { $__messageOriginal = $message; }
-$message = $__bag->first($__errorArgs[0]); ?>
-                                                            <span class="text-danger"><?php echo e($message); ?></span>
-                                                        <?php unset($message);
-if (isset($__messageOriginal)) { $message = $__messageOriginal; }
-endif;
-unset($__errorArgs, $__bag); ?>
-                                                    </div>
-                                                </div>
 
                                                 <div class="col-12">
                                                     <div class="crancy__item-form--group mg-top-form-20">
@@ -434,7 +334,64 @@ unset($__errorArgs, $__bag); ?>
                                         </div>
                                     </div>
 
-                                        <div class="col-12 mg-top-30">
+                                    <div class="col-12 mg-top-30">
+                                        <div class="crancy-product-card">
+                                            <h4 class="crancy-product-card__title">
+                                                <?php echo e(__('translate.Good to know')); ?>
+
+                                            </h4>
+
+                                            <div class="row mg-top-30">
+                                                <div class="col-12">
+                                                    <div class="alert alert-info mb-20">
+                                                        <i class="fa fa-info-circle"></i>
+                                                        <?php echo e(__('translate.Add country-specific information such as currency, plugs, and vaccines.')); ?>
+
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-12" id="good-to-know-container">
+                                                    <div class="country-info-item mb-4 pb-4 border-bottom" data-index="0">
+                                                        <div class="row">
+                                                            <div class="col-lg-6 col-12">
+                                                                <div class="crancy__item-form--group mg-top-form-20">
+                                                                    <label class="crancy__item-label"><?php echo e(__('translate.Currency')); ?></label>
+                                                                    <input class="crancy__item-input" type="text" name="good_to_know[0][currency]" placeholder="e.g. Euro">
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-4 col-12">
+                                                                <div class="crancy__item-form--group mg-top-form-20">
+                                                                    <label class="crancy__item-label"><?php echo e(__('translate.Prises et adaptateurs')); ?></label>
+                                                                    <input class="crancy__item-input" type="text" name="good_to_know[0][plugs]" placeholder="e.g. Type C, E">
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-4 col-12">
+                                                                <div class="crancy__item-form--group mg-top-form-20">
+                                                                    <label class="crancy__item-label"><?php echo e(__('translate.Vaccines')); ?></label>
+                                                                    <input class="crancy__item-input" type="text" name="good_to_know[0][vaccines]" placeholder="e.g. Hepatite A">
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-4 col-12">
+                                                                <div class="crancy__item-form--group mg-top-form-20">
+                                                                    <label class="crancy__item-label"><?php echo e(__('translate.Payment Information')); ?></label>
+                                                                    <input class="crancy__item-input" type="text" name="good_to_know[0][payment]" placeholder="e.g. Cards accepted">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-12 mg-top-20">
+                                                    <button type="button" class="crancy-btn" id="add-country-info">
+                                                        <i class="fa fa-plus"></i> <?php echo e(__('translate.Add Country Info')); ?>
+
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-12 mg-top-30">
                                             <div class="crancy-product-card">
                                                 <h4 class="crancy-product-card__title">
                                                     <?php echo e(__('translate.Room Types')); ?>
@@ -524,45 +481,6 @@ unset($__errorArgs, $__bag); ?>
                                                 <?php echo e(__('translate.Additional Information')); ?></h4>
 
                                             <div class="row mg-top-30">
-                                                <div class="col-lg-6 col-md-6 col-12">
-                                                    <div class="crancy__item-form--group mg-top-form-20">
-                                                        <label
-                                                            class="crancy__item-label"><?php echo e(__('translate.Check-in Time')); ?></label>
-                                                        <input class="crancy__item-input timepicker" type="text"
-                                                            name="check_in_time" value="<?php echo e(old('check_in_time')); ?>"
-                                                            placeholder="e.g. 14:00">
-                                                        <?php $__errorArgs = ['check_in_time'];
-$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
-if ($__bag->has($__errorArgs[0])) :
-if (isset($message)) { $__messageOriginal = $message; }
-$message = $__bag->first($__errorArgs[0]); ?>
-                                                            <span class="text-danger"><?php echo e($message); ?></span>
-                                                        <?php unset($message);
-if (isset($__messageOriginal)) { $message = $__messageOriginal; }
-endif;
-unset($__errorArgs, $__bag); ?>
-                                                    </div>
-                                                </div>
-
-                                                <div class="col-lg-6 col-md-6 col-12">
-                                                    <div class="crancy__item-form--group mg-top-form-20">
-                                                        <label
-                                                            class="crancy__item-label"><?php echo e(__('translate.Check-out Time')); ?></label>
-                                                        <input class="crancy__item-input timepicker" type="text"
-                                                            name="check_out_time" value="<?php echo e(old('check_out_time')); ?>"
-                                                            placeholder="e.g. 10:00">
-                                                        <?php $__errorArgs = ['check_out_time'];
-$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
-if ($__bag->has($__errorArgs[0])) :
-if (isset($message)) { $__messageOriginal = $message; }
-$message = $__bag->first($__errorArgs[0]); ?>
-                                                            <span class="text-danger"><?php echo e($message); ?></span>
-                                                        <?php unset($message);
-if (isset($__messageOriginal)) { $message = $__messageOriginal; }
-endif;
-unset($__errorArgs, $__bag); ?>
-                                                    </div>
-                                                </div>
 
                                                 <div class="col-lg-6 col-md-6 col-12">
                                                     <div class="crancy__item-form--group mg-top-form-20">
@@ -675,132 +593,6 @@ unset($__errorArgs, $__bag); ?>
                                         </div>
                                     </div>
 
-                                    <div class="col-12 mg-top-30">
-                                        <div class="crancy-product-card">
-                                            <h4 class="crancy-product-card__title">
-                                                <?php echo e(__('translate.Contact Information')); ?></h4>
-
-                                            <div class="row mg-top-30">
-                                                <div class="col-lg-6 col-md-6 col-12">
-                                                    <div class="crancy__item-form--group mg-top-form-20">
-                                                        <label
-                                                            class="crancy__item-label"><?php echo e(__('translate.Address')); ?></label>
-                                                        <textarea class="" name="address" rows="40"><?php echo e(old('address')); ?></textarea>
-                                                        <?php $__errorArgs = ['address'];
-$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
-if ($__bag->has($__errorArgs[0])) :
-if (isset($message)) { $__messageOriginal = $message; }
-$message = $__bag->first($__errorArgs[0]); ?>
-                                                            <span class="text-danger"><?php echo e($message); ?></span>
-                                                        <?php unset($message);
-if (isset($__messageOriginal)) { $message = $__messageOriginal; }
-endif;
-unset($__errorArgs, $__bag); ?>
-                                                    </div>
-                                                </div>
-
-                                                <div class="col-lg-6 col-md-6 col-12">
-                                                    <div class="crancy__item-form--group mg-top-form-20">
-                                                        <label
-                                                            class="crancy__item-label"><?php echo e(__('translate.Email')); ?></label>
-                                                        <input class="crancy__item-input" type="email" name="email"
-                                                            value="<?php echo e(old('email')); ?>">
-                                                        <?php $__errorArgs = ['email'];
-$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
-if ($__bag->has($__errorArgs[0])) :
-if (isset($message)) { $__messageOriginal = $message; }
-$message = $__bag->first($__errorArgs[0]); ?>
-                                                            <span class="text-danger"><?php echo e($message); ?></span>
-                                                        <?php unset($message);
-if (isset($__messageOriginal)) { $message = $__messageOriginal; }
-endif;
-unset($__errorArgs, $__bag); ?>
-                                                    </div>
-                                                </div>
-
-                                                <div class="col-lg-6 col-md-6 col-12">
-                                                    <div class="crancy__item-form--group mg-top-form-20">
-                                                        <label
-                                                            class="crancy__item-label"><?php echo e(__('translate.Phone')); ?></label>
-                                                        <input class="crancy__item-input" type="text" name="phone"
-                                                            value="<?php echo e(old('phone')); ?>">
-                                                        <?php $__errorArgs = ['phone'];
-$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
-if ($__bag->has($__errorArgs[0])) :
-if (isset($message)) { $__messageOriginal = $message; }
-$message = $__bag->first($__errorArgs[0]); ?>
-                                                            <span class="text-danger"><?php echo e($message); ?></span>
-                                                        <?php unset($message);
-if (isset($__messageOriginal)) { $message = $__messageOriginal; }
-endif;
-unset($__errorArgs, $__bag); ?>
-                                                    </div>
-                                                </div>
-
-                                                <div class="col-lg-6 col-md-6 col-12">
-                                                    <div class="crancy__item-form--group mg-top-form-20">
-                                                        <label
-                                                            class="crancy__item-label"><?php echo e(__('translate.Website')); ?></label>
-                                                        <input class="crancy__item-input" type="text" name="website"
-                                                            value="<?php echo e(old('website')); ?>">
-                                                        <?php $__errorArgs = ['website'];
-$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
-if ($__bag->has($__errorArgs[0])) :
-if (isset($message)) { $__messageOriginal = $message; }
-$message = $__bag->first($__errorArgs[0]); ?>
-                                                            <span class="text-danger"><?php echo e($message); ?></span>
-                                                        <?php unset($message);
-if (isset($__messageOriginal)) { $message = $__messageOriginal; }
-endif;
-unset($__errorArgs, $__bag); ?>
-                                                    </div>
-                                                </div>
-
-                                                <div class="col-12">
-                                                    <div class="crancy__item-form--group mg-top-form-20">
-                                                        <label
-                                                            class="crancy__item-label"><?php echo e(__('translate.Google map sub title')); ?></label>
-                                                        <input class="crancy__item-input" type="text"
-                                                            name="google_map_sub_title"
-                                                            value="<?php echo e(old('google_map_sub_title')); ?>"
-                                                            placeholder="Google map sub title">
-                                                        <?php $__errorArgs = ['google_map_sub_title'];
-$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
-if ($__bag->has($__errorArgs[0])) :
-if (isset($message)) { $__messageOriginal = $message; }
-$message = $__bag->first($__errorArgs[0]); ?>
-                                                            <span class="text-danger"><?php echo e($message); ?></span>
-                                                        <?php unset($message);
-if (isset($__messageOriginal)) { $message = $__messageOriginal; }
-endif;
-unset($__errorArgs, $__bag); ?>
-                                                    </div>
-                                                </div>
-
-                                                <div class="col-12">
-                                                    <div class="crancy__item-form--group mg-top-form-20">
-                                                        <label
-                                                            class="crancy__item-label"><?php echo e(__('translate.Google map embed url')); ?></label>
-                                                        <input class="crancy__item-input" type="text"
-                                                            name="google_map_url"
-                                                            value="<?php echo e(old('google_map_url')); ?>"
-                                                            placeholder="Google map embed url">
-                                                        <?php $__errorArgs = ['google_map_url'];
-$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
-if ($__bag->has($__errorArgs[0])) :
-if (isset($message)) { $__messageOriginal = $message; }
-$message = $__bag->first($__errorArgs[0]); ?>
-                                                            <span class="text-danger"><?php echo e($message); ?></span>
-                                                        <?php unset($message);
-if (isset($__messageOriginal)) { $message = $__messageOriginal; }
-endif;
-unset($__errorArgs, $__bag); ?>
-                                                    </div>
-                                                </div>
-
-                                            </div>
-                                        </div>
-                                    </div>
 
                                     <div class="col-12 mg-top-30">
                                         <div class="crancy-product-card">
@@ -945,6 +737,22 @@ unset($__errorArgs, $__bag); ?>
                                                         </div>
                                                     </div>
                                                 </div>
+
+                                                <div class="col-lg-3 col-md-4 col-12">
+                                                    <div class="crancy__item-form--group mg-top-form-20">
+                                                        <label
+                                                            class="crancy__item-label"><?php echo e(__('translate.Guaranteed Departure')); ?></label>
+                                                        <div
+                                                            class="crancy-ptabs__notify-switch crancy-ptabs__notify-switch--two">
+                                                            <label class="crancy__item-switch">
+                                                                <input name="guaranteed_departure" type="checkbox"
+                                                                    value="1">
+                                                                <span
+                                                                    class="crancy__item-switch--slide crancy__item-switch--round"></span>
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -983,6 +791,7 @@ unset($__errorArgs, $__bag); ?>
 
                 $('.select2').select2({
                     tags: true,
+                    width: '100%',
                     tokenSeparators: [',', ' ']
                 });
 
@@ -1094,6 +903,60 @@ unset($__errorArgs, $__bag); ?>
                         } else {
                             alert('<?php echo e(__('translate.At least one room type is required.')); ?>');
                         }
+                    }
+                });
+
+                // Good to know country management
+                let countryIndex = 1;
+                const goodToKnowContainer = document.getElementById('good-to-know-container');
+
+                document.getElementById('add-country-info').addEventListener('click', function() {
+                    const newCountry = document.createElement('div');
+                    newCountry.className = 'country-info-item mb-4 pb-4 border-bottom';
+                    newCountry.dataset.index = countryIndex;
+                    newCountry.innerHTML = `
+                        <div class="row">
+                            <div class="col-lg-6 col-12">
+                                <div class="crancy__item-form--group mg-top-form-20">
+                                    <label class="crancy__item-label"><?php echo e(__('translate.Currency')); ?></label>
+                                    <input class="crancy__item-input" type="text" name="good_to_know[${countryIndex}][currency]" placeholder="e.g. Euro">
+                                </div>
+                            </div>
+                            <div class="col-lg-4 col-12">
+                                <div class="crancy__item-form--group mg-top-form-20">
+                                    <label class="crancy__item-label"><?php echo e(__('translate.Prises et adaptateurs')); ?></label>
+                                    <input class="crancy__item-input" type="text" name="good_to_know[${countryIndex}][plugs]" placeholder="e.g. Type C, E">
+                                </div>
+                            </div>
+                            <div class="col-lg-4 col-12">
+                                <div class="crancy__item-form--group mg-top-form-20">
+                                    <label class="crancy__item-label"><?php echo e(__('translate.Vaccines')); ?></label>
+                                    <input class="crancy__item-input" type="text" name="good_to_know[${countryIndex}][vaccines]" placeholder="e.g. Hepatite A">
+                                </div>
+                            </div>
+                            <div class="col-lg-4 col-12">
+                                <div class="crancy__item-form--group mg-top-form-20">
+                                    <label class="crancy__item-label"><?php echo e(__('translate.Payment Information')); ?></label>
+                                    <input class="crancy__item-input" type="text" name="good_to_know[${countryIndex}][payment]" placeholder="e.g. Cards accepted">
+                                </div>
+                            </div>
+                            <div class="col-12 mg-top-20">
+                                <button type="button" class="crancy-btn btn-danger remove-country-info" style="background-color: #dc3545;">
+                                    <i class="fa fa-trash"></i> <?php echo e(__('translate.Remove')); ?>
+
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                    goodToKnowContainer.appendChild(newCountry);
+                    countryIndex++;
+                });
+
+                // Event delegation for remove buttons
+                goodToKnowContainer.addEventListener('click', function(e) {
+                    if (e.target.closest('.remove-country-info')) {
+                        const countryItem = e.target.closest('.country-info-item');
+                        countryItem.remove();
                     }
                 });
             });

@@ -10,6 +10,7 @@
 
 @push('style_section')
     <link rel="stylesheet" href="{{ asset('global/select2/select2.min.css') }}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <style>
         /* Currency Input Field Styling */
         .crancy__item-form--currency {
@@ -150,24 +151,22 @@
                                                 </div>
 
                                                 <div class="col-lg-4 col-md-6 col-12">
-                                                    <div class="crancy__item-form--group mg-top-form-20">
-                                                        <label
-                                                            class="crancy__item-label">{{ __('translate.Select Destination') }}</label>
-                                                        <select class="crancy__item-input" name="destination_id" required>
-                                                            <option value="">{{ __('translate.Select Type') }}
-                                                            </option>
-                                                            @foreach ($destinations as $destination)
-                                                                <option value="{{ $destination->id }}"
-                                                                    {{ old('destination_id') == $destination->id ? 'selected' : '' }}>
-                                                                    {{ $destination->name }}
-                                                                </option>
-                                                            @endforeach
-                                                        </select>
-                                                        @error('destination_id')
-                                                            <span class="text-danger">{{ $message }}</span>
-                                                        @enderror
-                                                    </div>
-                                                </div>
+                                                     <div class="crancy__item-form--group mg-top-form-20">
+                                                         <label
+                                                             class="crancy__item-label">{{ __('translate.Select Destinations') }}</label>
+                                                         <select class="crancy__item-input select2" name="destination_ids[]" multiple required>
+                                                             @foreach ($destinations as $destination)
+                                                                 <option value="{{ $destination->id }}"
+                                                                     {{ (is_array(old('destination_ids')) && in_array($destination->id, old('destination_ids'))) ? 'selected' : '' }}>
+                                                                     {{ $destination->name }}
+                                                                 </option>
+                                                             @endforeach
+                                                         </select>
+                                                         @error('destination_ids')
+                                                             <span class="text-danger">{{ $message }}</span>
+                                                         @enderror
+                                                     </div>
+                                                 </div>
 
                                                 <div class="col-lg-4 col-md-6 col-12">
                                                     <div class="crancy__item-form--group mg-top-form-20">
@@ -176,6 +175,17 @@
                                                         <input class="crancy__item-input" type="text" name="location"
                                                             value="{{ old('location') }}">
                                                         @error('location')
+                                                            <span class="text-danger">{{ $message }}</span>
+                                                        @enderror
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-12">
+                                                    <div class="crancy__item-form--group mg-top-form-20">
+                                                        <label
+                                                            class="crancy__item-label">{{ __('translate.Map Image') }}</label>
+                                                        <input class="crancy__item-input" type="file" name="map_image" accept="image/*">
+                                                        @error('map_image')
                                                             <span class="text-danger">{{ $message }}</span>
                                                         @enderror
                                                     </div>
@@ -459,20 +469,85 @@
                                                     </div>
                                                 </div>
 
-                                                <div class="col-12">
-                                                    <div class="crancy__item-form--group mg-top-form-20">
-                                                        <label
-                                                            class="crancy__item-label">{{ __('translate.What is included') }}</label>
-                                                        <textarea name="included" rows="30" placeholder="One item per line">{{ old('included') }}</textarea>
+                                                <div class="col-12 mg-top-30">
+                                                    <h4 class="crancy-product-card__title">{{ __('translate.Included') }}</h4>
+                                                    <div id="included-container">
+                                                        <div class="included-item mb-4 pb-4 border-bottom" data-index="0">
+                                                            <div class="row">
+                                                                <div class="col-lg-3 col-12">
+                                                                    <div class="crancy__item-form--group mg-top-form-20">
+                                                                        <label class="crancy__item-label">{{ __('translate.Category') }}</label>
+                                                                        <select class="crancy__item-input category-select" name="included[0][category]">
+                                                                            <option value="accommodation">{{ __('translate.Accommodation') }}</option>
+                                                                            <option value="meals">{{ __('translate.Meals') }}</option>
+                                                                            <option value="guide">{{ __('translate.Guide') }}</option>
+                                                                            <option value="transport">{{ __('translate.Transport') }}</option>
+                                                                            <option value="others" selected>{{ __('translate.Others') }}</option>
+                                                                        </select>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-lg-4 col-12">
+                                                                    <div class="crancy__item-form--group mg-top-form-20">
+                                                                        <label class="crancy__item-label">{{ __('translate.Title') }}</label>
+                                                                        <input class="crancy__item-input" type="text" name="included[0][title]" placeholder="e.g. 7 Nights Accommodation">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-lg-5 col-12">
+                                                                    <div class="crancy__item-form--group mg-top-form-20">
+                                                                        <label class="crancy__item-label">{{ __('translate.Details') }}</label>
+                                                                        <textarea class="crancy__item-input" name="included[0][details]" rows="2"></textarea>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-12 dietary-options" style="display:none;">
+                                                                    <div class="crancy__item-form--group mg-top-form-20">
+                                                                        <label class="crancy__item-label">{{ __('translate.Dietary Options') }}</label>
+                                                                        <select class="crancy__item-input select2" name="included[0][dietary][]" multiple>
+                                                                            <option value="Vegetarian">Vegetarian</option>
+                                                                            <option value="Vegan">Vegan</option>
+                                                                            <option value="Halal">Halal</option>
+                                                                            <option value="Gluten-Free">Gluten-Free</option>
+                                                                        </select>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
                                                     </div>
+                                                    <button type="button" class="crancy-btn" id="add-included">
+                                                        <i class="fa fa-plus"></i> {{ __('translate.Add Included') }}
+                                                    </button>
                                                 </div>
 
-                                                <div class="col-12">
-                                                    <div class="crancy__item-form--group mg-top-form-20">
-                                                        <label
-                                                            class="crancy__item-label">{{ __('translate.What is excluded') }}</label>
-                                                        <textarea name="excluded" rows="30" placeholder="One item per line">{{ old('excluded') }}</textarea>
+                                                <div class="col-12 mg-top-30">
+                                                    <h4 class="crancy-product-card__title">{{ __('translate.Excluded') }}</h4>
+                                                    <div id="excluded-container">
+                                                        <div class="excluded-item mb-4 pb-4 border-bottom" data-index="0">
+                                                            <div class="row">
+                                                                <div class="col-lg-3 col-12">
+                                                                    <div class="crancy__item-form--group mg-top-form-20">
+                                                                        <label class="crancy__item-label">{{ __('translate.Category') }}</label>
+                                                                        <select class="crancy__item-input" name="excluded[0][category]">
+                                                                            <option value="others" selected>{{ __('translate.Others') }}</option>
+                                                                        </select>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-lg-4 col-12">
+                                                                    <div class="crancy__item-form--group mg-top-form-20">
+                                                                        <label class="crancy__item-label">{{ __('translate.Title') }}</label>
+                                                                        <input class="crancy__item-input" type="text" name="excluded[0][title]" placeholder="e.g. Flights">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-lg-5 col-12">
+                                                                    <div class="crancy__item-form--group mg-top-form-20">
+                                                                        <label class="crancy__item-label">{{ __('translate.Details') }}</label>
+                                                                        <textarea class="crancy__item-input" name="excluded[0][details]" rows="2"></textarea>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
                                                     </div>
+                                                    <button type="button" class="crancy-btn" id="add-excluded">
+                                                        <i class="fa fa-plus"></i> {{ __('translate.Add Excluded') }}
+                                                    </button>
                                                 </div>
 
                                                 <div class="col-12">
@@ -611,6 +686,22 @@
                                                         </div>
                                                     </div>
                                                 </div>
+
+                                                <div class="col-lg-3 col-md-4 col-12">
+                                                    <div class="crancy__item-form--group mg-top-form-20">
+                                                        <label
+                                                            class="crancy__item-label">{{ __('translate.Guaranteed Departure') }}</label>
+                                                        <div
+                                                            class="crancy-ptabs__notify-switch crancy-ptabs__notify-switch--two">
+                                                            <label class="crancy__item-switch">
+                                                                <input name="guaranteed_departure" type="checkbox"
+                                                                    value="1">
+                                                                <span
+                                                                    class="crancy__item-switch--slide crancy__item-switch--round"></span>
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -636,6 +727,7 @@
 @push('js_section')
     <script src="{{ asset('global/select2/select2.min.js') }}"></script>
     <script src="{{ asset('global/tinymce/js/tinymce/tinymce.min.js') }}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script>
         (function($) {
             "use strict"
@@ -648,6 +740,7 @@
 
                 $('.select2').select2({
                     tags: true,
+                    width: '100%',
                     tokenSeparators: [',', ' ']
                 });
 
@@ -811,6 +904,133 @@
                     if (e.target.closest('.remove-country-info')) {
                         const countryItem = e.target.closest('.country-info-item');
                         countryItem.remove();
+                    }
+                });
+
+                // Included management
+                const includedContainer = document.getElementById('included-container');
+                let includedIndex = includedContainer.querySelectorAll('.included-item').length;
+
+                document.getElementById('add-included').addEventListener('click', function() {
+                    const newItem = document.createElement('div');
+                    newItem.className = 'included-item mb-4 pb-4 border-bottom';
+                    newItem.dataset.index = includedIndex;
+                    newItem.innerHTML = `
+                        <div class="row">
+                            <div class="col-lg-3 col-12">
+                                <div class="crancy__item-form--group mg-top-form-20">
+                                    <label class="crancy__item-label">{{ __('translate.Category') }}</label>
+                                    <select class="crancy__item-input category-select" name="included[${includedIndex}][category]">
+                                        <option value="accommodation">{{ __('translate.Accommodation') }}</option>
+                                        <option value="meals">{{ __('translate.Meals') }}</option>
+                                        <option value="guide">{{ __('translate.Guide') }}</option>
+                                        <option value="transport">{{ __('translate.Transport') }}</option>
+                                        <option value="others" selected>{{ __('translate.Others') }}</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-lg-4 col-12">
+                                <div class="crancy__item-form--group mg-top-form-20">
+                                    <label class="crancy__item-label">{{ __('translate.Title') }}</label>
+                                    <input class="crancy__item-input" type="text" name="included[${includedIndex}][title]" placeholder="e.g. 7 Nights Accommodation">
+                                </div>
+                            </div>
+                            <div class="col-lg-5 col-12">
+                                <div class="crancy__item-form--group mg-top-form-20">
+                                    <label class="crancy__item-label">{{ __('translate.Details') }}</label>
+                                    <textarea class="crancy__item-input" name="included[${includedIndex}][details]" rows="2"></textarea>
+                                </div>
+                            </div>
+                            <div class="col-12 dietary-options" style="display:none;">
+                                <div class="crancy__item-form--group mg-top-form-20">
+                                    <label class="crancy__item-label">{{ __('translate.Dietary Options') }}</label>
+                                    <select class="crancy__item-input select2-new" name="included[${includedIndex}][dietary][]" multiple>
+                                        <option value="Vegetarian">Vegetarian</option>
+                                        <option value="Vegan">Vegan</option>
+                                        <option value="Halal">Halal</option>
+                                        <option value="Gluten-Free">Gluten-Free</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-12 mg-top-20">
+                                <button type="button" class="crancy-btn btn-danger remove-included" style="background-color: #dc3545;">
+                                    <i class="fa fa-trash"></i> {{ __('translate.Remove') }}
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                    includedContainer.appendChild(newItem);
+                    
+                    // Initialize Select2 for the new item if it's meals
+                    $(newItem).find('.select2-new').select2({
+                        width: '100%'
+                    });
+                    
+                    includedIndex++;
+                });
+
+                includedContainer.addEventListener('change', function(e) {
+                    if (e.target.classList.contains('category-select')) {
+                        const row = e.target.closest('.row');
+                        const dietaryOptions = row.querySelector('.dietary-options');
+                        if (e.target.value === 'meals') {
+                            dietaryOptions.style.display = 'block';
+                        } else {
+                            dietaryOptions.style.display = 'none';
+                        }
+                    }
+                });
+
+                includedContainer.addEventListener('click', function(e) {
+                    if (e.target.closest('.remove-included')) {
+                        e.target.closest('.included-item').remove();
+                    }
+                });
+
+                // Excluded management
+                const excludedContainer = document.getElementById('excluded-container');
+                let excludedIndex = excludedContainer.querySelectorAll('.excluded-item').length;
+
+                document.getElementById('add-excluded').addEventListener('click', function() {
+                    const newItem = document.createElement('div');
+                    newItem.className = 'excluded-item mb-4 pb-4 border-bottom';
+                    newItem.dataset.index = excludedIndex;
+                    newItem.innerHTML = `
+                        <div class="row">
+                            <div class="col-lg-3 col-12">
+                                <div class="crancy__item-form--group mg-top-form-20">
+                                    <label class="crancy__item-label">{{ __('translate.Category') }}</label>
+                                    <select class="crancy__item-input" name="excluded[${excludedIndex}][category]">
+                                        <option value="others" selected>{{ __('translate.Others') }}</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-lg-4 col-12">
+                                <div class="crancy__item-form--group mg-top-form-20">
+                                    <label class="crancy__item-label">{{ __('translate.Title') }}</label>
+                                    <input class="crancy__item-input" type="text" name="excluded[${excludedIndex}][title]" placeholder="e.g. Flights">
+                                </div>
+                            </div>
+                            <div class="col-lg-5 col-12">
+                                <div class="crancy__item-form--group mg-top-form-20">
+                                    <label class="crancy__item-label">{{ __('translate.Details') }}</label>
+                                    <textarea class="crancy__item-input" name="excluded[${excludedIndex}][details]" rows="2"></textarea>
+                                </div>
+                            </div>
+                            <div class="col-12 mg-top-20">
+                                <button type="button" class="crancy-btn btn-danger remove-excluded" style="background-color: #dc3545;">
+                                    <i class="fa fa-trash"></i> {{ __('translate.Remove') }}
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                    excludedContainer.appendChild(newItem);
+                    excludedIndex++;
+                });
+
+                excludedContainer.addEventListener('click', function(e) {
+                    if (e.target.closest('.remove-excluded')) {
+                        e.target.closest('.excluded-item').remove();
                     }
                 });
             });

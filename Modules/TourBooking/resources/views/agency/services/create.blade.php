@@ -311,6 +311,140 @@
                                     <div class="col-12 mg-top-30">
                                         <div class="crancy-product-card">
                                             <h4 class="crancy-product-card__title">
+                                                {{ __('translate.Good to know') }}
+                                            </h4>
+
+                                            <div class="row mg-top-30">
+                                                <div class="col-12">
+                                                    <div class="alert alert-info mb-20">
+                                                        <i class="fa fa-info-circle"></i>
+                                                        {{ __('translate.Add country-specific information such as currency, plugs, and vaccines.') }}
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-12" id="good-to-know-container">
+                                                    <div class="country-info-item mb-4 pb-4 border-bottom" data-index="0">
+                                                        <div class="row">
+                                                            <div class="col-lg-6 col-12">
+                                                                <div class="crancy__item-form--group mg-top-form-20">
+                                                                    <label class="crancy__item-label">{{ __('translate.Currency') }}</label>
+                                                                    <input class="crancy__item-input" type="text" name="good_to_know[0][currency]" placeholder="e.g. Euro">
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-4 col-12">
+                                                                <div class="crancy__item-form--group mg-top-form-20">
+                                                                    <label class="crancy__item-label">{{ __('translate.Prises et adaptateurs') }}</label>
+                                                                    <input class="crancy__item-input" type="text" name="good_to_know[0][plugs]" placeholder="e.g. Type C, E">
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-4 col-12">
+                                                                <div class="crancy__item-form--group mg-top-form-20">
+                                                                    <label class="crancy__item-label">{{ __('translate.Vaccines') }}</label>
+                                                                    <input class="crancy__item-input" type="text" name="good_to_know[0][vaccines]" placeholder="e.g. Hepatite A">
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-4 col-12">
+                                                                <div class="crancy__item-form--group mg-top-form-20">
+                                                                    <label class="crancy__item-label">{{ __('translate.Payment Information') }}</label>
+                                                                    <input class="crancy__item-input" type="text" name="good_to_know[0][payment]" placeholder="e.g. Cards accepted">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-12 mg-top-20">
+                                                    <button type="button" class="crancy-btn" id="add-country-info">
+                                                        <i class="fa fa-plus"></i> {{ __('translate.Add Country Info') }}
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-12 mg-top-30">
+                                        <div class="crancy-product-card">
+                                            <h4 class="crancy-product-card__title">
+                                                {{ __('translate.Room Types') }}
+                                            </h4>
+
+                                            <div class="row mg-top-30">
+                                                <div class="col-12">
+                                                    <div class="alert alert-info mb-20">
+                                                        <i class="fa fa-info-circle"></i>
+                                                        {{ __('translate.Configure room types with price supplements for this service.') }}
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-12" id="room-types-container">
+                                                    <div class="room-type-item" data-index="0">
+                                                        <div class="row">
+                                                            <div class="col-lg-3 col-md-6 col-12">
+                                                                <div class="crancy__item-form--group mg-top-form-20">
+                                                                    <label class="crancy__item-label">{{ __('translate.Room Type') }}</label>
+                                                                    <select class="crancy__item-input room-type-select" name="room_types[0][type]" required>
+                                                                        <option value="">{{ __('translate.Select Type') }}</option>
+                                                                        <option value="single">{{ __('translate.Single Room') }}</option>
+                                                                        <option value="double">{{ __('translate.Double Room') }}</option>
+                                                                        <option value="triple">{{ __('translate.Triple Room') }}</option>
+                                                                        <option value="double_shared">{{ __('translate.Double Room (Shared)') }}</option>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="col-lg-3 col-md-6 col-12">
+                                                                <div class="crancy__item-form--group mg-top-form-20">
+                                                                    <label class="crancy__item-label">{{ __('translate.Price Supplement') }}</label>
+                                                                    <div class="crancy__item-form--currency">
+                                                                        <input class="crancy__item-input room-type-supplement" type="number" step="0.01" name="room_types[0][price_supplement]" value="0">
+                                                                        <div class="crancy__currency-icon">
+                                                                            <span>{{ config('settings.currency_icon', '$') }}</span>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="col-lg-3 col-md-6 col-12">
+                                                                <div class="crancy__item-form--group mg-top-form-20">
+                                                                    <label class="crancy__item-label">{{ __('translate.Capacity') }}</label>
+                                                                    <input class="crancy__item-input room-type-capacity" type="number" name="room_types[0][capacity]" value="1" min="1">
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="col-lg-3 col-md-6 col-12">
+                                                                <div class="crancy__item-form--group mg-top-form-20">
+                                                                    <label class="crancy__item-label">{{ __('translate.Status') }}</label>
+                                                                    <div class="crancy-ptabs__notify-switch crancy-ptabs__notify-switch--two">
+                                                                        <label class="crancy__item-switch">
+                                                                            <input type="checkbox" name="room_types[0][is_active]" value="1" checked>
+                                                                            <span class="crancy__item-switch--slide crancy__item-switch--round"></span>
+                                                                        </label>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="col-12">
+                                                                <div class="crancy__item-form--group mg-top-form-20">
+                                                                    <label class="crancy__item-label">{{ __('translate.Description') }}</label>
+                                                                    <textarea class="crancy__item-input room-type-description" name="room_types[0][description]" rows="3" placeholder="Optional description for this room type"></textarea>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-12 mg-top-20">
+                                                    <button type="button" class="crancy-btn" id="add-room-type">
+                                                        <i class="fa fa-plus"></i> {{ __('translate.Add Room Type') }}
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-12 mg-top-30">
+                                        <div class="crancy-product-card">
+                                            <h4 class="crancy-product-card__title">
                                                 {{ __('translate.Additional Information') }}</h4>
 
                                             <div class="row mg-top-30">
@@ -522,6 +656,22 @@
                                                         </div>
                                                     </div>
                                                 </div>
+
+                                                <div class="col-lg-3 col-md-4 col-12">
+                                                    <div class="crancy__item-form--group mg-top-form-20">
+                                                        <label
+                                                            class="crancy__item-label">{{ __('translate.Guaranteed Departure') }}</label>
+                                                        <div
+                                                            class="crancy-ptabs__notify-switch crancy-ptabs__notify-switch--two">
+                                                            <label class="crancy__item-switch">
+                                                                <input name="guaranteed_departure" type="checkbox"
+                                                                    value="1">
+                                                                <span
+                                                                    class="crancy__item-switch--slide crancy__item-switch--round"></span>
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -587,6 +737,143 @@
                             title: 'Email'
                         },
                     ]
+                });
+
+                // Room type management
+                let roomTypeIndex = 1;
+                const roomTypesContainer = document.getElementById('room-types-container');
+
+                document.getElementById('add-room-type').addEventListener('click', function() {
+                    const newRoomType = document.createElement('div');
+                    newRoomType.className = 'room-type-item';
+                    newRoomType.dataset.index = roomTypeIndex;
+                    newRoomType.innerHTML = `
+                        <div class="row">
+                            <div class="col-lg-3 col-md-6 col-12">
+                                <div class="crancy__item-form--group mg-top-form-20">
+                                    <label class="crancy__item-label">{{ __('translate.Room Type') }}</label>
+                                    <select class="crancy__item-input room-type-select" name="room_types[${roomTypeIndex}][type]" required>
+                                        <option value="">{{ __('translate.Select Type') }}</option>
+                                        <option value="single">{{ __('translate.Single Room') }}</option>
+                                        <option value="double">{{ __('translate.Double Room') }}</option>
+                                        <option value="triple">{{ __('translate.Triple Room') }}</option>
+                                        <option value="double_shared">{{ __('translate.Double Room (Shared)') }}</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-3 col-md-6 col-12">
+                                <div class="crancy__item-form--group mg-top-form-20">
+                                    <label class="crancy__item-label">{{ __('translate.Price Supplement') }}</label>
+                                    <div class="crancy__item-form--currency">
+                                        <input class="crancy__item-input room-type-supplement" type="number" step="0.01" name="room_types[${roomTypeIndex}][price_supplement]" value="0">
+                                        <div class="crancy__currency-icon">
+                                            <span>{{ config('settings.currency_icon', '$') }}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-3 col-md-6 col-12">
+                                <div class="crancy__item-form--group mg-top-form-20">
+                                    <label class="crancy__item-label">{{ __('translate.Capacity') }}</label>
+                                    <input class="crancy__item-input room-type-capacity" type="number" name="room_types[${roomTypeIndex}][capacity]" value="1" min="1">
+                                </div>
+                            </div>
+
+                            <div class="col-lg-3 col-md-6 col-12">
+                                <div class="crancy__item-form--group mg-top-form-20">
+                                    <label class="crancy__item-label">{{ __('translate.Status') }}</label>
+                                    <div class="crancy-ptabs__notify-switch crancy-ptabs__notify-switch--two">
+                                        <label class="crancy__item-switch">
+                                            <input type="checkbox" name="room_types[${roomTypeIndex}][is_active]" value="1" checked>
+                                            <span class="crancy__item-switch--slide crancy__item-switch--round"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-12">
+                                <div class="crancy__item-form--group mg-top-form-20">
+                                    <label class="crancy__item-label">{{ __('translate.Description') }}</label>
+                                    <textarea class="crancy__item-input room-type-description" name="room_types[${roomTypeIndex}][description]" rows="3" placeholder="Optional description for this room type"></textarea>
+                                </div>
+                            </div>
+
+                            <div class="col-12">
+                                <button type="button" class="crancy-btn btn-danger remove-room-type" style="background-color: #dc3545;">
+                                    <i class="fa fa-trash"></i> {{ __('translate.Remove') }}
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                    roomTypesContainer.appendChild(newRoomType);
+                    roomTypeIndex++;
+                });
+
+                // Event delegation for remove buttons
+                roomTypesContainer.addEventListener('click', function(e) {
+                    if (e.target.closest('.remove-room-type')) {
+                        const roomTypeItem = e.target.closest('.room-type-item');
+                        if (roomTypesContainer.querySelectorAll('.room-type-item').length > 1) {
+                            roomTypeItem.remove();
+                        } else {
+                            alert('{{ __('translate.At least one room type is required.') }}');
+                        }
+                    }
+                });
+
+                // Good to know country management
+                let countryIndex = 1;
+                const goodToKnowContainer = document.getElementById('good-to-know-container');
+
+                document.getElementById('add-country-info').addEventListener('click', function() {
+                    const newCountry = document.createElement('div');
+                    newCountry.className = 'country-info-item mb-4 pb-4 border-bottom';
+                    newCountry.dataset.index = countryIndex;
+                    newCountry.innerHTML = `
+                        <div class="row">
+                            <div class="col-lg-6 col-12">
+                                <div class="crancy__item-form--group mg-top-form-20">
+                                    <label class="crancy__item-label">{{ __('translate.Currency') }}</label>
+                                    <input class="crancy__item-input" type="text" name="good_to_know[${countryIndex}][currency]" placeholder="e.g. Euro">
+                                </div>
+                            </div>
+                            <div class="col-lg-4 col-12">
+                                <div class="crancy__item-form--group mg-top-form-20">
+                                    <label class="crancy__item-label">{{ __('translate.Prises et adaptateurs') }}</label>
+                                    <input class="crancy__item-input" type="text" name="good_to_know[${countryIndex}][plugs]" placeholder="e.g. Type C, E">
+                                </div>
+                            </div>
+                            <div class="col-lg-4 col-12">
+                                <div class="crancy__item-form--group mg-top-form-20">
+                                    <label class="crancy__item-label">{{ __('translate.Vaccines') }}</label>
+                                    <input class="crancy__item-input" type="text" name="good_to_know[${countryIndex}][vaccines]" placeholder="e.g. Hepatite A">
+                                </div>
+                            </div>
+                            <div class="col-lg-4 col-12">
+                                <div class="crancy__item-form--group mg-top-form-20">
+                                    <label class="crancy__item-label">{{ __('translate.Payment Information') }}</label>
+                                    <input class="crancy__item-input" type="text" name="good_to_know[${countryIndex}][payment]" placeholder="e.g. Cards accepted">
+                                </div>
+                            </div>
+                            <div class="col-12 mg-top-20">
+                                <button type="button" class="crancy-btn btn-danger remove-country-info" style="background-color: #dc3545;">
+                                    <i class="fa fa-trash"></i> {{ __('translate.Remove') }}
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                    goodToKnowContainer.appendChild(newCountry);
+                    countryIndex++;
+                });
+
+                // Event delegation for remove buttons
+                goodToKnowContainer.addEventListener('click', function(e) {
+                    if (e.target.closest('.remove-country-info')) {
+                        const countryItem = e.target.closest('.country-info-item');
+                        countryItem.remove();
+                    }
                 });
             });
         })(jQuery);

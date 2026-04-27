@@ -22,34 +22,7 @@ class ServiceRequest extends FormRequest
      */
     protected function prepareForValidation()
     {
-        // Convert textarea strings to arrays for fields that need it
-        $textareaFields = ['included', 'excluded'];
-
-        foreach ($textareaFields as $field) {
-            if ($this->has($field) && is_string($this->input($field))) {
-                $this->merge([
-                    $field => $this->convertTextareaToArray($this->input($field))
-                ]);
-            }
-        }
-    }
-
-       /**
-     * Convert textarea content to array (one item per line)
-     */
-    private function convertTextareaToArray($text): array
-    {
-        if (empty($text)) {
-            return [];
-        }
-
-        // Split by new lines, trim whitespace, and remove empty lines
-        return array_filter(
-            array_map('trim', preg_split('/\r\n|\r|\n/', $text)),
-            function($item) {
-                return !empty($item);
-            }
-        );
+        // No longer converting textarea to array here as we use a structured repeater
     }
 
     /**
@@ -68,6 +41,8 @@ class ServiceRequest extends FormRequest
             'longitude' => 'nullable|string|max:30',
             'service_type_id' => 'required|exists:service_types,id',
             'destination_id' => 'nullable',
+            'destination_ids' => 'nullable|array',
+            'destination_ids.*' => 'exists:destinations,id',
             'price_per_person' => 'nullable|numeric|min:0',
             'adult_price' => 'nullable|numeric|min:0',
             'adult_discount_percentage' => 'nullable|numeric|min:0|max:100',
@@ -82,9 +57,14 @@ class ServiceRequest extends FormRequest
             'deposit_required' => 'nullable|boolean',
             'deposit_percentage' => 'nullable|integer|min:0|max:100',
             'included' => 'nullable|array',
-            'included.*' => 'string|max:255', // Validate each item in the array
+            'included.*.category' => 'nullable|string|max:50',
+            'included.*.title' => 'nullable|string|max:255',
+            'included.*.details' => 'nullable|string',
+            'included.*.dietary' => 'nullable|array',
             'excluded' => 'nullable|array',
-            'excluded.*' => 'string|max:255', // Validate each item in the array
+            'excluded.*.category' => 'nullable|string|max:50',
+            'excluded.*.title' => 'nullable|string|max:255',
+            'excluded.*.details' => 'nullable|string',
             'duration' => 'nullable|string|max:100',
             'group_size' => 'nullable|string|max:100',
             'age_range' => 'nullable|string|max:100',
@@ -108,9 +88,9 @@ class ServiceRequest extends FormRequest
             'seo_keywords' => 'nullable|string|max:255',
             'lang_code' => 'nullable|string|exists:languages,lang_code',
             'tour_plan_sub_title' => 'nullable|max:255',
-            'google_map_sub_title' => 'nullable|max:255',
-            'google_map_url' => 'nullable',
+            'map_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
             'good_to_know' => 'nullable|array',
+            'guaranteed_departure' => 'nullable|boolean',
         ];
 
         if ($this->isMethod('POST')) {

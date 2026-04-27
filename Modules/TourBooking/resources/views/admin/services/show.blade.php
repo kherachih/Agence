@@ -1,4 +1,4 @@
-﻿@extends('admin.master_layout')
+@extends('admin.master_layout')
 @section('title')
     <title>{{ __('translate.Service Details') }}</title>
 @endsection
@@ -99,9 +99,17 @@
                                                                 <p>{{ $service->serviceType->name ?? 'N/A' }}</p>
                                                             </div>
                                                             <div class="col-sm-6 mb-3">
-                                                                <label class="fw-bold">{{ __('translate.Destination') }}:</label>
-                                                                <p>{{ $service->destination->name ?? 'N/A' }}</p>
-                                                            </div>
+                                                                 <label class="fw-bold">{{ __('translate.Destinations') }}:</label>
+                                                                 <p>
+                                                                     @if($service->destinations->count() > 0)
+                                                                         @foreach($service->destinations as $dest)
+                                                                             <span class="badge bg-info text-white">{{ $dest->name }}</span>
+                                                                         @endforeach
+                                                                     @else
+                                                                         {{ $service->destination->name ?? 'N/A' }}
+                                                                     @endif
+                                                                 </p>
+                                                             </div>
                                                             <div class="col-sm-6 mb-3">
                                                                 <label class="fw-bold">{{ __('translate.Location') }}:</label>
                                                                 <p>{{ $service->location ?? 'N/A' }}</p>

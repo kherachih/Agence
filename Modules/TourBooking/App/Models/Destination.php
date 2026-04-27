@@ -120,4 +120,12 @@ final class Destination extends Model
         return $this->hasMany(Service::class, 'destination_id')
             ->where('type', 'tour');
     }
+
+    /**
+     * Get all services for this destination (many-to-many).
+     */
+    public function services_pivot()
+    {
+        return $this->belongsToMany(Service::class, 'service_destinations', 'destination_id', 'service_id');
+    }
 }

@@ -77,7 +77,7 @@ final class ServiceController extends Controller
         }
 
         // Convert checkbox values
-        $booleanFields = ['deposit_required', 'is_featured', 'is_popular', 'show_on_homepage', 'status', 'is_new'];
+        $booleanFields = ['deposit_required', 'is_featured', 'is_popular', 'show_on_homepage', 'status', 'is_new', 'guaranteed_departure'];
         foreach ($booleanFields as $field) {
             $data[$field] = isset($data[$field]) ? true : false;
         }
@@ -239,7 +239,7 @@ final class ServiceController extends Controller
             }
 
             // Convert checkbox values
-            $booleanFields = ['deposit_required', 'is_featured', 'is_popular', 'show_on_homepage', 'status'];
+            $booleanFields = ['deposit_required', 'is_featured', 'is_popular', 'show_on_homepage', 'status', 'guaranteed_departure'];
             foreach ($booleanFields as $field) {
                 $data[$field] = isset($data[$field]) ? true : false;
             }
@@ -403,6 +403,12 @@ final class ServiceController extends Controller
     {
         $serviceId = $media->service_id;
 
+        // Ownership check
+        $service = Service::find($serviceId);
+        if (!$service || $service->user_id !== auth()->user()->id) {
+            abort(404);
+        }
+
         // Check if this is the thumbnail, reassign if needed
         if ($media->is_thumbnail) {
             $newThumbnail = ServiceMedia::where('service_id', $serviceId)
@@ -422,6 +428,56 @@ final class ServiceController extends Controller
         $media->delete();
 
         $notify_message = trans('translate.Media deleted successfully');
+        $notify_message = array('message' => $notify_message, 'alert-type' => 'success');
+
+        return back()->with($notify_message);
+    }
+
+    /**
+     * Bulk delete media items.
+     */
+    public function bulkDeleteMedia(Request $request): RedirectResponse
+    {
+        $ids = $request->ids;
+        if (!$ids || !is_array($ids)) {
+            $notify_message = trans('translate.No media items selected');
+            $notify_message = array('message' => $notify_message, 'alert-type' => 'error');
+            return back()->with($notify_message);
+        }
+
+        $mediaItems = ServiceMedia::whereIn('id', $ids)->get();
+        $deletedCount = 0;
+
+        foreach ($mediaItems as $media) {
+            $serviceId = $media->service_id;
+            
+            // Ownership check
+            $service = Service::find($serviceId);
+            if (!$service || $service->user_id !== auth()->user()->id) {
+                continue;
+            }
+
+            // Check if this is thumbnail, reassign if needed
+            if ($media->is_thumbnail) {
+                $newThumbnail = ServiceMedia::where('service_id', $serviceId)
+                    ->whereNotIn('id', $ids)
+                    ->where('file_type', 'image')
+                    ->first();
+
+                if ($newThumbnail) {
+                    $newThumbnail->update(['is_thumbnail' => true]);
+                }
+            }
+
+            // Delete file from storage
+            Storage::delete($media->file_path);
+
+            // Delete record
+            $media->delete();
+            $deletedCount++;
+        }
+
+        $notify_message = trans('translate.:count media items deleted successfully', ['count' => $deletedCount]);
         $notify_message = array('message' => $notify_message, 'alert-type' => 'success');
 
         return back()->with($notify_message);

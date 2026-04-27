@@ -38,7 +38,15 @@
                 <div class="row align-items-end mb-25">
                     <div class="col-xl-9 col-lg-8">
                         <div class="tg-tour-details-video-title-wrap">
-                            <h2 class="tg-tour-details-video-title mb-15">{{ $service?->translation?->title }}</h2>
+                            <h2 class="tg-tour-details-video-title mb-15">
+                                {{ $service?->translation?->title }}
+                                @if ($service?->guaranteed_departure == 1)
+                                    <span class="badge bg-success"
+                                        style="font-size: 14px; padding: 5px 12px; vertical-align: middle; margin-left: 10px; border-radius: 20px;">
+                                        <i class="fa fa-check-circle"></i> {{ __('translate.Guaranteed Departure') }}
+                                    </span>
+                                @endif
+                            </h2>
                             <div class="tg-tour-details-video-location d-flex flex-wrap">
                                 <div class="tg-tour-details-video-feature-price mb-10 mr-25">
                                     <p class="mb-0"> {{ __('translate.From') }}

@@ -1,6 +1,7 @@
 <div class="tg-header-lang-wrapper ml-15 mr-15 d-none d-sm-flex align-items-center">
-    <div class="header-lang-icon" style="color: inherit; opacity: 0.9; font-size: 16px;">
-        <i class="fas fa-globe"></i>
+    <div class="header-lang-display d-flex align-items-center" style="position: relative; z-index: 1; pointer-events: none;">
+        <i class="fas fa-globe me-2"></i>
+        <span class="lang-code" style="font-weight: 700; font-size: 14px;"><?php echo e(strtoupper(session('front_lang', app()->getLocale()))); ?></span>
     </div>
     <select class="language_code select header-lang-select" name="language_code" onchange="window.location.href = '<?php echo e(route('language-switcher')); ?>' + '?lang_code=' + this.value">
         <?php $__currentLoopData = $language_list ?? []; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $lang): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
@@ -15,19 +16,20 @@
 <style>
     .tg-header-lang-wrapper {
         border: 1px solid rgba(255, 255, 255, 0.4);
-        border-radius: 50%; /* Circular button */
+        border-radius: 30px; /* Pill shaped */
         background: rgba(255, 255, 255, 0.1);
         backdrop-filter: blur(5px);
         -webkit-backdrop-filter: blur(5px);
         transition: all 0.3s ease;
-        height: 40px;
-        width: 40px !important;
-        min-width: 40px !important;
-        padding: 0 !important;
-        justify-content: center !important;
+        height: 38px;
+        padding: 0 15px !important;
+        display: flex;
+        align-items: center;
+        justify-content: center;
         position: relative;
         color: #fff !important;
         cursor: pointer;
+        min-width: 80px;
     }
     .tg-header-lang-wrapper:hover {
         background: rgba(255, 255, 255, 0.2);
@@ -35,11 +37,11 @@
         transform: scale(1.05);
     }
     
-    /* NiceSelect Styling - Icon Only Mode */
+    /* NiceSelect Styling - Hidden but functional */
     .header-lang-select.nice-select {
         background: transparent !important;
         border: none !important;
-        color: transparent !important; /* Hides the current text */
+        color: transparent !important;
         height: 100% !important;
         width: 100% !important;
         position: absolute !important;
@@ -47,22 +49,23 @@
         left: 0;
         padding: 0 !important;
         margin: 0 !important;
+        z-index: 2;
     }
     .header-lang-select.nice-select .current {
-        display: none !important; /* Forces text hidden */
+        display: none !important;
     }
     .header-lang-select.nice-select:after {
-        display: none !important; /* Hides the small arrow */
+        display: none !important;
     }
     
     .header-lang-select.nice-select .list {
         background-color: #fff !important;
         border-radius: 12px !important;
         box-shadow: 0 10px 40px rgba(0,0,0,0.2) !important;
-        margin-top: 15px !important;
+        margin-top: 10px !important;
         color: #2d3436 !important;
         border: 1px solid rgba(0,0,0,0.05) !important;
-        width: 80px !important; 
+        width: 100px !important; 
         left: 50% !important;
         transform: translateX(-50%) !important;
         overflow: hidden;
@@ -82,14 +85,10 @@
         color: #be3144 !important;
         background-color: rgba(190, 49, 68, 0.05) !important;
     }
-    /* Sticky Header override - keeps it readable if needed, but user asked for white */
+
+    /* Sticky/Dark Header behavior if needed */
     .header-sticky .tg-header-lang-wrapper {
-        /* If you want it to change color when sticky, uncomment below */
-        /* border-color: rgba(0,0,0,0.2); 
-           color: #2d3436 !important; */
-    }
-    .header-sticky .header-lang-select.nice-select:after {
-        /* border-color: #2d3436 !important; */
+        /* Optional: Change colors when header becomes sticky */
     }
 </style>
 <?php /**PATH D:\xampp\htdocs\archive\archive\resources\views/components/language_selector.blade.php ENDPATH**/ ?>

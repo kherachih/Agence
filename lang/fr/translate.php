@@ -1667,7 +1667,7 @@ return array(
   'Select Extras' => 'Sélectionner les extras',
   'Request a Quote' => 'Demander un devis',
   'Room Details' => 'Détails de la chambre',
-  'Example: Double Room, Triple Room...' => 'Exemple : Chambre Double, Chambre Triple...',
+  'Example: Double Room, Triple Room...' => 'Exemple : Chambre Double / Twin, Chambre Triple...',
   'Send Request' => 'Envoyer la demande',
   'Your quote request has been received successfully. We will contact you soon.' => 'Votre demande de devis a été reçue avec succès. Nous vous contacterons bientôt.',
   'Quote Requests' => 'Demandes de devis',
@@ -1819,4 +1819,9 @@ return array(
   'Vaccines' => 'Vaccins',
   'Payment Information' => 'Informations de paiement',
   'Add Country Info' => 'Ajouter des infos pays',
+  'Guaranteed Departure' => 'Départ garanti',
+  'Guaranteed' => 'Garanti',
+  'Double Room' => 'Chambre Double / Twin',
+  'Double Room (Shared)' => 'Chambre Double / Twin (Partagée)',
+  'Example: Double Room, Triple Room, Flight preferences...' => 'Exemple : Chambre Double / Twin, Chambre Triple, Préférences de vol...',
 );
