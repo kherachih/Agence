@@ -178,10 +178,16 @@
                                                                 </div>
                                                                 @endif
 
-                                                                @if($item->meals_included && count(json_decode($item->meals_included)) > 0)
+                                                                @php
+                                                                    $meals = $item->meals_included ?? [];
+                                                                    if (is_string($meals)) {
+                                                                        $meals = json_decode($meals, true) ?? [];
+                                                                    }
+                                                                @endphp
+                                                                @if(!empty($meals))
                                                                 <div class="mt-2">
                                                                     <strong><i class="fa fa-utensils"></i> {{ __('translate.Meals') }}:</strong>
-                                                                    @foreach(json_decode($item->meals_included) as $meal)
+                                                                    @foreach($meals as $meal)
                                                                         <span class="badge bg-success ms-1">{{ ucfirst($meal) }}</span>
                                                                     @endforeach
                                                                 </div>
@@ -259,7 +265,10 @@
                                                                                 <label class="crancy__item-label">{{ __('translate.Meals Included') }}</label>
                                                                                 <select class="crancy__item-input select2" name="meals_included[]" multiple="multiple">
                                                                                     @php
-                                                                                        $meals = $item->meals_included ? json_decode($item->meals_included) : [];
+                                                                                        $meals = $item->meals_included ?? [];
+                                                                                        if (is_string($meals)) {
+                                                                                            $meals = json_decode($meals, true) ?? [];
+                                                                                        }
                                                                                     @endphp
                                                                                     <option value="breakfast" {{ in_array('breakfast', $meals) ? 'selected' : '' }}>{{ __('translate.Breakfast') }}</option>
                                                                                     <option value="lunch" {{ in_array('lunch', $meals) ? 'selected' : '' }}>{{ __('translate.Lunch') }}</option>

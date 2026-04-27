@@ -782,20 +782,32 @@
                 </div>
                 <div class="section-content">
                     <div class="two-column-grid">
-                        @if($service->included && json_decode($service->included))
+                        @php
+                            $included = $service->included ?? [];
+                            if (is_string($included)) {
+                                $included = json_decode($included, true) ?? [];
+                            }
+                        @endphp
+                        @if(!empty($included))
                             <div class="column">
                                 <div class="list-header included">✓ Included</div>
-                                @foreach(json_decode($service->included) as $item)
-                                    <div class="list-item included">{{ $item }}</div>
+                                @foreach($included as $item)
+                                    <div class="list-item included">{{ is_array($item) ? ($item['title'] ?? '') : $item }}</div>
                                 @endforeach
                             </div>
                         @endif
 
-                        @if($service->excluded && json_decode($service->excluded))
+                        @php
+                            $excluded = $service->excluded ?? [];
+                            if (is_string($excluded)) {
+                                $excluded = json_decode($excluded, true) ?? [];
+                            }
+                        @endphp
+                        @if(!empty($excluded))
                             <div class="column">
                                 <div class="list-header excluded">✗ Excluded</div>
-                                @foreach(json_decode($service->excluded) as $item)
-                                    <div class="list-item excluded">{{ $item }}</div>
+                                @foreach($excluded as $item)
+                                    <div class="list-item excluded">{{ is_array($item) ? ($item['title'] ?? '') : $item }}</div>
                                 @endforeach
                             </div>
                         @endif

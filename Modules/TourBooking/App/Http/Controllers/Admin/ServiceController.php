@@ -85,8 +85,11 @@ final class ServiceController extends Controller
         // Handle JSON fields
         $jsonFields = ['included', 'excluded', 'facilities', 'rules', 'safety', 'social_links', 'good_to_know'];
         foreach ($jsonFields as $field) {
-            if (isset($data[$field]) && is_array($data[$field])) {
-                $data[$field] = json_encode($data[$field]);
+            if (isset($data[$field]) && is_string($data[$field])) {
+                $decoded = json_decode($data[$field], true);
+                if (json_last_error() === JSON_ERROR_NONE) {
+                    $data[$field] = $decoded;
+                }
             }
         }
 
@@ -286,12 +289,12 @@ final class ServiceController extends Controller
                                     return $line !== '';
                                 }
                             );
-                            $data[$field] = json_encode(array_values($lines));
+                            $data[$field] = array_values($lines);
+                        } else {
+                            $data[$field] = $decoded;
                         }
-                        // If it's already valid JSON, keep it as is
-                    } elseif (is_array($data[$field])) {
-                        $data[$field] = json_encode($data[$field]);
                     }
+                    // If it's already an array, keep it as is
                 }
             }
 
@@ -373,10 +376,10 @@ final class ServiceController extends Controller
                                 return $line !== '';
                             }
                         );
-                        $translationData[$field] = json_encode(array_values($lines));
+                        $translationData[$field] = array_values($lines);
                     } else {
-                        // Already valid JSON, use as is
-                        $translationData[$field] = $data[$field];
+                        // Already valid JSON, use decoded array
+                        $translationData[$field] = $decoded;
                     }
                 } else {
                     $translationData[$field] = $data[$field];

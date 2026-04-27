@@ -1696,8 +1696,15 @@
 
                                 @if ($service?->included || $service?->excluded)
                                     @php
-                                        $included = json_decode($service?->included, true) ?? [];
-                                        $excluded = json_decode($service?->excluded, true) ?? [];
+                                        $included = $service?->included ?? [];
+                                        if (is_string($included)) {
+                                            $included = json_decode($included, true) ?? [];
+                                        }
+                                        
+                                        $excluded = $service?->excluded ?? [];
+                                        if (is_string($excluded)) {
+                                            $excluded = json_decode($excluded, true) ?? [];
+                                        }
                                         
                                         $category_icons = [
                                             'accommodation' => 'fa-bed',
