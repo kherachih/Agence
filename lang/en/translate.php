@@ -2092,6 +2092,7 @@ return array(
   'Transport Excluded' => 'Transport Excluded',
   'Transport Included' => 'Transport Included',
   'Select Class' => 'Select Class',
+  'Map Image' => 'Map Image',
 );
 
 ;
