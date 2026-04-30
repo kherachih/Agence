@@ -404,6 +404,9 @@ return array(
   'City is required' => 'City is required',
   'Password confirmation is required' => 'Password confirmation is required',
   'Created successfully' => 'Created successfully',
+  'Service Class' => 'Service Class',
+  'Private' => 'Private',
+  'Group' => 'Group',
   'You can not delete it, multiple blog available on this category' => 'You can not delete it, multiple blog available on this category',
   'Deleted successfully' => 'Deleted successfully',
   'Name already exist' => 'Name already exist',
@@ -2088,4 +2091,7 @@ return array(
   'Guide Included' => 'Guide Included',
   'Transport Excluded' => 'Transport Excluded',
   'Transport Included' => 'Transport Included',
+  'Select Class' => 'Select Class',
 );
+
+;

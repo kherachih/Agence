@@ -232,15 +232,16 @@
                         </div>
                         <div class="tg-listing-map-filter-wrap pl-40 pr-35">
                             <div class="tg-listing-map-filter pt-25 pb-15">
-                                <div class="item-select mb-10">
-                                    <select id="typeSelect" class="select item-first">
-                                        <option>{{ __('translate.Type') }}</option>
-                                        @foreach ($serviceTypes as $key => $serviceType)
-                                            <option value="{{ $serviceType?->id }}">
-                                                {{ $serviceType?->name }}
-                                            </option>
-                                        @endforeach
-                                    </select>
+                                <div class="item-select mb-10" style="min-width: 200px;">
+                                    <div class="d-flex align-items-center mb-2">
+                                        <span class="mr-10" style="white-space: nowrap;">Days:</span>
+                                        <input class="form-control form-control-sm mr-5" x-model="filters.min_duration" type="number"
+                                            placeholder="Min" min="1" max="30" style="width: 60px;">
+                                        <input class="form-control form-control-sm" x-model="filters.max_duration" type="number"
+                                            placeholder="Max" min="1" max="30" style="width: 60px;">
+                                    </div>
+                                    <input type="range" x-model="filters.min_duration" min="1" max="30" step="1" class="w-100">
+                                    <input type="range" x-model="filters.max_duration" min="1" max="30" step="1" class="w-100 mt-1">
                                 </div>
                                 <div class="item-select mb-10">
                                     <select id="amenitySelect" class="select">
@@ -401,6 +402,8 @@
                 filters: {
                     search: `{{ request('search', '') }}`,
                     service_type_id: `{{ request('service_type_id', '') }}`,
+                    min_duration: `{{ request('min_duration', '1') }}`,
+                    max_duration: `{{ request('max_duration', '30') }}`,
                     amenity_id: `{{ request('amenity_id', '') }}`,
                     max_price: `{{ request('max_price', '') }}`,
                     min_price: `{{ request('min_price', '') }}`,
@@ -412,6 +415,8 @@
                 defaultFilters: {
                     search: '',
                     service_type_id: '',
+                    min_duration: '1',
+                    max_duration: '30',
                     max_price: '',
                     min_price: '',
                     amenity_id: [],
@@ -636,6 +641,23 @@
         .tg-listing-card-thumb img {
             height: 100%;
             object-fit: cover;
+        }
+        .item-select input[type="range"] {
+            -webkit-appearance: none;
+            height: 6px;
+            background: #e1e9f6;
+            border-radius: 5px;
+            outline: none;
+        }
+        .item-select input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 18px;
+            height: 18px;
+            background: var(--tg-theme-primary);
+            border-radius: 50%;
+            cursor: pointer;
+            border: 2px solid #fff;
+            box-shadow: 0 0 5px rgba(0,0,0,0.1);
         }
     </style>
 @endpush

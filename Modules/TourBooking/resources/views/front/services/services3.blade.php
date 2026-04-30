@@ -333,35 +333,53 @@
                             </div>
                             <span class="tg-filter-border mt-30 mb-25"></span>
 
-                            <div x-data="{ showPropertyType: false }">
-                                <h4 class="tg-filter-title mb-15">Property Type</h4>
+                            <div>
+                                <h4 class="tg-filter-title mb-15">{{ __('translate.Service Class') }}</h4>
                                 <div class="tg-filter-list">
                                     <ul>
-                                        @foreach ($serviceTypes as $key => $serviceType)
-                                            <li x-show="showPropertyType || {{ $key }} < 4" x-transition>
-                                                <div class="checkbox d-flex">
-                                                    <input value="{{ $serviceType?->id }}" x-model="filters.service_type_ids"
-                                                        class="tg-checkbox" type="checkbox" id="australia_{{ $key }}">
-                                                    <label for="australia_{{ $key }}" class="tg-label">
-                                                        {{ $serviceType?->name }}
-                                                    </label>
-                                                </div>
-                                            </li>
-                                        @endforeach
+                                        <li>
+                                            <div class="checkbox d-flex">
+                                                <input value="private" x-model="filters.service_classes"
+                                                    class="tg-checkbox" type="checkbox" id="class_private">
+                                                <label for="class_private" class="tg-label">
+                                                    {{ __('translate.Private') }}
+                                                </label>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="checkbox d-flex">
+                                                <input value="group" x-model="filters.service_classes"
+                                                    class="tg-checkbox" type="checkbox" id="class_group">
+                                                <label for="class_group" class="tg-label">
+                                                    {{ __('translate.Group') }}
+                                                </label>
+                                            </div>
+                                        </li>
                                     </ul>
                                 </div>
+                                <span class="tg-filter-border mt-25 mb-25"></span>
+                            </div>
 
-                                @if (count($serviceTypes) > 4)
-                                    <div class="tg-filter-seemore mt-2 cp select-none"
-                                        @click="showPropertyType = !showPropertyType">
-                                        <span class="plus">
-                                            <i :class="showPropertyType ? 'fa-solid fa-minus' :
-                                                                    'fa-sharp fa-solid fa-plus'"></i>
+                            <div>
+                                <h4 class="tg-filter-title mb-15">Duration (Days)</h4>
+                                <div class="tg-filter-price-input">
+                                    <div class="d-flex align-items-center mb-10">
+                                        <input class="input no-arrow" x-model="filters.min_duration" type="number"
+                                            placeholder="Min Days" min="1" max="30">
+                                        <span class="dvdr">
+                                            <svg width="14" height="4" viewBox="0 0 14 4" fill="none"
+                                                xmlns="http://www.w3.org/2000/svg">
+                                                <path d="M2 2H12" stroke="#353844" stroke-width="3" stroke-linecap="round" />
+                                            </svg>
                                         </span>
-                                        <span class="more" x-text="showPropertyType ? 'See Less' : 'See More'"></span>
+                                        <input class="input no-arrow" x-model="filters.max_duration" type="number"
+                                            placeholder="Max Days" min="1" max="30">
                                     </div>
-                                @endif
-
+                                    <div class="range-slider-container">
+                                        <input type="range" x-model="filters.min_duration" min="1" max="30" step="1" class="w-100">
+                                        <input type="range" x-model="filters.max_duration" min="1" max="30" step="1" class="w-100 mt-2">
+                                    </div>
+                                </div>
                                 <span class="tg-filter-border mt-25 mb-25"></span>
                             </div>
 
@@ -622,22 +640,28 @@
                 filters: {
                     search: `{{ request('search', '') }}`,
                     service_type_ids: {!! json_encode(request('service_type_ids', [])) !!},
+                    min_duration: `{{ request('min_duration', '1') }}`,
+                    max_duration: `{{ request('max_duration', '30') }}`,
                     max_price: `{{ request('max_price', '') }}`,
                     min_price: `{{ request('min_price', '') }}`,
                     amenity_ids: {!! json_encode(request('amenity_ids', [])) !!},
                     languages: {!! json_encode(request('languages', [])) !!},
                     sort_by: `{{ request('sort_by', '') }}`,
                     ratings: {!! json_encode(request('ratings', [])) !!},
+                    service_classes: {!! json_encode(request('service_classes', [])) !!},
                 },
                 defaultFilters: {
                     search: '',
                     service_type_ids: [],
+                    min_duration: '1',
+                    max_duration: '30',
                     max_price: '',
                     min_price: '',
                     amenity_ids: [],
                     languages: [],
                     sort_by: '',
-                    ratings: []
+                    ratings: [],
+                    service_classes: []
                 },
                 get isFilterChanged() {
                     return JSON.stringify(this.filters) !== JSON.stringify(this.defaultFilters);
@@ -893,6 +917,23 @@
 
         .month-dropdown::-webkit-scrollbar-thumb:hover {
             background: #764ba2;
+        }
+        .range-slider-container input[type="range"] {
+            -webkit-appearance: none;
+            height: 6px;
+            background: #e1e9f6;
+            border-radius: 5px;
+            outline: none;
+        }
+        .range-slider-container input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 18px;
+            height: 18px;
+            background: var(--tg-theme-primary);
+            border-radius: 50%;
+            cursor: pointer;
+            border: 2px solid #fff;
+            box-shadow: 0 0 5px rgba(0,0,0,0.1);
         }
     </style>
 @endpush

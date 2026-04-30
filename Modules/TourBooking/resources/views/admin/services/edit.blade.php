@@ -219,6 +219,22 @@
                                                 </div>
 
                                                 <div class="col-lg-4 col-md-6 col-12">
+                                                    <div class="crancy__item-form--group mg-top-form-20">
+                                                        <label
+                                                            class="crancy__item-label">{{ __('translate.Service Class') }}
+                                                        </label>
+                                                        <select class="crancy__item-input" name="service_class">
+                                                            <option value="">{{ __('translate.Select Class') }}</option>
+                                                            <option value="private" {{ old('service_class', $service->service_class) == 'private' ? 'selected' : '' }}>{{ __('translate.Private') }}</option>
+                                                            <option value="group" {{ old('service_class', $service->service_class) == 'group' ? 'selected' : '' }}>{{ __('translate.Group') }}</option>
+                                                        </select>
+                                                        @error('service_class')
+                                                            <span class="text-danger">{{ $message }}</span>
+                                                        @enderror
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-lg-4 col-md-6 col-12">
                                                      <div class="crancy__item-form--group mg-top-form-20">
                                                          <label
                                                              class="crancy__item-label">{{ __('translate.Select Destinations') }}</label>

@@ -242,11 +242,20 @@ final class FrontServiceController extends Controller
                 })
                     ->orWhere('location', 'like', "%{$request->search}%");
             })
+            ->when($request->filled('min_duration'), function ($query) use ($request) {
+                return $query->whereRaw('CAST(duration AS UNSIGNED) >= ?', [$request->min_duration]);
+            })
+            ->when($request->filled('max_duration'), function ($query) use ($request) {
+                return $query->whereRaw('CAST(duration AS UNSIGNED) <= ?', [$request->max_duration]);
+            })
             ->when($request->filled('service_type_ids') && is_array($request->service_type_ids), function ($query) use ($request) {
                 return $query->whereIn('service_type_id', $request->service_type_ids);
             })
             ->when($request->filled('service_type_id') && $request->service_type_id != 'Type', function ($query) use ($request) {
                 return $query->where('service_type_id', $request->service_type_id);
+            })
+            ->when($request->filled('service_classes') && is_array($request->service_classes), function ($query) use ($request) {
+                return $query->whereIn('service_class', $request->service_classes);
             })
             ->when($request->filled('max_price'), function ($query) use ($request) {
                 return $query->where('full_price', '<=', $request->max_price);

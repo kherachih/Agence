@@ -91,6 +91,7 @@ class ServiceRequest extends FormRequest
             'map_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
             'good_to_know' => 'nullable|array',
             'guaranteed_departure' => 'nullable|boolean',
+            'service_class' => 'nullable|string|in:private,group',
         ];
 
         if ($this->isMethod('POST')) {

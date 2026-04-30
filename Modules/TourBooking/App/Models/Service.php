@@ -84,6 +84,7 @@ final class Service extends Model
         'map_image',
         'good_to_know',
         'guaranteed_departure',
+        'service_class',
     ];
 
     /**
