@@ -1,9 +1,9 @@
 
 
 <?php $__env->startSection('title'); ?>
-    <title>Services</title>
-    <meta name="title" content="Services">
-    <meta name="description" content="Services">
+    <title><?php echo e($breadcrumb_title); ?></title>
+    <meta name="title" content="<?php echo e($breadcrumb_title); ?>">
+    <meta name="description" content="<?php echo e($breadcrumb_title); ?>">
 <?php $__env->stopSection(); ?>
 
 <?php $__env->startSection('front-content'); ?>
@@ -661,6 +661,8 @@
                     sort_by: `<?php echo e(request('sort_by', '')); ?>`,
                     ratings: <?php echo json_encode(request('ratings', [])); ?>,
                     service_classes: <?php echo json_encode(request('service_classes', [])); ?>,
+                    promotion: `<?php echo e(request('promotion', '')); ?>`,
+                    all_tours: `<?php echo e(request('all_tours', '')); ?>`,
                 },
                 defaultFilters: {
                     search: '',
@@ -673,7 +675,9 @@
                     languages: [],
                     sort_by: '',
                     ratings: [],
-                    service_classes: []
+                    service_classes: [],
+                    promotion: '',
+                    all_tours: ''
                 },
                 get isFilterChanged() {
                     return JSON.stringify(this.filters) !== JSON.stringify(this.defaultFilters);
@@ -965,6 +969,11 @@
             cursor: pointer;
             border: 2px solid #fff;
             box-shadow: 0 0 5px rgba(0,0,0,0.1);
+        }
+
+        .tg-booking-form-search-btn .bk-search-button {
+            background-color: #be3144 !important;
+            border-color: #be3144 !important;
         }
     </style>
 <?php $__env->stopPush(); ?>

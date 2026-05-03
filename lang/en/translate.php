@@ -404,7 +404,7 @@ return array(
   'City is required' => 'City is required',
   'Password confirmation is required' => 'Password confirmation is required',
   'Created successfully' => 'Created successfully',
-  'Service Class' => 'Service Class',
+  'Service Class' => 'Circuit Type',
   'Private' => 'Private',
   'Group' => 'Group',
   'You can not delete it, multiple blog available on this category' => 'You can not delete it, multiple blog available on this category',
@@ -1331,7 +1331,7 @@ return array(
   'Filter by Type' => 'Filter by Type',
   'Add New Service' => 'Add New Service',
   'All Types' => 'All Types',
-  'All Services' => 'All Services',
+  'All Services' => 'All tours',
   'Services List' => 'Services List',
   'Tour Booking' => 'Tour Booking',
   'Create Service' => 'Create Service',
@@ -2093,6 +2093,8 @@ return array(
   'Transport Included' => 'Transport Included',
   'Select Class' => 'Select Class',
   'Map Image' => 'Map Image',
+  'Download PDF' => 'Download PDF',
+  'Download Brochure' => 'Download Brochure',
 );
 
 ;

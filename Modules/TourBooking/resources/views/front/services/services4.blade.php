@@ -1,9 +1,9 @@
 @extends('layout_inner_page')
 
 @section('title')
-    <title>Services</title>
-    <meta name="title" content="Services">
-    <meta name="description" content="Services">
+    <title>{{ $breadcrumb_title }}</title>
+    <meta name="title" content="{{ $breadcrumb_title }}">
+    <meta name="description" content="{{ $breadcrumb_title }}">
 @endsection
 
 @section('front-content')
@@ -410,7 +410,9 @@
                     languages: {!! json_encode(request('languages', [])) !!},
                     sort_by: `{{ request('sort_by', '') }}`,
                     ratings: {!! json_encode(request('ratings', [])) !!},
-                    ratting: `{{ request('ratting', '') }}`
+                    ratting: `{{ request('ratting', '') }}`,
+                    promotion: `{{ request('promotion', '') }}`,
+                    all_tours: `{{ request('all_tours', '') }}`,
                 },
                 defaultFilters: {
                     search: '',
@@ -423,7 +425,9 @@
                     languages: [],
                     sort_by: '',
                     ratings: [],
-                    ratting: ''
+                    ratting: '',
+                    promotion: '',
+                    all_tours: ''
                 },
                 get isFilterChanged() {
                     return JSON.stringify(this.filters) !== JSON.stringify(this.defaultFilters);
@@ -658,6 +662,11 @@
             cursor: pointer;
             border: 2px solid #fff;
             box-shadow: 0 0 5px rgba(0,0,0,0.1);
+        }
+
+        .tg-booking-form-search-btn .bk-search-button {
+            background-color: #be3144 !important;
+            border-color: #be3144 !important;
         }
     </style>
 @endpush

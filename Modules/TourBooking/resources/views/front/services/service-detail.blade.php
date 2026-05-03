@@ -2401,7 +2401,7 @@
                                 </a>
                                 @if ($service?->itineraries->count() > 0)
                                     <a href="{{ route('front.tourbooking.services.download-tour-plan', $service->slug) }}" class="tg-btn tg-btn-switch-animation w-100 text-center mt-3" style="background: #111;">
-                                        <i class="fa-solid fa-file-pdf mr-10"></i> {{ __('translate.Download PDF') }}
+                                        <i class="fa-solid fa-file-pdf mr-10"></i> {{ __('translate.Download Brochure') }}
                                     </a>
                                 @endif
                             </form>

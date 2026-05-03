@@ -372,6 +372,11 @@
             .month-dropdown::-webkit-scrollbar-thumb:hover {
                 background: #764ba2;
             }
+
+            .bk-search-button {
+                background-color: #be3144 !important;
+                border-color: #be3144 !important;
+            }
         </style>
     @endpush
 

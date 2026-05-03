@@ -195,6 +195,13 @@ final class FrontServiceController extends Controller
 
         $selected_service_layout = GlobalSetting::where('key', 'booking_service_theme')?->first()?->value;
         $breadcrumb_title = trans('translate.All Services');
+        
+        if ($request->filled('promotion')) {
+            $breadcrumb_title = trans('translate.Mega Sale');
+        } elseif ($request->filled('all_tours')) {
+            $breadcrumb_title = trans('translate.All Services');
+        }
+
         $requestView = $request->view;
         if ($requestView == 'hotel_grid' || $selected_service_layout == 'hotel_grid') {
             $serviceView = 'tourbooking::front.services.services';
@@ -349,6 +356,12 @@ final class FrontServiceController extends Controller
             })
             ->when($request->filled('ratting') && $request->ratting != 'default', function ($query) use ($request) {
                 $query->having('active_reviews_avg_rating', '>=', $request->ratting);
+            })
+            ->when($request->filled('promotion'), function ($query) {
+                return $query->where(function($q) {
+                    $q->where('discount_price', '>', 0)
+                      ->orWhere('adult_discount_percentage', '>', 0);
+                });
             })
             ->when($request->filled('sort_by'), function ($query) use ($request) {
                 switch ($request->sort_by) {
