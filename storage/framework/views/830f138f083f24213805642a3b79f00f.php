@@ -62,7 +62,15 @@
                                 </div>
                             </div>
                             <div class="tg-listing-card-content">
-                                <div class="tg-listing-card-duration-tour d-flex align-items-center gap-3">
+                                <h4 class="tg-listing-card-title mb-10">
+                                    <a
+                                        href="<?php echo e(route('front.tourbooking.services.show', ['slug' => $service?->slug])); ?>">
+                                        <?php echo e(Str::limit($service?->translation?->title, 45)); ?>
+
+                                    </a>
+                                </h4>
+
+                                <div class="tg-listing-card-duration-tour d-flex align-items-center gap-3 mb-10">
 
                                     <?php if($service?->duration): ?>
                                         <span class="tg-listing-card-duration-map mb-5">
@@ -98,14 +106,6 @@
                                         </span>
                                     <?php endif; ?>
                                 </div>
-
-                                <h4 class="tg-listing-card-title mb-10">
-                                    <a
-                                        href="<?php echo e(route('front.tourbooking.services.show', ['slug' => $service?->slug])); ?>">
-                                        <?php echo e(Str::limit($service?->translation?->title, 45)); ?>
-
-                                    </a>
-                                </h4>
 
                                 <?php if($service?->location): ?>
                                     <div class="tg-listing-card-duration-tour mb-20">

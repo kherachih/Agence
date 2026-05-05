@@ -20,8 +20,8 @@
                 display: flex;
                 align-items: center;
                 overflow: hidden;
-                background-color: #F8C6C6 !important;
-                color: #2d3436 !important;
+                background-color: #ffffff !important;
+                color: #be3144 !important;
                 transition: background-color 0.6s ease, color 0.6s ease;
                 /* On change de sticky à relative pour qu'elle soit AU-DESSUS du header flux */
                 position: relative;
@@ -162,7 +162,7 @@
                 display: inline-flex;
                 align-items: center;
                 gap: 6px;
-                background: #2d3436;
+                background: #be3144;
                 color: #ffffff !important;
                 padding: 2px 11px;
                 border-radius: 20px;
@@ -172,8 +172,8 @@
                 transition: background 0.3s;
             }
 
-            .tg-promo-bar:hover .tg-promo-bar__cta {
-                background: #2d3436;
+            .tg-promo-bar:hover .tg-promo-bar__strip {
+                /* animation-play-state: paused; already handled */
             }
 
             /* Points de navigation */
@@ -191,13 +191,13 @@
                 width: 7px;
                 height: 7px;
                 border-radius: 50%;
-                background: rgba(255, 255, 255, 0.4);
+                background: rgba(190, 49, 68, 0.2);
                 cursor: pointer;
                 transition: background 0.3s, transform 0.3s;
             }
 
             .tg-promo-bar__dot.active {
-                background: #2d3436;
+                background: #be3144;
                 transform: scale(1.35);
             }
 
@@ -296,9 +296,9 @@
                 function apply(idx) {
                     var p = promotions[idx];
 
-                    /* Couleurs */
-                    bar.style.backgroundColor = p.bg;
-                    bar.style.color = p.color;
+                    /* Forcer blanc et rouge comme demandé par l'utilisateur */
+                    bar.style.backgroundColor = '#ffffff';
+                    bar.style.color = '#be3144';
 
                     /* Lien */
                     if (p.link_url) {

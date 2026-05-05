@@ -60,7 +60,14 @@
                                 </div>
                             </div>
                             <div class="tg-listing-card-content">
-                                <div class="tg-listing-card-duration-tour d-flex align-items-center gap-3">
+                                <h4 class="tg-listing-card-title mb-10">
+                                    <a
+                                        href="{{ route('front.tourbooking.services.show', ['slug' => $service?->slug]) }}">
+                                        {{ Str::limit($service?->translation?->title, 45) }}
+                                    </a>
+                                </h4>
+
+                                <div class="tg-listing-card-duration-tour d-flex align-items-center gap-3 mb-10">
 
                                     @if ($service?->duration)
                                         <span class="tg-listing-card-duration-map mb-5">
@@ -94,13 +101,6 @@
                                         </span>
                                     @endif
                                 </div>
-
-                                <h4 class="tg-listing-card-title mb-10">
-                                    <a
-                                        href="{{ route('front.tourbooking.services.show', ['slug' => $service?->slug]) }}">
-                                        {{ Str::limit($service?->translation?->title, 45) }}
-                                    </a>
-                                </h4>
 
                                 @if ($service?->location)
                                     <div class="tg-listing-card-duration-tour mb-20">

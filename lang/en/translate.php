@@ -2093,8 +2093,5 @@ return array(
   'Transport Included' => 'Transport Included',
   'Select Class' => 'Select Class',
   'Map Image' => 'Map Image',
-  'Download PDF' => 'Download PDF',
   'Download Brochure' => 'Download Brochure',
 );
-
-;

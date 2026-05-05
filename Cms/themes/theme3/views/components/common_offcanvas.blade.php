@@ -114,6 +114,45 @@
         border-color: #be3144;
         outline: none;
     }
+
+    /* ===== AJUSTEMENTS POUR BARRE DE PROMOTION ACTIVE ===== */
+    .tg-promo-active .offCanvas__info {
+        padding-top: 80px !important;
+    }
+    
+    .tg-promo-active .offCanvas__logo {
+        margin-bottom: 20px !important;
+    }
+    
+    .tg-promo-active .offCanvas__logo img {
+        max-width: 150px !important;
+        height: auto !important;
+    }
+    
+    .tg-promo-active .contact-list {
+        margin-bottom: 15px !important;
+    }
+    
+    .tg-promo-active .contact-list h4 {
+        font-size: 14px !important;
+        margin-bottom: 5px !important;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+    
+    .tg-promo-active .contact-list p {
+        font-size: 13px !important;
+        line-height: 1.4 !important;
+    }
+
+    .tg-promo-active .offCanvas__side-info {
+        margin-bottom: 20px !important;
+    }
+
+    .tg-promo-active .tg-btn-partner-offcanvas {
+        padding: 10px 20px !important;
+        font-size: 14px !important;
+    }
 </style>
 <div class="offCanvas__overly"></div>
 <!-- offCanvas-menu-end -->
